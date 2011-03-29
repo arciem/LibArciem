@@ -44,7 +44,6 @@ inline T map(T value, T min1, T max1, T min2, T max2)
     return min2 + ((max2 - min2)*(value - min1))/(max1 - min1);
 }
 
-#if 0
 // swap the two values
 template<typename T>
 inline void swap(T& a, T& b) {
@@ -52,7 +51,6 @@ inline void swap(T& a, T& b) {
 	a = b;
 	b = t;
 }
-#endif
 
 // if min > max, swap the values
 template<typename T>
