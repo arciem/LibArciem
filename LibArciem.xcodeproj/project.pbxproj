@@ -1,0 +1,320 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03C67B3E1358D9F8007D817F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C67B3D1358D9F8007D817F /* Foundation.framework */; };
+		03C67B4E1358DC1E007D817F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C67B3D1358D9F8007D817F /* Foundation.framework */; };
+		03C67B561358DFDB007D817F /* DeviceUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B541358DFDB007D817F /* DeviceUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C67B571358DFDB007D817F /* DeviceUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B541358DFDB007D817F /* DeviceUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C67B581358DFDB007D817F /* DeviceUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C67B551358DFDB007D817F /* DeviceUtils.mm */; };
+		03C67B591358DFDB007D817F /* DeviceUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C67B551358DFDB007D817F /* DeviceUtils.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		03C67B3A1358D9F8007D817F /* libArciem-iphoneos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libArciem-iphoneos.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		03C67B3D1358D9F8007D817F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		03C67B411358D9F8007D817F /* LibArciem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "LibArciem-Prefix.pch"; path = "iOS/LibArciem-Prefix.pch"; sourceTree = "<group>"; };
+		03C67B531358DC1E007D817F /* libArciem-iphonesimulator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libArciem-iphonesimulator.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		03C67B541358DFDB007D817F /* DeviceUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeviceUtils.h; path = iOS/arciem/DeviceUtils.h; sourceTree = SOURCE_ROOT; };
+		03C67B551358DFDB007D817F /* DeviceUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DeviceUtils.mm; path = iOS/arciem/DeviceUtils.mm; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		03C67B371358D9F8007D817F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03C67B3E1358D9F8007D817F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03C67B4D1358DC1E007D817F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03C67B4E1358DC1E007D817F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		03C67B2F1358D9F8007D817F = {
+			isa = PBXGroup;
+			children = (
+				03C67B3F1358D9F8007D817F /* LibArciem */,
+				03C67B3C1358D9F8007D817F /* Frameworks */,
+				03C67B3B1358D9F8007D817F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		03C67B3B1358D9F8007D817F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				03C67B3A1358D9F8007D817F /* libArciem-iphoneos.a */,
+				03C67B531358DC1E007D817F /* libArciem-iphonesimulator.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		03C67B3C1358D9F8007D817F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				03C67B3D1358D9F8007D817F /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		03C67B3F1358D9F8007D817F /* LibArciem */ = {
+			isa = PBXGroup;
+			children = (
+				03C67B541358DFDB007D817F /* DeviceUtils.h */,
+				03C67B551358DFDB007D817F /* DeviceUtils.mm */,
+				03C67B401358D9F8007D817F /* Supporting Files */,
+			);
+			path = LibArciem;
+			sourceTree = "<group>";
+		};
+		03C67B401358D9F8007D817F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				03C67B411358D9F8007D817F /* LibArciem-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		03C67B381358D9F8007D817F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03C67B561358DFDB007D817F /* DeviceUtils.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03C67B4F1358DC1E007D817F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03C67B571358DFDB007D817F /* DeviceUtils.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		03C67B391358D9F8007D817F /* LibArciem-iphoneos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03C67B441358D9F8007D817F /* Build configuration list for PBXNativeTarget "LibArciem-iphoneos" */;
+			buildPhases = (
+				03C67B361358D9F8007D817F /* Sources */,
+				03C67B371358D9F8007D817F /* Frameworks */,
+				03C67B381358D9F8007D817F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "LibArciem-iphoneos";
+			productName = LibArciem;
+			productReference = 03C67B3A1358D9F8007D817F /* libArciem-iphoneos.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		03C67B4B1358DC1E007D817F /* LibArciem-iphonesimulator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03C67B501358DC1E007D817F /* Build configuration list for PBXNativeTarget "LibArciem-iphonesimulator" */;
+			buildPhases = (
+				03C67B4C1358DC1E007D817F /* Sources */,
+				03C67B4D1358DC1E007D817F /* Frameworks */,
+				03C67B4F1358DC1E007D817F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "LibArciem-iphonesimulator";
+			productName = LibArciem;
+			productReference = 03C67B531358DC1E007D817F /* libArciem-iphonesimulator.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		03C67B311358D9F8007D817F /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 03C67B341358D9F8007D817F /* Build configuration list for PBXProject "LibArciem" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 03C67B2F1358D9F8007D817F;
+			productRefGroup = 03C67B3B1358D9F8007D817F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				03C67B391358D9F8007D817F /* LibArciem-iphoneos */,
+				03C67B4B1358DC1E007D817F /* LibArciem-iphonesimulator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		03C67B361358D9F8007D817F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03C67B581358DFDB007D817F /* DeviceUtils.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03C67B4C1358DC1E007D817F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03C67B591358DFDB007D817F /* DeviceUtils.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		03C67B421358D9F8007D817F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PUBLIC_HEADERS_FOLDER_PATH = include/LibArciem;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		03C67B431358D9F8007D817F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PUBLIC_HEADERS_FOLDER_PATH = include/LibArciem;
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		03C67B451358D9F8007D817F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv6,
+					armv7,
+				);
+				DSTROOT = /tmp/LibArciem.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS/LibArciem-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "Arciem-iphoneos";
+				SUPPORTED_PLATFORMS = iphoneos;
+				VALID_ARCHS = "armv6 armv7";
+			};
+			name = Debug;
+		};
+		03C67B461358D9F8007D817F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv6,
+					armv7,
+				);
+				DSTROOT = /tmp/LibArciem.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS/LibArciem-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "Arciem-iphoneos";
+				SUPPORTED_PLATFORMS = iphoneos;
+				VALID_ARCHS = "armv6 armv7";
+			};
+			name = Release;
+		};
+		03C67B511358DC1E007D817F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = i386;
+				DSTROOT = /tmp/LibArciem.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS/LibArciem-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "Arciem-iphonesimulator";
+				SUPPORTED_PLATFORMS = iphonesimulator;
+				VALID_ARCHS = i386;
+			};
+			name = Debug;
+		};
+		03C67B521358DC1E007D817F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = i386;
+				DSTROOT = /tmp/LibArciem.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "iOS/LibArciem-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "Arciem-iphonesimulator";
+				SUPPORTED_PLATFORMS = iphonesimulator;
+				VALID_ARCHS = i386;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		03C67B341358D9F8007D817F /* Build configuration list for PBXProject "LibArciem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03C67B421358D9F8007D817F /* Debug */,
+				03C67B431358D9F8007D817F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03C67B441358D9F8007D817F /* Build configuration list for PBXNativeTarget "LibArciem-iphoneos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03C67B451358D9F8007D817F /* Debug */,
+				03C67B461358D9F8007D817F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03C67B501358DC1E007D817F /* Build configuration list for PBXNativeTarget "LibArciem-iphonesimulator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03C67B511358DC1E007D817F /* Debug */,
+				03C67B521358DC1E007D817F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 03C67B311358D9F8007D817F /* Project object */;
+}
