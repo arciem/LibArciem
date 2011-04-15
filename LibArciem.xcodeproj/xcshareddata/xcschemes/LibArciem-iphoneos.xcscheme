@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "03C67B391358D9F8007D817F"
-               BuildableName = "libLibArciem.a"
+               BuildableName = "libArciem-iphoneos.a"
                BlueprintName = "LibArciem-iphoneos"
                ReferencedContainer = "container:LibArciem.xcodeproj">
             </BuildableReference>
