@@ -13,6 +13,24 @@
 		03C67B571358DFDB007D817F /* DeviceUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B541358DFDB007D817F /* DeviceUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03C67B581358DFDB007D817F /* DeviceUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C67B551358DFDB007D817F /* DeviceUtils.mm */; };
 		03C67B591358DFDB007D817F /* DeviceUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C67B551358DFDB007D817F /* DeviceUtils.mm */; };
+		03C67BA113590999007D817F /* CLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B9913590999007D817F /* CLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C67BA213590999007D817F /* CLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B9913590999007D817F /* CLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C67BA313590999007D817F /* CLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C67B9A13590999007D817F /* CLog.m */; };
+		03C67BA413590999007D817F /* CLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C67B9A13590999007D817F /* CLog.m */; };
+		03C67BA513590999007D817F /* ObjectUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B9B13590999007D817F /* ObjectUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C67BA613590999007D817F /* ObjectUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B9B13590999007D817F /* ObjectUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C67BA713590999007D817F /* ObjectUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C67B9C13590999007D817F /* ObjectUtils.m */; };
+		03C67BA813590999007D817F /* ObjectUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C67B9C13590999007D817F /* ObjectUtils.m */; };
+		03C67BA913590999007D817F /* PropertyUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B9D13590999007D817F /* PropertyUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C67BAA13590999007D817F /* PropertyUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B9D13590999007D817F /* PropertyUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C67BAB13590999007D817F /* PropertyUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C67B9E13590999007D817F /* PropertyUtils.m */; };
+		03C67BAC13590999007D817F /* PropertyUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C67B9E13590999007D817F /* PropertyUtils.m */; };
+		03C67BAD13590999007D817F /* StringUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B9F13590999007D817F /* StringUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C67BAE13590999007D817F /* StringUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B9F13590999007D817F /* StringUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C67BAF13590999007D817F /* StringUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C67BA013590999007D817F /* StringUtils.mm */; };
+		03C67BB013590999007D817F /* StringUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C67BA013590999007D817F /* StringUtils.mm */; };
+		03C67BB2135909B3007D817F /* math_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03C67BB1135909B3007D817F /* math_utils.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C67BB313590A04007D817F /* math_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03C67BB1135909B3007D817F /* math_utils.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +40,15 @@
 		03C67B531358DC1E007D817F /* libArciem-iphonesimulator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libArciem-iphonesimulator.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C67B541358DFDB007D817F /* DeviceUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DeviceUtils.h; path = iOS/arciem/DeviceUtils.h; sourceTree = SOURCE_ROOT; };
 		03C67B551358DFDB007D817F /* DeviceUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DeviceUtils.mm; path = iOS/arciem/DeviceUtils.mm; sourceTree = SOURCE_ROOT; };
+		03C67B9913590999007D817F /* CLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLog.h; path = ObjC/arciem/CLog.h; sourceTree = SOURCE_ROOT; };
+		03C67B9A13590999007D817F /* CLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CLog.m; path = ObjC/arciem/CLog.m; sourceTree = SOURCE_ROOT; };
+		03C67B9B13590999007D817F /* ObjectUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectUtils.h; path = ObjC/arciem/ObjectUtils.h; sourceTree = SOURCE_ROOT; };
+		03C67B9C13590999007D817F /* ObjectUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ObjectUtils.m; path = ObjC/arciem/ObjectUtils.m; sourceTree = SOURCE_ROOT; };
+		03C67B9D13590999007D817F /* PropertyUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PropertyUtils.h; path = ObjC/arciem/PropertyUtils.h; sourceTree = SOURCE_ROOT; };
+		03C67B9E13590999007D817F /* PropertyUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PropertyUtils.m; path = ObjC/arciem/PropertyUtils.m; sourceTree = SOURCE_ROOT; };
+		03C67B9F13590999007D817F /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringUtils.h; path = ObjC/arciem/StringUtils.h; sourceTree = SOURCE_ROOT; };
+		03C67BA013590999007D817F /* StringUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = StringUtils.mm; path = ObjC/arciem/StringUtils.mm; sourceTree = SOURCE_ROOT; };
+		03C67BB1135909B3007D817F /* math_utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = math_utils.hpp; path = CPP/arciem/math_utils.hpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +100,15 @@
 		03C67B3F1358D9F8007D817F /* LibArciem */ = {
 			isa = PBXGroup;
 			children = (
+				03C67BB1135909B3007D817F /* math_utils.hpp */,
+				03C67B9913590999007D817F /* CLog.h */,
+				03C67B9A13590999007D817F /* CLog.m */,
+				03C67B9B13590999007D817F /* ObjectUtils.h */,
+				03C67B9C13590999007D817F /* ObjectUtils.m */,
+				03C67B9D13590999007D817F /* PropertyUtils.h */,
+				03C67B9E13590999007D817F /* PropertyUtils.m */,
+				03C67B9F13590999007D817F /* StringUtils.h */,
+				03C67BA013590999007D817F /* StringUtils.mm */,
 				03C67B541358DFDB007D817F /* DeviceUtils.h */,
 				03C67B551358DFDB007D817F /* DeviceUtils.mm */,
 				03C67B401358D9F8007D817F /* Supporting Files */,
@@ -96,6 +132,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				03C67B561358DFDB007D817F /* DeviceUtils.h in Headers */,
+				03C67BA113590999007D817F /* CLog.h in Headers */,
+				03C67BA513590999007D817F /* ObjectUtils.h in Headers */,
+				03C67BA913590999007D817F /* PropertyUtils.h in Headers */,
+				03C67BAD13590999007D817F /* StringUtils.h in Headers */,
+				03C67BB2135909B3007D817F /* math_utils.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +145,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				03C67B571358DFDB007D817F /* DeviceUtils.h in Headers */,
+				03C67BA213590999007D817F /* CLog.h in Headers */,
+				03C67BA613590999007D817F /* ObjectUtils.h in Headers */,
+				03C67BAA13590999007D817F /* PropertyUtils.h in Headers */,
+				03C67BAE13590999007D817F /* StringUtils.h in Headers */,
+				03C67BB313590A04007D817F /* math_utils.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,6 +219,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				03C67B581358DFDB007D817F /* DeviceUtils.mm in Sources */,
+				03C67BA313590999007D817F /* CLog.m in Sources */,
+				03C67BA713590999007D817F /* ObjectUtils.m in Sources */,
+				03C67BAB13590999007D817F /* PropertyUtils.m in Sources */,
+				03C67BAF13590999007D817F /* StringUtils.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +231,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				03C67B591358DFDB007D817F /* DeviceUtils.mm in Sources */,
+				03C67BA413590999007D817F /* CLog.m in Sources */,
+				03C67BA813590999007D817F /* ObjectUtils.m in Sources */,
+				03C67BAC13590999007D817F /* PropertyUtils.m in Sources */,
+				03C67BB013590999007D817F /* StringUtils.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,6 +246,7 @@
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -209,6 +264,7 @@
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
