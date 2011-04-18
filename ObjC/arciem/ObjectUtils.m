@@ -131,28 +131,6 @@ BOOL Different(id a, id b)
     free(properties);
 }
 
-+ (id)loadFromClassNamedNib
-{
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:[self class]]) {
-			return obj;
-		}
-	}
-	return nil;
-}
-
-+ (id)loadFromNibNamed:(NSString*)nibName
-{
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:[self class]]) {
-			return obj;
-		}
-	}
-	return nil;
-}
-
 static NSMutableSet* sAssociationKeys = nil;
 
 - (void)setAssociatedObject:(id)obj forKey:(NSString*)key

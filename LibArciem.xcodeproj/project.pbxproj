@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03BF4769135CDA22001507D6 /* NibUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03BF4767135CDA22001507D6 /* NibUtils.h */; };
+		03BF476A135CDA22001507D6 /* NibUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03BF4767135CDA22001507D6 /* NibUtils.h */; };
+		03BF476B135CDA22001507D6 /* NibUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03BF4768135CDA22001507D6 /* NibUtils.m */; };
+		03BF476C135CDA22001507D6 /* NibUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03BF4768135CDA22001507D6 /* NibUtils.m */; };
 		03C67B3E1358D9F8007D817F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C67B3D1358D9F8007D817F /* Foundation.framework */; };
 		03C67B4E1358DC1E007D817F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C67B3D1358D9F8007D817F /* Foundation.framework */; };
 		03C67B561358DFDB007D817F /* DeviceUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C67B541358DFDB007D817F /* DeviceUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -34,6 +38,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		03BF4767135CDA22001507D6 /* NibUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NibUtils.h; path = iOS/arciem/NibUtils.h; sourceTree = SOURCE_ROOT; };
+		03BF4768135CDA22001507D6 /* NibUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NibUtils.m; path = iOS/arciem/NibUtils.m; sourceTree = SOURCE_ROOT; };
 		03C67B3A1358D9F8007D817F /* libArciem-iphoneos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libArciem-iphoneos.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C67B3D1358D9F8007D817F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		03C67B411358D9F8007D817F /* LibArciem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "LibArciem-Prefix.pch"; path = "iOS/LibArciem-Prefix.pch"; sourceTree = "<group>"; };
@@ -111,6 +117,8 @@
 				03C67BA013590999007D817F /* StringUtils.mm */,
 				03C67B541358DFDB007D817F /* DeviceUtils.h */,
 				03C67B551358DFDB007D817F /* DeviceUtils.mm */,
+				03BF4767135CDA22001507D6 /* NibUtils.h */,
+				03BF4768135CDA22001507D6 /* NibUtils.m */,
 				03C67B401358D9F8007D817F /* Supporting Files */,
 			);
 			path = LibArciem;
@@ -137,6 +145,7 @@
 				03C67BA913590999007D817F /* PropertyUtils.h in Headers */,
 				03C67BAD13590999007D817F /* StringUtils.h in Headers */,
 				03C67BB2135909B3007D817F /* math_utils.hpp in Headers */,
+				03BF4769135CDA22001507D6 /* NibUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,6 +159,7 @@
 				03C67BAA13590999007D817F /* PropertyUtils.h in Headers */,
 				03C67BAE13590999007D817F /* StringUtils.h in Headers */,
 				03C67BB313590A04007D817F /* math_utils.hpp in Headers */,
+				03BF476A135CDA22001507D6 /* NibUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,6 +233,7 @@
 				03C67BA713590999007D817F /* ObjectUtils.m in Sources */,
 				03C67BAB13590999007D817F /* PropertyUtils.m in Sources */,
 				03C67BAF13590999007D817F /* StringUtils.mm in Sources */,
+				03BF476B135CDA22001507D6 /* NibUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,6 +246,7 @@
 				03C67BA813590999007D817F /* ObjectUtils.m in Sources */,
 				03C67BAC13590999007D817F /* PropertyUtils.m in Sources */,
 				03C67BB013590999007D817F /* StringUtils.mm in Sources */,
+				03BF476C135CDA22001507D6 /* NibUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

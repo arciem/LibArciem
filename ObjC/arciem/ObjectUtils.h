@@ -25,9 +25,6 @@ BOOL Different(id a, id b);
 
 @interface NSObject (ObjectUtils)
 
-+ (id)loadFromClassNamedNib;
-+ (id)loadFromNibNamed:(NSString*)nibName;
-
 - (NSString*)formatValueForKey:(NSString*)key compact:(BOOL)compact;
 - (NSString*)formatKey:(NSString*)key value:(id)value compact:(BOOL)compact;
 - (NSString*)formatBoolValueForKey:(NSString*)key compact:(BOOL)compact;
