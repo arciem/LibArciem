@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <LibArciem/CLog.h>
+#import "CLog.h"
 
 static NSMutableSet* sLogTags = nil;
 static CLogLevel sLogLevel = kLogWarn;

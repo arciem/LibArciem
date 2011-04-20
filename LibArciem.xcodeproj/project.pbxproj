@@ -37,6 +37,10 @@
 		03C67BB013590999007D817F /* StringUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C67BA013590999007D817F /* StringUtils.mm */; };
 		03C67BB2135909B3007D817F /* math_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03C67BB1135909B3007D817F /* math_utils.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		03C67BB313590A04007D817F /* math_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03C67BB1135909B3007D817F /* math_utils.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		03E490CF135E3566002E60B8 /* CNetworkActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E490CD135E3566002E60B8 /* CNetworkActivity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03E490D0135E3566002E60B8 /* CNetworkActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E490CD135E3566002E60B8 /* CNetworkActivity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03E490D1135E3566002E60B8 /* CNetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E490CE135E3566002E60B8 /* CNetworkActivity.m */; };
+		03E490D2135E3566002E60B8 /* CNetworkActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E490CE135E3566002E60B8 /* CNetworkActivity.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +63,8 @@
 		03C67B9F13590999007D817F /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringUtils.h; path = ObjC/arciem/StringUtils.h; sourceTree = SOURCE_ROOT; };
 		03C67BA013590999007D817F /* StringUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = StringUtils.mm; path = ObjC/arciem/StringUtils.mm; sourceTree = SOURCE_ROOT; };
 		03C67BB1135909B3007D817F /* math_utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = math_utils.hpp; path = CPP/arciem/math_utils.hpp; sourceTree = SOURCE_ROOT; };
+		03E490CD135E3566002E60B8 /* CNetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CNetworkActivity.h; path = iOS/arciem/CNetworkActivity.h; sourceTree = SOURCE_ROOT; };
+		03E490CE135E3566002E60B8 /* CNetworkActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CNetworkActivity.m; path = iOS/arciem/CNetworkActivity.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +139,8 @@
 				03C67B551358DFDB007D817F /* DeviceUtils.mm */,
 				03BF4767135CDA22001507D6 /* NibUtils.h */,
 				03BF4768135CDA22001507D6 /* NibUtils.m */,
+				03E490CD135E3566002E60B8 /* CNetworkActivity.h */,
+				03E490CE135E3566002E60B8 /* CNetworkActivity.m */,
 				03BF47D9135D084A001507D6 /* RestKit */,
 				03C67B401358D9F8007D817F /* Supporting Files */,
 			);
@@ -162,6 +170,7 @@
 				03C67BB2135909B3007D817F /* math_utils.hpp in Headers */,
 				03BF4769135CDA22001507D6 /* NibUtils.h in Headers */,
 				03BF47E7135D0938001507D6 /* RKClient+Blocks.h in Headers */,
+				03E490CF135E3566002E60B8 /* CNetworkActivity.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +186,7 @@
 				03C67BB313590A04007D817F /* math_utils.hpp in Headers */,
 				03BF476A135CDA22001507D6 /* NibUtils.h in Headers */,
 				03BF47E6135D092E001507D6 /* RKClient+Blocks.h in Headers */,
+				03E490D0135E3566002E60B8 /* CNetworkActivity.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,6 +261,7 @@
 				03C67BAB13590999007D817F /* PropertyUtils.m in Sources */,
 				03C67BAF13590999007D817F /* StringUtils.mm in Sources */,
 				03BF476B135CDA22001507D6 /* NibUtils.m in Sources */,
+				03E490D1135E3566002E60B8 /* CNetworkActivity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +275,7 @@
 				03C67BAC13590999007D817F /* PropertyUtils.m in Sources */,
 				03C67BB013590999007D817F /* StringUtils.mm in Sources */,
 				03BF476C135CDA22001507D6 /* NibUtils.m in Sources */,
+				03E490D2135E3566002E60B8 /* CNetworkActivity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
