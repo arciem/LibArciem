@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <RestKit/RestKit.h>
+#import "RestKit.h"
 
 
 @interface RKClient (Blocks)
