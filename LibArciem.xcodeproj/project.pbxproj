@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0387902B1366527F008DF901 /* CQuantity.h in Headers */ = {isa = PBXBuildFile; fileRef = 038790291366527F008DF901 /* CQuantity.h */; };
+		0387902C1366527F008DF901 /* CQuantity.h in Headers */ = {isa = PBXBuildFile; fileRef = 038790291366527F008DF901 /* CQuantity.h */; };
+		0387902D1366527F008DF901 /* CQuantity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0387902A1366527F008DF901 /* CQuantity.m */; };
+		0387902E1366527F008DF901 /* CQuantity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0387902A1366527F008DF901 /* CQuantity.m */; };
 		03BF4769135CDA22001507D6 /* NibUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03BF4767135CDA22001507D6 /* NibUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03BF476A135CDA22001507D6 /* NibUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03BF4767135CDA22001507D6 /* NibUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03BF476B135CDA22001507D6 /* NibUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03BF4768135CDA22001507D6 /* NibUtils.m */; };
@@ -44,6 +48,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		038790291366527F008DF901 /* CQuantity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CQuantity.h; path = ObjC/arciem/CQuantity.h; sourceTree = SOURCE_ROOT; };
+		0387902A1366527F008DF901 /* CQuantity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CQuantity.m; path = ObjC/arciem/CQuantity.m; sourceTree = SOURCE_ROOT; };
 		03BF4767135CDA22001507D6 /* NibUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NibUtils.h; path = iOS/arciem/NibUtils.h; sourceTree = SOURCE_ROOT; };
 		03BF4768135CDA22001507D6 /* NibUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NibUtils.m; path = iOS/arciem/NibUtils.m; sourceTree = SOURCE_ROOT; };
 		03BF47DA135D084A001507D6 /* RKClient+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RKClient+Blocks.h"; sourceTree = "<group>"; };
@@ -141,6 +147,8 @@
 				03BF4768135CDA22001507D6 /* NibUtils.m */,
 				03E490CD135E3566002E60B8 /* CNetworkActivity.h */,
 				03E490CE135E3566002E60B8 /* CNetworkActivity.m */,
+				038790291366527F008DF901 /* CQuantity.h */,
+				0387902A1366527F008DF901 /* CQuantity.m */,
 				03BF47D9135D084A001507D6 /* RestKit */,
 				03C67B401358D9F8007D817F /* Supporting Files */,
 			);
@@ -171,6 +179,7 @@
 				03BF4769135CDA22001507D6 /* NibUtils.h in Headers */,
 				03BF47E7135D0938001507D6 /* RKClient+Blocks.h in Headers */,
 				03E490CF135E3566002E60B8 /* CNetworkActivity.h in Headers */,
+				0387902B1366527F008DF901 /* CQuantity.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +196,7 @@
 				03BF476A135CDA22001507D6 /* NibUtils.h in Headers */,
 				03BF47E6135D092E001507D6 /* RKClient+Blocks.h in Headers */,
 				03E490D0135E3566002E60B8 /* CNetworkActivity.h in Headers */,
+				0387902C1366527F008DF901 /* CQuantity.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +272,7 @@
 				03C67BAF13590999007D817F /* StringUtils.mm in Sources */,
 				03BF476B135CDA22001507D6 /* NibUtils.m in Sources */,
 				03E490D1135E3566002E60B8 /* CNetworkActivity.m in Sources */,
+				0387902D1366527F008DF901 /* CQuantity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +287,7 @@
 				03C67BB013590999007D817F /* StringUtils.mm in Sources */,
 				03BF476C135CDA22001507D6 /* NibUtils.m in Sources */,
 				03E490D2135E3566002E60B8 /* CNetworkActivity.m in Sources */,
+				0387902E1366527F008DF901 /* CQuantity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
