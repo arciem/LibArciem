@@ -7,6 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03790BE11368A31600490499 /* UIViewUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790BDF1368A31600490499 /* UIViewUtils.h */; };
+		03790BE21368A31600490499 /* UIViewUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790BDF1368A31600490499 /* UIViewUtils.h */; };
+		03790BE31368A31600490499 /* UIViewUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03790BE01368A31600490499 /* UIViewUtils.mm */; };
+		03790BE41368A31600490499 /* UIViewUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03790BE01368A31600490499 /* UIViewUtils.mm */; };
+		03790BE81368A36800490499 /* CGUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790BE61368A36800490499 /* CGUtils.h */; };
+		03790BE91368A36800490499 /* CGUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790BE61368A36800490499 /* CGUtils.h */; };
+		03790BEA1368A36800490499 /* CGUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03790BE71368A36800490499 /* CGUtils.mm */; };
+		03790BEB1368A36800490499 /* CGUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03790BE71368A36800490499 /* CGUtils.mm */; };
+		03790BEE1368A3F200490499 /* random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03790BEC1368A3F200490499 /* random.cpp */; };
+		03790BEF1368A3F200490499 /* random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03790BEC1368A3F200490499 /* random.cpp */; };
+		03790BF01368A3F200490499 /* random.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03790BED1368A3F200490499 /* random.hpp */; };
+		03790BF11368A3F200490499 /* random.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03790BED1368A3F200490499 /* random.hpp */; };
+		03790C111368A63300490499 /* Geom.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C0F1368A63300490499 /* Geom.h */; };
+		03790C121368A63300490499 /* Geom.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C0F1368A63300490499 /* Geom.h */; };
+		03790C131368A63300490499 /* Geom.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C101368A63300490499 /* Geom.m */; };
+		03790C141368A63300490499 /* Geom.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C101368A63300490499 /* Geom.m */; };
+		03790C181368A6F400490499 /* UIColorUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C161368A6F400490499 /* UIColorUtils.h */; };
+		03790C191368A6F400490499 /* UIColorUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C161368A6F400490499 /* UIColorUtils.h */; };
+		03790C1A1368A6F400490499 /* UIColorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C171368A6F400490499 /* UIColorUtils.m */; };
+		03790C1B1368A6F400490499 /* UIColorUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C171368A6F400490499 /* UIColorUtils.m */; };
+		03790C1E1368ACA600490499 /* UIImageUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C1C1368ACA600490499 /* UIImageUtils.h */; };
+		03790C1F1368ACA600490499 /* UIImageUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C1C1368ACA600490499 /* UIImageUtils.h */; };
+		03790C201368ACA600490499 /* UIImageUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C1D1368ACA600490499 /* UIImageUtils.m */; };
+		03790C211368ACA600490499 /* UIImageUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C1D1368ACA600490499 /* UIImageUtils.m */; };
+		03790C241368B0F100490499 /* ThreadUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C221368B0F100490499 /* ThreadUtils.h */; };
+		03790C251368B0F100490499 /* ThreadUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C221368B0F100490499 /* ThreadUtils.h */; };
+		03790C261368B0F100490499 /* ThreadUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C231368B0F100490499 /* ThreadUtils.m */; };
+		03790C271368B0F100490499 /* ThreadUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C231368B0F100490499 /* ThreadUtils.m */; };
 		0387902B1366527F008DF901 /* CQuantity.h in Headers */ = {isa = PBXBuildFile; fileRef = 038790291366527F008DF901 /* CQuantity.h */; };
 		0387902C1366527F008DF901 /* CQuantity.h in Headers */ = {isa = PBXBuildFile; fileRef = 038790291366527F008DF901 /* CQuantity.h */; };
 		0387902D1366527F008DF901 /* CQuantity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0387902A1366527F008DF901 /* CQuantity.m */; };
@@ -48,6 +76,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		03790BDF1368A31600490499 /* UIViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIViewUtils.h; path = iOS/arciem/UIViewUtils.h; sourceTree = SOURCE_ROOT; };
+		03790BE01368A31600490499 /* UIViewUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = UIViewUtils.mm; path = iOS/arciem/UIViewUtils.mm; sourceTree = SOURCE_ROOT; };
+		03790BE61368A36800490499 /* CGUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGUtils.h; path = iOS/arciem/CGUtils.h; sourceTree = SOURCE_ROOT; };
+		03790BE71368A36800490499 /* CGUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CGUtils.mm; path = iOS/arciem/CGUtils.mm; sourceTree = SOURCE_ROOT; };
+		03790BEC1368A3F200490499 /* random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = random.cpp; path = CPP/arciem/random.cpp; sourceTree = SOURCE_ROOT; };
+		03790BED1368A3F200490499 /* random.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = random.hpp; path = CPP/arciem/random.hpp; sourceTree = SOURCE_ROOT; };
+		03790C0F1368A63300490499 /* Geom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Geom.h; path = ObjC/arciem/Geom.h; sourceTree = SOURCE_ROOT; };
+		03790C101368A63300490499 /* Geom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Geom.m; path = ObjC/arciem/Geom.m; sourceTree = SOURCE_ROOT; };
+		03790C161368A6F400490499 /* UIColorUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIColorUtils.h; path = iOS/arciem/UIColorUtils.h; sourceTree = SOURCE_ROOT; };
+		03790C171368A6F400490499 /* UIColorUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIColorUtils.m; path = iOS/arciem/UIColorUtils.m; sourceTree = SOURCE_ROOT; };
+		03790C1C1368ACA600490499 /* UIImageUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIImageUtils.h; path = iOS/arciem/UIImageUtils.h; sourceTree = SOURCE_ROOT; };
+		03790C1D1368ACA600490499 /* UIImageUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIImageUtils.m; path = iOS/arciem/UIImageUtils.m; sourceTree = SOURCE_ROOT; };
+		03790C221368B0F100490499 /* ThreadUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThreadUtils.h; path = ObjC/arciem/ThreadUtils.h; sourceTree = SOURCE_ROOT; };
+		03790C231368B0F100490499 /* ThreadUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThreadUtils.m; path = ObjC/arciem/ThreadUtils.m; sourceTree = SOURCE_ROOT; };
 		038790291366527F008DF901 /* CQuantity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CQuantity.h; path = ObjC/arciem/CQuantity.h; sourceTree = SOURCE_ROOT; };
 		0387902A1366527F008DF901 /* CQuantity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CQuantity.m; path = ObjC/arciem/CQuantity.m; sourceTree = SOURCE_ROOT; };
 		03BF4767135CDA22001507D6 /* NibUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NibUtils.h; path = iOS/arciem/NibUtils.h; sourceTree = SOURCE_ROOT; };
@@ -133,6 +175,8 @@
 			isa = PBXGroup;
 			children = (
 				03C67BB1135909B3007D817F /* math_utils.hpp */,
+				03790BEC1368A3F200490499 /* random.cpp */,
+				03790BED1368A3F200490499 /* random.hpp */,
 				03C67B9913590999007D817F /* CLog.h */,
 				03C67B9A13590999007D817F /* CLog.m */,
 				03C67B9B13590999007D817F /* ObjectUtils.h */,
@@ -149,6 +193,18 @@
 				03E490CE135E3566002E60B8 /* CNetworkActivity.m */,
 				038790291366527F008DF901 /* CQuantity.h */,
 				0387902A1366527F008DF901 /* CQuantity.m */,
+				03790BDF1368A31600490499 /* UIViewUtils.h */,
+				03790BE01368A31600490499 /* UIViewUtils.mm */,
+				03790BE61368A36800490499 /* CGUtils.h */,
+				03790BE71368A36800490499 /* CGUtils.mm */,
+				03790C0F1368A63300490499 /* Geom.h */,
+				03790C101368A63300490499 /* Geom.m */,
+				03790C161368A6F400490499 /* UIColorUtils.h */,
+				03790C171368A6F400490499 /* UIColorUtils.m */,
+				03790C1C1368ACA600490499 /* UIImageUtils.h */,
+				03790C1D1368ACA600490499 /* UIImageUtils.m */,
+				03790C221368B0F100490499 /* ThreadUtils.h */,
+				03790C231368B0F100490499 /* ThreadUtils.m */,
 				03BF47D9135D084A001507D6 /* RestKit */,
 				03C67B401358D9F8007D817F /* Supporting Files */,
 			);
@@ -180,6 +236,13 @@
 				03BF47E7135D0938001507D6 /* RKClient+Blocks.h in Headers */,
 				03E490CF135E3566002E60B8 /* CNetworkActivity.h in Headers */,
 				0387902B1366527F008DF901 /* CQuantity.h in Headers */,
+				03790BE11368A31600490499 /* UIViewUtils.h in Headers */,
+				03790BE81368A36800490499 /* CGUtils.h in Headers */,
+				03790BF01368A3F200490499 /* random.hpp in Headers */,
+				03790C111368A63300490499 /* Geom.h in Headers */,
+				03790C181368A6F400490499 /* UIColorUtils.h in Headers */,
+				03790C1E1368ACA600490499 /* UIImageUtils.h in Headers */,
+				03790C241368B0F100490499 /* ThreadUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,6 +260,13 @@
 				03BF47E6135D092E001507D6 /* RKClient+Blocks.h in Headers */,
 				03E490D0135E3566002E60B8 /* CNetworkActivity.h in Headers */,
 				0387902C1366527F008DF901 /* CQuantity.h in Headers */,
+				03790BE21368A31600490499 /* UIViewUtils.h in Headers */,
+				03790BE91368A36800490499 /* CGUtils.h in Headers */,
+				03790BF11368A3F200490499 /* random.hpp in Headers */,
+				03790C121368A63300490499 /* Geom.h in Headers */,
+				03790C191368A6F400490499 /* UIColorUtils.h in Headers */,
+				03790C1F1368ACA600490499 /* UIImageUtils.h in Headers */,
+				03790C251368B0F100490499 /* ThreadUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +343,13 @@
 				03BF476B135CDA22001507D6 /* NibUtils.m in Sources */,
 				03E490D1135E3566002E60B8 /* CNetworkActivity.m in Sources */,
 				0387902D1366527F008DF901 /* CQuantity.m in Sources */,
+				03790BE31368A31600490499 /* UIViewUtils.mm in Sources */,
+				03790BEA1368A36800490499 /* CGUtils.mm in Sources */,
+				03790BEE1368A3F200490499 /* random.cpp in Sources */,
+				03790C131368A63300490499 /* Geom.m in Sources */,
+				03790C1A1368A6F400490499 /* UIColorUtils.m in Sources */,
+				03790C201368ACA600490499 /* UIImageUtils.m in Sources */,
+				03790C261368B0F100490499 /* ThreadUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +365,13 @@
 				03BF476C135CDA22001507D6 /* NibUtils.m in Sources */,
 				03E490D2135E3566002E60B8 /* CNetworkActivity.m in Sources */,
 				0387902E1366527F008DF901 /* CQuantity.m in Sources */,
+				03790BE41368A31600490499 /* UIViewUtils.mm in Sources */,
+				03790BEB1368A36800490499 /* CGUtils.mm in Sources */,
+				03790BEF1368A3F200490499 /* random.cpp in Sources */,
+				03790C141368A63300490499 /* Geom.m in Sources */,
+				03790C1B1368A6F400490499 /* UIColorUtils.m in Sources */,
+				03790C211368ACA600490499 /* UIImageUtils.m in Sources */,
+				03790C271368B0F100490499 /* ThreadUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

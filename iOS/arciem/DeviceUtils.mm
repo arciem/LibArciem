@@ -17,6 +17,8 @@
  *******************************************************************************/
 
 #import "DeviceUtils.h"
+#include <ifaddrs.h>
+#include <arpa/inet.h>
 
 BOOL IsPhone()
 {
@@ -81,6 +83,21 @@ NSString* DeviceUUID()
 	return [[UIDevice currentDevice] uniqueIdentifier];
 }
 
+NSString* DeviceVendor()
+{
+	return @"Apple";
+}
+
+NSString* DeviceModel()
+{
+	UIDevice *device = [UIDevice currentDevice];
+//	NSString* model = [device model];
+	NSString* OSName = [device systemName];
+	NSString* OSVersion = [device systemVersion];
+
+	return [NSString stringWithFormat:@"%@ %@", OSName, OSVersion];
+}
+
 NSString* StringByAppendingDeviceSuffix(NSString* s)
 {
 	s = [s stringByAppendingString:IsPhone() ? @"_Phone" : @"_Pad"];
@@ -99,6 +116,53 @@ id<NSObject> DeviceClassAlloc(NSString* className)
 	}
 	
 	return instance;
+}
+
+NSString* APNSDeviceToken(NSData* s)
+{
+	NSString* deviceToken = [[s description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+	deviceToken = [deviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];	
+	return deviceToken;
+}
+
+// This only returns the local address of the device, which is probably behind a NAT.
+NSString* DeviceIPAddress()
+{
+	NSString *result = nil;
+
+	struct ifaddrs *interfaces = NULL;
+	struct ifaddrs *temp_addr = NULL;
+	int success = 0;
+
+	// retrieve the current interfaces - returns 0 on success
+	success = getifaddrs(&interfaces);
+	if (success == 0) {
+		// Loop through linked list of interfaces
+		temp_addr = interfaces;
+		while(temp_addr != NULL) {
+			if(temp_addr->ifa_addr->sa_family == AF_INET) {
+				NSString* interfaceName = [NSString stringWithUTF8String:temp_addr->ifa_name];
+				NSString* address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
+				CLogDebug(nil, @"interface:%@ address:%@", interfaceName, address);
+				if([interfaceName isEqualToString:@"en0"]) {
+					// Interface is en0 which is the wifi connection on the iPhone
+					result = address;
+					break;
+				} else if([interfaceName isEqualToString:@"pdp_ip0"]) {
+					// Interface is pdp_ip0 which is the cell connection on the iPhone
+					result = address;
+					break;
+				}
+			}
+
+			temp_addr = temp_addr->ifa_next;
+		}
+	}
+
+	// Free memory
+	freeifaddrs(interfaces);
+
+	return result;
 }
 
 @implementation NSBundle (BundlePlatformAdditions)

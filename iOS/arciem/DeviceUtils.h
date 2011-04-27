@@ -28,11 +28,15 @@ BOOL IsHiDPI();
 CGFloat ScreenScale();
 
 NSString* DeviceUUID();
+NSString* DeviceVendor();
+NSString* DeviceModel();
+NSString* DeviceIPAddress();
 NSString* StringByAppendingDeviceSuffix(NSString* s);
 
 BOOL IsOSVersionAtLeast(NSString *minVerStr);
 
 id<NSObject> DeviceClassAlloc(NSString* className);
+NSString* APNSDeviceToken(NSData* s);
 
 @interface NSBundle (BundlePlatformAdditions)
 
