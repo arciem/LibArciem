@@ -35,6 +35,20 @@
 		03790C251368B0F100490499 /* ThreadUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C221368B0F100490499 /* ThreadUtils.h */; };
 		03790C261368B0F100490499 /* ThreadUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C231368B0F100490499 /* ThreadUtils.m */; };
 		03790C271368B0F100490499 /* ThreadUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C231368B0F100490499 /* ThreadUtils.m */; };
+		03790C511368D68000490499 /* CGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C4E1368D67F00490499 /* CGLView.h */; };
+		03790C521368D68000490499 /* CGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C4E1368D67F00490499 /* CGLView.h */; };
+		03790C531368D68000490499 /* CGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C4F1368D67F00490499 /* CGLView.m */; };
+		03790C541368D68000490499 /* CGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C4F1368D67F00490499 /* CGLView.m */; };
+		03790C551368D68000490499 /* CGLRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C501368D67F00490499 /* CGLRenderer.h */; };
+		03790C561368D68000490499 /* CGLRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C501368D67F00490499 /* CGLRenderer.h */; };
+		03790C591368ED8800490499 /* ShaderUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C571368ED8700490499 /* ShaderUtils.h */; };
+		03790C5A1368ED8800490499 /* ShaderUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C571368ED8700490499 /* ShaderUtils.h */; };
+		03790C5B1368ED8800490499 /* ShaderUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C581368ED8700490499 /* ShaderUtils.m */; };
+		03790C5C1368ED8800490499 /* ShaderUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C581368ED8700490499 /* ShaderUtils.m */; };
+		03790C5F1368FC3200490499 /* matrix_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03790C5D1368FC3100490499 /* matrix_utils.cpp */; };
+		03790C601368FC3200490499 /* matrix_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03790C5D1368FC3100490499 /* matrix_utils.cpp */; };
+		03790C611368FC3200490499 /* matrix_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03790C5E1368FC3200490499 /* matrix_utils.hpp */; };
+		03790C621368FC3200490499 /* matrix_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03790C5E1368FC3200490499 /* matrix_utils.hpp */; };
 		0387902B1366527F008DF901 /* CQuantity.h in Headers */ = {isa = PBXBuildFile; fileRef = 038790291366527F008DF901 /* CQuantity.h */; };
 		0387902C1366527F008DF901 /* CQuantity.h in Headers */ = {isa = PBXBuildFile; fileRef = 038790291366527F008DF901 /* CQuantity.h */; };
 		0387902D1366527F008DF901 /* CQuantity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0387902A1366527F008DF901 /* CQuantity.m */; };
@@ -90,6 +104,13 @@
 		03790C1D1368ACA600490499 /* UIImageUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIImageUtils.m; path = iOS/arciem/UIImageUtils.m; sourceTree = SOURCE_ROOT; };
 		03790C221368B0F100490499 /* ThreadUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThreadUtils.h; path = ObjC/arciem/ThreadUtils.h; sourceTree = SOURCE_ROOT; };
 		03790C231368B0F100490499 /* ThreadUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThreadUtils.m; path = ObjC/arciem/ThreadUtils.m; sourceTree = SOURCE_ROOT; };
+		03790C4E1368D67F00490499 /* CGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGLView.h; path = iOS/arciem/CGLView.h; sourceTree = SOURCE_ROOT; };
+		03790C4F1368D67F00490499 /* CGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CGLView.m; path = iOS/arciem/CGLView.m; sourceTree = SOURCE_ROOT; };
+		03790C501368D67F00490499 /* CGLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGLRenderer.h; path = iOS/arciem/CGLRenderer.h; sourceTree = SOURCE_ROOT; };
+		03790C571368ED8700490499 /* ShaderUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShaderUtils.h; path = iOS/arciem/ShaderUtils.h; sourceTree = SOURCE_ROOT; };
+		03790C581368ED8700490499 /* ShaderUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShaderUtils.m; path = iOS/arciem/ShaderUtils.m; sourceTree = SOURCE_ROOT; };
+		03790C5D1368FC3100490499 /* matrix_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrix_utils.cpp; path = CPP/arciem/matrix_utils.cpp; sourceTree = SOURCE_ROOT; };
+		03790C5E1368FC3200490499 /* matrix_utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = matrix_utils.hpp; path = CPP/arciem/matrix_utils.hpp; sourceTree = SOURCE_ROOT; };
 		038790291366527F008DF901 /* CQuantity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CQuantity.h; path = ObjC/arciem/CQuantity.h; sourceTree = SOURCE_ROOT; };
 		0387902A1366527F008DF901 /* CQuantity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CQuantity.m; path = ObjC/arciem/CQuantity.m; sourceTree = SOURCE_ROOT; };
 		03BF4767135CDA22001507D6 /* NibUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NibUtils.h; path = iOS/arciem/NibUtils.h; sourceTree = SOURCE_ROOT; };
@@ -175,6 +196,8 @@
 			isa = PBXGroup;
 			children = (
 				03C67BB1135909B3007D817F /* math_utils.hpp */,
+				03790C5D1368FC3100490499 /* matrix_utils.cpp */,
+				03790C5E1368FC3200490499 /* matrix_utils.hpp */,
 				03790BEC1368A3F200490499 /* random.cpp */,
 				03790BED1368A3F200490499 /* random.hpp */,
 				03C67B9913590999007D817F /* CLog.h */,
@@ -205,6 +228,11 @@
 				03790C1D1368ACA600490499 /* UIImageUtils.m */,
 				03790C221368B0F100490499 /* ThreadUtils.h */,
 				03790C231368B0F100490499 /* ThreadUtils.m */,
+				03790C501368D67F00490499 /* CGLRenderer.h */,
+				03790C4E1368D67F00490499 /* CGLView.h */,
+				03790C4F1368D67F00490499 /* CGLView.m */,
+				03790C571368ED8700490499 /* ShaderUtils.h */,
+				03790C581368ED8700490499 /* ShaderUtils.m */,
 				03BF47D9135D084A001507D6 /* RestKit */,
 				03C67B401358D9F8007D817F /* Supporting Files */,
 			);
@@ -243,6 +271,10 @@
 				03790C181368A6F400490499 /* UIColorUtils.h in Headers */,
 				03790C1E1368ACA600490499 /* UIImageUtils.h in Headers */,
 				03790C241368B0F100490499 /* ThreadUtils.h in Headers */,
+				03790C511368D68000490499 /* CGLView.h in Headers */,
+				03790C551368D68000490499 /* CGLRenderer.h in Headers */,
+				03790C591368ED8800490499 /* ShaderUtils.h in Headers */,
+				03790C611368FC3200490499 /* matrix_utils.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +299,10 @@
 				03790C191368A6F400490499 /* UIColorUtils.h in Headers */,
 				03790C1F1368ACA600490499 /* UIImageUtils.h in Headers */,
 				03790C251368B0F100490499 /* ThreadUtils.h in Headers */,
+				03790C521368D68000490499 /* CGLView.h in Headers */,
+				03790C561368D68000490499 /* CGLRenderer.h in Headers */,
+				03790C5A1368ED8800490499 /* ShaderUtils.h in Headers */,
+				03790C621368FC3200490499 /* matrix_utils.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +386,9 @@
 				03790C1A1368A6F400490499 /* UIColorUtils.m in Sources */,
 				03790C201368ACA600490499 /* UIImageUtils.m in Sources */,
 				03790C261368B0F100490499 /* ThreadUtils.m in Sources */,
+				03790C531368D68000490499 /* CGLView.m in Sources */,
+				03790C5B1368ED8800490499 /* ShaderUtils.m in Sources */,
+				03790C5F1368FC3200490499 /* matrix_utils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,6 +411,9 @@
 				03790C1B1368A6F400490499 /* UIColorUtils.m in Sources */,
 				03790C211368ACA600490499 /* UIImageUtils.m in Sources */,
 				03790C271368B0F100490499 /* ThreadUtils.m in Sources */,
+				03790C541368D68000490499 /* CGLView.m in Sources */,
+				03790C5C1368ED8800490499 /* ShaderUtils.m in Sources */,
+				03790C601368FC3200490499 /* matrix_utils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

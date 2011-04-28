@@ -78,6 +78,11 @@ void CLogSetTagActive(NSString* tag, BOOL active)
 	}
 }
 
+BOOL CLogIsTagActive(NSString* tag)
+{
+	return [getLogTags() containsObject:tag];
+}
+
 void CLogSetLevel(CLogLevel logLevel)
 {
 	sLogLevel = logLevel;
@@ -86,7 +91,7 @@ void CLogSetLevel(CLogLevel logLevel)
 void _CLog(CLogLevel level, NSString *tag, NSString *format, va_list args)
 {
 	if(tag != nil) {
-		if([getLogTags() containsObject:tag]) {
+		if(CLogIsTagActive(tag)) {
 			NSString* format2 = [NSString stringWithFormat:@"[%@] %@", tag, format];
 			CLogv(level, format2, args);
 		}

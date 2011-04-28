@@ -30,6 +30,7 @@ typedef enum {
 } CLogLevel;
 
 void CLogSetTagActive(NSString* tag, BOOL active);
+BOOL CLogIsTagActive(NSString* tag);
 void CLogSetLevel(CLogLevel logLevel);
 
 // For any of the below methods to print to the console, both of the following conditions must hold:
