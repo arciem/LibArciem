@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import "ShaderUtils.h"
+#import "GLUtils.h"
 
 /* Create and compile a shader from the provided source(s) */
 GLint CompileShader(GLuint *shader, GLenum type, GLsizei count, NSString *file)
@@ -127,4 +127,42 @@ void DestroyShaders(GLuint vertShader, GLuint fragShader, GLuint prog)
 		glDeleteProgram(prog);
 		prog = 0;
 	}
+}
+
+GLint GetRenderbufferWidth()
+{
+	GLint val;
+	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &val);
+	return val;
+}
+
+GLint GetRenderbufferHeight()
+{
+	GLint val;
+	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &val);
+	return val;
+}
+
+GLuint GenFrameBuffer()
+{
+	GLuint name;
+	glGenFramebuffers(1, &name);
+	return name;
+}
+
+GLuint GenRenderBuffer()
+{
+	GLuint name;
+	glGenRenderbuffers(1, &name);
+	return name;
+}
+
+void DeleteFramebuffer(GLuint buf)
+{
+	glDeleteFramebuffers(1, &buf);
+}
+
+void DeleteRenderbuffer(GLuint buf)
+{
+	glDeleteRenderbuffers(1, &buf);
 }

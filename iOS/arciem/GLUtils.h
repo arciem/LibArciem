@@ -23,3 +23,12 @@ GLint CompileShader(GLuint *shader, GLenum type, GLsizei count, NSString *file);
 GLint LinkProgram(GLuint prog);
 GLint ValidateProgram(GLuint prog);
 void DestroyShaders(GLuint vertShader, GLuint fragShader, GLuint prog);
+
+GLuint GenFrameBuffer();
+GLuint GenRenderBuffer();
+
+void DeleteFramebuffer(GLuint buf);
+void DeleteRenderbuffer(GLuint buf);
+
+GLint GetRenderbufferWidth();
+GLint GetRenderbufferHeight();

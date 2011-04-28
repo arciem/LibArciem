@@ -19,9 +19,12 @@
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/EAGLDrawable.h>
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
 
 @protocol CGLRenderer <NSObject>
 
+@required
 - (void)render;
 - (BOOL)resizeFromLayer:(CAEAGLLayer*)layer;
 
