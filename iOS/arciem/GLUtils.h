@@ -32,3 +32,5 @@ void DeleteRenderbuffer(GLuint buf);
 
 GLint GetRenderbufferWidth();
 GLint GetRenderbufferHeight();
+
+void PrintMatix44f(float* matrix);

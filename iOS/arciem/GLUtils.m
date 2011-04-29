@@ -166,3 +166,10 @@ void DeleteRenderbuffer(GLuint buf)
 {
 	glDeleteRenderbuffers(1, &buf);
 }
+
+void PrintMatix44f(float* matrix)
+{
+	for(int i = 0; i < 16; i += 4) {
+		CLogDebug(nil, @"%f %f %f %f", matrix[i], matrix[i+1], matrix[i+2], matrix[i+3]);
+	}
+}

@@ -45,7 +45,7 @@ void mat4f_LoadIdentity(float* m)
 }
 
 // s is a 3D vector
-void mat4f_LoadScale(float* s, float* m)
+void mat4f_LoadScale(const float* s, float* m)
 {
 	m[0] = s[0];
 	m[1] = 0.0f;
@@ -147,7 +147,7 @@ void mat4f_LoadZRotation(float radians, float* mout)
 }
 
 // v is a 3D vector
-void mat4f_LoadTranslation(float* v, float* mout)
+void mat4f_LoadTranslation(const float* v, float* mout)
 {
 	mout[0] = 1.0f;
 	mout[1] = 0.0f;
@@ -170,6 +170,125 @@ void mat4f_LoadTranslation(float* v, float* mout)
 	mout[15] = 1.0f;
 }
 
+void vec3f_Normalize(float* vec)
+{
+	float d = 1.0f / sqrtf(vec[0] * vec[0] + vec[1] * vec[1] + vec[2] * vec[2]);
+	vec[0] *= d;
+	vec[1] *= d;
+	vec[2] *= d;
+}
+
+void vec3f_Subtract(const float* vec1, const float* vec2, float* vout)
+{
+	vout[0] = vec1[0] - vec2[0];
+	vout[1] = vec1[1] - vec2[1];
+	vout[2] = vec1[2] - vec2[2];
+}
+
+void vec3f_ComputeNormal(const float* vec1, const float* vec2, float* vout)
+{
+	vout[0] = (vec1[1] * vec2[2]) - (vec1[2] * vec2[1]);
+	vout[1] = (vec1[2] * vec2[0]) - (vec1[0] * vec2[2]);
+	vout[2] = (vec1[0] * vec2[1]) - (vec1[1] * vec2[0]);
+}
+
+void vec3f_ComputeNormal(const float* p1, const float* p2, const float* p3, float* vout)
+{
+	float v1[3], v2[3];
+	vec3f_Subtract(p2, p1, v1);
+	vec3f_Subtract(p3, p1, v2);
+	vec3f_ComputeNormal(v1, v2, vout);
+}
+
+void vec3f_Assign(float x, float y, float z, float* vout)
+{
+	vout[0] = x;
+	vout[1] = y;
+	vout[2] = z;
+}
+
+void mat4f_Translate(float x, float y, float z, float *matrix)
+{
+	matrix[12]=matrix[0]*x+matrix[4]*y+matrix[8]*z+matrix[12];
+	matrix[13]=matrix[1]*x+matrix[5]*y+matrix[9]*z+matrix[13];
+	matrix[14]=matrix[2]*x+matrix[6]*y+matrix[10]*z+matrix[14];
+	matrix[15]=matrix[3]*x+matrix[7]*y+matrix[11]*z+matrix[15];
+}
+
+void mat4f_LookAt(const float* eye, const float* center, const float* upvec, float *mout)
+{
+	float forward[3], side[3], up[3];
+	float matrix2[16], resultMatrix[16];
+	
+	forward[0]=center[0]-eye[0];
+	forward[1]=center[1]-eye[1];
+	forward[2]=center[2]-eye[2];
+	vec3f_Normalize(forward);
+	
+	//Side = forward x up
+	vec3f_ComputeNormal(forward, upvec, side);
+	vec3f_Normalize(side);
+	
+	//Recompute up as: up = side x forward
+	vec3f_ComputeNormal(side, forward, up);
+	
+	matrix2[0]=side[0];
+	matrix2[4]=side[1];
+	matrix2[8]=side[2];
+	matrix2[12]=0.0;
+	
+	matrix2[1]=up[0];
+	matrix2[5]=up[1];
+	matrix2[9]=up[2];
+	matrix2[13]=0.0;
+	
+	matrix2[2]=-forward[0];
+	matrix2[6]=-forward[1];
+	matrix2[10]=-forward[2];
+	matrix2[14]=0.0;
+	
+	matrix2[3]=matrix2[7]=matrix2[11]=0.0;
+	matrix2[15]=1.0;
+	
+	mat4f_MultiplyMat4f(mout, matrix2, resultMatrix);
+	mat4f_Translate(-eye[0], -eye[1], -eye[2], resultMatrix);
+	
+	memcpy(mout, resultMatrix, 16*sizeof(float));
+}
+
+void mat4f_LoadPerspective2(float fov_degrees, float aspect, float zNear, float zFar, float* mout)
+{
+	float ymax = zNear * tanf(fov_degrees * M_PI / 360.0);
+	//ymin = -ymax;
+	//xmin = -ymax * aspect;
+	float xmax = ymax * aspect;
+	mat4f_LoadFrustum(-xmax, xmax, -ymax, ymax, zNear, zFar, mout);
+}
+
+void mat4f_LoadFrustum(float left, float right, float bottom, float top, float zNear, float zFar, float* mout)
+{
+	float temp = 2.0 * zNear;
+	float temp2 = right - left;
+	float temp3 = top - bottom;
+	float temp4 = zFar - zNear;
+	mout[0] = temp / temp2;
+	mout[1] = 0.0;
+	mout[2] = 0.0;
+	mout[3] = 0.0;
+	mout[4] = 0.0;
+	mout[5] = temp / temp3;
+	mout[6] = 0.0;
+	mout[7] = 0.0;
+	mout[8] = (right + left) / temp2;
+	mout[9] = (top + bottom) / temp3;
+	mout[10] = (-zFar - zNear) / temp4;
+	mout[11] = -1.0;
+	mout[12] = 0.0;
+	mout[13] = 0.0;
+	mout[14] = (-temp * zFar) / temp4;
+	mout[15] = 0.0;
+}
+
 void mat4f_LoadPerspective(float fov_radians, float aspect, float zNear, float zFar, float* mout)
 {
 	float f = 1.0f / tanf(fov_radians/2.0f);
@@ -186,7 +305,7 @@ void mat4f_LoadPerspective(float fov_radians, float aspect, float zNear, float z
 	
 	mout[8] = 0.0f;
 	mout[9] = 0.0f;
-	mout[10] = (zFar+zNear) / (zNear-zFar);
+	mout[10] = (zFar + zNear) / (zNear-zFar);
 	mout[11] = -1.0f;
 	
 	mout[12] = 0.0f;
