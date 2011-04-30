@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0329C6AA136B4BC100ADD84D /* gl_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0329C6A8136B4BC100ADD84D /* gl_utils.cpp */; };
+		0329C6AB136B4BC100ADD84D /* gl_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0329C6A8136B4BC100ADD84D /* gl_utils.cpp */; };
+		0329C6AC136B4BC100ADD84D /* gl_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 0329C6A9136B4BC100ADD84D /* gl_utils.hpp */; };
+		0329C6AD136B4BC100ADD84D /* gl_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 0329C6A9136B4BC100ADD84D /* gl_utils.hpp */; };
 		03790BE11368A31600490499 /* UIViewUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790BDF1368A31600490499 /* UIViewUtils.h */; };
 		03790BE21368A31600490499 /* UIViewUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790BDF1368A31600490499 /* UIViewUtils.h */; };
 		03790BE31368A31600490499 /* UIViewUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03790BE01368A31600490499 /* UIViewUtils.mm */; };
@@ -45,10 +49,6 @@
 		03790C5A1368ED8800490499 /* GLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C571368ED8700490499 /* GLUtils.h */; };
 		03790C5B1368ED8800490499 /* GLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C581368ED8700490499 /* GLUtils.m */; };
 		03790C5C1368ED8800490499 /* GLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C581368ED8700490499 /* GLUtils.m */; };
-		03790C5F1368FC3200490499 /* matrix_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03790C5D1368FC3100490499 /* matrix_utils.cpp */; };
-		03790C601368FC3200490499 /* matrix_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03790C5D1368FC3100490499 /* matrix_utils.cpp */; };
-		03790C611368FC3200490499 /* matrix_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03790C5E1368FC3200490499 /* matrix_utils.hpp */; };
-		03790C621368FC3200490499 /* matrix_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 03790C5E1368FC3200490499 /* matrix_utils.hpp */; };
 		0387902B1366527F008DF901 /* CQuantity.h in Headers */ = {isa = PBXBuildFile; fileRef = 038790291366527F008DF901 /* CQuantity.h */; };
 		0387902C1366527F008DF901 /* CQuantity.h in Headers */ = {isa = PBXBuildFile; fileRef = 038790291366527F008DF901 /* CQuantity.h */; };
 		0387902D1366527F008DF901 /* CQuantity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0387902A1366527F008DF901 /* CQuantity.m */; };
@@ -90,6 +90,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0329C6A8136B4BC100ADD84D /* gl_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gl_utils.cpp; path = CPP/arciem/gl_utils.cpp; sourceTree = SOURCE_ROOT; };
+		0329C6A9136B4BC100ADD84D /* gl_utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = gl_utils.hpp; path = CPP/arciem/gl_utils.hpp; sourceTree = SOURCE_ROOT; };
 		03790BDF1368A31600490499 /* UIViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIViewUtils.h; path = iOS/arciem/UIViewUtils.h; sourceTree = SOURCE_ROOT; };
 		03790BE01368A31600490499 /* UIViewUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = UIViewUtils.mm; path = iOS/arciem/UIViewUtils.mm; sourceTree = SOURCE_ROOT; };
 		03790BE61368A36800490499 /* CGUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGUtils.h; path = iOS/arciem/CGUtils.h; sourceTree = SOURCE_ROOT; };
@@ -109,8 +111,6 @@
 		03790C501368D67F00490499 /* CGLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGLRenderer.h; path = iOS/arciem/CGLRenderer.h; sourceTree = SOURCE_ROOT; };
 		03790C571368ED8700490499 /* GLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLUtils.h; path = iOS/arciem/GLUtils.h; sourceTree = SOURCE_ROOT; };
 		03790C581368ED8700490499 /* GLUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GLUtils.m; path = iOS/arciem/GLUtils.m; sourceTree = SOURCE_ROOT; };
-		03790C5D1368FC3100490499 /* matrix_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrix_utils.cpp; path = CPP/arciem/matrix_utils.cpp; sourceTree = SOURCE_ROOT; };
-		03790C5E1368FC3200490499 /* matrix_utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = matrix_utils.hpp; path = CPP/arciem/matrix_utils.hpp; sourceTree = SOURCE_ROOT; };
 		038790291366527F008DF901 /* CQuantity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CQuantity.h; path = ObjC/arciem/CQuantity.h; sourceTree = SOURCE_ROOT; };
 		0387902A1366527F008DF901 /* CQuantity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CQuantity.m; path = ObjC/arciem/CQuantity.m; sourceTree = SOURCE_ROOT; };
 		03BF4767135CDA22001507D6 /* NibUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NibUtils.h; path = iOS/arciem/NibUtils.h; sourceTree = SOURCE_ROOT; };
@@ -196,10 +196,10 @@
 			isa = PBXGroup;
 			children = (
 				03C67BB1135909B3007D817F /* math_utils.hpp */,
-				03790C5D1368FC3100490499 /* matrix_utils.cpp */,
-				03790C5E1368FC3200490499 /* matrix_utils.hpp */,
 				03790BEC1368A3F200490499 /* random.cpp */,
 				03790BED1368A3F200490499 /* random.hpp */,
+				0329C6A8136B4BC100ADD84D /* gl_utils.cpp */,
+				0329C6A9136B4BC100ADD84D /* gl_utils.hpp */,
 				03C67B9913590999007D817F /* CLog.h */,
 				03C67B9A13590999007D817F /* CLog.m */,
 				03C67B9B13590999007D817F /* ObjectUtils.h */,
@@ -274,7 +274,7 @@
 				03790C511368D68000490499 /* CGLView.h in Headers */,
 				03790C551368D68000490499 /* CGLRenderer.h in Headers */,
 				03790C591368ED8800490499 /* GLUtils.h in Headers */,
-				03790C611368FC3200490499 /* matrix_utils.hpp in Headers */,
+				0329C6AC136B4BC100ADD84D /* gl_utils.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,7 +302,7 @@
 				03790C521368D68000490499 /* CGLView.h in Headers */,
 				03790C561368D68000490499 /* CGLRenderer.h in Headers */,
 				03790C5A1368ED8800490499 /* GLUtils.h in Headers */,
-				03790C621368FC3200490499 /* matrix_utils.hpp in Headers */,
+				0329C6AD136B4BC100ADD84D /* gl_utils.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,7 +388,7 @@
 				03790C261368B0F100490499 /* ThreadUtils.m in Sources */,
 				03790C531368D68000490499 /* CGLView.m in Sources */,
 				03790C5B1368ED8800490499 /* GLUtils.m in Sources */,
-				03790C5F1368FC3200490499 /* matrix_utils.cpp in Sources */,
+				0329C6AA136B4BC100ADD84D /* gl_utils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,7 +413,7 @@
 				03790C271368B0F100490499 /* ThreadUtils.m in Sources */,
 				03790C541368D68000490499 /* CGLView.m in Sources */,
 				03790C5C1368ED8800490499 /* GLUtils.m in Sources */,
-				03790C601368FC3200490499 /* matrix_utils.cpp in Sources */,
+				0329C6AB136B4BC100ADD84D /* gl_utils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
