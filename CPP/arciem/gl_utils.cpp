@@ -30,7 +30,9 @@ namespace arciem {
 	const vector3 vector3::right  (1, 0, 0);
 	const vector3 vector3::up     (0, 1, 0);
 	const vector3 vector3::forward(0, 0, 1);
-	
+
+	vector3::vector3(vector4 const& v) : x(v.x), y(v.y), z(v.z) { }
+
 	vector3 vector3::cross(vector3 const& p1, vector3 const& p2)
 	{
 		vector3 v1 = p1 - *this;
@@ -125,10 +127,10 @@ namespace arciem {
 
 	void matrix4x4::translate(vector3 const& v)
 	{
-		m = a * v.x + e * v.y + i * v.z + m;
-		n = b * v.x + f * v.y + j * v.z + n;
-		o = c * v.x + g * v.y + k * v.z + o;
-		p = d * v.x + h * v.y + l * v.z + p;
+		m = a*v.x + e*v.y + i*v.z + m;
+		n = b*v.x + f*v.y + j*v.z + n;
+		o = c*v.x + g*v.y + k*v.z + o;
+		p = d*v.x + h*v.y + l*v.z + p;
 	}
 
 	void matrix4x4::look_at(vector3 const& eye, vector3 const& center, vector3 const& upvec)
@@ -168,29 +170,82 @@ namespace arciem {
 		matrix4x4 m;
 		matrix4x4 const& a = *this;
 		
-		m[0]  = a[0] * b[0]  + a[4] * b[1]  + a[8] * b[2]   + a[12] * b[3];
-		m[1]  = a[1] * b[0]  + a[5] * b[1]  + a[9] * b[2]   + a[13] * b[3];
-		m[2]  = a[2] * b[0]  + a[6] * b[1]  + a[10] * b[2]  + a[14] * b[3];
-		m[3]  = a[3] * b[0]  + a[7] * b[1]  + a[11] * b[2]  + a[15] * b[3];
-		
-		m[4]  = a[0] * b[4]  + a[4] * b[5]  + a[8] * b[6]   + a[12] * b[7];
-		m[5]  = a[1] * b[4]  + a[5] * b[5]  + a[9] * b[6]   + a[13] * b[7];
-		m[6]  = a[2] * b[4]  + a[6] * b[5]  + a[10] * b[6]  + a[14] * b[7];
-		m[7]  = a[3] * b[4]  + a[7] * b[5]  + a[11] * b[6]  + a[15] * b[7];
-		
-		m[8]  = a[0] * b[8]  + a[4] * b[9]  + a[8] * b[10]  + a[12] * b[11];
-		m[9]  = a[1] * b[8]  + a[5] * b[9]  + a[9] * b[10]  + a[13] * b[11];
-		m[10] = a[2] * b[8]  + a[6] * b[9]  + a[10] * b[10] + a[14] * b[11];
-		m[11] = a[3] * b[8]  + a[7] * b[9]  + a[11] * b[10] + a[15] * b[11];
-		
-		m[12] = a[0] * b[12] + a[4] * b[13] + a[8] * b[14]  + a[12] * b[15];
-		m[13] = a[1] * b[12] + a[5] * b[13] + a[9] * b[14]  + a[13] * b[15];
-		m[14] = a[2] * b[12] + a[6] * b[13] + a[10] * b[14] + a[14] * b[15];
-		m[15] = a[3] * b[12] + a[7] * b[13] + a[11] * b[14] + a[15] * b[15];
-		
+		m.a = a.a*b.a + a.e*b.b + a.i*b.c + a.m*b.d;
+		m.b = a.b*b.a + a.f*b.b + a.j*b.c + a.n*b.d;
+		m.c = a.c*b.a + a.g*b.b + a.k*b.c + a.o*b.d;
+		m.d = a.d*b.a + a.h*b.b + a.l*b.c + a.p*b.d;
+		m.e = a.a*b.e + a.e*b.f + a.i*b.g + a.m*b.h;
+		m.f = a.b*b.e + a.f*b.f + a.j*b.g + a.n*b.h;
+		m.g = a.c*b.e + a.g*b.f + a.k*b.g + a.o*b.h;
+		m.h = a.d*b.e + a.h*b.f + a.l*b.g + a.p*b.h;
+		m.i = a.a*b.i + a.e*b.j + a.i*b.k + a.m*b.l;
+		m.j = a.b*b.i + a.f*b.j + a.j*b.k + a.n*b.l;
+		m.k = a.c*b.i + a.g*b.j + a.k*b.k + a.o*b.l;
+		m.l = a.d*b.i + a.h*b.j + a.l*b.k + a.p*b.l;
+		m.m = a.a*b.m + a.e*b.n + a.i*b.o + a.m*b.p;
+		m.n = a.b*b.m + a.f*b.n + a.j*b.o + a.n*b.p;
+		m.o = a.c*b.m + a.g*b.n + a.k*b.o + a.o*b.p;
+		m.p = a.d*b.m + a.h*b.n + a.l*b.o + a.p*b.p;
+
 		return m;
 	}
 	
+	vector4 matrix4x4::operator*(vector4 const& v) const
+	{
+#if 0
+		return vector4(a*v.x + b*v.y + c*v.z + d*v.w,
+					   e*v.x + f*v.y + g*v.z + h*v.w,
+					   i*v.x + j*v.y + k*v.z + l*v.w,
+					   m*v.x + n*v.y + o*v.z + p*v.w);
+#endif
+		return vector4(a*v.x + e*v.y + i*v.z + m*v.w,
+					   b*v.x + f*v.y + j*v.z + n*v.w,
+					   c*v.x + g*v.y + k*v.z + o*v.w,
+					   d*v.x + h*v.y + l*v.z + p*v.w);
+	}
+
+	GLfloat matrix4x4::determinant() const
+	{
+		return d*g*j*m - c*h*j*m - d*f*k*m + b*h*k*m + c*f*l*m - b*g*l*m - d*g*i*n + c*h*i*n + d*e*k*n - a*h*k*n - c*e*l*n + a*g*l*n + d*f*i*o - b*h*i*o - d*e*j*o + a*h*j*o + b*e*l*o - a*f*l*o - c*f*i*p + b*g*i*p + c*e*j*p - a*g*j*p - b*e*k*p + a*f*k*p;
+	}
+
+	matrix4x4 matrix4x4::inverse() const
+	{
+		float v1 = 1 / determinant();
+
+		return matrix4x4(
+			(-(h*k*n) + g*l*n + h*j*o - f*l*o - g*j*p + f*k*p) * v1,
+			(d*k*n - c*l*n - d*j*o + b*l*o + c*j*p - b*k*p) * v1,
+			(-(d*g*n) + c*h*n + d*f*o - b*h*o - c*f*p + b*g*p) * v1,
+			(d*g*j - c*h*j - d*f*k + b*h*k + c*f*l - b*g*l) * v1,
+			
+			(h*k*m - g*l*m - h*i*o + e*l*o + g*i*p - e*k*p) * v1,
+			(-(d*k*m) + c*l*m + d*i*o - a*l*o - c*i*p + a*k*p) * v1,
+			(d*g*m - c*h*m - d*e*o + a*h*o + c*e*p - a*g*p) * v1,
+			(-(d*g*i) + c*h*i + d*e*k - a*h*k - c*e*l + a*g*l) * v1,
+			
+			(-(h*j*m) + f*l*m + h*i*n - e*l*n - f*i*p + e*j*p) * v1,
+			(d*j*m - b*l*m - d*i*n + a*l*n + b*i*p - a*j*p) * v1,
+			(-(d*f*m) + b*h*m + d*e*n - a*h*n - b*e*p + a*f*p) * v1,
+			(d*f*i - b*h*i - d*e*j + a*h*j + b*e*l - a*f*l) * v1,
+			
+			(g*j*m - f*k*m - g*i*n + e*k*n + f*i*o - e*j*o) * v1,
+			(-(c*j*m) + b*k*m + c*i*n - a*k*n - b*i*o + a*j*o) * v1,
+			(c*f*m - b*g*m - c*e*n + a*g*n + b*e*o - a*f*o) * v1,
+			(-(c*f*i) + b*g*i + c*e*j - a*g*j - b*e*k + a*f*k) * v1
+		);
+	}
+	
+	matrix4x4 matrix4x4::transpose() const
+	{
+		return matrix4x4(
+			a,e,i,m,
+			b,f,j,n,
+			c,g,k,o,
+			d,h,l,p
+		);
+	}
+
 	void matrix4x4::load_perspective(float fovRadians, float aspect, float near, float far)
 	{
 		float ff = 1 / tanf(fovRadians / 2);
@@ -212,7 +267,7 @@ namespace arciem {
 		
 		m = 0;
 		n = 0;
-		o = 2 * far * near /  (near - far);
+		o = 2 * far * near / (near - far);
 		p = 0;
 	}
 	
@@ -244,5 +299,135 @@ namespace arciem {
 		n = ty;
 		o = tz;
 		p = 1;
+	}
+
+	const matrix3x3 matrix3x3::zero(0, 0, 0,
+									0, 0, 0,
+									0, 0, 0);
+
+	const matrix3x3 matrix3x3::identity(1, 0, 0,
+										0, 1, 0,
+										0, 0, 1);
+	
+	matrix3x3::matrix3x3(GLfloat a, GLfloat b, GLfloat c,
+						 GLfloat d, GLfloat e, GLfloat f,
+						 GLfloat g, GLfloat h, GLfloat i)
+	{
+		this->a = a; this->b = b; this->c = c;
+		this->d = d; this->e = e; this->f = f;
+		this->g = g; this->h = h; this->i = i;
+	}
+	
+	void matrix3x3::load_scale(vector2 const& v)
+	{
+		a = v.x;	b = 0;		c = 0;
+		d = 0;		e = v.y;	f = 0;
+		g = 0;		h = 0;		i = 1;
+	}
+	
+	void matrix3x3::load_translation(vector2 const& v)
+	{
+		a = 1;   b = 0;   c = 0;
+		d = 0;   e = 1;   f = 0;
+		g = v.x; h = v.y; i = 1;
+	}
+	
+	void matrix3x3::load_rotation(GLfloat radians)
+	{
+		GLfloat cr = cosf(radians);
+		GLfloat sr = sinf(radians);
+		
+		a = cr;  b = sr; c = 0;
+		d = -sr; e = cr; f = 0;
+		g = 0;   h = 0;  i = 1;
+	}
+	
+	void matrix3x3::translate(vector2 const& v)
+	{
+		g = a*v.x + d*v.y + g;
+		h = b*v.x + e*v.y + h;
+		i = c*v.x + f*v.y + i;
+	}
+	
+	matrix3x3 matrix3x3::operator*(matrix3x3 const& b) const
+	{
+		matrix3x3 m;
+		matrix3x3 const& a = *this;
+		
+		m.a = a.a*b.a + a.d*b.b + a.g*b.c;
+		m.b = a.b*b.a + a.e*b.b + a.h*b.c;
+		m.c = a.c*b.a + a.f*b.b + a.i*b.c;
+		m.d = a.a*b.d + a.d*b.e + a.g*b.f;
+		m.e = a.b*b.d + a.e*b.e + a.h*b.f;
+		m.f = a.c*b.d + a.f*b.e + a.i*b.f;
+		m.g = a.a*b.g + a.d*b.h + a.g*b.i;
+		m.h = a.b*b.g + a.e*b.h + a.h*b.i;
+		m.i = a.c*b.g + a.f*b.h + a.i*b.i;
+		
+		return m;
+	}
+	
+	vector3 matrix3x3::operator*(vector3 const& v) const
+	{
+#if 0
+		return vector3(
+			a*v.x + b*v.y + c*v.z,
+			d*v.x + e*v.y + f*v.z,
+			g*v.x + h*v.y + i*v.z
+		);
+#endif
+		return vector3(
+					   a*v.x + d*v.y + g*v.z,
+					   b*v.x + e*v.y + h*v.z,
+					   c*v.x + f*v.y + i*v.z
+					   );
+	}
+	
+	GLfloat matrix3x3::determinant() const
+	{
+		return -(c*e*g) + b*f*g + c*d*h - a*f*h - b*d*i + a*e*i;
+	}
+
+	matrix3x3 matrix3x3::inverse() const
+	{
+		GLfloat v1 = 1 / determinant();
+
+		return matrix3x3(
+			(-(f*h) + e*i) * v1,
+			(c*h - b*i) * v1,
+			(-(c*e) + b*f) * v1,
+			
+			(f*g - d*i) * v1,
+			(-(c*g) + a*i) * v1,
+			(c*d - a*f) * v1,
+			
+			(-(e*g) + d*h) * v1,
+			(b*g - a*h) * v1,
+			(-(b*d) + a*e) * v1
+		);
+	}
+	
+	matrix3x3 matrix3x3::transpose() const
+	{
+		return matrix3x3(
+			a,d,g,
+			b,e,h,
+			c,f,i
+		);
+	}
+
+	matrix3x3 upper_left_submatrix(matrix4x4 const& m)
+	{
+		return matrix3x3(
+			m.a, m.b, m.c,
+			m.e, m.f, m.g,
+			m.i, m.j, m.k
+		);
+	}
+
+	matrix3x3 normal_matrix(matrix4x4 const& modelView)
+	{
+		// http://www.lighthouse3d.com/tutorials/glsl-tutorial/directional-lights-i/
+		return upper_left_submatrix(modelView).inverse().transpose();
 	}
 }

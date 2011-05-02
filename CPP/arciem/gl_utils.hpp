@@ -26,7 +26,7 @@ namespace arciem {
 	struct vector2 {
 		GLfloat x, y;
 		
-		vector2(GLfloat x = 0.0f, GLfloat y = 0.0f) { this->x = x; this->y = y; }
+		vector2(GLfloat x = 0, GLfloat y = 0) : x(x), y(y) { }
 
 		inline GLfloat operator[](int i) const { return (&x)[i]; }
 		inline GLfloat& operator[](int i) { return (&x)[i]; }
@@ -58,10 +58,14 @@ namespace arciem {
 		static const vector2 up;
 	};
 	
+	struct vector4;
+	
 	struct vector3 {
 		GLfloat x, y, z;
 
-		vector3(GLfloat x = 0.0f, GLfloat y = 0.0f, GLfloat z = 0.0f) { this->x = x; this->y = y; this->z = z; }
+		vector3(GLfloat x = 0, GLfloat y = 0, GLfloat z = 0) : x(x), y(y), z(z) { }
+		vector3(vector2 const& v, GLfloat z = 0) : x(v.x), y(v.y), z(z) { }
+		vector3(vector4 const& v);
 		
 		inline GLfloat operator[](int i) const { return (&x)[i]; }
 		inline GLfloat& operator[](int i) { return (&x)[i]; }
@@ -99,7 +103,8 @@ namespace arciem {
 	struct vector4 {
 		GLfloat x, y, z, w;
 
-		vector4(GLfloat x = 0.0f, GLfloat y = 0.0f, GLfloat z = 0.0f, GLfloat w = 0.0f) { this->x = x; this->y = y; this->z = z; this->w = w; }
+		vector4(GLfloat x = 0, GLfloat y = 0, GLfloat z = 0, GLfloat w = 0) : x(x), y(y), z(z), w(w) { }
+		vector4(vector3 const& v, GLfloat w = 0) : x(v.x), y(v.y), z(v.z), w(w) { }
 		
 		inline GLfloat operator[](int i) const { return (&x)[i]; }
 		inline GLfloat& operator[](int i) { return (&x)[i]; }
@@ -132,8 +137,8 @@ namespace arciem {
 	struct color {
 		GLfloat r, g, b, a;
 		
-		color(GLfloat r = 0.0f, GLfloat g = 0.0f, GLfloat b = 0.0f, GLfloat a = 0.0f) { this->r = r; this->g = g; this->b = b; this->a = a; }
-		color(vector4 const& v) { r = v.x; g = v.y; b = v.z; a = v.w; }
+		color(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 0) : r(r), g(g), b(b), a(a) { }
+		color(vector4 const& v) :r(v.x), g(v.y), b(v.z), a(v.w) { }
 		
 		inline GLfloat operator[](int i) const { return (&r)[i]; }
 		inline GLfloat& operator[](int i) { return (&r)[i]; }
@@ -189,11 +194,48 @@ namespace arciem {
 		static const matrix4x4 identity;
 
 		matrix4x4 operator*(matrix4x4 const& b) const;
+		vector4 operator*(vector4 const& v) const;
+		GLfloat determinant() const;
+		matrix4x4 inverse() const;
+		matrix4x4 transpose() const;
 
 		void look_at(vector3 const& eye, vector3 const& center, vector3 const& upvec);
 		void load_perspective(float fovRadians, float aspect, float zNear, float zFar);
 		void load_ortho(float left, float right, float bottom, float top, float near, float far);
 	};
+	
+	struct matrix3x3 {
+		GLfloat a, b, c,  d, e, f,  g, h, i;
+		
+		matrix3x3(void) { }
+		matrix3x3(GLfloat a, GLfloat b, GLfloat c,
+				  GLfloat d, GLfloat e, GLfloat f,
+				  GLfloat g, GLfloat h, GLfloat i);
+
+		inline GLfloat operator[](int i) const { return (&a)[i]; }
+		inline GLfloat& operator[](int i) { return (&a)[i]; }
+
+		void load_zero() { *this = zero; }
+		void load_identity() { *this = identity; }
+		void load_scale(vector2 const& v);
+		void load_translation(vector2 const& v);
+		void load_rotation(GLfloat radians);
+
+		void translate(vector2 const& v);
+
+		static const matrix3x3 zero;
+		static const matrix3x3 identity;
+
+		matrix3x3 operator*(matrix3x3 const& b) const;
+		vector3 operator*(vector3 const& v) const;
+		GLfloat determinant() const;
+		matrix3x3 inverse() const;
+		matrix3x3 transpose() const;
+
+	};
+	
+	matrix3x3 upper_left_submatrix(matrix4x4 const& m);
+	matrix3x3 normal_matrix(matrix4x4 const& modelView);
 
 } // namespace
 
