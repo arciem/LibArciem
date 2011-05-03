@@ -23,6 +23,9 @@
 
 namespace arciem {
 	
+	inline GLfloat radians_with_degrees(GLfloat d) { return d / 180.0f * M_PI; }
+	inline GLfloat degrees_with_radians(GLfloat r) { return r / M_PI * 180.0f; }
+	
 	struct vector2 {
 		GLfloat x, y;
 		

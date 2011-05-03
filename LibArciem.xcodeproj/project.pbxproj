@@ -49,6 +49,14 @@
 		03790C5A1368ED8800490499 /* GLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03790C571368ED8700490499 /* GLUtils.h */; };
 		03790C5B1368ED8800490499 /* GLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C581368ED8700490499 /* GLUtils.m */; };
 		03790C5C1368ED8800490499 /* GLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 03790C581368ED8700490499 /* GLUtils.m */; };
+		0380B4FE136F724D004EEE9E /* CView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0380B4FC136F724D004EEE9E /* CView.h */; };
+		0380B4FF136F724D004EEE9E /* CView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0380B4FC136F724D004EEE9E /* CView.h */; };
+		0380B500136F724D004EEE9E /* CView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0380B4FD136F724D004EEE9E /* CView.m */; };
+		0380B501136F724D004EEE9E /* CView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0380B4FD136F724D004EEE9E /* CView.m */; };
+		0380B511136F7958004EEE9E /* CTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0380B50F136F7958004EEE9E /* CTableViewCell.h */; };
+		0380B512136F7958004EEE9E /* CTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0380B50F136F7958004EEE9E /* CTableViewCell.h */; };
+		0380B513136F7958004EEE9E /* CTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0380B510136F7958004EEE9E /* CTableViewCell.mm */; };
+		0380B514136F7958004EEE9E /* CTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0380B510136F7958004EEE9E /* CTableViewCell.mm */; };
 		0387902B1366527F008DF901 /* CQuantity.h in Headers */ = {isa = PBXBuildFile; fileRef = 038790291366527F008DF901 /* CQuantity.h */; };
 		0387902C1366527F008DF901 /* CQuantity.h in Headers */ = {isa = PBXBuildFile; fileRef = 038790291366527F008DF901 /* CQuantity.h */; };
 		0387902D1366527F008DF901 /* CQuantity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0387902A1366527F008DF901 /* CQuantity.m */; };
@@ -111,6 +119,10 @@
 		03790C501368D67F00490499 /* CGLRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGLRenderer.h; path = iOS/arciem/CGLRenderer.h; sourceTree = SOURCE_ROOT; };
 		03790C571368ED8700490499 /* GLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GLUtils.h; path = iOS/arciem/GLUtils.h; sourceTree = SOURCE_ROOT; };
 		03790C581368ED8700490499 /* GLUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GLUtils.m; path = iOS/arciem/GLUtils.m; sourceTree = SOURCE_ROOT; };
+		0380B4FC136F724D004EEE9E /* CView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CView.h; path = iOS/arciem/CView.h; sourceTree = SOURCE_ROOT; };
+		0380B4FD136F724D004EEE9E /* CView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CView.m; path = iOS/arciem/CView.m; sourceTree = SOURCE_ROOT; };
+		0380B50F136F7958004EEE9E /* CTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTableViewCell.h; path = iOS/arciem/CTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		0380B510136F7958004EEE9E /* CTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CTableViewCell.mm; path = iOS/arciem/CTableViewCell.mm; sourceTree = SOURCE_ROOT; };
 		038790291366527F008DF901 /* CQuantity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CQuantity.h; path = ObjC/arciem/CQuantity.h; sourceTree = SOURCE_ROOT; };
 		0387902A1366527F008DF901 /* CQuantity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CQuantity.m; path = ObjC/arciem/CQuantity.m; sourceTree = SOURCE_ROOT; };
 		03BF4767135CDA22001507D6 /* NibUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NibUtils.h; path = iOS/arciem/NibUtils.h; sourceTree = SOURCE_ROOT; };
@@ -233,6 +245,10 @@
 				03790C4F1368D67F00490499 /* CGLView.m */,
 				03790C571368ED8700490499 /* GLUtils.h */,
 				03790C581368ED8700490499 /* GLUtils.m */,
+				0380B4FC136F724D004EEE9E /* CView.h */,
+				0380B4FD136F724D004EEE9E /* CView.m */,
+				0380B50F136F7958004EEE9E /* CTableViewCell.h */,
+				0380B510136F7958004EEE9E /* CTableViewCell.mm */,
 				03BF47D9135D084A001507D6 /* RestKit */,
 				03C67B401358D9F8007D817F /* Supporting Files */,
 			);
@@ -275,6 +291,8 @@
 				03790C551368D68000490499 /* CGLRenderer.h in Headers */,
 				03790C591368ED8800490499 /* GLUtils.h in Headers */,
 				0329C6AC136B4BC100ADD84D /* gl_utils.hpp in Headers */,
+				0380B4FE136F724D004EEE9E /* CView.h in Headers */,
+				0380B511136F7958004EEE9E /* CTableViewCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +321,8 @@
 				03790C561368D68000490499 /* CGLRenderer.h in Headers */,
 				03790C5A1368ED8800490499 /* GLUtils.h in Headers */,
 				0329C6AD136B4BC100ADD84D /* gl_utils.hpp in Headers */,
+				0380B4FF136F724D004EEE9E /* CView.h in Headers */,
+				0380B512136F7958004EEE9E /* CTableViewCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,6 +409,8 @@
 				03790C531368D68000490499 /* CGLView.m in Sources */,
 				03790C5B1368ED8800490499 /* GLUtils.m in Sources */,
 				0329C6AA136B4BC100ADD84D /* gl_utils.cpp in Sources */,
+				0380B500136F724D004EEE9E /* CView.m in Sources */,
+				0380B513136F7958004EEE9E /* CTableViewCell.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,6 +436,8 @@
 				03790C541368D68000490499 /* CGLView.m in Sources */,
 				03790C5C1368ED8800490499 /* GLUtils.m in Sources */,
 				0329C6AB136B4BC100ADD84D /* gl_utils.cpp in Sources */,
+				0380B501136F724D004EEE9E /* CView.m in Sources */,
+				0380B514136F7958004EEE9E /* CTableViewCell.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
