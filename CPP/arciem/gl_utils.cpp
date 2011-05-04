@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #include "gl_utils.hpp"
+#include "math_utils.hpp"
 
 namespace arciem {
 
@@ -33,11 +34,20 @@ namespace arciem {
 
 	vector3::vector3(vector4 const& v) : x(v.x), y(v.y), z(v.z) { }
 
-	vector3 vector3::cross(vector3 const& p1, vector3 const& p2)
+	vector3 vector3::cross(vector3 const& p1, vector3 const& p2) const
 	{
 		vector3 v1 = p1 - *this;
 		vector3 v2 = p2 - *this;
 		return v1.cross(v2);
+	}
+
+	vector3 vector3::lerp(vector3 const& v, GLfloat t) const
+	{
+		return vector3(
+		   denormalize(t, x, v.x),
+		   denormalize(t, y, v.y),
+		   denormalize(t, z, v.z)
+		);
 	}
 
 	const vector4 vector4::zero(0, 0, 0, 0);

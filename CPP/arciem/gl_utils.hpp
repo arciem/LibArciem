@@ -23,8 +23,8 @@
 
 namespace arciem {
 	
-	inline GLfloat radians_with_degrees(GLfloat d) { return d / 180.0f * M_PI; }
-	inline GLfloat degrees_with_radians(GLfloat r) { return r / M_PI * 180.0f; }
+	inline GLfloat to_radians(GLfloat d) { return d / 180.0f * M_PI; }
+	inline GLfloat to_degrees(GLfloat r) { return r / M_PI * 180.0f; }
 	
 	struct vector2 {
 		GLfloat x, y;
@@ -94,7 +94,8 @@ namespace arciem {
 		GLfloat distance(vector3 const& v) const { return (*this - v).magnitude(); }
 		GLfloat dot(vector3 const& v) const { return x * v.x + y * v.y + z * v.z; }
 		vector3 cross(vector3 const& v) const { return vector3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x); }
-		vector3 cross(vector3 const& p1, vector3 const& p2);
+		vector3 cross(vector3 const& p1, vector3 const& p2) const;
+		vector3 lerp(vector3 const& v, GLfloat t) const;
 
 		static const vector3 zero;
 		static const vector3 one;
