@@ -19,14 +19,12 @@
 
 #import "RKClient+Blocks.h"
 #import "ObjectUtils.h"
-#import "CNetworkActivity.h"
 
 @interface RKRequestCall : NSObject<RKRequestDelegate>
 
 @property(nonatomic, copy) void (^success)(RKResponse*);
 @property(nonatomic, copy) void (^failure)(NSError*);
 @property(nonatomic, copy) void (^finally)(void);
-@property(nonatomic, retain) CNetworkActivity* activity;
 
 - (id)initWithSuccess:(void (^)(RKResponse*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
@@ -40,7 +38,6 @@
 @synthesize success = success_;
 @synthesize failure = failure_;
 @synthesize finally = finally_;
-@synthesize activity = activity_;
 
 - (id)initWithSuccess:(void (^)(RKResponse*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
@@ -62,16 +59,14 @@
 - (void)startCall
 {
 	[self retain];
-	self.activity = [CNetworkActivity activityWithIndicator:YES];
 }
 
 - (void)endCall
 {
-	self.activity = nil;
 	[self release];
 }
 
-- (void)endCallWithResult:(RKResponse*)response
+- (void)endCallWithResponse:(RKResponse*)response
 {
 	if(self.success != nil) {
 		self.success(response);
@@ -93,20 +88,16 @@
 	[self endCall];
 }
 
+#pragma mark RKRequestDelegate
+
 - (void)request:(RKRequest*)request didLoadResponse:(RKResponse*)response
 {
-	if(self.success != nil) {
-		self.success(response);
-	}
-	[self endCall];
+	[self endCallWithResponse:response];
 }
 
 - (void)request:(RKRequest*)request didFailLoadWithError:(NSError*)error
 {
-	if(self.failure != nil) {
-		self.failure(error);
-	}
-	[self endCall];
+	[self endCallWithError:error];
 }
 
 - (void)requestDidStartLoad:(RKRequest*)request
@@ -115,7 +106,6 @@
 
 - (void)request:(RKRequest*)request didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 {
-	
 }
 
 @end

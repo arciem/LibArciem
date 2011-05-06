@@ -102,6 +102,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 - (void)dealloc
 {
 	@synchronized([self class]) {
+		CLogDebug(@"NETWORK_ACTIVITY", @"%@ dealloc", self);
 		for(NSValue* v in sActivities) {
 			if([v nonretainedObjectValue] == self) {
 				[sActivities removeObject:v];
