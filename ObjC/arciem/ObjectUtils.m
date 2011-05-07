@@ -31,6 +31,11 @@ id Denull(id a)
 	return a == [NSNull null] ? nil : a;
 }
 
+id Ennull(id a)
+{
+	return a == nil ? [NSNull null] : a;
+}
+
 BOOL Same(id a, id b)
 {
 	if(a == b) return YES;

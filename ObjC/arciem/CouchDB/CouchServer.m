@@ -17,14 +17,10 @@
  *******************************************************************************/
 
 #import "CouchServer.h"
+#import "CouchError.h"
 #import "ObjectUtils.h"
 #import "RKClient+Blocks.h"
 #import "CNetworkActivity.h"
-
-NSString* const CouchErrorDomain = @"CouchErrorDomain";
-NSString* const CouchErrorName = @"CouchErrorName";
-NSString* const CouchErrorReason = @"CouchErrorReason";
-NSInteger const CouchErrorCode = 1;
 
 @interface CouchServer ()
 
@@ -115,7 +111,7 @@ NSInteger const CouchErrorCode = 1;
 									  errorName, CouchErrorName,
 									  errorReason, CouchErrorReason,
 									  nil];
-			error = [NSError errorWithDomain:CouchErrorDomain code:CouchErrorCode userInfo:userInfo];
+			error = [NSError errorWithDomain:CouchErrorDomain code:response.statusCode userInfo:userInfo];
 		}
 	}
 	

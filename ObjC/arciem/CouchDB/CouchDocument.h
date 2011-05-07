@@ -21,17 +21,19 @@
 
 @interface CouchDocument : NSObject<RKRequestSerializable>
 
+@property(nonatomic, retain) NSMutableDictionary* dict;
+@property(nonatomic, retain) NSString* _id;
+@property(nonatomic, retain) NSString* _rev;
+
 - (id)initWithMutableDictionary:(NSMutableDictionary*)dict; // designated initializer
 - (id)init;
 
 + (CouchDocument*)documentWithMutableDictionary:(NSMutableDictionary*)dict;
 + (CouchDocument*)document;
 
+- (void)removeValueForKey:(NSString*)key;
+
 - (NSString*)HTTPHeaderValueForContentType;
 - (NSData*)HTTPBody;
-
-@property(nonatomic, retain) NSMutableDictionary* dict;
-@property(nonatomic, copy) NSString* _id;
-@property(nonatomic, copy) NSString* _rev;
 
 @end

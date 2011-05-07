@@ -19,11 +19,6 @@
 #import <Foundation/Foundation.h>
 #import "RKRequestSerializable.h"
 
-extern NSString* const CouchErrorDomain;
-extern NSString* const CouchErrorName;
-extern NSString* const CouchErrorReason;
-extern NSInteger const CouchErrorCode;
-
 @interface CouchServer : NSObject
 
 - (id)initWithBaseURL:(NSURL*)baseURL;

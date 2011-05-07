@@ -18,4 +18,23 @@
 
 #import <Foundation/Foundation.h>
 
-void CouchCheckDatabaseName(NSString* databaseName);
+extern NSString* const CouchErrorDomain;
+extern NSString* const CouchErrorName;
+extern NSString* const CouchErrorReason;
+
+@interface NSError (CouchError)
+
+@property(nonatomic, readonly) BOOL serverGone;
+
+@property(nonatomic, readonly) BOOL isCouchError;
+@property(nonatomic, readonly) NSString* errorName;
+@property(nonatomic, readonly) NSString* errorReason;
+
+@property(nonatomic, readonly) BOOL notFound;
+@property(nonatomic, readonly) BOOL missing;
+@property(nonatomic, readonly) BOOL deleted;
+@property(nonatomic, readonly) BOOL noDBFile;
+
+@property(nonatomic, readonly) BOOL conflict;
+
+@end

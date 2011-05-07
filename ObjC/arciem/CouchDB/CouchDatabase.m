@@ -47,6 +47,21 @@
 	[super dealloc];
 }
 
+- (void)infoWithSuccess:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
+{
+	CouchCheckDatabaseName(self.name);
+	
+	NSString* path = [NSString stringWithFormat:@"%@/", self.name];
+	[self.server getPath:path success:^(id result) {
+		success(result);
+	} failure:failure finally:finally];
+}
+
+- (void)infoWithSuccess:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure
+{
+	[self infoWithSuccess:success failure:failure finally:nil];
+}
+
 - (void)createWithSuccess:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
 	CouchCheckDatabaseName(self.name);

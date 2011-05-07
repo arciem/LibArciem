@@ -20,6 +20,7 @@
 
 BOOL IsNull(id a);
 id Denull(id a);
+id Ennull(id a);
 BOOL Same(id a, id b);
 BOOL Different(id a, id b);
 

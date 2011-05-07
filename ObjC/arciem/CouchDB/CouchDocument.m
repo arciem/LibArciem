@@ -23,8 +23,6 @@
 @implementation CouchDocument
 
 @synthesize dict = dict_;
-@dynamic _id;
-@dynamic _rev;
 
 - (id)initWithMutableDictionary:(NSMutableDictionary*)dict
 {
@@ -58,36 +56,38 @@
 
 - (NSString*)_id
 {
-	return [[[self.dict objectForKey:@"_id"] copy] autorelease];
+	return [self valueForUndefinedKey:@"_id"];
 }
 
 - (void)set_id:(NSString*)_id
 {
-	[self.dict setObject:[[_id mutableCopy] autorelease] forKey:@"_id"];
+	[self setValue:_id forUndefinedKey:@"_id"];
 }
 
 - (NSString*)_rev
 {
-	return [[[self.dict objectForKey:@"_rev"] copy] autorelease];
+	return [self valueForUndefinedKey:@"_rev"];
 }
 
 - (void)set_rev:(NSString*)_rev
 {
-	[self.dict setObject:[[_rev mutableCopy] autorelease] forKey:@"_rev"];
+	[self setValue:_rev forUndefinedKey:@"_rev"];
 }
 
 - (id)valueForUndefinedKey:(NSString*)key
 {
-	id value = [self.dict objectForKey:key];
-	if(value == nil) {
-		[super valueForUndefinedKey:key];
-	}
-	return value;
+	return [self.dict objectForKey:key];
 }
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
+	value = Ennull(value);
 	[self.dict setObject:value forKey:key];
+}
+
+- (void)removeValueForKey:(NSString*)key
+{
+	[self.dict removeObjectForKey:key];
 }
 
 - (NSString*)HTTPHeaderValueForContentType

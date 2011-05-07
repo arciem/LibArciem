@@ -27,6 +27,9 @@
 - (id)initWithName:(NSString*)name server:(CouchServer*)server;
 + (CouchDatabase*)databaseWithName:(NSString*)name server:(CouchServer*)server;
 
+- (void)infoWithSuccess:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure;
+- (void)infoWithSuccess:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
+
 - (void)createWithSuccess:(void(^)(void))success failure:(void (^)(NSError*))failure;
 - (void)createWithSuccess:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 

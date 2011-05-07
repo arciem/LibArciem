@@ -16,6 +16,7 @@
  
  *******************************************************************************/
 
+#import "CouchError.h"
 #import "CouchServer.h"
 #import "CouchDocument.h"
 #import "CouchDatabase.h"
