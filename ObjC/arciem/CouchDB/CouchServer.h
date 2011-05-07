@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import <Foundation/Foundation.h>
+#import "RKRequestSerializable.h"
 
 extern NSString* const CouchErrorDomain;
 extern NSString* const CouchErrorName;
@@ -41,7 +42,8 @@ extern NSInteger const CouchErrorCode;
 - (void)allDatabaseNamesWithSuccess:(void(^)(NSSet*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
 - (void)getPath:(NSString*)resourcePath success:(void(^)(id))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
-- (void)putPath:(NSString*)resourcePath success:(void(^)(id))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
+- (void)putPath:(NSString*)resourcePath params:(NSObject<RKRequestSerializable>*)params success:(void(^)(id))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
+- (void)postPath:(NSString*)resourcePath params:(NSObject<RKRequestSerializable>*)params success:(void(^)(id))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 - (void)deletePath:(NSString*)resourcePath success:(void(^)(id))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
 @end

@@ -17,15 +17,21 @@
  *******************************************************************************/
 
 #import <Foundation/Foundation.h>
+#import "RKRequestSerializable.h"
 
+@interface CouchDocument : NSObject<RKRequestSerializable>
 
-@interface CouchDocument : NSObject
+- (id)initWithMutableDictionary:(NSMutableDictionary*)dict; // designated initializer
+- (id)init;
 
-- (id)initWithMutableDictionary:(NSMutableDictionary*)dict;
 + (CouchDocument*)documentWithMutableDictionary:(NSMutableDictionary*)dict;
++ (CouchDocument*)document;
+
+- (NSString*)HTTPHeaderValueForContentType;
+- (NSData*)HTTPBody;
 
 @property(nonatomic, retain) NSMutableDictionary* dict;
-@property(nonatomic, copy) NSMutableString* _id;
-@property(nonatomic, copy) NSMutableString* _rev;
+@property(nonatomic, copy) NSString* _id;
+@property(nonatomic, copy) NSString* _rev;
 
 @end

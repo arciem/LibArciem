@@ -17,5 +17,5 @@
  *******************************************************************************/
 
 #import "CouchServer.h"
-#import "CouchDatabase.h"
 #import "CouchDocument.h"
+#import "CouchDatabase.h"

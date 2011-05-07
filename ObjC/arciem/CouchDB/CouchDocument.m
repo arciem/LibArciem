@@ -18,6 +18,7 @@
 
 #import "CouchDocument.h"
 #import "ObjectUtils.h"
+#import "JSON.h"
 
 @implementation CouchDocument
 
@@ -34,9 +35,19 @@
 	return self;
 }
 
+- (id)init
+{
+	return [self initWithMutableDictionary:[NSMutableDictionary dictionary]];
+}
+
 + (CouchDocument*)documentWithMutableDictionary:(NSMutableDictionary*)dict
 {
 	return [[[self alloc] initWithMutableDictionary:dict] autorelease];
+}
+
++ (CouchDocument*)document
+{
+	return [[[self alloc] init] autorelease];
 }
 
 - (void)dealloc
@@ -45,9 +56,9 @@
 	[super dealloc];
 }
 
-- (NSMutableString*)_id
+- (NSString*)_id
 {
-	return [self.dict objectForKey:@"_id"];
+	return [[[self.dict objectForKey:@"_id"] copy] autorelease];
 }
 
 - (void)set_id:(NSString*)_id
@@ -55,9 +66,9 @@
 	[self.dict setObject:[[_id mutableCopy] autorelease] forKey:@"_id"];
 }
 
-- (NSMutableString*)_rev
+- (NSString*)_rev
 {
-	return [self.dict objectForKey:@"_rev"];
+	return [[[self.dict objectForKey:@"_rev"] copy] autorelease];
 }
 
 - (void)set_rev:(NSString*)_rev
@@ -77,6 +88,18 @@
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
 	[self.dict setObject:value forKey:key];
+}
+
+- (NSString*)HTTPHeaderValueForContentType
+{
+	return @"application/json";
+}
+
+- (NSData*)HTTPBody
+{
+	NSString* str = [self.dict JSONRepresentation];
+	NSData* data = [str dataUsingEncoding:NSUTF8StringEncoding];
+	return data;
 }
 
 @end

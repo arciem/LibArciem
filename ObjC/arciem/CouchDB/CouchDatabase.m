@@ -19,6 +19,7 @@
 #import "CouchDatabase.h"
 #import "ObjectUtils.h"
 #import "CouchUtils.h"
+#import "StringUtils.h"
 
 @implementation CouchDatabase
 
@@ -50,11 +51,9 @@
 {
 	CouchCheckDatabaseName(self.name);
 	
-	[self.server putPath:self.name success:^(id result) {
+	[self.server putPath:self.name params:nil success:^(id result) {
 		success();
-	} failure:^(NSError* error) {
-		failure(error);
-	} finally:finally];
+	} failure:failure finally:finally];
 }
 
 - (void)createWithSuccess:(void(^)(void))success failure:(void (^)(NSError*))failure
@@ -68,9 +67,7 @@
 	
 	[self.server deletePath:self.name success:^(id result) {
 		success();
-	} failure:^(NSError* error) {
-		failure(error);
-	} finally:finally];
+	} failure:failure finally:finally];
 }
 
 - (void)deleteWithSuccess:(void(^)(void))success failure:(void (^)(NSError*))failure
@@ -83,14 +80,51 @@
 	NSString* path = [NSString stringWithFormat:@"%@/%@", self.name, docID];
 	[self.server getPath:path success:^(id result) {
 		success([CouchDocument documentWithMutableDictionary:(NSMutableDictionary*)result]);
-	} failure:^(NSError* error) {
-		failure(error);
-	} finally:finally];
+	} failure:failure finally:finally];
 }
 
 - (void)documentWithID:(NSString*)docID success:(void(^)(CouchDocument*))success failure:(void (^)(NSError*))failure
 {
 	[self documentWithID:docID success:success failure:failure finally:nil];
+}
+
+- (void)saveDocument:(CouchDocument*)doc success:(void(^)(CouchDocument*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
+{
+	if(IsEmptyString(doc._id)) {
+		[self.server postPath:self.name params:doc success:^(id result) {
+			doc._id = [result valueForKey:@"id"];
+			doc._rev = [result valueForKey:@"rev"];
+			success(doc);
+		} failure:^(NSError* error) {
+			failure(error);
+		} finally:finally];
+	} else {
+		NSString* path = [NSString stringWithFormat:@"%@/%@", self.name, doc._id];
+		[self.server putPath:path params:doc success:^(id result) {
+			doc._rev = [result valueForKey:@"rev"];
+			success(doc);
+		} failure:failure finally:finally];
+	}
+}
+
+- (void)saveDocument:(CouchDocument*)doc success:(void(^)(CouchDocument*))success failure:(void (^)(NSError*))failure
+{
+	[self saveDocument:doc success:success failure:failure finally:nil];
+}
+
+- (void)deleteDocument:(CouchDocument*)doc success:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
+{
+	if(!IsEmptyString(doc._id) && !IsEmptyString(doc._rev)) {
+		NSString* path = [NSString stringWithFormat:@"%@/%@?rev=%@", self.name, doc._id, doc._rev];
+		[self.server deletePath:path success:^(id result) {
+			success();
+		} failure:failure finally:finally];
+	}
+}
+
+- (void)deleteDocument:(CouchDocument*)doc success:(void(^)(void))success failure:(void (^)(NSError*))failure
+{
+	[self deleteDocument:doc success:success failure:failure finally:nil];
 }
 
 @end

@@ -144,11 +144,28 @@ NSInteger const CouchErrorCode = 1;
 	}];
 }
 
-- (void)putPath:(NSString*)resourcePath success:(void(^)(id))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
+- (void)putPath:(NSString*)resourcePath params:(NSObject<RKRequestSerializable>*)params success:(void(^)(id))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
 	CNetworkActivity* activity = [[CNetworkActivity activityWithIndicator:self.showsIndicator] retain];
 	
-	[self.client putPath:resourcePath params:nil success:^(RKResponse* response) {
+	[self.client putPath:resourcePath params:params success:^(RKResponse* response) {
+		id result = [self resultFromResponse:response withFailure:failure];
+		if(result != nil) {
+			success(result);
+		}
+	} failure:^(NSError* error) {
+		failure(error);
+	} finally:^{
+		if(finally != nil) finally();
+		[activity release];
+	}];
+}
+
+- (void)postPath:(NSString*)resourcePath params:(NSObject<RKRequestSerializable>*)params success:(void(^)(id))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
+{
+	CNetworkActivity* activity = [[CNetworkActivity activityWithIndicator:self.showsIndicator] retain];
+	
+	[self.client postPath:resourcePath params:params success:^(RKResponse* response) {
 		id result = [self resultFromResponse:response withFailure:failure];
 		if(result != nil) {
 			success(result);
