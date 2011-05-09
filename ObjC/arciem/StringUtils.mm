@@ -660,3 +660,17 @@ NSString* StringByRemovingWhitespaceAndNewLines(NSString* string)
 {
 	return [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];	
 }
+
+NSString* StringWithURLEscapedParamaters(NSDictionary* params)
+{
+	NSArray* keyStrings = [params allKeys];
+	NSMutableArray* outParams = [NSMutableArray array];
+	for(NSString* keyString in keyStrings) {
+		id value = [params valueForKey:keyString];
+		NSString* valueString = [value description];
+		NSString* escapedValueString = [valueString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		NSString* paramString = [NSString stringWithFormat:@"%@=%@", keyString, escapedValueString];
+		[outParams addObject:paramString];
+	}
+	return [NSString stringWithComponents:outParams separator:@"&"];
+}

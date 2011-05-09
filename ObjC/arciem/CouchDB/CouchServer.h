@@ -33,6 +33,7 @@
 - (void)versionWithSuccess:(void(^)(NSString*))success failure:(void (^)(NSError*))failure;
 - (void)versionWithSuccess:(void(^)(NSString*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
+// http://wiki.apache.org/couchdb/HTTP_database_API
 - (void)allDatabaseNamesWithSuccess:(void(^)(NSSet*))success failure:(void (^)(NSError*))failure;
 - (void)allDatabaseNamesWithSuccess:(void(^)(NSSet*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 

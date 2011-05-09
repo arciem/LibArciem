@@ -130,7 +130,9 @@
 - (void)deleteDocument:(CouchDocument*)doc success:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
 	if(!IsEmptyString(doc._id) && !IsEmptyString(doc._rev)) {
-		NSString* path = [NSString stringWithFormat:@"%@/%@?rev=%@", self.name, doc._id, doc._rev];
+		NSDictionary* params = [NSDictionary dictionaryWithObject:doc._rev forKey:@"rev"];
+		NSString* paramsString = StringWithURLEscapedParamaters(params);
+		NSString* path = [NSString stringWithFormat:@"%@/%@?%@", self.name, doc._id, paramsString];
 		[self.server deletePath:path success:^(id result) {
 			success();
 		} failure:failure finally:finally];
@@ -140,6 +142,100 @@
 - (void)deleteDocument:(CouchDocument*)doc success:(void(^)(void))success failure:(void (^)(NSError*))failure
 {
 	[self deleteDocument:doc success:success failure:failure finally:nil];
+}
+
+- (void)replicateToDatabase:(CouchDatabase*)target options:(CouchReplicationOptions)options filter:(NSString*)filter docIDs:(NSArray*)docIDs proxy:(NSURL*)proxy success:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
+{
+	NSURL* sourceURL = [NSURL URLWithString:self.name relativeToURL:self.server.baseURL];
+	NSURL* targetURL = [NSURL URLWithString:target.name relativeToURL:target.server.baseURL];
+
+	CouchDocument* paramsDoc = [CouchDocument document];
+	[paramsDoc setValue:sourceURL.description forKey:@"source"];
+	[paramsDoc setValue:targetURL.description forKey:@"target"];
+	
+	if(options & CouchReplicateCreateTarget) {
+		[paramsDoc setValue:[NSNumber numberWithBool:YES] forKey:@"create_target"];
+	}
+	
+	if(options & CouchReplicateCancel) {
+		[paramsDoc setValue:[NSNumber numberWithBool:YES] forKey:@"cancel"];
+	}
+	
+	if(options & CouchReplicationContinuous) {
+		[paramsDoc setValue:[NSNumber numberWithBool:YES] forKey:@"continuous"];
+	}
+	
+	if(!IsEmptyString(filter)) {
+		[paramsDoc setValue:filter forKey:@"filter"];
+	}
+	
+	if(!IsEmpty(docIDs)) {
+		[paramsDoc setValue:docIDs forKey:@"doc_ids"];
+	}
+	
+	if(!IsNull(proxy)) {
+		[paramsDoc setValue:proxy.description forKey:@"proxy"];
+	}
+	
+	[self.server postPath:@"_replicate" params:paramsDoc success:^(id result) {
+		success();
+	} failure:failure finally:finally];
+}
+
+- (void)replicateToDatabase:(CouchDatabase*)target options:(CouchReplicationOptions)options filter:(NSString*)filter docIDs:(NSArray*)docIDs proxy:(NSURL*)proxy success:(void(^)(void))success failure:(void (^)(NSError*))failure
+{
+	[self replicateToDatabase:target options:options filter:filter docIDs:docIDs proxy:proxy success:success failure:failure finally:nil];
+}
+
+- (void)query:(NSString*)queryString options:(CouchViewOptions)options success:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
+{
+	NSMutableDictionary* paramsDict = [NSMutableDictionary dictionary];
+
+	if(options & CouchViewDescending) {
+		[paramsDict setObject:[NSNumber numberWithBool:YES] forKey:@"descending"];
+	}
+	
+	if(options & CouchViewIncludeDocs) {
+		[paramsDict setObject:[NSNumber numberWithBool:YES] forKey:@"include_docs"];
+	}
+	
+	if(options & CouchViewExcludeEndKey) {
+		[paramsDict setObject:[NSNumber numberWithBool:NO] forKey:@"inclusive_end"];
+	}
+	
+	if(options & CouchViewDisableReduce) {
+		[paramsDict setObject:[NSNumber numberWithBool:NO] forKey:@"reduce"];
+	}
+	
+	NSString* paramsString = @"";
+	if(paramsDict.count > 0) {
+		paramsString = [NSString stringWithFormat:@"?%@", StringWithURLEscapedParamaters(paramsDict)];
+	}
+	NSString* path = [NSString stringWithFormat:@"%@/%@%@", self.name, queryString, paramsString];
+	[self.server getPath:path success:^(id result) {
+		success(result);
+	} failure:failure finally:finally];
+}
+
+- (void)queryAllDocumentsWithOptions:(CouchViewOptions)options success:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
+{
+	[self query:@"_all_docs" options:options success:success failure:failure finally:finally];
+}
+
+- (void)queryAllDocumentsWithOptions:(CouchViewOptions)options success:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure
+{
+	[self queryAllDocumentsWithOptions:options success:success failure:failure finally:nil];
+}
+
+- (void)queryDesignDocument:(NSString*)designDocName view:(NSString*)viewName options:(CouchViewOptions)options success:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
+{
+	NSString* queryString = [NSString stringWithFormat:@"_design/%@/_view/%@", designDocName, viewName];
+	[self query:queryString options:options success:success failure:failure finally:finally];
+}
+
+- (void)queryDesignDocument:(NSString*)designDocName view:(NSString*)viewName options:(CouchViewOptions)options success:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure
+{
+	[self queryDesignDocument:designDocName view:viewName options:options success:success failure:failure finally:nil];
 }
 
 @end

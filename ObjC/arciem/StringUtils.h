@@ -73,6 +73,7 @@ NSString* StringByEscapingQuotesAndBackslashes(NSString* s);
 NSString* StringBySurroundingStringWithQuotes(NSString* s, BOOL onlyIfNecessary);
 NSString* StringByLimitingLengthOfString(NSString* s, NSUInteger maxLength, BOOL addEllipsis);
 NSString* StringByRemovingWhitespaceAndNewLines(NSString* string);
+NSString* StringWithURLEscapedParamaters(NSDictionary* params);
 
 @interface NSString (CUString)
 

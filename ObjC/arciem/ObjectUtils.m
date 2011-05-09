@@ -50,6 +50,12 @@ BOOL Different(id a, id b)
 	return ![a isEqual:b];
 }
 
+// For container classes that implement -count, e.g. NSArray, NSDictionary, NSSet, NSIndexSet.
+BOOL IsEmpty(id a)
+{
+	return [Denull(a) count] == 0;
+}
+
 @implementation NSObject (ObjectUtils)
 
 - (NSString*)formatKey:(NSString*)key value:(id)value compact:(BOOL)compact
