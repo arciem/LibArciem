@@ -61,7 +61,8 @@ NSString* StringByTruncatingString(NSString* string, unsigned maxCharacters);
 NSString* StringByDuplicatingCharacter(unichar character, unsigned length);
 NSString* BulletStringForString(NSString* string);
 
-NSString* StringFromBool(BOOL b);
+NSString* StringFromBool(BOOL b, BOOL cStyle = NO);
+NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle = NO);
 NSString* StringByUnescapingEntitiesInString(NSString* s);
 NSString* StringByUnescapingMinimalEntitiesInUncleanString(NSString* s);
 NSString* StringByJoiningNonemptyStringsWithString(NSArray* strings, NSString* separator);

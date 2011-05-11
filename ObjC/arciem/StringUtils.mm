@@ -444,11 +444,28 @@ string ToStd(NSString* s)
 
 @end
 
-NSString* StringFromBool(BOOL b)
+NSString* StringFromBool(BOOL b, BOOL cStyle)
 {
-	return b ? @"YES" : @"NO";
+	if(cStyle) {
+		return b ? @"true" : @"false";
+	} else {
+		return b ? @"YES" : @"NO";
+	}
 }
 
+NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle)
+{
+	NSString* str;
+	
+	if(obj == (id)kCFBooleanTrue)
+		str = cStyle ? @"true" : @"YES";
+	else if(obj == (id)kCFBooleanFalse)
+		str = cStyle ? @"false" : @"NO";
+	else 
+		str = [obj description];
+	
+	return str;
+}
 
 @interface CEntitiesConverter : NSObject<NSXMLParserDelegate>
 
@@ -667,7 +684,7 @@ NSString* StringWithURLEscapedParamaters(NSDictionary* params)
 	NSMutableArray* outParams = [NSMutableArray array];
 	for(NSString* keyString in keyStrings) {
 		id value = [params valueForKey:keyString];
-		NSString* valueString = [value description];
+		NSString* valueString = StringFromObjectConvertingBool(value, YES);
 		NSString* escapedValueString = [valueString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 		NSString* paramString = [NSString stringWithFormat:@"%@=%@", keyString, escapedValueString];
 		[outParams addObject:paramString];

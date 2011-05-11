@@ -24,6 +24,8 @@
 @property(nonatomic, retain) NSMutableDictionary* dict;
 @property(nonatomic, retain) NSString* _id;
 @property(nonatomic, retain) NSString* _rev;
+@property(nonatomic, retain) NSMutableDictionary* _attachments;
+@property(nonatomic) BOOL _deleted;
 
 - (id)initWithMutableDictionary:(NSMutableDictionary*)dict; // designated initializer
 - (id)init;

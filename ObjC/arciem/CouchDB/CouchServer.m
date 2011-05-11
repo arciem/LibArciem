@@ -200,11 +200,6 @@
 	} finally:finally];
 }
 
-- (void)versionWithSuccess:(void(^)(NSString*))success failure:(void (^)(NSError*))failure
-{
-	[self versionWithSuccess:success failure:failure finally:nil];
-}
-
 - (void)allDatabaseNamesWithSuccess:(void(^)(NSSet*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
 	[self getPath:@"_all_dbs" success:^(id result) {
@@ -212,11 +207,6 @@
 	} failure:^(NSError* error) {
 		failure(error);
 	} finally:finally];
-}
-
-- (void)allDatabaseNamesWithSuccess:(void(^)(NSSet*))success failure:(void (^)(NSError*))failure
-{
-	[self allDatabaseNamesWithSuccess:success failure:failure finally:nil];
 }
 
 @end

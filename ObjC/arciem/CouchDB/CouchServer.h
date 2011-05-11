@@ -30,11 +30,9 @@
 @property(nonatomic, retain) NSString* password;
 @property(nonatomic) BOOL showsIndicator;
 
-- (void)versionWithSuccess:(void(^)(NSString*))success failure:(void (^)(NSError*))failure;
 - (void)versionWithSuccess:(void(^)(NSString*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
 // http://wiki.apache.org/couchdb/HTTP_database_API
-- (void)allDatabaseNamesWithSuccess:(void(^)(NSSet*))success failure:(void (^)(NSError*))failure;
 - (void)allDatabaseNamesWithSuccess:(void(^)(NSSet*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
 - (void)getPath:(NSString*)resourcePath success:(void(^)(id))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;

@@ -19,17 +19,28 @@
 #import "CouchServer.h"
 #import "CouchDocument.h"
 
-enum CouchReplicationOptions {
+typedef NSUInteger CouchDocumentOptions;
+enum {
+	CouchDocumentIncludeConflicts = 1,
+	CouchDocumentIncludeRevisions = 2,
+	CouchDocumentIncludeRevisionsDetail = 4
+};
+
+typedef NSUInteger CouchReplicationOptions;
+enum {
 	CouchReplicateCreateTarget = 1,
 	CouchReplicateCancel = 2,
 	CouchReplicationContinuous = 4
 };
 
-enum CouchViewOptions {
+typedef NSUInteger CouchViewOptions;
+enum {
 	CouchViewDescending = 1,
 	CouchViewIncludeDocs = 2,
 	CouchViewExcludeEndKey = 4,
 	CouchViewDisableReduce = 8,
+	CouchViewDisableRefresh = 16,
+	CouchViewGroup = 32
 };
 
 @interface CouchDatabase : NSObject
@@ -41,37 +52,21 @@ enum CouchViewOptions {
 + (CouchDatabase*)databaseWithName:(NSString*)name server:(CouchServer*)server;
 
 // http://wiki.apache.org/couchdb/HTTP_database_API
-- (void)infoWithSuccess:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure;
 - (void)infoWithSuccess:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
-
-// http://wiki.apache.org/couchdb/HTTP_database_API
-- (void)createWithSuccess:(void(^)(void))success failure:(void (^)(NSError*))failure;
 - (void)createWithSuccess:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
-
-// http://wiki.apache.org/couchdb/HTTP_database_API
-- (void)deleteWithSuccess:(void(^)(void))success failure:(void (^)(NSError*))failure;
 - (void)deleteWithSuccess:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
 // http://wiki.apache.org/couchdb/HTTP_Document_API
-- (void)documentWithID:(NSString*)docID success:(void(^)(CouchDocument*))success failure:(void (^)(NSError*))failure;
-- (void)documentWithID:(NSString*)docID success:(void(^)(CouchDocument*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
-
-// http://wiki.apache.org/couchdb/HTTP_Document_API
-- (void)saveDocument:(CouchDocument*)doc success:(void(^)(CouchDocument*))success failure:(void (^)(NSError*))failure;
+- (void)documentWithID:(NSString*)docID options:(CouchDocumentOptions)options revision:(NSString*)revision success:(void(^)(CouchDocument*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 - (void)saveDocument:(CouchDocument*)doc success:(void(^)(CouchDocument*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
-
-// http://wiki.apache.org/couchdb/HTTP_Document_API
-- (void)deleteDocument:(CouchDocument*)doc success:(void(^)(void))success failure:(void (^)(NSError*))failure;
 - (void)deleteDocument:(CouchDocument*)doc success:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
 // http://wiki.apache.org/couchdb/Replication
-- (void)replicateToDatabase:(CouchDatabase*)target options:(CouchReplicationOptions)options filter:(NSString*)filter docIDs:(NSArray*)docIDs proxy:(NSURL*)proxy success:(void(^)(void))success failure:(void (^)(NSError*))failure;
 - (void)replicateToDatabase:(CouchDatabase*)target options:(CouchReplicationOptions)options filter:(NSString*)filter docIDs:(NSArray*)docIDs proxy:(NSURL*)proxy success:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
 // http://wiki.apache.org/couchdb/HTTP_view_API
-- (void)queryAllDocumentsWithOptions:(CouchViewOptions)options success:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure;
-- (void)queryAllDocumentsWithOptions:(CouchViewOptions)options success:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
-- (void)queryDesignDocument:(NSString*)designDocName view:(NSString*)viewName options:(CouchViewOptions)options success:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure;
-- (void)queryDesignDocument:(NSString*)designDocName view:(NSString*)viewName options:(CouchViewOptions)options success:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
+- (void)queryAllDocumentsWithOptions:(CouchViewOptions)options key:(id)key startKey:(id)startKey endKey:(id)endKey startDocID:(NSString*)startDocID endDocID:(NSString*)endDocID limit:(NSUInteger)limit skip:(NSUInteger)skip groupLevel:(NSUInteger)groupLevel success:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
+
+- (void)queryDesignDocument:(NSString*)designDocName view:(NSString*)viewName options:(CouchViewOptions)options key:(id)key startKey:(id)startKey endKey:(id)endKey startDocID:(NSString*)startDocID endDocID:(NSString*)endDocID limit:(NSUInteger)limit skip:(NSUInteger)skip groupLevel:(NSUInteger)groupLevel success:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
 @end

@@ -44,17 +44,40 @@
 
 + (void)performBlockInBackground:(void (^)())block
 {
-	[NSThread performSelectorInBackground:@selector(ng_runBlock:)
+	[self performSelectorInBackground:@selector(ng_runBlock:)
 	                           withObject:[[block copy] autorelease]];
 }
 
 + (void)performBlockOnMainThread:(void (^)())block
 {
-	if([[NSThread currentThread] isEqual:[NSThread mainThread]]) {
+	if([[self currentThread] isEqual:[self mainThread]]) {
 		block();
 	} else {
 		[[NSOperationQueue mainQueue] addOperationWithBlock:block];
 	}
+}
+
++ (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2
+{
+	NSCondition* condition = [[NSCondition alloc] init];
+	
+	[self performBlockOnMainThread:^{
+		block1(condition);
+	}];
+	
+	[self performBlockInBackground:^{
+		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+		[condition lock];
+		[condition wait];
+		[condition unlock];
+		
+		[self performBlockOnMainThread:^{
+			block2();
+		}];
+		
+		[pool release];
+		[condition release];
+	}];
 }
 
 @end

@@ -24,5 +24,6 @@
 - (void)performBlock:(void (^)())block waitUntilDone:(BOOL)wait;
 + (void)performBlockInBackground:(void (^)())block;
 + (void)performBlockOnMainThread:(void (^)())block;
++ (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2;
 
 @end

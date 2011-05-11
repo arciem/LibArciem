@@ -74,6 +74,30 @@
 	[self setValue:_rev forUndefinedKey:@"_rev"];
 }
 
+- (NSMutableDictionary*)_attachments
+{
+	return [self valueForUndefinedKey:@"_attachments"];
+}
+
+- (void)set_attachments:(NSMutableDictionary *)_attachments
+{
+	[self setValue:_attachments forUndefinedKey:@"_attachments"];
+}
+
+- (BOOL)_deleted
+{
+	return [[self valueForUndefinedKey:@"_deleted"] boolValue];
+}
+
+- (void)set_deleted:(BOOL)_deleted
+{
+	if(!_deleted) {
+		[self removeValueForKey:@"_deleted"];
+	} else {
+		[self setValue:[NSNumber numberWithBool:YES] forUndefinedKey:@"_deleted"];
+	}
+}
+
 - (id)valueForUndefinedKey:(NSString*)key
 {
 	return [self.dict objectForKey:key];
