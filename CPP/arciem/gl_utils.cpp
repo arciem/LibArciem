@@ -53,6 +53,33 @@ namespace arciem {
 	const vector4 vector4::zero(0, 0, 0, 0);
 	const vector4 vector4::one (1, 1, 1, 1);
 
+	color::color(color_hsb const& c)
+	: a(c.a)
+	{
+		GLfloat v = c.b;
+		if(c.s == 0.0) {
+			r = g = b = v;
+		} else {
+			GLfloat h = c.h;
+			GLfloat s = c.s;
+			if(h == 1.0) h = 0.0;
+			h *= 6.0;
+			int i = (int)floor(h);
+			GLfloat f = h - i;
+			GLfloat p = v * (1.0 - s);
+			GLfloat q = v * (1.0 - (s * f));
+			GLfloat t = v * (1.0 - (s * (1.0 - f)));
+			switch(i) {
+				case 0: r = v; g = t; b = p; break;
+				case 1: r = q; g = v; b = p; break;
+				case 2: r = p; g = v; b = t; break;
+				case 3: r = p; g = q; b = v; break;
+				case 4: r = t; g = p; b = v; break;
+				case 5: r = v; g = p; b = q; break;
+			}
+		}
+	}
+
 	const color color::red    (1, 0, 0, 1);
 	const color color::green  (0, 1, 0, 1);
 	const color color::blue   (0, 0, 1, 1);
@@ -64,6 +91,67 @@ namespace arciem {
 	const color color::gray   (0.5, 0.5, 0.5, 1);
 	const color color::grey   (0.5, 0.5, 0.5, 1);
 	const color color::clear  (0, 0, 0, 0);
+
+	color_hsb::color_hsb(color const& c)
+	: a(c.a)
+	{
+		GLfloat cMax = fmaxf(c.r, fmaxf(c.g, c.b));
+		GLfloat cMin = fminf(c.r, fminf(c.g, c.b));
+		
+		b = cMax;
+		
+		s = (cMax == 0.0) ? 0.0 : ((cMax - cMin) / cMax);
+		
+		if(s == 0.0) {
+			h = 0.0;
+		} else {
+			GLfloat cDelta = cMax - cMin;
+			if(c.r == cMax) {
+				h = (c.g - c.b) / cDelta;
+			} else if(c.g == cMax) {
+				h = 2.0 + (c.b - c.r) / cDelta;
+			} else if(c.b == cMax) {
+				h = 4.0 + (c.r - c.g) / cDelta;
+			}
+			h /= 6.0;
+			if(h < 0.0) h += 1.0;
+		}
+	}
+	
+	GLfloat circularInterpolate(GLfloat fraction, GLfloat a, GLfloat b)
+	{
+		if(fabs(b - a) <= 0.5) {
+			return denormalize(fraction, a, b);
+		} else {
+			GLfloat s;
+			if(a <= b) {
+				s = denormalize(fraction, a, b - 1.0f);
+				if(s < 0.0) s += 1.0;
+			} else {
+				s = denormalize(fraction, a, b + 1.0f);
+				if(s >= 1.0) s -= 1.0;
+			}
+			return s;
+		}
+	}
+	
+	color_hsb color_hsb::interpolate(color_hsb const& c, GLfloat fraction) const
+	{
+		color_hsb c1 = *this;
+		color_hsb c2 = c;
+		if(c1.s == 0.0) {
+			c1.h = c2.h;
+		} else if(c2.s == 0.0) {
+			c2.h = c1.h;
+		}
+		
+		return color_hsb(
+						 circularInterpolate(fraction, c1.h, c2.h),
+						 denormalize(fraction, c1.s, c2.s),
+						 denormalize(fraction, c1.b, c2.b),
+						 denormalize(fraction, c1.a, c2.a)
+						 );
+	}
 
 	const matrix4x4 matrix4x4::zero(0, 0, 0, 0,
 									0, 0, 0, 0,

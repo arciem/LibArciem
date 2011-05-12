@@ -138,11 +138,14 @@ namespace arciem {
 		static const vector4 one;
 	};
 
+	struct color_hsb;
+
 	struct color {
 		GLfloat r, g, b, a;
 		
 		color(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 0) : r(r), g(g), b(b), a(a) { }
 		color(vector4 const& v) :r(v.x), g(v.y), b(v.z), a(v.w) { }
+		color(color_hsb const& c);
 		
 		inline GLfloat operator[](int i) const { return (&r)[i]; }
 		inline GLfloat& operator[](int i) { return (&r)[i]; }
@@ -170,6 +173,15 @@ namespace arciem {
 		static const color gray;
 		static const color grey;
 		static const color clear;
+	};
+	
+	struct color_hsb {
+		GLfloat h, s, b, a;
+		
+		color_hsb(GLfloat h = 0, GLfloat s = 0, GLfloat b = 0, GLfloat a = 0) : h(h), s(s), b(b), a(a) { }
+		color_hsb(color const& c);
+		
+		color_hsb interpolate(color_hsb const& c, GLfloat fraction) const;
 	};
 	
 	struct matrix4x4 {
