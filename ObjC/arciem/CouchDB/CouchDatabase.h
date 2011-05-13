@@ -45,7 +45,8 @@ enum {
 
 @interface CouchDatabase : NSObject
 
-@property(nonatomic, retain) NSString* name;
+@property(nonatomic, copy) NSString* name;
+@property(nonatomic, retain, readonly) NSString* nameForURL;
 @property(nonatomic, retain) CouchServer* server;
 
 - (id)initWithName:(NSString*)name server:(CouchServer*)server;

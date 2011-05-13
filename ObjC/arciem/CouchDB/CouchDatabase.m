@@ -22,9 +22,16 @@
 #import "StringUtils.h"
 #import "NSObject+JSON.h"
 
+@interface CouchDatabase ()
+
+@property(nonatomic, retain, readwrite) NSString* nameForURL;
+
+@end
+
 @implementation CouchDatabase
 
 @synthesize name = name_;
+@synthesize nameForURL = nameForURL_;
 @synthesize server = server_;
 
 - (id)initWithName:(NSString*)name server:(CouchServer*)server
@@ -48,11 +55,28 @@
 	[super dealloc];
 }
 
+- (NSString*)name
+{
+	return name_;
+}
+
+- (void)setName:(NSString*)name
+{
+	if(name != nil) {
+		CouchCheckDatabaseName(name);
+	}
+
+	NSString* n = [name copy];
+	[name_ release];
+	name_ = n;
+
+	[nameForURL_ release];
+	nameForURL_ = [[name_ stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"] retain];
+}
+
 - (void)infoWithSuccess:(void(^)(NSDictionary*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
-	CouchCheckDatabaseName(self.name);
-	
-	NSString* path = [NSString stringWithFormat:@"%@/", self.name];
+	NSString* path = [NSString stringWithFormat:@"%@/", self.nameForURL];
 	[self.server getPath:path success:^(id result) {
 		success(result);
 	} failure:failure finally:finally];
@@ -60,18 +84,14 @@
 
 - (void)createWithSuccess:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
-	CouchCheckDatabaseName(self.name);
-	
-	[self.server putPath:self.name params:nil success:^(id result) {
+	[self.server putPath:self.nameForURL params:nil success:^(id result) {
 		success();
 	} failure:failure finally:finally];
 }
 
 - (void)deleteWithSuccess:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
-	CouchCheckDatabaseName(self.name);
-	
-	[self.server deletePath:self.name success:^(id result) {
+	[self.server deletePath:self.nameForURL success:^(id result) {
 		success();
 	} failure:failure finally:finally];
 }
@@ -101,7 +121,7 @@
 		paramsString = [NSString stringWithFormat:@"?%@", StringWithURLEscapedParamaters(paramsDict)];
 	}
 
-	NSString* path = [NSString stringWithFormat:@"%@/%@%@", self.name, docID, paramsString];
+	NSString* path = [NSString stringWithFormat:@"%@/%@%@", self.nameForURL, docID, paramsString];
 	[self.server getPath:path success:^(id result) {
 		success([CouchDocument documentWithMutableDictionary:(NSMutableDictionary*)result]);
 	} failure:failure finally:finally];
@@ -110,7 +130,7 @@
 - (void)saveDocument:(CouchDocument*)doc success:(void(^)(CouchDocument*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
 	if(IsEmptyString(doc._id)) {
-		[self.server postPath:self.name params:doc success:^(id result) {
+		[self.server postPath:self.nameForURL params:doc success:^(id result) {
 			doc._id = [result valueForKey:@"id"];
 			doc._rev = [result valueForKey:@"rev"];
 			success(doc);
@@ -118,7 +138,7 @@
 			failure(error);
 		} finally:finally];
 	} else {
-		NSString* path = [NSString stringWithFormat:@"%@/%@", self.name, doc._id];
+		NSString* path = [NSString stringWithFormat:@"%@/%@", self.nameForURL, doc._id];
 		[self.server putPath:path params:doc success:^(id result) {
 			doc._rev = [result valueForKey:@"rev"];
 			success(doc);
@@ -131,7 +151,7 @@
 	if(!IsEmptyString(doc._id) && !IsEmptyString(doc._rev)) {
 		NSDictionary* params = [NSDictionary dictionaryWithObject:doc._rev forKey:@"rev"];
 		NSString* paramsString = StringWithURLEscapedParamaters(params);
-		NSString* path = [NSString stringWithFormat:@"%@/%@?%@", self.name, doc._id, paramsString];
+		NSString* path = [NSString stringWithFormat:@"%@/%@?%@", self.nameForURL, doc._id, paramsString];
 		[self.server deletePath:path success:^(id result) {
 			success();
 		} failure:failure finally:finally];
@@ -140,7 +160,7 @@
 
 - (void)replicateToDatabase:(CouchDatabase*)target options:(CouchReplicationOptions)options filter:(NSString*)filter docIDs:(NSArray*)docIDs proxy:(NSURL*)proxy success:(void(^)(void))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
-	NSString* sourceURLString = [[NSURL URLWithString:self.name relativeToURL:self.server.baseURL] absoluteString];
+	NSString* sourceURLString = [[NSURL URLWithString:self.nameForURL relativeToURL:self.server.baseURL] absoluteString];
 	NSString* targetURLString = [[NSURL URLWithString:target.name relativeToURL:target.server.baseURL] absoluteString];
 
 	CouchDocument* paramsDoc = [CouchDocument document];
@@ -242,7 +262,7 @@
 		paramsString = [NSString stringWithFormat:@"?%@", StringWithURLEscapedParamaters(paramsDict)];
 	}
 
-	NSString* path = [NSString stringWithFormat:@"%@/%@%@", self.name, queryString, paramsString];
+	NSString* path = [NSString stringWithFormat:@"%@/%@%@", self.nameForURL, queryString, paramsString];
 	[self.server getPath:path success:^(id result) {
 		success(result);
 	} failure:failure finally:finally];

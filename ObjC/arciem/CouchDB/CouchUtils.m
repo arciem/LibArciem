@@ -22,7 +22,7 @@ void CouchCheckDatabaseName(NSString* databaseName)
 {
 	static NSRegularExpression* regex = nil;
 	if(regex == nil) {
-		regex = [[NSRegularExpression alloc] initWithPattern:@"^[a-z][a-z0-9()_$+-]*$" options:0 error:nil];
+		regex = [[NSRegularExpression alloc] initWithPattern:@"^[a-z][a-z0-9()_$+-/]*[a-z0-9()_$+-]$" options:0 error:nil];
 	}
 	BOOL valid = [regex numberOfMatchesInString:databaseName options:regex.options range:NSMakeRange(0, databaseName.length)] == 1;
 	NSCAssert1(valid, @"Invalid database name: %@", databaseName);
