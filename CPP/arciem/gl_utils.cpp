@@ -21,6 +21,8 @@
 
 namespace arciem {
 
+	GLfloat circularInterpolate(GLfloat fraction, GLfloat a, GLfloat b);
+
 	const vector2 vector2::zero (0, 0);
 	const vector2 vector2::one  (1, 1);
 	const vector2 vector2::right(1, 0);

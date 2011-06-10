@@ -21,6 +21,8 @@
 static NSMutableSet* sLogTags = nil;
 static CLogLevel sLogLevel = kLogWarn;
 
+static void _CLog(CLogLevel level, NSString *tag, NSString *format, va_list args);
+
 void CLogv(CLogLevel level, NSString *format, va_list args)
 {
 	if(level >= sLogLevel) {

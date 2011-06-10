@@ -296,6 +296,7 @@ NSString* const kDimensionPackaging = @"kDimensionPackaging";
 	return sQuantityManager;
 }
 
+#if 0
 - (id)retain
 {
 	return self;
@@ -304,6 +305,7 @@ NSString* const kDimensionPackaging = @"kDimensionPackaging";
 - (void)release
 {
 }
+#endif
 
 - (id)copyWithZone:(NSZone*)zone
 {

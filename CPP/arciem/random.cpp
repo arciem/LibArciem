@@ -26,6 +26,8 @@
 
 namespace arciem {
 
+long nextlongrand(long seed);
+
 void seed_random()
 {
 	unsigned s = (unsigned)time(NULL);

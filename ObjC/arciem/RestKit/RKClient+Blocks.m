@@ -41,7 +41,7 @@
 
 - (id)initWithSuccess:(void (^)(RKResponse*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
-	if((self == [super init])) {
+	if(self == [super init]) {
 		self.success = success;
 		self.failure = failure;
 		self.finally = finally;

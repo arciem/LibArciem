@@ -368,6 +368,9 @@
 /* Begin PBXProject section */
 		03C67B311358D9F8007D817F /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 03C67B341358D9F8007D817F /* Build configuration list for PBXProject "LibArciem" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -454,6 +457,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
@@ -470,6 +474,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;

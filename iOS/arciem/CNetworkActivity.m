@@ -87,6 +87,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 	return [self initWithIndicator:NO];
 }
 
+#if 0
 - (id)retain
 {
 	CLogDebug(@"NETWORK_ACTIVITY", @"%@ retain:%d", self, [self retainCount] + 1);
@@ -98,6 +99,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 	CLogDebug(@"NETWORK_ACTIVITY", @"%@ release:%d", self, [self retainCount] - 1);
 	[super release];
 }
+#endif
 
 - (void)dealloc
 {
