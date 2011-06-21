@@ -40,6 +40,7 @@ extern NSString* const sTapInBackgroundNotification;
 - (CGRect)subviewFramesUnion;
 - (void)sizeToFitSubviews;
 - (void)removeAllSubviews;
+- (void)viewHierarchyPerformSelector:(SEL)selector withObject:(id)object;
 
 - (void)addSubview:(UIView *)view animated:(BOOL)animated;
 - (void)removeFromSuperviewAnimated:(BOOL)animated;

@@ -141,6 +141,17 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 	return nil;
 }
 
+- (void)viewHierarchyPerformSelector:(SEL)selector withObject:(id)object
+{
+	if([self respondsToSelector:selector]) {
+		[self performSelector:selector withObject:object];
+	}
+
+	for(UIView* subview in self.subviews) {
+		[subview viewHierarchyPerformSelector:selector withObject:object];
+	}
+}
+
 - (void)sizeToFitSubviews
 {
 	CGRect r = [self subviewFramesUnion];
