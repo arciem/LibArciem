@@ -18,10 +18,8 @@
 
 #import <UIKit/UIKit.h>
 
+@interface CTabBar : UITabBar
 
-@interface CNavigationBar : UINavigationBar
-
-@property(nonatomic, retain) UIImage *backgroundImage;
 @property(nonatomic) BOOL ignoreSlopRegion;
 
 @end
