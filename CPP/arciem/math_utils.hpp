@@ -132,6 +132,24 @@ inline unsigned ceil_p2(unsigned x) {
    return x + 1; 
 }
 
+template<typename T>
+inline T circular_interpolate(T fraction, T a, T b)
+{
+	if(fabs(b - a) <= 0.5) {
+		return denormalize(fraction, a, b);
+	} else {
+		T s;
+		if(a <= b) {
+			s = denormalize(fraction, a, (T)(b - 1.0));
+			if(s < 0.0) s += 1.0;
+		} else {
+			s = denormalize(fraction, a, (T)(b + 1.0));
+			if(s >= 1.0) s -= 1.0;
+		}
+		return s;
+	}
+}
+
 } // namespace
 
 #endif // ARCIEM_MATH_UTILS_HPP

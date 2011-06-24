@@ -25,7 +25,34 @@
 + (UIColor*)colorWithRGBValue:(NSUInteger)rgbValue; //rrggbb eg. 0x3c001b
 
 - (UIColor*)colorByInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
+- (UIColor*)colorByCircularInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
+- (UIColor*)colorByCircularInterpolatingToHue:(UIColor*)color fraction:(CGFloat)fraction;
 - (UIColor*)colorByDarkeningFraction:(CGFloat)fraction;
 - (UIColor*)colorByLighteningFraction:(CGFloat)fraction;
+
+- (UIColor*)colorByHueSnappingFraction:(CGFloat)fraction;
+- (UIColor*)colorByDeepeningFraction:(CGFloat)fraction;
+- (UIColor*)colorBySaturatingFraction:(CGFloat)fraction;
+- (UIColor*)closestCardinalColor;
+
+//- (UIColor*)colorByHueSnapping:(CGFloat)snapFraction darkening:(CGFloat)darkFraction saturating:(CGFloat)satFraction;
+
+- (CGFloat)red;
+- (CGFloat)green;
+- (CGFloat)blue;
+- (CGFloat)alpha;
+- (CGFloat)hue;
+- (CGFloat)saturation;
+- (CGFloat)brightness;
+
+- (UIColor*)colorWithRed:(CGFloat)red;
+- (UIColor*)colorWithGreen:(CGFloat)green;
+- (UIColor*)colorWithBlue:(CGFloat)blue;
+- (UIColor*)colorWithAlpha:(CGFloat)alpha;
+- (UIColor*)colorWithHue:(CGFloat)hue;
+- (UIColor*)colorWithSaturation:(CGFloat)saturation;
+- (UIColor*)colorWithBrightness:(CGFloat)brightness;
+
+- (void)tintColorVariant1:(UIColor**)outColor1 variant2:(UIColor**)outColor2;
 
 @end
