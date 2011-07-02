@@ -22,26 +22,26 @@
 
 static CAlertManager* sAlertManager = nil;
 
-const NSInteger kCancelButtonIndex = 0;
-const NSInteger kOKButtonIndex = 1;
+const NSUInteger kCancelButtonIndex = 0;
+const NSUInteger kOKButtonIndex = 1;
 
 @interface CAlertManager ()
 
 @property(nonatomic, retain) NSMutableArray* alerts;
-@property(nonatomic, retain) NSMutableArray* invocations;
+@property(nonatomic, retain) NSMutableArray* completionBlocks;
 
 @end
 
 @implementation CAlertManager
 
-@synthesize alerts = _alerts;
-@synthesize invocations = _invocations;
+@synthesize alerts = alerts_;
+@synthesize completionBlocks = completionBlocks_;
 
 - (id)init
 {
 	if((self = [super init])) {
 		self.alerts = [NSMutableArray array];
-		self.invocations = [NSMutableArray array];
+		self.completionBlocks = [NSMutableArray array];
 	}
 	
 	return self;
@@ -50,7 +50,7 @@ const NSInteger kOKButtonIndex = 1;
 - (void)dealloc
 {
 	self.alerts = nil;
-	self.invocations = nil;
+	self.completionBlocks = nil;
 	
 	[super dealloc];
 }
@@ -64,7 +64,7 @@ const NSInteger kOKButtonIndex = 1;
 	return sAlertManager;
 }
 
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message target:(id)target selector:(SEL)selector buttonTitles:(NSArray*)buttonTitles argument:(id)argument
+- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message buttonTitles:(NSArray*)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion
 {
 	@synchronized(self) {
 		UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:nil] autorelease];
@@ -75,63 +75,55 @@ const NSInteger kOKButtonIndex = 1;
 				[alertView addButtonWithTitle:title];
 			}
 		}
-		
-		NSInvocation* invocation = [NSInvocation invocationForTarget:target selector:selector argument1:nil argument2:argument];
-		if(invocation != nil) {
-			[self.invocations addObject:invocation];
-			[self.alerts addObject:alertView];
+
+		if(completion == nil) {
+			completion = ^(NSUInteger idx) { };
 		}
+
+		[self.alerts addObject:alertView];
+		[self.completionBlocks addObject:[[completion copy] autorelease]];
 		
 		[alertView show];
 	}
 }
 
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message target:(id)target selector:(SEL)selector buttonTitles:(NSArray*)buttonTitles
+- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion
 {
-	[self showAlertWithTitle:title message:message target:target selector:selector buttonTitles:buttonTitles argument:NULL];
-}
-
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message target:(id)target selector:(SEL)selector
-{
-	[self showAlertWithTitle:title message:message target:target selector:selector buttonTitles:nil];
+	[self showAlertWithTitle:title message:message buttonTitles:nil completion:completion];
 }
 
 - (void)showAlertWithTitle:(NSString*)title message:(NSString*)message
 {
-	[self showAlertWithTitle:title message:message target:nil selector:nil];
+	[self showAlertWithTitle:title message:message completion:nil];
 }
 
-- (void)showConfirmAlertWithTitle:(NSString*)title message:(NSString*)message target:(id)target selector:(SEL)selector
+- (void)showConfirmAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion
 {
 	NSArray* titles = [NSArray arrayWithObjects:IString(@"Cancel"), IString(@"OK"), nil];
-	[self showAlertWithTitle:title message:message target:target selector:selector buttonTitles:titles];
+	[self showAlertWithTitle:title message:message buttonTitles:titles completion:completion];
 }
 
 //
 #pragma mark UIAlertViewDelegate
 //
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSUInteger)buttonIndex
 {
-	NSInvocation* invocation = nil;
+	void(^completion)(NSUInteger idx) = nil;
 	
 	@synchronized(self) {
 		NSUInteger index = [self.alerts indexOfObject:alertView];
 		if(index != NSNotFound) {
-			invocation = [self.invocations objectAtIndex:index];
-			if(invocation != nil) {
-				[[invocation retain] autorelease];
-				NSNumber* arg = [NSNumber numberWithInteger:buttonIndex];
-				[invocation setArgument:&arg atIndex:2];
+			completion = [self.completionBlocks objectAtIndex:index];
+			if(completion != nil) {
+				[[completion retain] autorelease];
 				[self.alerts removeObjectAtIndex:index];
-				[self.invocations removeObjectAtIndex:index];
+				[self.completionBlocks removeObjectAtIndex:index];
 			}
 		}
 	}
 	
-	if(invocation != nil) {
-		[invocation invoke];
-	}
+	if(completion != nil) completion(buttonIndex);
 }
 
 @end

@@ -29,13 +29,9 @@
 - (UIColor*)colorByCircularInterpolatingToHue:(UIColor*)color fraction:(CGFloat)fraction;
 - (UIColor*)colorByDarkeningFraction:(CGFloat)fraction;
 - (UIColor*)colorByLighteningFraction:(CGFloat)fraction;
-
-- (UIColor*)colorByHueSnappingFraction:(CGFloat)fraction;
+- (UIColor*)colorByColorBurnFraction:(CGFloat)fraction;
 - (UIColor*)colorByDeepeningFraction:(CGFloat)fraction;
 - (UIColor*)colorBySaturatingFraction:(CGFloat)fraction;
-- (UIColor*)closestCardinalColor;
-
-//- (UIColor*)colorByHueSnapping:(CGFloat)snapFraction darkening:(CGFloat)darkFraction saturating:(CGFloat)satFraction;
 
 - (CGFloat)red;
 - (CGFloat)green;

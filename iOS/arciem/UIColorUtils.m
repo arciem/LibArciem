@@ -97,36 +97,13 @@
 	return result;
 }
 
-#if 0
-- (UIColor*)colorByHueSnapping:(CGFloat)snapFraction darkening:(CGFloat)darkFraction saturating:(CGFloat)satFraction
+- (UIColor*)colorByColorBurnFraction:(CGFloat)fraction
 {
-	UIColor* color = self;
-	
-	CGFloat h, s, b, a;
-	if([self getHue:&h saturation:&s brightness:&b alpha:&a]) {
-		CGFloat snapLoc = h * 6.0 + 0.5
-		b = arciem::clamp(arciem::denormalize(darkFraction, b, 0.0f), 0.0f, 1.0f);
-		s = arciem::clamp(arciem::denormalize(satFraction, s, 1.0f), 0.0f, 1.0f);
-		color = [UIColor colorWithHue:h saturation:s brightness:b alpha:a];
-	}
-	
-	return color;
-}
-#endif
+	CGColorRef color = CreateColorByColorBurn(self.CGColor, fraction);
+	UIColor* result = [UIColor colorWithCGColor:color];
+	CGColorRelease(color);
 
-- (UIColor*)colorByHueSnappingFraction:(CGFloat)fraction
-{
-	UIColor* color = self;
-	
-	CGFloat h, s, b, a;
-	if([self getHue:&h saturation:&s brightness:&b alpha:&a]) {
-		CGFloat n = fmodf(h + (1.0/6), 1.0);
-		CGFloat p = fmodf(n, 1.0/3);
-		h = h - (fraction * p);
-		color = [UIColor colorWithHue:h saturation:s brightness:b alpha:a];
-	}
-	
-	return color;
+	return result;
 }
 
 - (UIColor*)colorByDeepeningFraction:(CGFloat)fraction
@@ -136,8 +113,6 @@
 	CGFloat h, s, b, a;
 	if([self getHue:&h saturation:&s brightness:&b alpha:&a]) {
 		b = arciem::denormalize(fraction, b, 0.0f);
-		b = powf(b, 10.0);
-
 		color = [UIColor colorWithHue:h saturation:s brightness:b alpha:a];
 	}
 	
@@ -183,29 +158,6 @@
 	}
 	
 	return closestColor;
-}
-
-- (NSArray*)cardinalColors
-{
-	return [NSArray arrayWithObjects:
-			[UIColor redColor],
-			[UIColor greenColor],
-			[UIColor blueColor],
-			[UIColor yellowColor],
-//			[UIColor cyanColor],
-//			[UIColor magentaColor],
-//			[UIColor yellowColor],
-//			[UIColor blackColor],
-//			[UIColor whiteColor],
-			[UIColor grayColor],
-			nil];
-}
-//			[UIColor orangeColor],
-//			[UIColor colorWithRGBValue:0x7F00FF], // violet
-
-- (UIColor*)closestCardinalColor
-{
-	return [self closestColorInColors:[self cardinalColors]];
 }
 
 + (UIColor*)colorWithRGBValue:(NSUInteger)rgbValue

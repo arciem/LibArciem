@@ -63,6 +63,7 @@ CGColorRef CreateColorWithGray(CGFloat gray, CGFloat alpha);
 CGColorRef CreateColorByConvertingToRGB(CGColorRef color);
 CGColorRef CreateColorByDarkening(CGColorRef color, CGFloat fractionDarker);
 CGColorRef CreateColorByLightening(CGColorRef color, CGFloat fractionLighter);
+CGColorRef CreateColorByColorBurn(CGColorRef color, CGFloat fractionDarker);
 CGColorRef CreateColorByInterpolatingColors(CGColorRef color1, CGColorRef color2, CGFloat fraction);
 
 CGImageRef ReflectedImageCreate(CGImageRef fromImage, NSUInteger height);

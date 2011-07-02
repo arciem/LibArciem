@@ -18,26 +18,16 @@
 
 #import <UIKit/UIKit.h>
 
-extern const NSInteger kCancelButtonIndex;
-extern const NSInteger kOKButtonIndex;
+extern const NSUInteger kCancelButtonIndex;
+extern const NSUInteger kOKButtonIndex;
 
 @interface CAlertManager : NSObject
-{
-	@private
-	NSMutableArray* _alerts;
-	NSMutableArray* _invocations;
-}
 
 + (CAlertManager*)sharedInstance;
 
-// callback must be of the form (but not necessarily the same name as):
-// - (void)alertDidDismissWithButtonIndex:(NSNumber*)index;
-// - (void)alertDidDismissWithButtonIndex:(NSNumber*)index argument:(id)argument;
-
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message target:(id)target selector:(SEL)selector buttonTitles:(NSArray*)buttonTitles argument:(id)argument;
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message target:(id)target selector:(SEL)selector buttonTitles:(NSArray*)buttonTitles;
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message target:(id)target selector:(SEL)selector;
+- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message buttonTitles:(NSArray*)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion;
+- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion;
 - (void)showAlertWithTitle:(NSString*)title message:(NSString*)message;
-- (void)showConfirmAlertWithTitle:(NSString*)title message:(NSString*)message target:(id)target selector:(SEL)selector;
+- (void)showConfirmAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion;
 
 @end
