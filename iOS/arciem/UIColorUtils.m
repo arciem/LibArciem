@@ -132,6 +132,19 @@
 	return color;
 }
 
+- (UIColor*)colorByDesaturatingFraction:(CGFloat)fraction
+{
+	UIColor* color = self;
+	
+	CGFloat h, s, b, a;
+	if([self getHue:&h saturation:&s brightness:&b alpha:&a]) {
+		s = arciem::denormalize(fraction, s, 0.0f);
+		color = [UIColor colorWithHue:h saturation:s brightness:b alpha:a];
+	}
+	
+	return color;
+}
+
 - (CGFloat)distanceToColor:(UIColor*)color
 {
 	CGFloat r1, g1, b1, a1;
@@ -299,44 +312,15 @@
 	return color;
 }
 
-- (void)tintColorVariant1:(UIColor**)outColor1 variant2:(UIColor**)outColor2
+- (UIColor*)tintColorVariantForButtonHighlighted:(BOOL)highlighted
 {
-	NSArray* items = [NSArray arrayWithObjects:@"Hello", @"World", nil];
-	UISegmentedControl* ctrl = [[[UISegmentedControl alloc] initWithItems:items] autorelease];
-	ctrl.tintColor = self;
-	CGSize size = ctrl.bounds.size;
-
-	CGContextRef context = BitmapContextCreate(size, NO);
-	CGContextClearRect(context, ctrl.bounds);
-	CALayer* layer = ctrl.layer;
-	layer.shouldRasterize = YES;
-	[layer renderInContext:context];
-	UInt8* data = (UInt8*)CGBitmapContextGetData(context);
-	
-//	NSUInteger x1 = 6;
-//	NSUInteger y1 = size.height - 6;
-//	NSUInteger x2 = size.width - 6;
-//	NSUInteger y2 = size.height - 6;
-
-	NSUInteger x1 = 8;
-	NSUInteger y1 = 8;
-	NSUInteger x2 = size.width - 8;
-	NSUInteger y2 = 8;
-	
-	NSUInteger bytesPerPixel = 4;
-	NSUInteger bytesPerRow = size.width * bytesPerPixel;
-	UInt8* data1 = data + bytesPerRow * y1 + bytesPerPixel * x1;
-	UInt8* data2 = data + bytesPerRow * y2 + bytesPerPixel * x2;
-	CGFloat comp1[4] = {data1[0]/255.0, data1[1]/255.0, data1[2]/255.0, data1[3]/255.0};
-	CGFloat comp2[4] = {data2[0]/255.0, data2[1]/255.0, data2[2]/255.0, data2[3]/255.0};
-	CGColorRef color1 = CGColorCreate(SharedColorSpaceDeviceRGB(), comp1);
-	CGColorRef color2 = CGColorCreate(SharedColorSpaceDeviceRGB(), comp2);
-	BitmapContextFreeData(context);
-	CGContextRelease(context);
-	*outColor1 = [UIColor colorWithCGColor:color1];
-	*outColor2 = [UIColor colorWithCGColor:color2];
-	CGColorRelease(color1);
-	CGColorRelease(color2);
+	UIColor* result = nil;
+	if(highlighted) {
+		result = [[self colorByColorBurnFraction:0.35] colorByDarkeningFraction:0.2];
+	} else {
+		result = [self colorByColorBurnFraction:0.25];
+	}
+	return result;
 }
 
 @end

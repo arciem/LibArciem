@@ -332,7 +332,7 @@ CGGradientRef GradientCreateWith4Colors(CGColorRef color1, CGColorRef color2, CG
 CGGradientRef GradientCreateGloss(CGColorRef color1, CGColorRef color2, CGColorRef color3, CGColorRef color4, CGColorSpaceRef colorSpace)
 {
 	const void* colorValues[] = { color1, color2, color3, color4 };
-	CGFloat locations[] = { 0.0, 0.45, 0.55, 1.0 };
+	CGFloat locations[] = { 0.0, 0.5, 0.5, 1.0 };
 	CFArrayRef colors = CFArrayCreate(NULL, colorValues, 4, NULL);
 	CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, colors, locations);
 	CFRelease(colors);

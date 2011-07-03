@@ -32,6 +32,7 @@
 - (UIColor*)colorByColorBurnFraction:(CGFloat)fraction;
 - (UIColor*)colorByDeepeningFraction:(CGFloat)fraction;
 - (UIColor*)colorBySaturatingFraction:(CGFloat)fraction;
+- (UIColor*)colorByDesaturatingFraction:(CGFloat)fraction;
 
 - (CGFloat)red;
 - (CGFloat)green;
@@ -49,6 +50,6 @@
 - (UIColor*)colorWithSaturation:(CGFloat)saturation;
 - (UIColor*)colorWithBrightness:(CGFloat)brightness;
 
-- (void)tintColorVariant1:(UIColor**)outColor1 variant2:(UIColor**)outColor2;
+- (UIColor*)tintColorVariantForButtonHighlighted:(BOOL)highlighted;
 
 @end

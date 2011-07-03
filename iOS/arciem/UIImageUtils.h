@@ -25,10 +25,12 @@
 + (UIImage*)imageWithSize:(CGSize)size backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius;
 + (UIImage*)imageWithSize:(CGSize)size backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor*)innerShadowColor;
 + (UIImage*)imageWithSize:(CGSize)size backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor*)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier;
++ (UIImage*)etchedImageWithShape:(UIImage*)shapeImage tintColor:(UIColor*)tintColor glossAlpha:(CGFloat)glossAlpha;
++ (UIImage*)etchedButtonImageWithSize:(CGSize)size cornerRadius:(CGFloat)cornerRadius tintColor:(UIColor*)tintColor glossAlpha:(CGFloat)glossAlpha;
 
 - (UIImage*)reflectedImageWithHeight:(NSUInteger)height;
 
-- (UIImage *)imageByColorizing:(UIColor *)theColor;
+- (UIImage*)imageByColorizing:(UIColor*)theColor;
 
 - (UIImage*)imageByScalingToSize:(CGSize)size;
 
