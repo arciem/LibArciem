@@ -25,6 +25,8 @@
 {
 	[super setup];
 
+	self.opaque = YES;
+	self.backgroundColor = [UIColor clearColor];
 	self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
 	CGRect gradientFrame = self.bounds;
