@@ -19,7 +19,19 @@
 #import "CBeveledBackgroundView.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface CBeveledBackgroundView ()
+
+@property(nonatomic, retain) CALayer* topEdgeLayer;
+@property(nonatomic, retain) CAGradientLayer* gradientLayer;
+@property(nonatomic, retain) CALayer* bottomEdgeLayer;
+
+@end
+
 @implementation CBeveledBackgroundView
+
+@synthesize topEdgeLayer;
+@synthesize gradientLayer;
+@synthesize bottomEdgeLayer;
 
 - (void)setup
 {
@@ -28,6 +40,28 @@
 	self.opaque = YES;
 	self.backgroundColor = [UIColor clearColor];
 	self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	
+	self.topEdgeLayer = [CALayer layer];
+	[self.layer addSublayer:self.topEdgeLayer];
+	
+	self.gradientLayer = [CAGradientLayer layer];
+	[self.layer addSublayer:self.gradientLayer];
+	
+	self.bottomEdgeLayer = [CALayer layer];
+	[self.layer addSublayer:self.bottomEdgeLayer];
+}
+
+- (void)dealloc
+{
+	self.topEdgeLayer = nil;
+	self.gradientLayer = nil;
+	self.bottomEdgeLayer = nil;
+	[super dealloc];
+}
+
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
 
 	CGRect gradientFrame = self.bounds;
 	CGRect topEdgeFrame;
@@ -35,23 +69,19 @@
 	CGRectDivide(gradientFrame, &topEdgeFrame, &gradientFrame, 1.0, CGRectMinYEdge);
 	CGRectDivide(gradientFrame, &bottomEdgeFrame, &gradientFrame, 1.0, CGRectMaxYEdge);
 	
-	CALayer* topEdgeLayer = [CALayer layer];
-	topEdgeLayer.frame = topEdgeFrame;
-	topEdgeLayer.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0].CGColor;
-	[self.layer addSublayer:topEdgeLayer];
+	self.topEdgeLayer.frame = topEdgeFrame;
+	self.topEdgeLayer.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0].CGColor;
 	
-	CAGradientLayer* gradientLayer = [CAGradientLayer layer];
-	gradientLayer.frame = gradientFrame;
-	gradientLayer.colors = [NSArray arrayWithObjects:
-							(__bridge id)[UIColor colorWithWhite:0.9 alpha:1.0].CGColor,
-							(__bridge id)[UIColor colorWithWhite:0.8 alpha:1.0].CGColor,
-							nil];
-	[self.layer addSublayer:gradientLayer];
 	
-	CALayer* bottomEdgeLayer = [CALayer layer];
-	bottomEdgeLayer.frame = bottomEdgeFrame;
-	bottomEdgeLayer.backgroundColor = [UIColor colorWithWhite:0.5 alpha:1.0].CGColor;
-	[self.layer addSublayer:bottomEdgeLayer];
+	self.gradientLayer.frame = gradientFrame;
+	self.gradientLayer.colors = [NSArray arrayWithObjects:
+								 (__bridge id)[UIColor colorWithWhite:0.9 alpha:1.0].CGColor,
+								 (__bridge id)[UIColor colorWithWhite:0.8 alpha:1.0].CGColor,
+								 nil];
+	
+	
+	self.bottomEdgeLayer.frame = bottomEdgeFrame;
+	self.bottomEdgeLayer.backgroundColor = [UIColor colorWithWhite:0.5 alpha:1.0].CGColor;
 }
 
 @end

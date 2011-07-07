@@ -279,13 +279,23 @@
 	UIImage* resultImage = nil;
 	CGContextRef context = nil;
 	CGRect bounds = {CGPointZero, shapeImage.size};
+	
+	// Draw the shape image on a white background to get rid of any alpha channel
+	UIImage* flatShapeImage = nil;
+	UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
+	context = UIGraphicsGetCurrentContext();
+	CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+	CGContextFillRect(context, bounds);
+	[shapeImage drawAtPoint:CGPointZero];
+	flatShapeImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
 
 	// Make a stencil that contains the shape we've been passed, drawn as a black silhouette on a white background
-	CGImageRef shapeStencil = CGImageMaskCreate(CGImageGetWidth(shapeImage.CGImage), CGImageGetHeight(shapeImage.CGImage), CGImageGetBitsPerComponent(shapeImage.CGImage), CGImageGetBitsPerPixel(shapeImage.CGImage), CGImageGetBytesPerRow(shapeImage.CGImage), CGImageGetDataProvider(shapeImage.CGImage), NULL, false);
+	CGImageRef shapeStencil = CGImageMaskCreate(CGImageGetWidth(flatShapeImage.CGImage), CGImageGetHeight(flatShapeImage.CGImage), CGImageGetBitsPerComponent(flatShapeImage.CGImage), CGImageGetBitsPerPixel(flatShapeImage.CGImage), CGImageGetBytesPerRow(flatShapeImage.CGImage), CGImageGetDataProvider(flatShapeImage.CGImage), NULL, false);
 
 	// Also make an inverted stencil
 	CGFloat invertDecodeArray[] = {1.0, 0.0,  1.0, 0.0,  1.0, 0.0};
-	CGImageRef invertedShapeStencil = CGImageMaskCreate(CGImageGetWidth(shapeImage.CGImage), CGImageGetHeight(shapeImage.CGImage), CGImageGetBitsPerComponent(shapeImage.CGImage), CGImageGetBitsPerPixel(shapeImage.CGImage), CGImageGetBytesPerRow(shapeImage.CGImage), CGImageGetDataProvider(shapeImage.CGImage), invertDecodeArray, false);
+	CGImageRef invertedShapeStencil = CGImageMaskCreate(CGImageGetWidth(flatShapeImage.CGImage), CGImageGetHeight(flatShapeImage.CGImage), CGImageGetBitsPerComponent(flatShapeImage.CGImage), CGImageGetBitsPerPixel(flatShapeImage.CGImage), CGImageGetBytesPerRow(flatShapeImage.CGImage), CGImageGetDataProvider(flatShapeImage.CGImage), invertDecodeArray, false);
 
 	// To create an inner shadow, first paint a black rectangle through the inverted stencil, to create a frisket
 	UIImage* innerShadowFrisketImage = nil;
@@ -337,17 +347,19 @@
 	CGContextFillRect(context, bounds);
 	
 	// Paint the gloss gradient
-	CGContextSaveGState(context);
-	UIColor* glossColor1 = [UIColor colorWithWhite:0.6 alpha:1];
-	UIColor* glossColor2 = [UIColor colorWithWhite:0.1 alpha:1];
-	UIColor* glossColor3 = [UIColor colorWithWhite:0.0 alpha:1];
-	UIColor* glossColor4 = [UIColor colorWithWhite:0.05 alpha:1];
-	CGGradientRef gradient = GradientCreateGloss(glossColor4.CGColor, glossColor3.CGColor, glossColor2.CGColor, glossColor1.CGColor, SharedColorSpaceDeviceRGB());
-	CGContextSetBlendMode(context, kCGBlendModeScreen);
-	CGContextSetAlpha(context, glossAlpha);
-	ContextFillRectGradientVertical(context, bounds, gradient);
-	CGGradientRelease(gradient);
-	CGContextRestoreGState(context);
+	if(glossAlpha > 0.0) {
+		CGContextSaveGState(context);
+		UIColor* glossColor1 = [UIColor colorWithWhite:0.6 alpha:1];
+		UIColor* glossColor2 = [UIColor colorWithWhite:0.1 alpha:1];
+		UIColor* glossColor3 = [UIColor colorWithWhite:0.0 alpha:1];
+		UIColor* glossColor4 = [UIColor colorWithWhite:0.05 alpha:1];
+		CGGradientRef gradient = GradientCreateGloss(glossColor4.CGColor, glossColor3.CGColor, glossColor2.CGColor, glossColor1.CGColor, SharedColorSpaceDeviceRGB());
+		CGContextSetBlendMode(context, kCGBlendModeScreen);
+		CGContextSetAlpha(context, glossAlpha);
+		ContextFillRectGradientVertical(context, bounds, gradient);
+		CGGradientRelease(gradient);
+		CGContextRestoreGState(context);
+	}
 
 	// Paint the inner shadow on top of the shape
 	CGContextSaveGState(context);
