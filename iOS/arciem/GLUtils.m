@@ -117,15 +117,12 @@ void DestroyShaders(GLuint vertShader, GLuint fragShader, GLuint prog)
 {	
 	if (vertShader) {
 		glDeleteShader(vertShader);
-		vertShader = 0;
 	}
 	if (fragShader) {
 		glDeleteShader(fragShader);
-		fragShader = 0;
 	}
 	if (prog) {
 		glDeleteProgram(prog);
-		prog = 0;
 	}
 }
 

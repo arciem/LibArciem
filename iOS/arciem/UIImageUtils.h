@@ -21,12 +21,15 @@
 
 @interface UIImage (UIImageUtils)
 
-+ (UIImage*)imageWithSize:(CGSize)size backgroundColor:(UIColor*)backgroundColor textColor:(UIColor*)textColor text:(NSString*)text;
-+ (UIImage*)imageWithSize:(CGSize)size backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius;
-+ (UIImage*)imageWithSize:(CGSize)size backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor*)innerShadowColor;
-+ (UIImage*)imageWithSize:(CGSize)size backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor*)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier;
-+ (UIImage*)etchedImageWithShape:(UIImage*)shapeImage tintColor:(UIColor*)tintColor glossAlpha:(CGFloat)glossAlpha;
-+ (UIImage*)etchedButtonImageWithSize:(CGSize)size cornerRadius:(CGFloat)cornerRadius tintColor:(UIColor*)tintColor glossAlpha:(CGFloat)glossAlpha;
++ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor*)backgroundColor;
++ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor*)backgroundColor textColor:(UIColor*)textColor text:(NSString*)text;
++ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius;
++ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor*)innerShadowColor;
++ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor*)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier;
++ (UIImage*)etchedImageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor glossAlpha:(CGFloat)glossAlpha;
++ (UIImage*)etchedImageWithShapeImage:(UIImage*)shapeImage backgroundImage:(UIImage*)backgroundImage glossAlpha:(CGFloat)glossAlpha;
++ (UIImage*)etchedButtonImageWithSize:(CGSize)size scale:(CGFloat)scale tintColor:(UIColor*)tintColor cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;
++ (UIImage*)etchedButtonWithBackgroundImage:(UIImage*)backgroundImage cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;
 
 - (UIImage*)reflectedImageWithHeight:(NSUInteger)height;
 

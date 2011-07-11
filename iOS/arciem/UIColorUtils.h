@@ -24,6 +24,11 @@
 + (UIColor*)colorWithDenormalizedHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
 + (UIColor*)colorWithRGBValue:(NSUInteger)rgbValue; //rrggbb eg. 0x3c001b
 
++ (UIColor*)systemNavigationBlue;
++ (UIColor*)systemHighlightBlue;
++ (UIColor*)systemNavigationGray;
++ (UIColor*)systemHighlightGray;
+
 - (UIColor*)colorByInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
 - (UIColor*)colorByCircularInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
 - (UIColor*)colorByCircularInterpolatingToHue:(UIColor*)color fraction:(CGFloat)fraction;

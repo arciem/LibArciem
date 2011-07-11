@@ -67,7 +67,7 @@
 				}
 			}
 		}
-//		CLogDebug(nil, @"pointInside:%@ withEvent:%@ result:%d", NSStringFromCGPoint(point), event, result);
+//		CLogDebug(nil, @"%@ pointInside:%@ withEvent:%@ result:%d", self, NSStringFromCGPoint(point), event, result);
 		
 		self.lastPointInsidePoint = point;
 		self.lastPointInsideTimestamp = currentTime;

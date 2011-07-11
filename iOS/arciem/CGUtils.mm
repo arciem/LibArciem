@@ -485,6 +485,7 @@ CGImageRef ReflectedImageCreate(CGImageRef fromImage, NSUInteger height)
 	return reflectionImage;
 }
 
+#if 0
 CGImageRef CreateImageWithMaskAndColor(CGImageRef mask, CGColorRef color)
 {
 	CGRect r;
@@ -494,6 +495,7 @@ CGImageRef CreateImageWithMaskAndColor(CGImageRef mask, CGColorRef color)
 	ContextFillRectColor(colorContext, r, color);
 	return NULL;
 }
+#endif
 
 CGImageRef CreateImageFromPDF(CFURLRef url, NSUInteger pageNumber, CGRect contentRect, CGSize imageSize)
 {

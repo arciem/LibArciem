@@ -27,6 +27,26 @@
 	return [UIColor colorWithHue:hue / 360.0 saturation:saturation / 100.0 brightness:brightness / 100.0 alpha:alpha];
 }
 
++ (UIColor*)systemNavigationBlue
+{
+	return [self colorWithRGBValue:0x436a9b];
+}
+
++ (UIColor*)systemHighlightBlue
+{
+	return [self colorWithRGBValue:0x0081ee];
+}
+
++ (UIColor*)systemNavigationGray
+{
+	return [self colorWithRGBValue:0x666666];
+}
+
++ (UIColor*)systemHighlightGray
+{
+	return [self colorWithRGBValue:0x000000];
+}
+
 - (UIColor*)colorByInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction
 {
 	CGColorRef color1 = CreateColorByConvertingToRGB(self.CGColor);
