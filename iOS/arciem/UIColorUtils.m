@@ -251,6 +251,24 @@
 	return b;
 }
 
+- (CGFloat)luminance
+{
+	CGFloat luminance = 0.0;
+	
+	CGColorRef cgColor = self.CGColor;
+	CGColorSpaceRef colorSpace = CGColorGetColorSpace(cgColor);
+	CGColorSpaceModel colorSpaceModel = CGColorSpaceGetModel(colorSpace);
+	const CGFloat* components = CGColorGetComponents(cgColor);
+	
+	if(colorSpaceModel == kCGColorSpaceModelMonochrome) {
+		luminance = components[0];
+	} else if(colorSpaceModel == kCGColorSpaceModelRGB) {
+		luminance = 0.3 * components[0] + 0.59 * components[1] + 0.11 * components[2];
+	}
+	
+	return luminance;
+}
+
 - (UIColor*)colorWithRed:(CGFloat)red
 {
 	UIColor* color = self;

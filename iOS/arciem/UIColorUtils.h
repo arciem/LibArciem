@@ -46,6 +46,7 @@
 - (CGFloat)hue;
 - (CGFloat)saturation;
 - (CGFloat)brightness;
+- (CGFloat)luminance;
 
 - (UIColor*)colorWithRed:(CGFloat)red;
 - (UIColor*)colorWithGreen:(CGFloat)green;
