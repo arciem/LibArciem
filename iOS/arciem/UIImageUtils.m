@@ -367,7 +367,7 @@
 		UIColor* glossColor2 = [UIColor colorWithWhite:0.1 alpha:1];
 		UIColor* glossColor3 = [UIColor colorWithWhite:0.0 alpha:1];
 		UIColor* glossColor4 = [UIColor colorWithWhite:0.05 alpha:1];
-		CGGradientRef gradient = GradientCreateGloss(glossColor4.CGColor, glossColor3.CGColor, glossColor2.CGColor, glossColor1.CGColor, SharedColorSpaceDeviceRGB());
+		CGGradientRef gradient = GradientCreateGloss(glossColor4.CGColor, glossColor3.CGColor, glossColor2.CGColor, glossColor1.CGColor, SharedColorSpaceDeviceGray());
 		CGContextSetBlendMode(context, kCGBlendModeScreen);
 		CGContextSetAlpha(context, glossAlpha);
 		ContextFillRectGradientVertical(context, bounds, gradient);
