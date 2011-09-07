@@ -22,7 +22,6 @@
 #import "UIColorUtils.h"
 #import "DeviceUtils.h"
 #import "Geom.h"
-#import <QuartzCore/QuartzCore.h>
 
 NSString* const sTapInBackgroundNotification = @"TapInBackground";
 
@@ -71,20 +70,16 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 - (void)bringSubview:(UIView*)view aboveSubview:(UIView*)siblingSubview
 {
 	if(view.superview == self) {
-		[view retain];
 		[view removeFromSuperview];
 		[self insertSubview:view aboveSubview:siblingSubview];
-		[view release];
 	}
 }
 
 - (void)sendSubview:(UIView*)view belowSubview:(UIView*)siblingSubview
 {
 	if(view.superview == self) {
-		[view retain];
 		[view removeFromSuperview];
 		[self insertSubview:view belowSubview:siblingSubview];
-		[view release];
 	}
 }
 
@@ -141,6 +136,8 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 	return nil;
 }
 
+// Disabled because compiler complains of possible leak in performSelector due to unknown selector
+#if 0
 - (void)viewHierarchyPerformSelector:(SEL)selector withObject:(id)object
 {
 	if([self respondsToSelector:selector]) {
@@ -151,6 +148,7 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 		[subview viewHierarchyPerformSelector:selector withObject:object];
 	}
 }
+#endif
 
 - (void)sizeToFitSubviews
 {
@@ -368,7 +366,7 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 			[UIView setAnimationDelegate:self];
 			[UIView setAnimationDidStopSelector:@selector(appearanceAnimationDidStop:finished:context:)];
 			view.alpha = 1.0;
-			[self retain];	// balanced in appearanceAnimationDidStop
+//			[self retain];	// balanced in appearanceAnimationDidStop
 			[UIView commitAnimations];
 		} else {
 			[self addSubview:view];
@@ -379,7 +377,7 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 
 - (void)appearanceAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
 {
-	[self release];
+//	[self release];
 }
 
 - (void)removeFromSuperviewAnimated:(BOOL)animated
@@ -390,7 +388,7 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 			[UIView setAnimationDelegate:self];
 			[UIView setAnimationDidStopSelector:@selector(disappearanceAnimationDidStop:finished:context:)];
 			self.alpha = 0.0;
-			[self.superview retain]; // balanced in disappearanceAnimationDidStop
+//			[self.superview retain]; // balanced in disappearanceAnimationDidStop
 			[UIView commitAnimations];
 		} else {
 			[self removeFromSuperview];
@@ -402,7 +400,7 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 {
 	UIView* superview = self.superview;
 	[self removeFromSuperview];
-	[superview release];
+//	[superview release];
 }
 
 - (void)tableHeaderFillWithTintColor:(UIColor*)tintColor

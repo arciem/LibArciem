@@ -68,7 +68,7 @@
 		BitmapContextFreeData(context);
 		CGContextRelease(context);
 
-		uiImage = [[[UIImage alloc] initWithCGImage:image] autorelease];
+		uiImage = [[UIImage alloc] initWithCGImage:image];
 		
 		CGImageRelease(image);
 	}
@@ -130,9 +130,9 @@
 		CGContextRelease(context);
 
 		if(scale > 1.0) {
-			uiImage = [[[UIImage alloc] initWithCGImage:image scale:scale orientation:UIImageOrientationUp] autorelease];
+			uiImage = [[UIImage alloc] initWithCGImage:image scale:scale orientation:UIImageOrientationUp];
 		} else {
-			uiImage = [[[UIImage alloc] initWithCGImage:image] autorelease];
+			uiImage = [[UIImage alloc] initWithCGImage:image];
 		}
 
 		CGImageRelease(image);
