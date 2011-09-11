@@ -20,11 +20,14 @@
 #import "RKClient+Blocks.h"
 #import "ObjectUtils.h"
 
+static NSMutableSet* sCallsInFlight = nil;
+
 @interface RKRequestCall : NSObject<RKRequestDelegate>
 
 @property(nonatomic, copy) void (^success)(RKResponse*);
 @property(nonatomic, copy) void (^failure)(NSError*);
 @property(nonatomic, copy) void (^finally)(void);
+@property (strong, nonatomic) NSMutableSet* callsInFlight;
 
 - (id)initWithSuccess:(void (^)(RKResponse*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
@@ -38,6 +41,15 @@
 @synthesize success = success_;
 @synthesize failure = failure_;
 @synthesize finally = finally_;
+@synthesize callsInFlight = callsInFlight_;
+
+- (NSMutableSet*)callsInFlight
+{
+	if(sCallsInFlight == nil) {
+		sCallsInFlight = [NSMutableSet set];
+	}
+	return sCallsInFlight;
+}
 
 - (id)initWithSuccess:(void (^)(RKResponse*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
@@ -50,20 +62,14 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[self setPropertiesToNil];
-	[super dealloc];
-}
-
 - (void)startCall
 {
-	[self retain];
+	[self.callsInFlight addObject:self];
 }
 
 - (void)endCall
 {
-	[self release];
+	[self.callsInFlight removeObject:self];
 }
 
 - (void)endCallWithResponse:(RKResponse*)response
@@ -114,7 +120,7 @@
 
 - (RKRequest*)getPath:(NSString*)resourcePath success:(void (^)(RKResponse*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
-	RKRequestCall* delegate = [[[RKRequestCall alloc] initWithSuccess:success failure:failure finally:finally] autorelease];
+	RKRequestCall* delegate = [[RKRequestCall alloc] initWithSuccess:success failure:failure finally:finally];
 	[delegate startCall];
 	return [self get:resourcePath delegate:delegate];
 }
@@ -126,7 +132,7 @@
 
 - (RKRequest*)postPath:(NSString*)resourcePath params:(NSObject<RKRequestSerializable>*)params success:(void (^)(RKResponse*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
-	RKRequestCall* delegate = [[[RKRequestCall alloc] initWithSuccess:success failure:failure finally:finally] autorelease];
+	RKRequestCall* delegate = [[RKRequestCall alloc] initWithSuccess:success failure:failure finally:finally];
 	[delegate startCall];
 	return [self post:resourcePath params:params delegate:delegate];
 }
@@ -138,7 +144,7 @@
 
 - (RKRequest*)putPath:(NSString*)resourcePath params:(NSObject<RKRequestSerializable>*)params success:(void (^)(RKResponse*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
-	RKRequestCall* delegate = [[[RKRequestCall alloc] initWithSuccess:success failure:failure finally:finally] autorelease];
+	RKRequestCall* delegate = [[RKRequestCall alloc] initWithSuccess:success failure:failure finally:finally];
 	[delegate startCall];
 	return [self put:resourcePath params:params delegate:delegate];
 }
@@ -150,7 +156,7 @@
 
 - (RKRequest*)deletePath:(NSString*)resourcePath success:(void (^)(RKResponse*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
 {
-	RKRequestCall* delegate = [[[RKRequestCall alloc] initWithSuccess:success failure:failure finally:finally] autorelease];
+	RKRequestCall* delegate = [[RKRequestCall alloc] initWithSuccess:success failure:failure finally:finally];
 	[delegate startCall];
 	return [self delete:resourcePath delegate:delegate];
 }

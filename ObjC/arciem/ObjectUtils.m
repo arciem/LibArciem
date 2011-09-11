@@ -142,6 +142,7 @@ BOOL IsEmpty(id a)
     free(properties);
 }
 
+#if 0
 static NSMutableSet* sAssociationKeys = nil;
 
 - (void)setAssociatedObject:(id)obj forKey:(NSString*)key
@@ -173,5 +174,6 @@ static NSMutableSet* sAssociationKeys = nil;
 	
 	return obj;
 }
+#endif
 
 @end
