@@ -24,7 +24,7 @@ using namespace std;
 
 NSString* DenullString(NSString* s)
 {
-	return (s == nil || s == (void*)[NSNull null]) ? @"" : s;
+	return (s == nil || s == (id)[NSNull null]) ? @"" : s;
 }
 
 BOOL IsEmptyString(NSString* s)
@@ -122,7 +122,7 @@ BOOL StringContainsWhitespaceOrNewline(NSString* str, BOOL allowSpaces)
 	static NSMutableCharacterSet* mset = nil;
 	if(allowSpaces) {
 		if(mset == nil) {
-			mset = [[NSMutableCharacterSet whitespaceAndNewlineCharacterSet] retain];
+			mset = [NSMutableCharacterSet whitespaceAndNewlineCharacterSet];
 			[mset removeCharactersInString:@" "];
 		}
 		set = mset;
@@ -228,7 +228,7 @@ NSString* StringByTruncatingString(NSString* string, unsigned maxCharacters)
 {
 	NSString* resultString;
 	if([string length] <= maxCharacters) {
-		resultString = [[string copy] autorelease];
+		resultString = [string copy];
 	} else {
 		resultString = [string substringToIndex:maxCharacters];
 	}
@@ -282,7 +282,7 @@ string ToStd(NSString* s)
 // From OmniFoundation
 + (NSString *)stringWithCharacter:(unichar)aCharacter;
 {
-    return [[[NSString alloc] initWithCharacters:&aCharacter length:1] autorelease];
+    return [[NSString alloc] initWithCharacters:&aCharacter length:1];
 }
 
 // From OmniFoundation
@@ -291,7 +291,7 @@ string ToStd(NSString* s)
     static NSString *string = nil;
 
     if (!string)
-        string = [[self stringWithCharacter:0x2026] retain];
+        string = [self stringWithCharacter:0x2026];
 
 //    OBPOSTCONDITION(string);
 
@@ -303,10 +303,10 @@ string ToStd(NSString* s)
 	NSString* string = nil;
 	
 	CFUUIDRef uuidObj = CFUUIDCreate(nil);
-	string = (NSString*)CFUUIDCreateString(nil, uuidObj);
+	string = (__bridge_transfer NSString*)CFUUIDCreateString(nil, uuidObj);
 	CFRelease(uuidObj);
 	
-	return [string autorelease];
+	return string;
 }
 
 + (NSString*)stringWithASCIIData:(NSData*)data
@@ -316,7 +316,7 @@ string ToStd(NSString* s)
 
 + (NSString*)stringWithData:(NSData*)data encoding:(NSStringEncoding)encoding
 {
-	return [[[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:encoding] autorelease];
+	return [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:encoding];
 }
 
 + (NSString*)stringWithCRLF
@@ -428,7 +428,7 @@ string ToStd(NSString* s)
 	NSString* s = nil;
 	
 	// KLUDGE: We pass a literal CFSTR for legalURLCharactersToBeEscaped to work around an Apple bug.
-	s = [(NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self, NULL, CFSTR("!$&'()*+,-./:;=?@_~"), kCFStringEncodingUTF8) autorelease];
+	s = (__bridge_transfer NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)self, NULL, CFSTR("!$&'()*+,-./:;=?@_~"), kCFStringEncodingUTF8);
 	
 	return s;
 }
@@ -437,7 +437,7 @@ string ToStd(NSString* s)
 {
 	NSString* s = nil;
 	
-	s = [(NSString*)CFURLCreateStringByReplacingPercentEscapes(NULL, (CFStringRef)self, NULL) autorelease];
+	s = (__bridge_transfer NSString*)CFURLCreateStringByReplacingPercentEscapes(NULL, (__bridge CFStringRef)self, NULL);
 	
 	return s;
 }
@@ -488,7 +488,7 @@ NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle)
 	
     NSString* xmlStr = [NSString stringWithFormat:@"<d>%@</d>", s];
     NSData* data = [xmlStr dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSXMLParser* xmlParse = [[[NSXMLParser alloc] initWithData:data] autorelease];
+    NSXMLParser* xmlParse = [[NSXMLParser alloc] initWithData:data];
     [xmlParse setDelegate:self];
     [xmlParse parse];
     return [NSString stringWithString:self.resultString];
@@ -496,14 +496,13 @@ NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle)
 
 - (void)dealloc {
     self.resultString = nil;
-    [super dealloc];
 }
 
 @end
 
 NSString* StringByUnescapingEntitiesInString(NSString* s)
 {
-	CEntitiesConverter* converter = [[[CEntitiesConverter alloc] init] autorelease];
+	CEntitiesConverter* converter = [[CEntitiesConverter alloc] init];
 	
 	return [converter unescapeEntitiesInString:s];
 }

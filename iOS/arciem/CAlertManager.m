@@ -47,14 +47,6 @@ const NSUInteger kOKButtonIndex = 1;
 	return self;
 }
 
-- (void)dealloc
-{
-	self.alerts = nil;
-	self.completionBlocks = nil;
-	
-	[super dealloc];
-}
-
 + (CAlertManager*)sharedInstance
 {
 	if(sAlertManager == nil) {
@@ -67,7 +59,7 @@ const NSUInteger kOKButtonIndex = 1;
 - (void)showAlertWithTitle:(NSString*)title message:(NSString*)message buttonTitles:(NSArray*)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion
 {
 	@synchronized(self) {
-		UIAlertView* alertView = [[[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:nil] autorelease];
+		UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 		if(buttonTitles == nil) {
 			[alertView addButtonWithTitle:IString(@"Cancel")];
 		} else {
@@ -81,7 +73,7 @@ const NSUInteger kOKButtonIndex = 1;
 		}
 
 		[self.alerts addObject:alertView];
-		[self.completionBlocks addObject:[[completion copy] autorelease]];
+		[self.completionBlocks addObject:[completion copy]];
 		
 		[alertView show];
 	}
@@ -116,7 +108,6 @@ const NSUInteger kOKButtonIndex = 1;
 		if(index != NSNotFound) {
 			completion = [self.completionBlocks objectAtIndex:index];
 			if(completion != nil) {
-				[[completion retain] autorelease];
 				[self.alerts removeObjectAtIndex:index];
 				[self.completionBlocks removeObjectAtIndex:index];
 			}
