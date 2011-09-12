@@ -30,6 +30,7 @@
 + (UIImage*)etchedImageWithShapeImage:(UIImage*)shapeImage backgroundImage:(UIImage*)backgroundImage glossAlpha:(CGFloat)glossAlpha;
 + (UIImage*)etchedButtonImageWithSize:(CGSize)size scale:(CGFloat)scale tintColor:(UIColor*)tintColor cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;
 + (UIImage*)etchedButtonWithBackgroundImage:(UIImage*)backgroundImage cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;
++ (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor shadowColor:(UIColor*)shadowColor shadowOffset:(CGSize)shadowOffset shadowBlur:(CGFloat)shadowBlur;
 
 - (UIImage*)reflectedImageWithHeight:(NSUInteger)height;
 

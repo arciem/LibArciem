@@ -289,6 +289,72 @@
 	return image;
 }
 
+- (UIImage*)flattenShapeImage
+{
+	// Draw the shape image on a white background to get rid of any alpha channel
+	UIImage* flatShapeImage = nil;
+	CGContextRef context = nil;
+	CGRect bounds = {CGPointZero, self.size};
+
+	UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
+	context = UIGraphicsGetCurrentContext();
+	CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+	CGContextFillRect(context, bounds);
+	[self drawAtPoint:CGPointZero];
+	flatShapeImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	return flatShapeImage;
+}
+
++ (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor shadowColor:(UIColor*)shadowColor shadowOffset:(CGSize)shadowOffset shadowBlur:(CGFloat)shadowBlur
+{
+	UIImage* resultImage = nil;
+	CGContextRef context = nil;
+	CGRect bounds = {CGPointZero, shapeImage.size};
+	
+	UIImage* backgroundImage = [self imageWithSize:shapeImage.size scale:shapeImage.scale backgroundColor:tintColor];
+	
+	// Draw the shape image on a white background to get rid of any alpha channel
+	UIImage* flatShapeImage = [shapeImage flattenShapeImage];
+	
+	// Make a stencil that contains the shape we've been passed, drawn as a black silhouette on a white background
+	CGImageRef shapeStencil = CGImageMaskCreate(CGImageGetWidth(flatShapeImage.CGImage), CGImageGetHeight(flatShapeImage.CGImage), CGImageGetBitsPerComponent(flatShapeImage.CGImage), CGImageGetBitsPerPixel(flatShapeImage.CGImage), CGImageGetBytesPerRow(flatShapeImage.CGImage), CGImageGetDataProvider(flatShapeImage.CGImage), NULL, false);
+	
+	// Create the context we'll be painting into for the tinted image
+	UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
+	context = UIGraphicsGetCurrentContext();
+	CGContextTranslateCTM(context, 0.0, bounds.size.height);
+	CGContextScaleCTM(context, 1.0, -1.0);
+	
+	// Paint the tinted shape
+	CGContextClipToMask(context, bounds, shapeStencil);
+	CGContextDrawImage(context, bounds, backgroundImage.CGImage);
+	
+	// Retrieve the tinted image
+	UIImage* tintedImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+
+	// Create the main context we'll be painting into
+	UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
+	context = UIGraphicsGetCurrentContext();
+	CGContextTranslateCTM(context, 0.0, bounds.size.height);
+	CGContextScaleCTM(context, 1.0, -1.0);
+
+	// Paint the tinted shape with a shadow
+	CGContextSetShadowWithColor(context, shadowOffset, shadowBlur, shadowColor.CGColor);
+	CGContextDrawImage(context, bounds, tintedImage.CGImage);
+
+	// Retrieve the shadowed, tinted image
+	resultImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+
+	// Clean up
+	CGImageRelease(shapeStencil);
+	
+	return resultImage;
+}
+
 + (UIImage*)etchedImageWithShapeImage:(UIImage*)shapeImage backgroundImage:(UIImage*)backgroundImage glossAlpha:(CGFloat)glossAlpha
 {
 	UIImage* resultImage = nil;
@@ -296,14 +362,7 @@
 	CGRect bounds = {CGPointZero, shapeImage.size};
 	
 	// Draw the shape image on a white background to get rid of any alpha channel
-	UIImage* flatShapeImage = nil;
-	UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
-	context = UIGraphicsGetCurrentContext();
-	CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
-	CGContextFillRect(context, bounds);
-	[shapeImage drawAtPoint:CGPointZero];
-	flatShapeImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+	UIImage* flatShapeImage = [shapeImage flattenShapeImage];
 	
 	// Make a stencil that contains the shape we've been passed, drawn as a black silhouette on a white background
 	CGImageRef shapeStencil = CGImageMaskCreate(CGImageGetWidth(flatShapeImage.CGImage), CGImageGetHeight(flatShapeImage.CGImage), CGImageGetBitsPerComponent(flatShapeImage.CGImage), CGImageGetBitsPerPixel(flatShapeImage.CGImage), CGImageGetBytesPerRow(flatShapeImage.CGImage), CGImageGetDataProvider(flatShapeImage.CGImage), NULL, false);
@@ -430,8 +489,15 @@
 	
 	UIImage* etchedImage = [self etchedImageWithShapeImage:shapeImage backgroundImage:backgroundImage glossAlpha:glossAlpha];
 	
-	UIEdgeInsets insets = UIEdgeInsetsMake(size.height / 2, size.width / 2 - 1.0, size.height/2, size.width / 2);
-	resultImage = [etchedImage resizableImageWithCapInsets:insets];
+	if([etchedImage respondsToSelector:@selector(resizableImageWithCapInsets:)]) {
+		// iOS 5 and later only
+		UIEdgeInsets insets = UIEdgeInsetsMake(size.height / 2, size.width / 2 - 1.0, size.height/2, size.width / 2);
+		resultImage = [etchedImage resizableImageWithCapInsets:insets];
+	} else {
+		NSInteger leftCapWidth = ((NSInteger)size.width / 2.0) - 1;
+		NSInteger topCapHeight = ((NSInteger)size.height / 2.0) - 1;
+		resultImage = [etchedImage stretchableImageWithLeftCapWidth:leftCapWidth topCapHeight:topCapHeight];
+	}
 	
 	return resultImage;
 }
