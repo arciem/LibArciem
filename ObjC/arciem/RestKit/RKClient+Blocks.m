@@ -24,10 +24,10 @@ static NSMutableSet* sCallsInFlight = nil;
 
 @interface RKRequestCall : NSObject<RKRequestDelegate>
 
-@property(nonatomic, copy) void (^success)(RKResponse*);
-@property(nonatomic, copy) void (^failure)(NSError*);
-@property(nonatomic, copy) void (^finally)(void);
-@property (strong, nonatomic) NSMutableSet* callsInFlight;
+@property (copy, nonatomic) void (^success)(RKResponse*);
+@property (copy, nonatomic) void (^failure)(NSError*);
+@property (copy, nonatomic) void (^finally)(void);
+@property (nonatomic, readonly) NSMutableSet* sharedCallsInFlight;
 
 - (id)initWithSuccess:(void (^)(RKResponse*))success failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
 
@@ -41,9 +41,9 @@ static NSMutableSet* sCallsInFlight = nil;
 @synthesize success = success_;
 @synthesize failure = failure_;
 @synthesize finally = finally_;
-@synthesize callsInFlight = callsInFlight_;
+@dynamic sharedCallsInFlight;
 
-- (NSMutableSet*)callsInFlight
+- (NSMutableSet*)sharedCallsInFlight
 {
 	if(sCallsInFlight == nil) {
 		sCallsInFlight = [NSMutableSet set];
@@ -64,12 +64,12 @@ static NSMutableSet* sCallsInFlight = nil;
 
 - (void)startCall
 {
-	[self.callsInFlight addObject:self];
+	[self.sharedCallsInFlight addObject:self];
 }
 
 - (void)endCall
 {
-	[self.callsInFlight removeObject:self];
+	[self.sharedCallsInFlight removeObject:self];
 }
 
 - (void)endCallWithResponse:(RKResponse*)response
