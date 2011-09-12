@@ -18,34 +18,35 @@
 
 #import "CNetworkActivity.h"
 #import "CLog.h"
+#import "ObjectUtils.h"
 
-@interface CNetworkActivity ()
-
-@property(nonatomic, readwrite) NSUInteger sequenceNumber;
-@property(nonatomic, readwrite, getter = hasIndicator) BOOL indicator;
-@property(nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
-@end
+@class CNetworkActivityIndicator;
 
 static NSUInteger sNextSequenceNumber = 1;
-
-
-@interface CNetworkActivityIndicator : NSObject
-
-@property(nonatomic, retain) NSTimer* timer;
-@property(nonatomic) NSInteger activationsCount;
-
-+ (CNetworkActivityIndicator*)sharedIndicator;
-- (void)addActivity;
-- (void)removeActivity;
-
-@end
-
 static const NSTimeInterval kTimerInterval = 0.1;
 static const NSTimeInterval kIndicatorHysteresisInterval = 0.2;
 static CNetworkActivityIndicator* sSharedIndicator = nil;
 static NSMutableArray* sActivities = nil;
 static NSTimeInterval sLastRemoveTime = 0;
 
+@interface CNetworkActivity ()
+
+@property(nonatomic, readwrite) NSUInteger sequenceNumber;
+@property(nonatomic, readwrite, getter = hasIndicator) BOOL indicator;
+@property(nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
+
+@end
+
+@interface CNetworkActivityIndicator : NSObject
+
+@property (strong, nonatomic) NSTimer* timer;
+@property (nonatomic) NSInteger activationsCount;
+
++ (CNetworkActivityIndicator*)sharedIndicator;
+- (void)addActivity;
+- (void)removeActivity;
+
+@end
 
 @implementation CNetworkActivity
 
@@ -54,13 +55,23 @@ static NSTimeInterval sLastRemoveTime = 0;
 @synthesize indicator = indicator_;
 @synthesize backgroundTaskIdentifier = backgroundTaskIdentifier_;
 
+- (NSString*)description
+{
+	return [NSString stringWithFormat:@"<%@:0x%x %@ %@>", 
+			[self class], self,
+			[self formatValueForKey:@"sequenceNumber" compact:YES],
+			[self formatBoolValueForKey:@"hasIndicator" compact:YES]
+			];
+}
+
 - (id)initWithIndicator:(BOOL)indicator
 {
 	@synchronized([self class]) {
+		CLogSetTagActive(@"NETWORK_ACTIVITY", YES);
 		if((self = [super init])) {
-			CLogDebug(@"NETWORK_ACTIVITY", @"%@ init:%d", self, [self retainCount]);
 			self.sequenceNumber = sNextSequenceNumber++;
 			self.indicator = indicator;
+			CLogDebug(@"NETWORK_ACTIVITY", @"%@ init", self);
 			if(sActivities == nil) {
 				sActivities = [[NSMutableArray alloc] init];
 			}
@@ -87,20 +98,6 @@ static NSTimeInterval sLastRemoveTime = 0;
 	return [self initWithIndicator:NO];
 }
 
-#if 0
-- (id)retain
-{
-	CLogDebug(@"NETWORK_ACTIVITY", @"%@ retain:%d", self, [self retainCount] + 1);
-	return [super retain];
-}
-
-- (void)release
-{
-	CLogDebug(@"NETWORK_ACTIVITY", @"%@ release:%d", self, [self retainCount] - 1);
-	[super release];
-}
-#endif
-
 - (void)dealloc
 {
 	@synchronized([self class]) {
@@ -116,13 +113,11 @@ static NSTimeInterval sLastRemoveTime = 0;
 			}
 		}
 	}
-
-	[super dealloc];
 }
 
 + (CNetworkActivity*)activityWithIndicator:(BOOL)indicator
 {
-	return [[[CNetworkActivity alloc] initWithIndicator:indicator] autorelease];
+	return [[CNetworkActivity alloc] initWithIndicator:indicator];
 }
 
 @end
