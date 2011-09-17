@@ -67,7 +67,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 - (id)initWithIndicator:(BOOL)indicator
 {
 	@synchronized([self class]) {
-		CLogSetTagActive(@"NETWORK_ACTIVITY", YES);
+//		CLogSetTagActive(@"NETWORK_ACTIVITY", YES);
 		if((self = [super init])) {
 			self.sequenceNumber = sNextSequenceNumber++;
 			self.indicator = indicator;
