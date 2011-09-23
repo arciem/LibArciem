@@ -25,6 +25,9 @@ BOOL Same(id a, id b);
 BOOL Different(id a, id b);
 BOOL IsEmpty(id a);
 
+// This procedure implements a switch-type statement on an NSDictionary with comparable keys and values that are void-void blocks. If no matching key is found, an attempt is made to find and execute a "default" block whose key is [NSNull null].
+void Switch(id key, NSDictionary* dict);
+
 @interface NSObject (ObjectUtils)
 
 - (NSString*)formatValueForKey:(NSString*)key compact:(BOOL)compact;
@@ -38,5 +41,12 @@ BOOL IsEmpty(id a);
 - (void)setAssociatedObject:(id)obj forKey:(NSString*)key;
 - (id)associatedObjectForKey:(NSString*)key;
 #endif
+
+@end
+
+@interface NSDictionary (ObjectUtils)
+
+// Creates and initializes a dictionary with key value pairs, with the keys specified first instead of the objects.
++ (id)dictionaryWithKeysAndObjects:(id)firstKey, ... NS_REQUIRES_NIL_TERMINATION;
 
 @end

@@ -398,7 +398,7 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 
 - (void)disappearanceAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
 {
-	UIView* superview = self.superview;
+//	UIView* superview = self.superview;
 	[self removeFromSuperview];
 //	[superview release];
 }
