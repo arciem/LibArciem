@@ -23,24 +23,22 @@
 
 + (id)loadFromClassNamedNib
 {
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:[self class]]) {
-			return obj;
-		}
-	}
-	return nil;
+	NSString* nibName = NSStringFromClass(self);
+	return [self loadFromNibNamed:nibName];
 }
 
 + (id)loadFromNibNamed:(NSString*)nibName
 {
+	id result = nil;
+	
 	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
 	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:[self class]]) {
-			return obj;
+		if ([obj isKindOfClass:self]) {
+			result = obj;
+			break;
 		}
 	}
-	return nil;
+	return result;
 }
 
 @end
