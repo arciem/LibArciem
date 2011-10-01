@@ -47,7 +47,6 @@
 - (void)dealloc
 {
 	self.backgroundImage = nil;
-	[super dealloc];
 }
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event

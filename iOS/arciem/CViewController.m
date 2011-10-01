@@ -28,7 +28,7 @@ static UIInterfaceOrientation gPortraitInterfaceOrientationOnly; // global to al
 
 @interface CViewController ()
 
-@property(nonatomic, retain) CActivityShieldView* activityShieldView;
+@property(strong, nonatomic) CActivityShieldView* activityShieldView;
 
 @end
 
@@ -86,7 +86,6 @@ static UIInterfaceOrientation gPortraitInterfaceOrientationOnly; // global to al
 {
 	self.backButtonViewController = nil;
 	[self unload];
-	[super dealloc];
 }
 
 - (void)viewDidUnload
@@ -224,7 +223,7 @@ static UIInterfaceOrientation gPortraitInterfaceOrientationOnly; // global to al
 		[self activityShieldViewParentView].userInteractionEnabled = !visible;
 		if(visible) {
 			UIView* parentView = [self activityShieldViewParentView];
-			self.activityShieldView = [[[CActivityShieldView alloc] initWithFrame:parentView.bounds] autorelease];
+			self.activityShieldView = [[CActivityShieldView alloc] initWithFrame:parentView.bounds];
 			//			[self addActivityShieldView];
 			[self addActivityShieldViewDelayed];
 			

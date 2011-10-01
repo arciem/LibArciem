@@ -30,7 +30,7 @@
 	self.userInteractionEnabled = NO;
 	self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-	UIActivityIndicatorView* activityIndicatorView = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+	UIActivityIndicatorView* activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 	activityIndicatorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	activityIndicatorView.center = self.center;
 	activityIndicatorView.frame = CGRectIntegral(activityIndicatorView.frame);
@@ -64,10 +64,6 @@
 		CGContextFillPath(context);
 		CGPathRelease(boxPath);
 	CGContextRestoreGState(context);
-}
-
-- (void)dealloc {
-    [super dealloc];
 }
 
 

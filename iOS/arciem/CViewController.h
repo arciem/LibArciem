@@ -34,8 +34,8 @@ extern NSString* const InterfaceWillChangeOrientationNotification;
 @property(nonatomic, getter = isInterfaceLocked) BOOL interfaceLocked;
 @property(nonatomic) CViewControllerState state;
 @property(nonatomic) BOOL locksInterfaceDuringActivity;
-@property(nonatomic, assign) UIViewController* backButtonViewController;
-@property(nonatomic, assign) UIViewAnimationTransition transitionForNextPush;
+@property(assign, nonatomic) UIViewController* backButtonViewController;
+@property(assign, nonatomic) UIViewAnimationTransition transitionForNextPush;
 @property(nonatomic) BOOL activityShieldViewVisible;
 
 // Called during -viewDidUnload and -dealloc. Subclasses should release any references held to objects that would have been connected when loading the controller's Nib or constructing it's views. Be sure to call super's implementation.

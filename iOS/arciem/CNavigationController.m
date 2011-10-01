@@ -30,10 +30,9 @@
 - (id)initWithRootViewController:(UIViewController *)rootViewController
 {
 // http://stackoverflow.com/questions/1869331/set-programmatically-a-custom-subclass-of-uinavigationbar-in-uinavigationcontroll
-	[self release];
 	self = [[[NSBundle mainBundle] loadNibNamed:@"CNavigationController" owner:nil options:nil] objectAtIndex:0];
 	self.viewControllers = [NSArray arrayWithObject:rootViewController];
-	return [self retain];
+	return self;
 }
 
 // http://www.hanspinckaers.com/custom-action-on-back-button-uinavigationcontroller
