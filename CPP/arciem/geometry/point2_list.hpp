@@ -16,29 +16,21 @@
  
  *******************************************************************************/
 
-#import "NibUtils.h"
+#ifndef ARCIEM_POINT2_LIST_HPP
+#define ARCIEM_POINT2_LIST_HPP
 
+#include <deque>
+#include <string>
 
-@implementation NSObject(NibUtils)
+#include <arciem/geometry/point2.hpp>
 
-+ (id)loadFromClassNamedNib
-{
-	NSString* nibName = NSStringFromClass(self);
-	return [self loadFromNibNamed:nibName];
-}
+namespace arciem {
 
-+ (id)loadFromNibNamed:(NSString*)nibName
-{
-	id result = nil;
-	
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:self]) {
-			result = obj;
-			break;
-		}
-	}
-	return result;
-}
+class point2_list : public std::deque<point2> {
+public:
+	std::string to_string() const;
+};
 
-@end
+} // namespace
+
+#endif // ARCIEM_POINT2_LIST_HPP

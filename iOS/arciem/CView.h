@@ -25,7 +25,7 @@ typedef enum {
 
 @interface CView : UIView
 
-@property(nonatomic, retain) UIColor* debugColor;
+@property(strong, nonatomic) UIColor* debugColor;
 @property(nonatomic) CViewKeyboardAdjustmentType keyboardAdjustmentType;
 
 - (void)setup;

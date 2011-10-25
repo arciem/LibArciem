@@ -16,29 +16,9 @@
  
  *******************************************************************************/
 
-#import "NibUtils.h"
+#include <arciem/geometry/line2.hpp>
+#import <CoreGraphics/CoreGraphics.h>
 
-
-@implementation NSObject(NibUtils)
-
-+ (id)loadFromClassNamedNib
-{
-	NSString* nibName = NSStringFromClass(self);
-	return [self loadFromNibNamed:nibName];
-}
-
-+ (id)loadFromNibNamed:(NSString*)nibName
-{
-	id result = nil;
-	
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:self]) {
-			result = obj;
-			break;
-		}
-	}
-	return result;
-}
-
-@end
+inline arciem::point2 to_arciem(CGPoint p) { return arciem::point2(p.x, p.y); }
+inline arciem::line2 to_arciem(CGPoint p1, CGPoint p2) { return arciem::line2(to_arciem(p1), to_arciem(p2)); }
+inline CGPoint to_quartz(arciem::point2 const& p) { return CGPointMake(p.x, p.y); }

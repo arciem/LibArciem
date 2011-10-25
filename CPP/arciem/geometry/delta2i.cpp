@@ -16,29 +16,24 @@
  
  *******************************************************************************/
 
-#import "NibUtils.h"
+#include <arciem/geometry/delta2i.hpp>
+#include <arciem/geometry/delta2.hpp>
 
+#include <arciem/stringstreams.hpp>
 
-@implementation NSObject(NibUtils)
+namespace arciem {
 
-+ (id)loadFromClassNamedNib
+delta2i const& delta2i::zero() { static delta2i* d = new delta2i(); return *d; }
+
+delta2i::delta2i(const delta2& d) : dx((int)d.dx), dy((int)d.dy) { }
+
+std::string delta2i::to_string() const
 {
-	NSString* nibName = NSStringFromClass(self);
-	return [self loadFromNibNamed:nibName];
-}
-
-+ (id)loadFromNibNamed:(NSString*)nibName
-{
-	id result = nil;
+	outputstringstream o;
 	
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:self]) {
-			result = obj;
-			break;
-		}
-	}
-	return result;
+	o << "[dx:" << dx << " dy:" << dy << "]";
+	
+	return o.extract();
 }
 
-@end
+}

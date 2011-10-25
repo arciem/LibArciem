@@ -16,29 +16,33 @@
  
  *******************************************************************************/
 
-#import "NibUtils.h"
+#include <arciem/geometry/point2.hpp>
+#include <arciem/geometry/point3.hpp>
+#include <arciem/geometry/volume.hpp>
+#include <arciem/stringstreams.hpp>
 
+namespace arciem {
 
-@implementation NSObject(NibUtils)
+point3 const& point3::zero() { static point3* p = new point3(); return *p; }
 
-+ (id)loadFromClassNamedNib
+point3::point3(point2 const& p) : x(p.x), y(p.y), z(0.0) { }
+
+point3 point3::clamp_inside(volume const& v) const
 {
-	NSString* nibName = NSStringFromClass(self);
-	return [self loadFromNibNamed:nibName];
+	return point3(
+		clamp(x, v.x_min(), v.x_max()),
+		clamp(y, v.y_min(), v.y_max()),
+		clamp(z, v.z_min(), v.z_max())
+	);
 }
 
-+ (id)loadFromNibNamed:(NSString*)nibName
+std::string point3::to_string() const
 {
-	id result = nil;
+	outputstringstream o;
 	
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:self]) {
-			result = obj;
-			break;
-		}
-	}
-	return result;
+	o << "[x:" << x << " y:" << y  << " z:" << z << "]";
+	
+	return o.extract();
 }
 
-@end
+}

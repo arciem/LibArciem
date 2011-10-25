@@ -16,29 +16,23 @@
  
  *******************************************************************************/
 
-#import "NibUtils.h"
+#include <arciem/geometry/delta3.hpp>
+#include <arciem/stringstreams.hpp>
 
+namespace arciem {
 
-@implementation NSObject(NibUtils)
+delta3 const& delta3::zero() { static delta3* d = new delta3(); return *d; }
+delta3 const& delta3::x_axis() { static delta3* d = new delta3(1, 0, 0); return *d; }
+delta3 const& delta3::y_axis() { static delta3* d = new delta3(0, 1, 0); return *d; }
+delta3 const& delta3::z_axis() { static delta3* d = new delta3(0, 0, 1); return *d; }
 
-+ (id)loadFromClassNamedNib
+std::string delta3::to_string() const
 {
-	NSString* nibName = NSStringFromClass(self);
-	return [self loadFromNibNamed:nibName];
-}
-
-+ (id)loadFromNibNamed:(NSString*)nibName
-{
-	id result = nil;
+	outputstringstream o;
 	
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:self]) {
-			result = obj;
-			break;
-		}
-	}
-	return result;
+	o << "[dx:" << dx << " dy:" << dy  << " dz:" << dz << "]";
+	
+	return o.extract();
 }
 
-@end
+}

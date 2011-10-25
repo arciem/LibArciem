@@ -21,7 +21,7 @@
 @interface CNetworkActivity : NSObject
 
 @property(nonatomic, readonly) NSUInteger sequenceNumber;
-@property(nonatomic, retain) NSString* name;
+@property(strong, nonatomic) NSString* name;
 @property(nonatomic, readonly, getter = hasIndicator) BOOL indicator;
 
 - (id)initWithIndicator:(BOOL)indicator;

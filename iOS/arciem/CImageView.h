@@ -29,6 +29,6 @@
 
 @interface CImageView : UIImageView
 
-@property(nonatomic, assign) id<CImageViewLayoutDelegate> layoutDelegate;
+@property(assign, nonatomic) id<CImageViewLayoutDelegate> layoutDelegate;
 
 @end

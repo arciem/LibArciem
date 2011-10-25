@@ -16,29 +16,27 @@
  
  *******************************************************************************/
 
-#import "NibUtils.h"
+#include <arciem/geometry/geometry.hpp>
 
+using namespace arciem;
 
-@implementation NSObject(NibUtils)
+namespace arciem {
 
-+ (id)loadFromClassNamedNib
+angle_t normalize_angle(angle_t a)
 {
-	NSString* nibName = NSStringFromClass(self);
-	return [self loadFromNibNamed:nibName];
-}
-
-+ (id)loadFromNibNamed:(NSString*)nibName
-{
-	id result = nil;
-	
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:self]) {
-			result = obj;
-			break;
+	if(a > two_pi) {
+		a -= two_pi;
+		if (a > two_pi) {
+			a = fmod(a, two_pi);
+		}
+	} else if(a < 0.0) {
+		a += two_pi;
+		if(a < 0.0) {
+			a = fmod(a, two_pi);
 		}
 	}
-	return result;
+	
+	return a;
 }
 
-@end
+} // namespace

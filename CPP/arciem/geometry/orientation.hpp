@@ -16,29 +16,27 @@
  
  *******************************************************************************/
 
-#import "NibUtils.h"
+#ifndef ARCIEM_ORIENTATION_HPP
+#define ARCIEM_ORIENTATION_HPP
 
+#include "geometry.hpp"
+#include "delta3.hpp"
 
-@implementation NSObject(NibUtils)
+namespace arciem {
 
-+ (id)loadFromClassNamedNib
+class orientation
 {
-	NSString* nibName = NSStringFromClass(self);
-	return [self loadFromNibNamed:nibName];
-}
-
-+ (id)loadFromNibNamed:(NSString*)nibName
-{
-	id result = nil;
+public:
+	delta3 axis;
+	angle_t angle;
 	
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:self]) {
-			result = obj;
-			break;
-		}
-	}
-	return result;
-}
+	orientation() : axis(-delta3::z_axis()), angle(0.0) { }
+	orientation(const delta3& axis, angle_t angle) : axis(axis), angle(angle) { }
 
-@end
+	bool operator==(orientation const& o) const { return axis == o.axis && angle == o.angle; }
+	bool operator!=(orientation const& o) const { return !(*this == o); }
+};
+
+} // namespace arciem
+
+#endif // ARCIEM_ORIENTATION_HPP

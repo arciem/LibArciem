@@ -21,9 +21,9 @@
 
 @interface CBeveledBackgroundView ()
 
-@property(nonatomic, retain) CALayer* topEdgeLayer;
-@property(nonatomic, retain) CAGradientLayer* gradientLayer;
-@property(nonatomic, retain) CALayer* bottomEdgeLayer;
+@property(strong, nonatomic) CALayer* topEdgeLayer;
+@property(strong, nonatomic) CAGradientLayer* gradientLayer;
+@property(strong, nonatomic) CALayer* bottomEdgeLayer;
 
 @end
 
@@ -56,7 +56,6 @@
 	self.topEdgeLayer = nil;
 	self.gradientLayer = nil;
 	self.bottomEdgeLayer = nil;
-	[super dealloc];
 }
 
 - (void)layoutSubviews

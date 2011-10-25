@@ -64,8 +64,6 @@
 {
 	self.debugColor = nil;
 	self.keyboardAdjustmentType = kViewKeyboardAdjustmentTypeNone;
-
-    [super dealloc];
 }
 
 #pragma mark -
@@ -82,8 +80,7 @@
 - (void)setDebugColor:(UIColor *)color
 {
 	if(debugColor_ != color) {
-		[debugColor_ autorelease];
-		debugColor_ = [color retain];
+		debugColor_ = color;
 		[self setNeedsDisplay];
 	}
 }

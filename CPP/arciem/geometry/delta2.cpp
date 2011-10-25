@@ -16,29 +16,46 @@
  
  *******************************************************************************/
 
-#import "NibUtils.h"
+#include <arciem/geometry/delta2.hpp>
 
+#include <arciem/stringstreams.hpp>
 
-@implementation NSObject(NibUtils)
+namespace arciem {
 
-+ (id)loadFromClassNamedNib
+delta2 const& delta2::zero() { static delta2* d = new delta2(); return *d; }
+
+std::string delta2::to_string() const
 {
-	NSString* nibName = NSStringFromClass(self);
-	return [self loadFromNibNamed:nibName];
-}
-
-+ (id)loadFromNibNamed:(NSString*)nibName
-{
-	id result = nil;
+	outputstringstream o;
 	
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:self]) {
-			result = obj;
-			break;
-		}
-	}
-	return result;
+	o << "[dx:" << dx << " dy:" << dy << "]";
+	
+	return o.extract();
 }
 
-@end
+delta2 delta2::rotate(double angle) const
+{
+	double ca = cos(angle);
+	double sa = sin(angle);
+	
+	return delta2(
+		dx * ca - dy * sa,
+		dy * ca + dx * sa
+	);
+}
+
+delta2 delta2::integral() const
+{
+	if(empty()) {
+		return zero();
+	} else {
+		return delta2(ceil(dx), ceil(dy));
+	}
+}
+
+delta2 delta2::from_polar(double r, double theta)
+{
+	return delta2(r * cos(theta), r * sin(theta));
+}
+
+}

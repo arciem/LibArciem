@@ -469,7 +469,7 @@ NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle)
 
 @interface CEntitiesConverter : NSObject<NSXMLParserDelegate>
 
-@property (nonatomic, retain) NSMutableString* resultString;
+@property (strong, nonatomic) NSMutableString* resultString;
 
 @end
 

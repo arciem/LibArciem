@@ -27,8 +27,8 @@ const NSUInteger kOKButtonIndex = 1;
 
 @interface CAlertManager ()
 
-@property(nonatomic, retain) NSMutableArray* alerts;
-@property(nonatomic, retain) NSMutableArray* completionBlocks;
+@property(strong, nonatomic) NSMutableArray* alerts;
+@property(strong, nonatomic) NSMutableArray* completionBlocks;
 
 @end
 

@@ -29,7 +29,6 @@
 - (void)dealloc
 {
 	self.layoutDelegate = nil;
-    [super dealloc];
 }
 
 - (void)layoutSubviews

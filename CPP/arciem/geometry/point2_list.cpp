@@ -16,29 +16,29 @@
  
  *******************************************************************************/
 
-#import "NibUtils.h"
+#include <arciem/geometry/point2_list.hpp>
 
+#include <arciem/stringstreams.hpp>
 
-@implementation NSObject(NibUtils)
+using namespace std;
 
-+ (id)loadFromClassNamedNib
+namespace arciem {
+
+std::string point2_list::to_string() const
 {
-	NSString* nibName = NSStringFromClass(self);
-	return [self loadFromNibNamed:nibName];
-}
-
-+ (id)loadFromNibNamed:(NSString*)nibName
-{
-	id result = nil;
+	outputstringstream o;
 	
-	NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil];
-	for (NSObject *obj in nibObjects) {
-		if ([obj isKindOfClass:self]) {
-			result = obj;
-			break;
+	o << "[";
+	unsigned s = size();
+	for(unsigned i = 0; i < s; ++i) {
+		o << i << ":" << (*this)[i].to_string();
+		if(i != s - 1) {
+			o << " ";
 		}
 	}
-	return result;
+	o << "]";
+	
+	return o.extract();
 }
 
-@end
+} // namespace

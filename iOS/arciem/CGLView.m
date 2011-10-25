@@ -20,7 +20,7 @@
 
 @interface CGLView ()
 
-@property(nonatomic, retain) CADisplayLink* displayLink;
+@property(strong, nonatomic) CADisplayLink* displayLink;
 
 @end
 
@@ -83,8 +83,6 @@
 
 	self.renderer = nil;
 	self.displayLink = nil;
-	
-    [super dealloc];
 }
 
 - (BOOL)isAnimating

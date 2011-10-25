@@ -24,7 +24,7 @@
 // Note that setting the view non-opaque will only work if the EAGL surface has an alpha channel.
 @interface CGLView : UIView
 
-@property(nonatomic, retain) id<CGLRenderer> renderer;
+@property(strong, nonatomic) id<CGLRenderer> renderer;
 @property(nonatomic, getter = isAnimating) BOOL animating;
 
 - (void)drawView:(id)sender;
