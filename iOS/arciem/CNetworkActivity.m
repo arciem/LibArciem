@@ -109,6 +109,10 @@ static NSTimeInterval sLastRemoveTime = 0;
 				if(self.hasIndicator) {
 					[[CNetworkActivityIndicator sharedIndicator] removeActivity];
 				}
+				if(self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+					[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+					self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+				}
 				break;
 			}
 		}
