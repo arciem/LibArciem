@@ -91,7 +91,6 @@ static NSMutableSet* sCallsInFlight = nil;
 {
 	self.request.delegate = nil;
 	self.networkActivity = nil;
-	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	if(self.finally != nil) {
 		self.finally();
 	}
@@ -100,6 +99,7 @@ static NSMutableSet* sCallsInFlight = nil;
 
 - (void)endCallWithResponse:(RKResponse*)response
 {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	if(self.success != nil) {
 		self.success(response);
 	}
@@ -108,6 +108,7 @@ static NSMutableSet* sCallsInFlight = nil;
 
 - (void)endCallWithError:(NSError*)error
 {
+	[NSObject cancelPreviousPerformRequestsWithTarget:self];
 	if(self.failure != nil) {
 		self.failure(error);
 	}
