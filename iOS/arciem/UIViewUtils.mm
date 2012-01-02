@@ -356,6 +356,46 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 	self.frame = frame;
 }
 
+- (CGPoint)boundsOrigin
+{
+	return self.bounds.origin;
+}
+
+- (CGSize)boundsSize
+{
+	return self.bounds.size;
+}
+
+- (CGFloat)boundsWidth
+{
+	return self.bounds.size.width;
+}
+
+- (CGFloat)boundsHeight
+{
+	return self.bounds.size.height;
+}
+
+- (CGFloat)boundsTop
+{
+	return self.bounds.origin.y;
+}
+
+- (CGFloat)boundsBottom
+{
+	return CGRectGetMaxY(self.bounds);
+}
+
+- (CGFloat)boundsLeft
+{
+	return self.bounds.origin.x;
+}
+
+- (CGFloat)boundsRight
+{
+	return CGRectGetMaxX(self.bounds);
+}
+
 - (void)addSubview:(UIView *)view animated:(BOOL)animated
 {
 	if(view.superview == nil) {

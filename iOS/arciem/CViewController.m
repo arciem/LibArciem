@@ -24,8 +24,6 @@
 NSString* const InterfaceDidChangeOrientationNotification = @"InterfaceDidChangeOrientationNotification";
 NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChangeOrientationNotification";
 
-static UIInterfaceOrientation gPortraitInterfaceOrientationOnly; // global to all instances of CViewController and subclasses
-
 @interface CViewController ()
 
 @property(strong, nonatomic) CActivityShieldView* activityShieldView;
@@ -172,7 +170,7 @@ static UIInterfaceOrientation gPortraitInterfaceOrientationOnly; // global to al
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	if (gPortraitInterfaceOrientationOnly || IsPhone()) {
+	if (IsPhone()) {
 		return (interfaceOrientation == UIInterfaceOrientationPortrait);
 	} else {
 		return YES;
