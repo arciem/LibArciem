@@ -78,10 +78,13 @@ BOOL IsMultitasking()
 	return isMultitasking;
 }
 
+// uniqueIdentifier is now deprecated
+#if 0
 NSString* DeviceUUID()
 {
 	return [[UIDevice currentDevice] uniqueIdentifier];
 }
+#endif
 
 NSString* DeviceVendor()
 {

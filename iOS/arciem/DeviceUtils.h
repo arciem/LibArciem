@@ -27,7 +27,7 @@ BOOL IsMultitasking();
 BOOL IsHiDPI();
 CGFloat ScreenScale();
 
-NSString* DeviceUUID();
+// NSString* DeviceUUID(); // uniqueIdentifier is now deprecated
 NSString* DeviceVendor();
 NSString* DeviceModel();
 NSString* DeviceIPAddress();
