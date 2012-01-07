@@ -33,7 +33,7 @@
 {
     [NSThread performSelector:@selector(ng_runBlock:)
                      onThread:self
-                   withObject:[[block copy] autorelease]
+                   withObject:[block copy]
                 waitUntilDone:wait];
 }
 
@@ -45,7 +45,7 @@
 + (void)performBlockInBackground:(void (^)())block
 {
 	[self performSelectorInBackground:@selector(ng_runBlock:)
-	                           withObject:[[block copy] autorelease]];
+	                           withObject:[block copy]];
 }
 
 + (void)performBlockOnMainThread:(void (^)())block
@@ -66,17 +66,15 @@
 	}];
 	
 	[self performBlockInBackground:^{
-		NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		[condition lock];
-		[condition wait];
-		[condition unlock];
-		
-		[self performBlockOnMainThread:^{
-			block2();
-		}];
-		
-		[pool release];
-		[condition release];
+		@autoreleasepool {
+			[condition lock];
+			[condition wait];
+			[condition unlock];
+			
+			[self performBlockOnMainThread:^{
+				block2();
+			}];
+		}
 	}];
 }
 
