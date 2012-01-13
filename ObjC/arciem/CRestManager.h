@@ -16,8 +16,15 @@
  
  *******************************************************************************/
 
-#import "CView.h"
+#import <Foundation/Foundation.h>
+#import "CRestWorker.h"
 
-@interface CNotifierBar : CView
+@interface CRestManager : NSObject
+
++ (CRestManager*)sharedInstance;
+
+- (void)addWorker:(CRestWorker*)worker success:(void (^)(CRestWorker*))success shouldRetry:(BOOL (^)(NSError*))shouldRetry failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
+
+@property (strong, readonly, nonatomic) NSOperationQueue* queue;
 
 @end

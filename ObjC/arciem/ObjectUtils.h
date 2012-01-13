@@ -34,6 +34,7 @@ void Switch(id key, NSDictionary* dict);
 - (NSString*)formatKey:(NSString*)key value:(id)value compact:(BOOL)compact;
 - (NSString*)formatBoolValueForKey:(NSString*)key compact:(BOOL)compact;
 - (NSString*)formatBoolValueForKey:(NSString*)key compact:(BOOL)compact hidingIf:(BOOL)hideValue;
+- (NSString*)formatObjectWithValues:(NSArray*)values;
 
 - (void)setPropertiesToNil;
 
