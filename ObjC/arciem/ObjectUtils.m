@@ -105,7 +105,7 @@ void Switch(id key, NSDictionary* dict)
 			}
 		} else {
 			if(compact) {
-				valueStr = [NSString stringWithFormat:@"<%@: 0x%x>", [value class], value];
+				valueStr = [NSString stringWithFormat:@"<%@: %p>", [value class], value];
 			} else {
 				valueStr = [value description];
 			}
@@ -139,6 +139,15 @@ void Switch(id key, NSDictionary* dict)
 	}
 	
 	return result;
+}
+
+- (NSString*)formatObjectWithValues:(NSArray*)values
+{
+	NSString* o = [NSString stringWithFormat:@"%@:%p", [self class], self];
+	NSArray* v = [[NSArray arrayWithObject:o] arrayByAddingObjectsFromArray:values];
+	NSString* a = StringByJoiningNonemptyStringsWithString(v, @"; ");
+	NSString* s = [NSString stringWithFormat:@"<%@>", a];
+	return s;
 }
 
 - (void)setPropertiesToNil
