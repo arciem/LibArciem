@@ -19,6 +19,7 @@
 #import "UIColorUtils.h"
 #import "math_utils.hpp"
 #import <QuartzCore/QuartzCore.h>
+#import "Geom.h"
 
 @implementation UIColor(UIColorUtils)
 
@@ -359,6 +360,38 @@
 		result = [self colorByColorBurnFraction:0.25];
 	}
 	return result;
+}
+
++ (UIColor*)diagonalPatternColorWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale
+{
+	CGRect imageBounds = CGRectZero;
+	imageBounds.size = size;
+
+	UIGraphicsBeginImageContextWithOptions(size, YES, scale);
+	
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	
+	[color1 set];
+	CGContextFillRect(context, imageBounds);
+	
+	UIBezierPath* path = [[UIBezierPath alloc] init];
+	[path moveToPoint:[Geom rectMinXMinY:imageBounds]];
+	[path addLineToPoint:[Geom rectMidXMinY:imageBounds]];
+	[path addLineToPoint:[Geom rectMinXMidY:imageBounds]];
+	[path closePath];
+	[path moveToPoint:[Geom rectMaxXMinY:imageBounds]];
+	[path addLineToPoint:[Geom rectMaxXMidY:imageBounds]];
+	[path addLineToPoint:[Geom rectMidXMaxY:imageBounds]];
+	[path addLineToPoint:[Geom rectMinXMaxY:imageBounds]];
+	[path closePath];
+	[color2 set];
+	[path fill];
+	
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	UIColor* color = [[UIColor alloc] initWithPatternImage:image];
+	return color;
 }
 
 @end

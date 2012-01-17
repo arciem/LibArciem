@@ -29,6 +29,8 @@
 + (UIColor*)systemNavigationGray;
 + (UIColor*)systemHighlightGray;
 
++ (UIColor*)diagonalPatternColorWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale;
+
 - (UIColor*)colorByInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
 - (UIColor*)colorByCircularInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
 - (UIColor*)colorByCircularInterpolatingToHue:(UIColor*)color fraction:(CGFloat)fraction;
