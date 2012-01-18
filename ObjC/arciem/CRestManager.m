@@ -58,9 +58,11 @@ static CRestManager* sSharedInstance = nil;
 
 - (void)startWorker:(CRestWorker*)worker
 {
-	NSOperation* operation = [worker createOperationForTry];
-	if(operation != nil) {
-		[self.queue addOperation:operation];
+	@synchronized(self) {
+		NSOperation* operation = [worker createOperationForTry];
+		if(operation != nil) {
+			[self.queue addOperation:operation];
+		}
 	}
 }
 
@@ -76,50 +78,52 @@ static CRestManager* sSharedInstance = nil;
 	}
 }
 
-- (void)addWorker:(CRestWorker*)worker success:(void (^)(CRestWorker*))success shouldRetry:(BOOL (^)(NSError*))shouldRetry failure:(void (^)(NSError*))failure finally:(void (^)(void))finally
+- (void)addWorker:(CRestWorker*)worker success:(void (^)(CRestWorker*))success shouldRetry:(BOOL (^)(CRestWorker*, NSError*))shouldRetry failure:(void (^)(CRestWorker*, NSError*))failure finally:(void (^)(CRestWorker*))finally
 {
 	@synchronized(self) {
 		NSAssert1(![self.workers containsObject:worker], @"worker already added: %@", worker);
 		
 		[self.workers addObject:worker];
 
-		__weak CRestWorker* worker_ = worker;
+		__weak CRestManager* manager_ = self;
 
 		worker.success = ^(CRestWorker* worker) {
-			CLogTrace(@"C_REST_MANAGER", @"%@ success:%@", self, worker);
-			worker_.isExecuting = NO;
-			worker_.isFinished = YES;
+			CLogTrace(@"C_REST_MANAGER", @"success:%@", worker);
+			worker.isExecuting = NO;
+			worker.isFinished = YES;
 			if(success != NULL) {
 				success(worker);
 			}
 		};
 		
-		worker.failure = ^(NSError* error) {
-			CLogTrace(@"C_REST_MANAGER", @"%@ failure:%@", self, error);
+		worker.failure = ^(CRestWorker* worker, NSError* error) {
+			CLogTrace(@"C_REST_MANAGER", @"failure:%@", error);
 			BOOL retry = NO;
-			if(worker_.canRetry && shouldRetry != NULL) {
-				retry = shouldRetry(error);
+			if(worker.canRetry && shouldRetry != NULL) {
+				retry = shouldRetry(worker, error);
 			}
 			if(retry) {
-				[self startWorker:worker_];
+				[manager_ startWorker:worker];
 			} else {
-				worker_.isExecuting = NO;
-				worker_.isFinished = YES;
+				worker.isExecuting = NO;
+				worker.isFinished = YES;
 				if(failure != NULL) {
-					failure(error);
+					failure(worker, error);
 				}
 			}
 		};
 
-		worker.finally = ^{
-			CLogTrace(@"C_REST_MANAGER", @"%@ finally", self);
-			if(!worker_.isCancelled) {
+		worker.finally = ^(CRestWorker* worker) {
+			CLogTrace(@"C_REST_MANAGER", @"finally:%@", worker);
+			if(!worker.isCancelled) {
 				if(finally != NULL) {
-					finally();
+					finally(worker);
 				}
 			}
-			[self.workers removeObject:worker_];
-			[self startReadyWorkers];
+			@synchronized(manager_) {
+				[manager_.workers removeObject:worker];
+				[manager_ startReadyWorkers];
+			}
 		};
 
 		[self startReadyWorkers];

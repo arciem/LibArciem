@@ -23,7 +23,7 @@
 
 + (CRestManager*)sharedInstance;
 
-- (void)addWorker:(CRestWorker*)worker success:(void (^)(CRestWorker*))success shouldRetry:(BOOL (^)(NSError*))shouldRetry failure:(void (^)(NSError*))failure finally:(void (^)(void))finally;
+- (void)addWorker:(CRestWorker*)worker success:(void (^)(CRestWorker*))success shouldRetry:(BOOL (^)(CRestWorker*, NSError*))shouldRetry failure:(void (^)(CRestWorker*, NSError*))failure finally:(void (^)(CRestWorker*))finally;
 
 @property (strong, readonly, nonatomic) NSOperationQueue* queue;
 

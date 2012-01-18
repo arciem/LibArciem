@@ -16,6 +16,19 @@
  
  *******************************************************************************/
 
+//
+// Common Errors
+//
+// NSURLErrorDomain NSURLErrorTimedOut "The request timed out." (DNS not responsive?)
+// NSURLErrorDomain NSURLErrorNotConnectedToInternet "The Internet connection appears to be offline." (Airplane mode?)
+// NSURLErrorDomain NSURLErrorCannotFindHost "A server with the specified hostname could not be found."
+//
+// See Also:
+//   NSURLError.h
+//   Foundation Constants Reference
+//   CFNetwork Error Codes Reference
+//
+
 #import <Foundation/Foundation.h>
 
 extern NSString* const CRestErrorDomain;
@@ -69,14 +82,16 @@ extern NSString* const CRestErrorFailingURLErrorKey;
 @property (readonly, nonatomic) NSUInteger sequenceNumber; // for debug display
 @property (readonly, nonatomic) NSUInteger tryCount; // initially 0, incremented for each call to -createOperation
 
+- (id)dataAsJSONWithError:(NSError**)error;
+
 @end
 
 @interface CRestWorker(Private)
 
 - (NSOperation*)createOperationForTry;
 @property (copy, nonatomic) void (^success)(CRestWorker*);
-@property (copy, nonatomic) void (^failure)(NSError*);
-@property (copy, nonatomic) void (^finally)(void);
+@property (copy, nonatomic) void (^failure)(CRestWorker*, NSError*);
+@property (copy, nonatomic) void (^finally)(CRestWorker*);
 @property (readwrite, nonatomic) BOOL isExecuting;
 @property (readwrite, nonatomic) BOOL isFinished;
 @property (readonly, nonatomic) BOOL canRetry;

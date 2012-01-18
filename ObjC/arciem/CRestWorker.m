@@ -42,8 +42,8 @@ static NSUInteger sNextSequenceNumber = 0;
 @property (strong, readwrite, nonatomic) NSURLResponse* response;
 @property (strong, nonatomic) NSMutableData* mutableData;
 @property (copy, nonatomic) void (^success)(CRestWorker*);
-@property (copy, nonatomic) void (^failure)(NSError*);
-@property (copy, nonatomic) void (^finally)(void);
+@property (copy, nonatomic) void (^failure)(CRestWorker*, NSError*);
+@property (copy, nonatomic) void (^finally)(CRestWorker*);
 
 @end
 
@@ -76,10 +76,14 @@ static NSUInteger sNextSequenceNumber = 0;
 @dynamic dataAsString;
 @dynamic dataAsJSON;
 
++ (void)initialize
+{
+//	CLogSetTagActive(@"C_REST_WORKER", YES);
+}
+
 - (id)init
 {
 	if(self = [super init]) {
-		CLogSetTagActive(@"C_REST_WORKER", YES);
 		self.sequenceNumber = sNextSequenceNumber++;
 		self.tryCount = 0;
 		self.tryLimit = 3;
@@ -92,6 +96,11 @@ static NSUInteger sNextSequenceNumber = 0;
 	}
 	
 	return self;
+}
+
+- (void)dealloc
+{
+	CLogDebug(@"C_REST_WORKER", @"%@ dealloc", self);
 }
 
 - (id)initWithRequest:(NSURLRequest*)request identifier:(NSString*)identifier
@@ -132,13 +141,18 @@ static NSUInteger sNextSequenceNumber = 0;
 	return [[NSString alloc] initWithData:self.mutableData encoding:NSUTF8StringEncoding];
 }
 
-- (id)dataAsJSON
+- (id)dataAsJSONWithError:(NSError**)error
 {
-	NSError* error = nil;
-	return [NSJSONSerialization JSONObjectWithData:self.mutableData options:0 error:&error];
-	if(error != nil) {
+	id json = [NSJSONSerialization JSONObjectWithData:self.mutableData options:0 error:error];
+	if(json == nil) {
 		CLogError(nil, @"%@ Parsing JSON: %@", self, error);
 	}
+	return json;
+}
+
+- (id)dataAsJSON
+{
+	return [self dataAsJSONWithError:nil];
 }
 
 - (NSArray*)dependencies
@@ -186,31 +200,32 @@ static NSUInteger sNextSequenceNumber = 0;
 
 	if(self.canRetry) {
 		++self.tryCount;
+		__weak CRestWorker* worker_ = self;
 		self.operation = [NSBlockOperation blockOperationWithBlock:^{
-			CLogTrace(@"C_REST_WORKER", @"%@ entered NSBlockOperation", self);
-			CNetworkActivity* activity = [CNetworkActivity activityWithIndicator:self.showsNetworkActivityIndicator];
-			if(!self.isCancelled) {
-				if(self.tryCount > 1) {
-					CLogTrace(@"C_REST_WORKER", @"%@ starting retry delay: %f sec", self, self.retryDelayInterval);
+			CLogTrace(@"C_REST_WORKER", @"%@ entered NSBlockOperation", worker_);
+			CNetworkActivity* activity = [CNetworkActivity activityWithIndicator:worker_.showsNetworkActivityIndicator];
+			if(!worker_.isCancelled) {
+				if(worker_.tryCount > 1) {
+					CLogTrace(@"C_REST_WORKER", @"%@ starting retry delay: %f sec", worker_, worker_.retryDelayInterval);
 					// Here we block the thread, as we're not currently waiting on any run loop sources
-					[NSThread sleepForTimeInterval:self.retryDelayInterval];
-					CLogTrace(@"C_REST_WORKER", @"%@ ending retry delay", self, self.retryDelayInterval);
+					[NSThread sleepForTimeInterval:worker_.retryDelayInterval];
+					CLogTrace(@"C_REST_WORKER", @"%@ ending retry delay", worker_, worker_.retryDelayInterval);
 				}
-				if(!self.isCancelled) {
-					CLogTrace(@"C_REST_WORKER", @"%@ starting NSURLConnection", self);
-					self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:YES];
+				if(!worker_.isCancelled) {
+					CLogTrace(@"C_REST_WORKER", @"%@ starting NSURLConnection", worker_);
+					worker_.connection = [[NSURLConnection alloc] initWithRequest:worker_.request delegate:worker_ startImmediately:YES];
 					
 					// Here we don't want to block the thread as the NSURLConnection will call our delegate methods on the same thread we're on.
 					// So run the run loop until it is out of sources, at which point the callbacks will all be done.
-					CLogTrace(@"C_REST_WORKER", @"%@ entering runloop", self);
-					while(!self.isCancelled && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) {
-						CLogTrace(@"C_REST_WORKER", @"%@ ran runloop", self);
+					CLogTrace(@"C_REST_WORKER", @"%@ entering runloop", worker_);
+					while(!worker_.isCancelled && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) {
+						CLogTrace(@"C_REST_WORKER", @"%@ ran runloop", worker_);
 					}
-					CLogTrace(@"C_REST_WORKER", @"%@ runloop exited", self);
+					CLogTrace(@"C_REST_WORKER", @"%@ runloop exited", worker_);
 				}
 			}
 			activity = nil;
-			CLogTrace(@"C_REST_WORKER", @"%@ exiting NSBlockOperation", self);
+			CLogTrace(@"C_REST_WORKER", @"%@ exiting NSBlockOperation", worker_);
 		}];
 		
 		[self.operation setQueuePriority:self.queuePriority];
@@ -229,7 +244,7 @@ static NSUInteger sNextSequenceNumber = 0;
 			[self.operation cancel];
 			[self.callbackThread performBlock:^{
 				if(self.finally != NULL) {
-					self.finally();
+					self.finally(self);
 				}
 			}];
 		}
@@ -290,14 +305,16 @@ static NSUInteger sNextSequenceNumber = 0;
 		self.connection = nil;
 		self.operation = nil;
 		
+		__weak CRestWorker* worker_ = self;
+		
 		[self.callbackThread performBlock:^{
-			if(!self.isCancelled) {
-				if(self.failure != NULL) {
-					self.failure(error);
+			if(!worker_.isCancelled) {
+				if(worker_.failure != NULL) {
+					worker_.failure(worker_, error);
 				}
 			}
-			if(self.finally != NULL) {
-				self.finally();
+			if(worker_.finally != NULL) {
+				worker_.finally(worker_);
 			}
 		}];
 	}
@@ -310,34 +327,36 @@ static NSUInteger sNextSequenceNumber = 0;
 		self.connection = nil;
 		self.operation = nil;
 
+		__weak CRestWorker* worker_ = self;
+
 		[self.callbackThread performBlock:^{
-			if(!self.isCancelled) {
-				NSHTTPURLResponse* httpResponse = self.httpResponse;
+			if(!worker_.isCancelled) {
+				NSHTTPURLResponse* httpResponse = worker_.httpResponse;
 				if(httpResponse != nil) {
 					NSInteger statusCode = httpResponse.statusCode;
-					if([self.successStatusCodes containsIndex:statusCode]) {
-						if(self.success != NULL) {
-							self.success(self);
+					if([worker_.successStatusCodes containsIndex:statusCode]) {
+						if(worker_.success != NULL) {
+							worker_.success(worker_);
 						}
 					} else {
-						if(self.failure != NULL) {
+						if(worker_.failure != NULL) {
 							NSDictionary* userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 													  [NSHTTPURLResponse localizedStringForStatusCode:statusCode], NSLocalizedDescriptionKey,
-													  self.request.URL, CRestErrorFailingURLErrorKey,
-													  self, CRestErrorWorkerErrorKey,
+													  worker_.request.URL, CRestErrorFailingURLErrorKey,
+													  worker_, CRestErrorWorkerErrorKey,
 													  nil];
 							NSError* error = [NSError errorWithDomain:CRestErrorDomain code:statusCode userInfo:userInfo];
-							self.failure(error);
+							worker_.failure(worker_, error);
 						}
 					}
 				} else {
-					if(self.success != NULL) {
-						self.success(self);
+					if(worker_.success != NULL) {
+						worker_.success(worker_);
 					}
 				}
 			}
-			if(self.finally != NULL) {
-				self.finally();
+			if(worker_.finally != NULL) {
+				worker_.finally(worker_);
 			}
 		}];
 	}
