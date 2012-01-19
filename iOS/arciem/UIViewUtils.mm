@@ -396,6 +396,21 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 	return CGRectGetMaxX(self.bounds);
 }
 
+- (CGFloat)boundsCenterX
+{
+	return CGRectGetMidX(self.bounds);
+}
+
+- (CGFloat)boundsCenterY
+{
+	return CGRectGetMidY(self.bounds);
+}
+
+- (CGPoint)boundsCenter
+{
+	return [Geom rectMid:self.bounds];
+}
+
 - (void)addSubview:(UIView *)view animated:(BOOL)animated
 {
 	if(view.superview == nil) {
