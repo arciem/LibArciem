@@ -22,6 +22,5 @@
 
 @property (strong, nonatomic) UIView* contentView;
 @property (nonatomic) UIEdgeInsets contentEdgeInsets;
-@property (strong, nonatomic) NSSet* supportedInterfaceOrientations;
 
 @end

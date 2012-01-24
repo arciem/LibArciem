@@ -16,15 +16,11 @@
  
  *******************************************************************************/
 
-#import <Foundation/Foundation.h>
-#import "CRestWorker.h"
+#import "CView.h"
+#import "CWorkerManager.h"
 
-@interface CRestManager : NSObject
+@interface CWorkerManagerDebugView : CView
 
-+ (CRestManager*)sharedInstance;
-
-- (void)addWorker:(CRestWorker*)worker success:(void (^)(CRestWorker*))success shouldRetry:(BOOL (^)(CRestWorker*, NSError*))shouldRetry failure:(void (^)(CRestWorker*, NSError*))failure finally:(void (^)(CRestWorker*))finally;
-
-@property (strong, readonly, nonatomic) NSOperationQueue* queue;
+- (id)initWithFrame:(CGRect)frame workerManager:(CWorkerManager*)workerManager;
 
 @end

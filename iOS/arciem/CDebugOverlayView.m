@@ -21,7 +21,9 @@
 
 @interface CDebugOverlayView ()
 
-@property (nonatomic) UIDeviceOrientation orientation;
+@property (nonatomic) UIInterfaceOrientation orientation;
+@property (nonatomic) UIInterfaceOrientation lastSyncOrientation;
+@property (nonatomic) BOOL justMovedToSuperview;
 
 @end
 
@@ -29,8 +31,14 @@
 
 @synthesize contentView = contentView_;
 @synthesize orientation = orientation_;
+@synthesize lastSyncOrientation = lastSyncOrientation_;
 @synthesize contentEdgeInsets = contentEdgeInsets_;
-@synthesize supportedInterfaceOrientations = supportedInterfaceOrientations_;
+@synthesize justMovedToSuperview = justMovedToSuperview_;
+
++ (void)initialize
+{
+//	CLogSetTagActive(@"C_DEBUG_OVERLAY_VIEW", YES);
+}
 
 - (void)setup
 {
@@ -38,15 +46,10 @@
 	
 //	self.debugColor = [UIColor blueColor];
 	self.userInteractionEnabled = NO;
-	self.orientation = UIDeviceOrientationPortrait;
-	self.supportedInterfaceOrientations = [NSSet setWithObjects:
-										   [NSNumber numberWithInt:UIInterfaceOrientationPortrait], 
-										   [NSNumber numberWithInt:UIInterfaceOrientationPortraitUpsideDown], 
-										   [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft], 
-										   [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight], 
-										   nil];
+	self.lastSyncOrientation = [UIApplication sharedApplication].statusBarOrientation;
+	self.orientation = self.lastSyncOrientation;
 	CView* contentView = [[CView alloc] initWithFrame:CGRectZero];
-	contentView.debugColor = [UIColor redColor];
+//	contentView.debugColor = [UIColor redColor];
 	contentView.userInteractionEnabled = NO;
 	self.contentView = contentView;
 //	self.contentEdgeInsets = UIEdgeInsetsMake(50, 50, 50, 50);
@@ -54,6 +57,7 @@
 
 - (void)syncContentViewFrameAnimated:(BOOL)animated
 {
+	CLogTrace(@"C_DEBUG_OVERLAY_VIEW", @"syncContentViewFrameAnimated:%d", animated);
 	CGRect bounds = self.bounds;
 	CGRect contentBounds = bounds;
 	CGFloat contentCenterX = 0.0;
@@ -74,19 +78,19 @@
 
 	CGFloat rotationAngle = 0.0;
 	switch(self.orientation) {
-		case UIDeviceOrientationPortrait:
+		case UIInterfaceOrientationPortrait:
 			contentCenterY = self.boundsCenterY + vOffset;
 			rotationAngle = 0.0;
 			break;
-		case UIDeviceOrientationPortraitUpsideDown:
+		case UIInterfaceOrientationPortraitUpsideDown:
 			contentCenterY = self.boundsCenterY - vOffset;
 			rotationAngle = M_PI;
 			break;
-		case UIDeviceOrientationLandscapeLeft:
+		case UIInterfaceOrientationLandscapeRight:
 			contentCenterX = self.boundsCenterX - vOffset;
 			rotationAngle = M_PI/2;
 			break;
-		case UIDeviceOrientationLandscapeRight:
+		case UIInterfaceOrientationLandscapeLeft:
 			contentCenterX = self.boundsCenterX + vOffset;
 			rotationAngle = -M_PI/2;
 			break;
@@ -97,7 +101,20 @@
 	CGPoint contentCenter = CGPointMake(contentCenterX, contentCenterY);
 	CGAffineTransform contentTransform = CGAffineTransformMakeRotation(rotationAngle);
 
-	NSTimeInterval duration = animated ? 0.4 : 0.0;
+	NSTimeInterval duration = 0.4;
+	if(!animated) {
+		duration = 0.0;
+	} else {
+		if(self.orientation != self.lastSyncOrientation) {
+			if(UIInterfaceOrientationIsPortrait(self.orientation) == UIInterfaceOrientationIsPortrait(self.lastSyncOrientation)) {
+				// Must be doing a 180° rotation, so do it slower.
+				duration = 0.8;
+			}
+		}
+	}
+	
+	self.lastSyncOrientation = self.orientation;
+	
 	[UIView animateWithDuration:duration animations:^{
 		contentView_.bounds = contentBounds;
 		contentView_.center = contentCenter;
@@ -105,24 +122,23 @@
 	}];
 }
 
-- (void)setOrientation:(UIDeviceOrientation)orientation animated:(BOOL)animated
+- (void)setOrientation:(UIInterfaceOrientation)orientation animated:(BOOL)animated
 {
+	CLogTrace(@"C_DEBUG_OVERLAY_VIEW", @"setOrientation:%d lastSyncOrientation:%d animated:%d", orientation, self.lastSyncOrientation, animated);
 	if(UIDeviceOrientationIsValidInterfaceOrientation(orientation)) {
-		if([self.supportedInterfaceOrientations containsObject:[NSNumber numberWithInt:orientation]]) {
-			if(orientation_ != orientation) {
-				orientation_ = orientation;
-				[self syncContentViewFrameAnimated:animated];
-			}
+		if(orientation_ != orientation) {
+			orientation_ = orientation;
+			[self syncContentViewFrameAnimated:animated];
 		}
 	}
 }
 
-- (UIDeviceOrientation)orientation
+- (UIInterfaceOrientation)orientation
 {
 	return orientation_;
 }
 
-- (void)setOrientation:(UIDeviceOrientation)orientation
+- (void)setOrientation:(UIInterfaceOrientation)orientation
 {
 	[self setOrientation:orientation animated:NO];
 }
@@ -142,21 +158,20 @@
 {
 	[super didMoveToSuperview];
 	if(self.superview != nil) {
-		[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 		self.frame = self.superview.bounds;
-		[self syncContentViewFrameAnimated:NO];
+		self.justMovedToSuperview = YES;
 	} else {
-		[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 	}
 }
 
-- (void)deviceOrientationDidChange:(NSNotification*)notification
+- (void)orientationDidChange:(NSNotification*)notification
 {
-//	CLogDebug(nil, @"%@ deviceOrientationDidChange:%@", self, notification);
-	BOOL animated = [(NSNumber*)[notification.userInfo objectForKey:@"UIDeviceOrientationRotateAnimatedUserInfoKey"] boolValue];
-	[self setOrientation:[UIDevice currentDevice].orientation animated:animated];
+//	CLogDebug(nil, @"%@ orientationDidChange:%@", self, notification);
+	BOOL animated = !self.justMovedToSuperview;
+	[self setOrientation:[UIApplication sharedApplication].statusBarOrientation animated:animated];
+	self.justMovedToSuperview = NO;
 }
 
 - (UIView*)contentView

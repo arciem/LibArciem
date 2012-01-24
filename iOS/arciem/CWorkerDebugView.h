@@ -16,17 +16,23 @@
  
  *******************************************************************************/
 
-#import "CRestDebugView.h"
+#import "CView.h"
+#import "CWorker.h"
 
-@implementation CRestDebugView
+enum {
+	CRestWorkerViewNew,
+	CRestWorkerViewEntering,
+	CRestWorkerViewStaying,
+	CRestWorkerViewLeaving
+};
+typedef NSUInteger CRestWorkerViewState;
 
-- (void)setup
-{
-	[super setup];
-	
-	self.debugColor = [UIColor redColor];
-	self.alpha = 0.5;
-	self.userInteractionEnabled = NO;
-}
+@interface CWorkerDebugView : CView
+
+- (id)initWithWorker:(CWorker*)worker;
+
+@property (strong, nonatomic) CWorker* worker;
+@property (nonatomic) CRestWorkerViewState state;
+@property (nonatomic) NSUInteger position;
 
 @end
