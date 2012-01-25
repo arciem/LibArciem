@@ -66,6 +66,7 @@ NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle = NO);
 NSString* StringByUnescapingEntitiesInString(NSString* s);
 NSString* StringByUnescapingMinimalEntitiesInUncleanString(NSString* s);
 NSString* StringByJoiningNonemptyStringsWithString(NSArray* strings, NSString* separator);
+NSString* StringByJoiningNonemptyDescriptionsWithString(NSArray* items, NSString* separator);
 NSString* StringByCapitalizingFirstCharacter(NSString* s);
 NSString* StringByTrimmingWhitespaceFromEnd(NSString* s);
 NSString* LastWordOfString(NSString* s);

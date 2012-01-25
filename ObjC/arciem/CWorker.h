@@ -23,8 +23,15 @@
 
 - (void)cancel;
 
-@property (readonly, nonatomic) NSUInteger sequenceNumber; // for debug display
-@property (strong, nonatomic) NSString* identifier; // for debug display
+// for debug display
+@property (readonly, nonatomic) NSUInteger sequenceNumber;
+@property (readonly, nonatomic) NSString* formattedSequenceNumber;
+@property (readonly, nonatomic) NSString* formattedQueuePriority;
+@property (readonly, nonatomic) NSString* formattedDependencies;
+@property (readonly, nonatomic) NSString* formattedErrorCode;
+@property (copy, nonatomic) NSMutableArray* titleItems;
+@property (strong, readonly, nonatomic) NSString* title;
+
 @property (nonatomic) NSUInteger tryLimit; // 0 -> no limit, default == 3
 @property (nonatomic) NSTimeInterval retryDelayInterval; // default 1 second
 @property (nonatomic) NSOperationQueuePriority queuePriority; // default NSOperationQueuePriorityNormal
@@ -42,6 +49,7 @@
 @property (nonatomic) BOOL isActive;
 @property (nonatomic) BOOL isFinished;
 @property (nonatomic) BOOL isCancelled;
+@property (strong, readonly, nonatomic) NSError* error;
 
 @property (readonly, nonatomic) NSUInteger tryCount; // initially 0, incremented for each call to -createOperation
 @property (readonly, nonatomic) BOOL canRetry;

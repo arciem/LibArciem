@@ -19,6 +19,8 @@
 #import "CView.h"
 #import "CWorker.h"
 
+extern const CGFloat kCWorkerDebugViewHeight;
+
 enum {
 	CRestWorkerViewNew,
 	CRestWorkerViewEntering,
@@ -33,6 +35,6 @@ typedef NSUInteger CRestWorkerViewState;
 
 @property (strong, nonatomic) CWorker* worker;
 @property (nonatomic) CRestWorkerViewState state;
-@property (nonatomic) NSUInteger position;
+@property (nonatomic) NSUInteger row;
 
 @end

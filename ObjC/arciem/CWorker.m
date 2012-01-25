@@ -25,10 +25,13 @@ static NSUInteger sNextSequenceNumber = 0;
 
 @interface CWorker ()
 
+@property (strong, readwrite, nonatomic) NSError* error;
 @property (readwrite, nonatomic) NSUInteger sequenceNumber;
 @property (readwrite, nonatomic) NSUInteger tryCount;
 @property (weak, nonatomic) NSOperation* operation; // zeroing weak reference, operation is owned by the NSOperationQueue
 @property (strong, nonatomic) NSMutableSet* mutableDependencies;
+@property (strong, nonatomic) NSMutableArray* titleItems_;
+@property (strong, readwrite, nonatomic) NSString* title;
 
 @end
 
@@ -40,7 +43,7 @@ static NSUInteger sNextSequenceNumber = 0;
 @synthesize isActive = isActive_;
 @synthesize isFinished = isFinished_;
 @synthesize isCancelled = isCancelled_;
-@synthesize identifier = identifier_;
+@synthesize title = title_;
 @synthesize tryCount = tryCount_;
 @synthesize tryLimit = tryLimit_;
 @synthesize operation = operation_;
@@ -51,7 +54,10 @@ static NSUInteger sNextSequenceNumber = 0;
 @synthesize failure = failure_;
 @synthesize finally = finally_;
 @synthesize retryDelayInterval = retryDelayInterval_;
+@synthesize error = error_;
+@synthesize titleItems_ = titleItems__;
 @dynamic dependencies;
+@dynamic titleItems;
 
 + (void)initialize
 {
@@ -67,34 +73,86 @@ static NSUInteger sNextSequenceNumber = 0;
 		self.retryDelayInterval = 1.0;
 		self.mutableDependencies = [NSMutableSet set];
 		self.callbackThread = [NSThread currentThread];
+		
+		[self addObserver:self forKeyPath:@"titleItems" options:0 context:NULL];
+		self.titleItems = [NSMutableArray arrayWithObject:[NSNumber numberWithUnsignedInt:self.sequenceNumber]];
 	}
 	
 	return self;
 }
 
-- (NSString*)identifier
-{
-	if(identifier_ == nil) {
-		identifier_ = [NSString stringWithFormat:@"%d", self.sequenceNumber];
-	}
-	
-	return identifier_;
-}
-
-- (void)setIdentifier:(NSString *)identifier
-{
-	identifier_ = identifier;
-}
-
 - (void)dealloc
 {
 	CLogDebug(@"C_WORKER", @"%@ dealloc", self);
+	[self removeObserver:self forKeyPath:@"titleItems"];
+}
+
+#pragma mark - KVC/KVO for titleItems
+
++ (NSSet*)keyPathsForValuesAffectingTitle
+{
+	return [NSSet setWithObjects:@"titleItems", nil];
+}
+
+- (NSMutableArray*)titleItems
+{
+	return [self mutableArrayValueForKey:@"titleItems_"];
+}
+
+- (void)setTitleItems:(NSMutableArray *)titleItems
+{
+	titleItems__ = [titleItems mutableCopy];
+}
+
+- (NSUInteger)countOfTitleItems_
+{
+	return titleItems__.count;
+}
+
+- (id)objectInTitleItems_AtIndex:(NSUInteger)index
+{
+	return [titleItems__ objectAtIndex:index];
+}
+
+- (void)insertObject:(id)object inTitleItems_AtIndex:(NSUInteger)index
+{
+	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
+	[titleItems__ insertObject:object atIndex:index];
+	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
+}
+
+- (void)removeObjectFromTitleItems_AtIndex:(NSUInteger)index
+{
+	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
+	[titleItems__ removeObjectAtIndex:index];
+	[self didChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
+}
+
+- (NSString*)title
+{
+	if(title_ == nil) {
+		title_ = StringByJoiningNonemptyDescriptionsWithString(self.titleItems_, @" ");
+	}
+	
+	return title_;
+}
+
+#pragma mark -
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if(object == self) {
+		if([keyPath isEqualToString:@"titleItems"]) {
+			title_ = nil;
+		}
+	}
 }
 
 - (NSString*)description
 {
 	@synchronized(self) {
 		return [self formatObjectWithValues:[NSArray arrayWithObjects:
+											 [self formatValueForKey:@"title" compact:NO],
 											 [self formatValueForKey:@"sequenceNumber" compact:NO],
 											 [self formatValueForKey:@"tryCount" compact:NO],
 											 nil]];
@@ -224,6 +282,8 @@ static NSUInteger sNextSequenceNumber = 0;
 	@synchronized(self) {
 		CLogTrace(@"C_WORKER", @"%@ operationFailedWithError:%@", self, error);
 		self.operation = nil;
+		self.error = error;
+		[self.titleItems addObject:self.formattedErrorCode];
 		
 		__weak CWorker* worker_ = self;
 		
@@ -241,6 +301,7 @@ static NSUInteger sNextSequenceNumber = 0;
 	@synchronized(self) {
 		CLogTrace(@"C_WORKER", @"%@ operationSucceeded", self);
 		self.operation = nil;
+		self.error = nil;
 		
 		__weak CWorker* worker_ = self;
 		
@@ -251,6 +312,49 @@ static NSUInteger sNextSequenceNumber = 0;
 			worker_.finally(worker_);
 		}];
 	}
+}
+
+- (NSString*)formattedSequenceNumber
+{
+	return [NSString stringWithFormat:@"%d", self.sequenceNumber];
+}
+
+- (NSString*)formattedQueuePriority
+{
+	return [NSString stringWithFormat:@"(%d)", self.queuePriority];
+}
+
+- (NSString*)formattedDependencies
+{
+	@synchronized(self) {
+		NSMutableArray* dependentSeqNums = [NSMutableArray array];
+		for(CWorker* predecessorWorker in self.mutableDependencies) {
+			[dependentSeqNums addObject:[NSNumber numberWithInt:predecessorWorker.sequenceNumber]];
+		}
+
+		[dependentSeqNums sortUsingSelector:@selector(compare:)];
+		NSMutableArray* dependentSeqStrs = [NSMutableArray arrayWithCapacity:dependentSeqNums.count];
+		for(NSNumber* num in dependentSeqNums) {
+			[dependentSeqStrs addObject:[num description]];
+		}
+		
+		NSString* deps = StringByJoiningNonemptyStringsWithString(dependentSeqStrs, @",");
+		if(!IsEmptyString(deps)) {
+			deps = [NSString stringWithFormat:@"{%@}", deps];
+		}
+		return deps;
+	}
+}
+
+- (NSString*)formattedErrorCode
+{
+	NSString* result = @"";
+	
+	if(self.error != nil) {
+		result = [NSString stringWithFormat:@"=%d", self.error.code];
+	}
+	
+	return result;
 }
 
 @end

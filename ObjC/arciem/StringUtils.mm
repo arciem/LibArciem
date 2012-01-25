@@ -530,6 +530,18 @@ NSString* StringByJoiningNonemptyStringsWithString(NSArray* strings, NSString* s
 	return [a componentsJoinedByString:separator];
 }
 
+NSString* StringByJoiningNonemptyDescriptionsWithString(NSArray* items, NSString* separator)
+{
+	NSMutableArray* a = [NSMutableArray arrayWithCapacity:items.count];
+	for(NSString* s in items) {
+		NSString* d = [s description];
+		if(!IsEmptyString(d)) {
+			[a addObject:d];
+		}
+	}
+	return [a componentsJoinedByString:separator];
+}
+
 NSString* StringByCapitalizingFirstCharacter(NSString* s)
 {
 	if(s == nil) return nil;

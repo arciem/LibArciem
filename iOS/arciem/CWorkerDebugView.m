@@ -16,11 +16,13 @@
  
  *******************************************************************************/
 
+#import <QuartzCore/QuartzCore.h>
 #import "CWorkerDebugView.h"
 #import "UIViewUtils.h"
-#import <QuartzCore/QuartzCore.h>
 #import "ThreadUtils.h"
 #import "UIColorUtils.h"
+
+const CGFloat kCWorkerDebugViewHeight = 20;
 
 @interface CWorkerDebugView ()
 
@@ -34,7 +36,7 @@
 @synthesize worker = worker_;
 @synthesize state = state_;
 @synthesize label = label_;
-@synthesize position = position_;
+@synthesize row = row_;
 
 + (void)initialize
 {
@@ -64,10 +66,14 @@
 
 //	self.backgroundColor = [[UIColor blueColor] colorWithAlpha:0.5];
 	self.userInteractionEnabled = NO;
-	self.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-	self.layer.masksToBounds = YES;
-	self.layer.cornerRadius = 10.0;
-	self.layer.borderWidth = 1.0;
+	self.layer.borderWidth = 1.5;
+
+#if 0
+	self.layer.shadowRadius = 0.0;
+	self.layer.shadowColor = [UIColor colorWithWhite:0.0 alpha:1.0].CGColor;
+	self.layer.shadowOpacity = 0.5;
+	self.layer.shadowOffset = CGSizeMake(0, 1.0);
+#endif
 	
 	self.label = [[UILabel alloc] initWithFrame:self.bounds];
 	self.label.backgroundColor = [UIColor clearColor];
@@ -83,14 +89,18 @@
 - (void)syncToWorker
 {
 	@synchronized(self.worker) {
-		self.label.text = self.worker.identifier;
+		self.label.text = self.worker.title;
 		NSString* status = @"UNKNOWN";
 		UIColor* backgroundColor = [UIColor grayColor];
 		UIColor* textColor = [UIColor whiteColor];
 		
 		if(self.worker.isFinished) {
 			status = @"FINISHED";
-			backgroundColor = [UIColor blueColor];
+			if(self.worker.error == nil) {
+				backgroundColor = [[UIColor greenColor] colorByDarkeningFraction:0.5];
+			} else {
+				backgroundColor = [[UIColor redColor] colorByDarkeningFraction:0.3];
+			}
 			textColor = [UIColor whiteColor];
 			if(self.worker.isCancelled) {
 				status = @"CANCELLED";
@@ -99,7 +109,7 @@
 			}
 		} else if(self.worker.isExecuting) {
 			status = @"EXECUTING";
-			backgroundColor = [UIColor colorWithWhite:0.7 alpha:1.0];
+			backgroundColor = [[UIColor blueColor] colorByLighteningFraction:0.5];
 			textColor = [UIColor blackColor];
 			if(self.worker.isActive) {
 				status = @"ACTIVE";
@@ -123,7 +133,7 @@
 - (void)beginObserving
 {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncToWorker) name:@"workerViewNeedsSync" object:self];
-	[self.worker addObserver:self forKeyPath:@"identifier" options:0 context:nil];
+	[self.worker addObserver:self forKeyPath:@"title" options:0 context:nil];
 	[self.worker addObserver:self forKeyPath:@"isFinished" options:0 context:nil];
 	[self.worker addObserver:self forKeyPath:@"isCancelled" options:0 context:nil];
 	[self.worker addObserver:self forKeyPath:@"isReady" options:0 context:nil];
@@ -134,7 +144,7 @@
 - (void)endObserving
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"workerViewNeedsSync" object:self];
-	[self.worker removeObserver:self forKeyPath:@"identifier"];
+	[self.worker removeObserver:self forKeyPath:@"title"];
 	[self.worker removeObserver:self forKeyPath:@"isFinished"];
 	[self.worker removeObserver:self forKeyPath:@"isCancelled"];
 	[self.worker removeObserver:self forKeyPath:@"isReady"];
@@ -170,7 +180,13 @@
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-	return CGSizeMake(200, 20);
+	return CGSizeMake(200, kCWorkerDebugViewHeight);
+}
+
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+	self.layer.cornerRadius = self.height / 2;
 }
 
 @end

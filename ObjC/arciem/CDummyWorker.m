@@ -42,7 +42,12 @@
 	while(!self.isCancelled && [(NSDate*)[NSDate date] compare:endDate] == NSOrderedAscending) {
 		[NSThread sleepForTimeInterval:0.1];
 	}
-	[self operationSucceeded];
+	if(arciem::random_flat() < 0.9) {
+		[self operationSucceeded];
+	} else {
+		NSError* error = [NSError errorWithDomain:@"CDummyWorkerDomain" code:404 userInfo:nil];
+		[self operationFailedWithError:error];
+	}
 	CLogTrace(@"C_DUMMY_WORKER", @"%@ leaving performOperationWork", self);
 }
 
@@ -71,8 +76,7 @@
 //					NSTimeInterval workTimeInterval = arciem::random_range(4, 6);
 					CDummyWorker* worker = [[CDummyWorker alloc] initWithWorkTimeInterval:workTimeInterval];
 					
-					NSMutableArray* idStrings = [NSMutableArray array];
-					[idStrings addObject:[NSString stringWithFormat:@"%d", worker.sequenceNumber]];
+					NSMutableArray* idItems = [NSMutableArray array];
 					
 #if 1
 					static NSOperationQueuePriority pris[] = {
@@ -91,37 +95,23 @@
 					NSInteger pri = pris[priIndex];
 					worker.queuePriority = pri;
 					
-					[idStrings addObject:[NSString stringWithFormat:@"(%d)", worker.queuePriority]];
+					[idItems addObject:worker.formattedQueuePriority];
 #endif
 
 #if 1
-					@synchronized(workerManager) {
-						NSMutableArray* dependentSeqNums = [NSMutableArray array];
-						static NSUInteger links[] = {0, 0, 1, 2, 3};
-						NSUInteger n = arciem::random_range(0, 5);
-						for(NSUInteger k = 0; k < links[n]; k++) {
-							CWorker* predecessorWorker = [self randomWorkerForWorkerManager:workerManager];
-							if(predecessorWorker != nil) {
-								if([worker addDependency:predecessorWorker]) {
-									[dependentSeqNums addObject:[NSNumber numberWithInt:predecessorWorker.sequenceNumber]];
-								}
-							}
-						}
-						
-						[dependentSeqNums sortUsingSelector:@selector(compare:)];
-						NSMutableArray* dependentSeqStrs = [NSMutableArray arrayWithCapacity:dependentSeqNums.count];
-						for(NSNumber* num in dependentSeqNums) {
-							[dependentSeqStrs addObject:[num description]];
-						}
-						
-						NSString* deps = StringByJoiningNonemptyStringsWithString(dependentSeqStrs, @",");
-						if(!IsEmptyString(deps)) {
-							deps = [NSString stringWithFormat:@"{%@}", deps];
-							[idStrings addObject:deps];
+					static NSUInteger links[] = {0, 0, 1, 2, 3};
+					NSUInteger n = arciem::random_range(0, 5);
+					for(NSUInteger k = 0; k < links[n]; k++) {
+						CWorker* predecessorWorker = [self randomWorkerForWorkerManager:workerManager];
+						if(predecessorWorker != nil) {
+							[worker addDependency:predecessorWorker];
 						}
 					}
+					
+					[idItems addObject:worker.formattedDependencies];
 #endif
-					worker.identifier = StringByJoiningNonemptyStringsWithString(idStrings, @" ");
+
+					[worker.titleItems addObjectsFromArray:idItems];
 					
 					[workerManager addWorker:worker success:^(CWorker *) {
 					} shouldRetry:^BOOL(CWorker *, NSError *) {

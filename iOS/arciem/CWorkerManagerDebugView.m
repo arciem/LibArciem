@@ -22,9 +22,13 @@
 #import "UIViewUtils.h"
 #import "ThreadUtils.h"
 
-static const NSTimeInterval kAnimationDuration = 0.4;
-static const NSTimeInterval kRemovalAnimationDuration = 0.8;
-//static const NSTimeInterval kAnimationDuration = 2.0;
+static const CGFloat kRowLeading = 5;
+static const CGFloat kRowHeight = kCWorkerDebugViewHeight + kRowLeading;
+
+static const NSTimeInterval kLayoutAnimationDuration = 0.3;
+static const NSTimeInterval kRemovalSlideAnimationDuration = 1.0;
+static const NSTimeInterval kRemovalFadeDelay = 2.0;
+static const NSTimeInterval kRemovalFadeAnimationDuration = 0.5;
 
 @interface CWorkerManagerDebugView ()
 
@@ -33,6 +37,8 @@ static const NSTimeInterval kRemovalAnimationDuration = 0.8;
 @property (strong, nonatomic) NSMutableSet* workersToAdd;
 @property (strong, nonatomic) NSMutableSet* workersToRemove;
 @property (nonatomic) BOOL needsAnimatedLayout;
+@property (nonatomic) NSInteger visibleRows;
+@property (nonatomic) NSInteger nextExitRow;
 
 @end
 
@@ -43,6 +49,8 @@ static const NSTimeInterval kRemovalAnimationDuration = 0.8;
 @synthesize workersToAdd = workersToAdd_;
 @synthesize workersToRemove = workersToRemove_;
 @synthesize needsAnimatedLayout = needsAnimatedLayout_;
+@synthesize visibleRows = visibleRows_;
+@synthesize nextExitRow = nextExitRow_;
 
 + (void)initialize
 {
@@ -53,11 +61,11 @@ static const NSTimeInterval kRemovalAnimationDuration = 0.8;
 {
 	[super setup];
 	
-	self.clipsToBounds = YES;
+//	self.clipsToBounds = YES;
 //	self.debugColor = [UIColor greenColor];
 	self.userInteractionEnabled = NO;
 	self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.alpha = 0.8;
+	self.alpha = 0.6;
 	
 	self.orderedViews = [NSMutableArray array];
 	self.workersToAdd = [NSMutableSet set];
@@ -92,16 +100,20 @@ static const NSTimeInterval kRemovalAnimationDuration = 0.8;
 	[self.orderedViews sortUsingComparator:^NSComparisonResult(CWorkerDebugView* view1, CWorkerDebugView* view2) {
 		NSComparisonResult result = NSOrderedSame;
 		
-		if(view1.worker.isActive && !view2.worker.isActive) {
-			result = NSOrderedAscending;
-		} else if(view2.worker.isActive && !view1.worker.isActive) {
-			result = NSOrderedDescending;
+		if(result == NSOrderedSame) {
+			if(view1.worker.isActive && !view2.worker.isActive) {
+				result = NSOrderedAscending;
+			} else if(view2.worker.isActive && !view1.worker.isActive) {
+				result = NSOrderedDescending;
+			}
 		}
 		
-		if(view1.worker.isReady && !view2.worker.isReady) {
-			result = NSOrderedAscending;
-		} else if(view2.worker.isReady && !view1.worker.isReady) {
-			result = NSOrderedDescending;
+		if(result == NSOrderedSame) {
+			if(view1.worker.isReady && !view2.worker.isReady) {
+				result = NSOrderedAscending;
+			} else if(view2.worker.isReady && !view1.worker.isReady) {
+				result = NSOrderedDescending;
+			}
 		}
 		
 		if(result == NSOrderedSame) {
@@ -180,10 +192,10 @@ static const NSTimeInterval kRemovalAnimationDuration = 0.8;
 	[self sortViewsTopologically];
 	[self sortViewsByValues];
 
-	NSUInteger position = 0;
+	NSUInteger row = 0;
 	for(CWorkerDebugView* view in self.orderedViews) {
-		view.position = position;
-		position++;
+		view.row = row;
+		row++;
 	}
 }
 
@@ -192,17 +204,13 @@ static const NSTimeInterval kRemovalAnimationDuration = 0.8;
 	switch (view.state) {
 		case CRestWorkerViewNew:
 			view.alpha = 0.0;
-			view.right = self.boundsLeft;
+			view.centerX = self.boundsLeft;
 			break;
 		case CRestWorkerViewEntering:
 			view.alpha = 1.0;
-			view.centerX = self.boundsCenterX;
+			view.left = self.boundsLeft;
 			break;
 		case CRestWorkerViewStaying:
-			break;
-		case CRestWorkerViewLeaving:
-			view.alpha = 0.0;
-			view.left = self.boundsRight;
 			break;
 		default:
 			break;
@@ -211,7 +219,7 @@ static const NSTimeInterval kRemovalAnimationDuration = 0.8;
 
 - (void)layoutViewVertical:(CWorkerDebugView*)view
 {
-	view.top = view.position * 25;
+	view.top = view.row * kRowHeight;
 }
 
 - (void)layoutView:(CWorkerDebugView*)view
@@ -254,6 +262,7 @@ static const NSTimeInterval kRemovalAnimationDuration = 0.8;
 	
 	for(CWorker* worker in addedWorkers) {
 		CWorkerDebugView* view = [[CWorkerDebugView alloc] initWithWorker:worker];
+		view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		[self.orderedViews addObject:view];
 		[self addSubview:view];
 		[addedViews addObject:view];
@@ -282,16 +291,28 @@ static const NSTimeInterval kRemovalAnimationDuration = 0.8;
 
 	if(removedViews.count > 0) {
 		for(CWorkerDebugView* view in removedViews) {
-			[self sendSubviewToBack:view];
+			[self bringSubviewToFront:view];
+			view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+			view.alpha = 1.0;
 
 			UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionAllowUserInteraction;
-			[UIView animateWithDuration:kRemovalAnimationDuration delay:0.0 options:options animations:^{
+			[UIView animateWithDuration:kRemovalSlideAnimationDuration delay:0.0 options:options animations:^{
 				view.state = CRestWorkerViewLeaving;
-//				view.worker = nil;
-				[self layoutViewHorizontal:view];
+				view.right = self.boundsRight;
+				self.nextExitRow -= 1;
+				if(self.nextExitRow < 0) {
+					self.nextExitRow = self.visibleRows - 1;
+				}
+				view.row = self.nextExitRow;
+				[self layoutViewVertical:view];
 				[self.orderedViews removeObject:view];
 			} completion:^(BOOL finished) {
-				[view removeFromSuperview];
+				UIViewAnimationOptions options2 = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionOverrideInheritedCurve | UIViewAnimationOptionAllowUserInteraction;
+				[UIView animateWithDuration:kRemovalFadeAnimationDuration delay:kRemovalFadeDelay options:options2 animations:^{
+					view.alpha = 0.0;
+				} completion:^(BOOL finished) {
+					[view removeFromSuperview];
+				}];
 			}];
 		}
 		[self setNeedsAnimatedLayout];
@@ -303,19 +324,21 @@ static const NSTimeInterval kRemovalAnimationDuration = 0.8;
 	CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"animatedLayout");
 	[self updatePositions];
 
-	for(CWorkerDebugView* view in [self.orderedViews reverseObjectEnumerator]) {
-		[self bringSubviewToFront:view];
-	}
-
 	for(CWorkerDebugView* view in self.orderedViews) {
+		[self sendSubviewToBack:view];
+
 		UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction;
+		options |= UIViewAnimationOptionCurveEaseOut;
+
+#if 0
 		if(view.state == CRestWorkerViewEntering) {
 			options |= UIViewAnimationOptionCurveEaseIn;
 		} else {
 			options |= UIViewAnimationOptionCurveEaseOut;
 		}
+#endif
 		
-		[UIView animateWithDuration:kAnimationDuration delay:0.0 options:options animations:^{
+		[UIView animateWithDuration:kLayoutAnimationDuration delay:0.0 options:options animations:^{
 			[self layoutView:view];
 		} completion:^(BOOL finished) {
 			if(view.state == CRestWorkerViewEntering) {
@@ -388,6 +411,13 @@ static const NSTimeInterval kRemovalAnimationDuration = 0.8;
 	} else {
 		[self endObservingWorkerManager];
 	}
+}
+
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+	
+	self.visibleRows = (NSUInteger)(self.height / kRowHeight);
 }
 
 @end

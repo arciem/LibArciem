@@ -34,6 +34,11 @@ static CNotifier* sInstance = nil;
 @synthesize internalItems = internalItems_;
 @dynamic items;
 
++ (void)initialize
+{
+//	CLogSetTagActive(@"C_NOTIFIER", YES);
+}
+
 + (CNotifier*)sharedNotifier
 {
 	@synchronized([CNotifier class]) {
@@ -138,12 +143,12 @@ static CNotifier* sInstance = nil;
 						break;
 				}
 				[[CNotifier sharedNotifier] addItem:item];
-				CLogDebug(nil, @"Add: %@", item.message);
+				CLogTrace(@"C_NOTIFIER", @"Add: %@", item.message);
 			} else {
 				if(items.count > 0) {
 					NSUInteger index = arciem::random_range(0, items.count);
 					CNotifierItem* item = [items objectAtIndex:index];
-					CLogDebug(nil, @"Remove: %@", item.message);
+					CLogTrace(@"C_NOTIFIER", @"Remove: %@", item.message);
 					[[CNotifier sharedNotifier] removeItem:item];
 					[items removeObject:item];
 				}
