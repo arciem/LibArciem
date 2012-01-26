@@ -63,6 +63,7 @@
 
 // default behavior may be entirely overridden without call to super
 - (void)performRetryDelay;
+- (void)updateTitleForError;
 
 // behavior provided entirely by subclasses
 - (void)operationDidBegin;

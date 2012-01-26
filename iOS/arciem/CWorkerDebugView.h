@@ -19,22 +19,13 @@
 #import "CView.h"
 #import "CWorker.h"
 
-extern const CGFloat kCWorkerDebugViewHeight;
-
-enum {
-	CRestWorkerViewNew,
-	CRestWorkerViewEntering,
-	CRestWorkerViewStaying,
-	CRestWorkerViewLeaving
-};
-typedef NSUInteger CRestWorkerViewState;
-
 @interface CWorkerDebugView : CView
 
-- (id)initWithWorker:(CWorker*)worker;
+- (id)initWithFrame:(CGRect)frame worker:(CWorker*)worker;
 
 @property (strong, nonatomic) CWorker* worker;
-@property (nonatomic) CRestWorkerViewState state;
 @property (nonatomic) NSUInteger row;
+@property (nonatomic) CGFloat fontSize;
+@property (nonatomic) CGFloat minimumFontSize;
 
 @end

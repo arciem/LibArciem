@@ -176,6 +176,17 @@ NSString* const CRestErrorWorkerErrorKey = @"CRestErrorWorkerErrorKey";
 	}
 }
 
+- (void)updateTitleForError
+{
+	if(self.error != nil) {
+		[self.titleItems addObject:[NSString stringWithFormat:@"=%d", self.error.code]];
+	} else if(self.httpResponse != nil) {
+		[self.titleItems addObject:[NSString stringWithFormat:@"=%d", self.httpResponse.statusCode]];
+	} else {
+		[self.titleItems addObject:@"=?"];
+	}
+}
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	@synchronized(self) {

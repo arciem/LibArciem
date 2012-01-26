@@ -277,21 +277,32 @@ static NSUInteger sNextSequenceNumber = 0;
 	// behavior provided by subclasses
 }
 
+// may be overridden
+- (void)updateTitleForError
+{
+	if(self.error != nil) {
+		[self.titleItems addObject:self.formattedErrorCode];
+	}
+}
+
 - (void)operationFailedWithError:(NSError*)error
 {
 	@synchronized(self) {
 		CLogTrace(@"C_WORKER", @"%@ operationFailedWithError:%@", self, error);
 		self.operation = nil;
+		
 		self.error = error;
-		[self.titleItems addObject:self.formattedErrorCode];
+		[self updateTitleForError];
 		
 		__weak CWorker* worker_ = self;
 		
 		[self.callbackThread performBlock:^{
-			if(!worker_.isCancelled) {
-				worker_.failure(worker_, error);
+			@synchronized(worker_) {
+				if(!worker_.isCancelled) {
+					worker_.failure(worker_, error);
+				}
+				worker_.finally(worker_);
 			}
-			worker_.finally(worker_);
 		}];
 	}
 }
@@ -301,15 +312,19 @@ static NSUInteger sNextSequenceNumber = 0;
 	@synchronized(self) {
 		CLogTrace(@"C_WORKER", @"%@ operationSucceeded", self);
 		self.operation = nil;
+		
 		self.error = nil;
+		[self updateTitleForError];
 		
 		__weak CWorker* worker_ = self;
 		
 		[self.callbackThread performBlock:^{
-			if(!worker_.isCancelled) {
-				worker_.success(worker_);
+			@synchronized(worker_) {
+				if(!worker_.isCancelled) {
+					worker_.success(worker_);
+				}
+				worker_.finally(worker_);
 			}
-			worker_.finally(worker_);
 		}];
 	}
 }

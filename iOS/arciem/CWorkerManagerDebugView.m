@@ -21,36 +21,36 @@
 #import "CWorkerDebugView.h"
 #import "UIViewUtils.h"
 #import "ThreadUtils.h"
+#import "Geom.h"
 
-static const CGFloat kRowLeading = 5;
+static const CGFloat kCWorkerDebugViewHeight = 20;
+static const CGFloat kRowLeading = 4;
 static const CGFloat kRowHeight = kCWorkerDebugViewHeight + kRowLeading;
 
 static const NSTimeInterval kLayoutAnimationDuration = 0.3;
 static const NSTimeInterval kRemovalSlideAnimationDuration = 1.0;
-static const NSTimeInterval kRemovalFadeDelay = 2.0;
-static const NSTimeInterval kRemovalFadeAnimationDuration = 0.5;
+static const NSTimeInterval kRemovalFadeDelay = 5.0;
+static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 
 @interface CWorkerManagerDebugView ()
 
-@property (strong, nonatomic) NSMutableArray* orderedViews;
+@property (strong, nonatomic) NSMutableArray* queuedWorkerViews;
+@property (strong, nonatomic) NSMutableArray* finishedWorkerViews;
 @property (strong, nonatomic) CWorkerManager* workerManager;
 @property (strong, nonatomic) NSMutableSet* workersToAdd;
 @property (strong, nonatomic) NSMutableSet* workersToRemove;
 @property (nonatomic) BOOL needsAnimatedLayout;
-@property (nonatomic) NSInteger visibleRows;
-@property (nonatomic) NSInteger nextExitRow;
 
 @end
 
 @implementation CWorkerManagerDebugView
 
-@synthesize orderedViews = orderedViews_;
+@synthesize queuedWorkerViews = queuedWorkerViews_;
+@synthesize finishedWorkerViews = finishedWorkerViews_;
 @synthesize workerManager = workerManager_;
 @synthesize workersToAdd = workersToAdd_;
 @synthesize workersToRemove = workersToRemove_;
 @synthesize needsAnimatedLayout = needsAnimatedLayout_;
-@synthesize visibleRows = visibleRows_;
-@synthesize nextExitRow = nextExitRow_;
 
 + (void)initialize
 {
@@ -65,9 +65,10 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.5;
 //	self.debugColor = [UIColor greenColor];
 	self.userInteractionEnabled = NO;
 	self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.alpha = 0.6;
+	self.alpha = 0.7;
 	
-	self.orderedViews = [NSMutableArray array];
+	self.queuedWorkerViews = [NSMutableArray array];
+	self.finishedWorkerViews = [NSMutableArray array];
 	self.workersToAdd = [NSMutableSet set];
 	self.workersToRemove = [NSMutableSet set];
 }
@@ -95,9 +96,9 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.5;
 	[self.workerManager removeObserver:self forKeyPath:@"workers"];
 }
 
-- (void)sortViewsByValues
+- (void)sortQueuedWorkerViewsByValues
 {
-	[self.orderedViews sortUsingComparator:^NSComparisonResult(CWorkerDebugView* view1, CWorkerDebugView* view2) {
+	[self.queuedWorkerViews sortUsingComparator:^NSComparisonResult(CWorkerDebugView* view1, CWorkerDebugView* view2) {
 		NSComparisonResult result = NSOrderedSame;
 		
 		if(result == NSOrderedSame) {
@@ -154,14 +155,14 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.5;
 	}
 }
 
-- (void)sortViewsTopologically
+- (void)sortQueuedWorkerViewsTopologically
 {
 	// http://en.wikipedia.org/wiki/Topological_sorting
 	
 	@synchronized(self.workerManager) {
 		NSMutableArray* sortedNodes = [NSMutableArray array]; // Empty list that will contain the sorted elements
 		
-		NSArray* allNodes = self.orderedViews;
+		NSArray* allNodes = self.queuedWorkerViews;
 		
 		NSMutableArray* startingNodes = [NSMutableArray array]; // Set of all nodes with no outgoing edges
 		for(CWorkerDebugView* node in allNodes) {
@@ -183,49 +184,25 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.5;
 			[self topoVisitNode:node visitedNodes:visitedNodes allNodes:allNodes sortedNodes:sortedNodes];
 		}
 		
-		self.orderedViews = [[[sortedNodes reverseObjectEnumerator] allObjects] mutableCopy];
+		self.queuedWorkerViews = [[[sortedNodes reverseObjectEnumerator] allObjects] mutableCopy];
 	}
 }
 
-- (void)updatePositions
+- (void)updateQueuedWorkerViewsRows
 {
-	[self sortViewsTopologically];
-	[self sortViewsByValues];
+	[self sortQueuedWorkerViewsTopologically];
+	[self sortQueuedWorkerViewsByValues];
 
 	NSUInteger row = 0;
-	for(CWorkerDebugView* view in self.orderedViews) {
+	for(CWorkerDebugView* view in self.queuedWorkerViews) {
 		view.row = row;
 		row++;
 	}
 }
 
-- (void)layoutViewHorizontal:(CWorkerDebugView*)view
+- (CGFloat)topForView:(CWorkerDebugView*)view
 {
-	switch (view.state) {
-		case CRestWorkerViewNew:
-			view.alpha = 0.0;
-			view.centerX = self.boundsLeft;
-			break;
-		case CRestWorkerViewEntering:
-			view.alpha = 1.0;
-			view.left = self.boundsLeft;
-			break;
-		case CRestWorkerViewStaying:
-			break;
-		default:
-			break;
-	}
-}
-
-- (void)layoutViewVertical:(CWorkerDebugView*)view
-{
-	view.top = view.row * kRowHeight;
-}
-
-- (void)layoutView:(CWorkerDebugView*)view
-{
-	[self layoutViewHorizontal:view];
-	[self layoutViewVertical:view];
+	return view.row * kRowHeight;
 }
 
 - (void)setNeedsAnimatedLayout
@@ -261,18 +238,20 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.5;
 	NSMutableArray* addedViews = [NSMutableArray array];
 	
 	for(CWorker* worker in addedWorkers) {
-		CWorkerDebugView* view = [[CWorkerDebugView alloc] initWithWorker:worker];
+		CGRect frame = CGRectMake(0, 0, (self.boundsWidth / 2) - 5, kCWorkerDebugViewHeight);
+		CWorkerDebugView* view = [[CWorkerDebugView alloc] initWithFrame:frame worker:worker];
+		view.alpha = 0.0;
+		view.centerX = self.boundsLeft;
 		view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-		[self.orderedViews addObject:view];
+		[self.queuedWorkerViews addObject:view];
 		[self addSubview:view];
 		[addedViews addObject:view];
 	}
 
-	if(addedViews.count > 0) {
-		[self updatePositions];
+	if(addedWorkers.count > 0) {
+		[self updateQueuedWorkerViewsRows];
 		for(CWorkerDebugView* view in addedViews) {
-			[self layoutView:view];
-			view.state = CRestWorkerViewEntering;
+			view.top = [self topForView:view];
 		}
 		[self setNeedsAnimatedLayout];
 	}
@@ -284,10 +263,10 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.5;
 
 	[self endObservingWorkers:removedWorkers];
 
-	NSIndexSet* removedViewIndexes = [self.orderedViews indexesOfObjectsPassingTest:^BOOL(CWorkerDebugView* view, NSUInteger idx, BOOL *stop) {
+	NSIndexSet* removedViewIndexes = [self.queuedWorkerViews indexesOfObjectsPassingTest:^BOOL(CWorkerDebugView* view, NSUInteger idx, BOOL *stop) {
 		return [removedWorkers containsObject:view.worker];
 	}];
-	NSArray* removedViews = [self.orderedViews objectsAtIndexes:removedViewIndexes];
+	NSArray* removedViews = [self.queuedWorkerViews objectsAtIndexes:removedViewIndexes];
 
 	if(removedViews.count > 0) {
 		for(CWorkerDebugView* view in removedViews) {
@@ -295,57 +274,71 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.5;
 			view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 			view.alpha = 1.0;
 
-			UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionAllowUserInteraction;
-			[UIView animateWithDuration:kRemovalSlideAnimationDuration delay:0.0 options:options animations:^{
-				view.state = CRestWorkerViewLeaving;
-				view.right = self.boundsRight;
-				self.nextExitRow -= 1;
-				if(self.nextExitRow < 0) {
-					self.nextExitRow = self.visibleRows - 1;
-				}
-				view.row = self.nextExitRow;
-				[self layoutViewVertical:view];
-				[self.orderedViews removeObject:view];
-			} completion:^(BOOL finished) {
-				UIViewAnimationOptions options2 = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionOverrideInheritedCurve | UIViewAnimationOptionAllowUserInteraction;
-				[UIView animateWithDuration:kRemovalFadeAnimationDuration delay:kRemovalFadeDelay options:options2 animations:^{
-					view.alpha = 0.0;
-				} completion:^(BOOL finished) {
-					[view removeFromSuperview];
-				}];
-			}];
+			[self.queuedWorkerViews removeObject:view];
+			[self.finishedWorkerViews insertObject:view atIndex:0];
+			
+			[self performSelector:@selector(fadeThenRemoveView:) withObject:view afterDelay:kRemovalFadeDelay];
 		}
+		
 		[self setNeedsAnimatedLayout];
 	}
+}
+
+- (void)fadeThenRemoveView:(CWorkerDebugView*)view
+{
+	UIViewAnimationOptions options2 = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionOverrideInheritedCurve | UIViewAnimationOptionAllowUserInteraction;
+	[UIView animateWithDuration:kRemovalFadeAnimationDuration delay:0.0 options:options2 animations:^ {
+		view.alpha = 0.0;
+	} completion:^(BOOL finished){
+		[view removeFromSuperview];
+		[self.finishedWorkerViews removeObject:view];
+	}];
 }
 
 - (void)animatedLayout
 {
 	CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"animatedLayout");
-	[self updatePositions];
+	[self updateQueuedWorkerViewsRows];
 
-	for(CWorkerDebugView* view in self.orderedViews) {
+	for(CWorkerDebugView* view in self.queuedWorkerViews) {
 		[self sendSubviewToBack:view];
-
-		UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction;
-		options |= UIViewAnimationOptionCurveEaseOut;
-
-#if 0
-		if(view.state == CRestWorkerViewEntering) {
-			options |= UIViewAnimationOptionCurveEaseIn;
-		} else {
-			options |= UIViewAnimationOptionCurveEaseOut;
-		}
-#endif
-		
-		[UIView animateWithDuration:kLayoutAnimationDuration delay:0.0 options:options animations:^{
-			[self layoutView:view];
-		} completion:^(BOOL finished) {
-			if(view.state == CRestWorkerViewEntering) {
-				view.state = CRestWorkerViewStaying;
-			}
-		}];
 	}
+
+	UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveEaseOut;
+	[UIView animateWithDuration:kLayoutAnimationDuration delay:0.0 options:options animations:^{
+		for(CWorkerDebugView* view in self.queuedWorkerViews) {
+			if(view.alpha != 1.0) {
+				view.alpha = 1.0;
+			}
+			CGRect frame = view.frame;
+			if(view.left != self.boundsLeft) {
+				frame = [Geom alignRectMinX:frame toX:self.boundsLeft];
+			}
+			frame = [Geom alignRectMinY:frame toY:[self topForView:view]];
+			view.frame = frame;
+		}
+	} completion:NULL];
+	
+	UIViewAnimationOptions options2 = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionAllowUserInteraction;
+	[UIView animateWithDuration:kRemovalSlideAnimationDuration delay:0.0 options:options2 animations:^{
+		NSUInteger row = 0;
+		for(CWorkerDebugView* view in self.finishedWorkerViews) {
+//			if(view.alpha != 1.0) {
+//				view.alpha = 1.0;
+//			}
+			CGRect frame = view.frame;
+			if(row != view.row) {
+				view.row = row;
+				frame = [Geom alignRectMinY:frame toY:[self topForView:view]];
+			}
+			if(view.right != self.boundsRight) {
+				frame = [Geom alignRectMaxX:frame toX:self.boundsRight];
+			}
+			view.frame = frame;
+			row++;
+		}
+	} completion:NULL];
+
 	self.needsAnimatedLayout = NO;
 }
 
@@ -411,13 +404,6 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.5;
 	} else {
 		[self endObservingWorkerManager];
 	}
-}
-
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	
-	self.visibleRows = (NSUInteger)(self.height / kRowHeight);
 }
 
 @end

@@ -22,7 +22,8 @@
 #import "ThreadUtils.h"
 #import "UIColorUtils.h"
 
-const CGFloat kCWorkerDebugViewHeight = 20;
+const CGFloat kCWorkerDebugViewFontSize = 14;
+const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 
 @interface CWorkerDebugView ()
 
@@ -34,18 +35,24 @@ const CGFloat kCWorkerDebugViewHeight = 20;
 @implementation CWorkerDebugView
 
 @synthesize worker = worker_;
-@synthesize state = state_;
 @synthesize label = label_;
 @synthesize row = row_;
+@dynamic fontSize;
+@dynamic minimumFontSize;
 
 + (void)initialize
 {
 //	CLogSetTagActive(@"C_WORKER_DEBUG_VIEW", YES);
 }
 
-- (id)initWithWorker:(CWorker*)worker;
++ (void)setWidth:(CGFloat)width
 {
-	if(self = [super initWithFrame:CGRectZero]) {
+	
+}
+
+- (id)initWithFrame:(CGRect)frame worker:(CWorker*)worker
+{
+	if(self = [super initWithFrame:frame]) {
 		self.worker = worker;
 		[self sizeToFit];
 	}
@@ -66,7 +73,7 @@ const CGFloat kCWorkerDebugViewHeight = 20;
 
 //	self.backgroundColor = [[UIColor blueColor] colorWithAlpha:0.5];
 	self.userInteractionEnabled = NO;
-	self.layer.borderWidth = 1.5;
+	self.layer.borderWidth = 0.5;
 
 #if 0
 	self.layer.shadowRadius = 0.0;
@@ -75,15 +82,16 @@ const CGFloat kCWorkerDebugViewHeight = 20;
 	self.layer.shadowOffset = CGSizeMake(0, 1.0);
 #endif
 	
-	self.label = [[UILabel alloc] initWithFrame:self.bounds];
+	self.label = [[UILabel alloc] initWithFrame:CGRectInset(self.bounds, 10, 0)];
 	self.label.backgroundColor = [UIColor clearColor];
 	self.label.opaque = NO;
 	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.label.font = [UIFont boldSystemFontOfSize:14.0];
+	self.fontSize = kCWorkerDebugViewFontSize;
 	self.label.textAlignment = UITextAlignmentCenter;
+	self.label.adjustsFontSizeToFitWidth = YES;
+	self.label.minimumFontSize = kCWorkerDebugViewMinimumFontSize;
+	self.label.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 	[self addSubview:self.label];
-
-	self.state = CRestWorkerViewNew;
 }
 
 - (void)syncToWorker
@@ -97,9 +105,9 @@ const CGFloat kCWorkerDebugViewHeight = 20;
 		if(self.worker.isFinished) {
 			status = @"FINISHED";
 			if(self.worker.error == nil) {
-				backgroundColor = [[UIColor greenColor] colorByDarkeningFraction:0.5];
+				backgroundColor = [[UIColor greenColor] colorByDarkeningFraction:0.7];
 			} else {
-				backgroundColor = [[UIColor redColor] colorByDarkeningFraction:0.3];
+				backgroundColor = [[UIColor redColor] colorByDarkeningFraction:0.5];
 			}
 			textColor = [UIColor whiteColor];
 			if(self.worker.isCancelled) {
@@ -178,15 +186,30 @@ const CGFloat kCWorkerDebugViewHeight = 20;
 	}
 }
 
-- (CGSize)sizeThatFits:(CGSize)size
-{
-	return CGSizeMake(200, kCWorkerDebugViewHeight);
-}
-
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
 	self.layer.cornerRadius = self.height / 2;
+}
+
+- (CGFloat)fontSize
+{
+	return self.label.font.pointSize;
+}
+
+- (void)setFontSize:(CGFloat)fontSize
+{
+	self.label.font = [UIFont boldSystemFontOfSize:fontSize];
+}
+
+- (CGFloat)minimumFontSize
+{
+	return self.label.minimumFontSize;
+}
+
+- (void)setMinimumFontSize:(CGFloat)minimumFontSize
+{
+	self.label.minimumFontSize = minimumFontSize;
 }
 
 @end
