@@ -51,4 +51,9 @@
 	return self;
 }
 
++ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority
+{
+	return [[self alloc] initWithMessage:message priority:priority];
+}
+
 @end

@@ -21,6 +21,7 @@
 @interface CNotifierItem : NSObject
 
 - (id)initWithMessage:(NSString*)message priority:(NSInteger)priority;
++ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority;
 
 @property (copy, readonly, nonatomic) NSString* message;
 @property (readonly, nonatomic) NSInteger priority;
