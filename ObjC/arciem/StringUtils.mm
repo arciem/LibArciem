@@ -106,7 +106,7 @@ NSString* TrimWhitespaceAndNewlineFromStartAndEnd(NSString* str)
 
 BOOL ScanCharacters(NSScanner* scanner, int n, NSString** str)
 {
-    unsigned loc = [scanner scanLocation];
+    NSUInteger loc = [scanner scanLocation];
     if(loc + n > [[scanner string] length]) {
         *str = nil;
         return NO;
@@ -140,7 +140,7 @@ BOOL StringContainsOnlyDigits(NSString* str)
 
 BOOL IsVisibleString(NSString* str)
 {
-    unsigned strLen = [str length];
+    NSUInteger strLen = [str length];
     if(strLen == 0) {
         return NO;
     } else {
@@ -173,7 +173,7 @@ BOOL CompleteString(NSString* partial, NSArray* completions, NSString** complete
 {
     BOOL found = NO;
     
-    for(unsigned i = 0; i < [completions count]; ++i) {
+    for(NSUInteger i = 0; i < [completions count]; ++i) {
         NSString* completion = [completions objectAtIndex:i];
         NSRange existingRange = [completion rangeOfString:partial options:NSCaseInsensitiveSearch
             range:NSMakeRange(0, [completion length])];
@@ -224,7 +224,7 @@ OSType OSTypeFromString(NSString* osTypeString)
 }
 #endif
 
-NSString* StringByTruncatingString(NSString* string, unsigned maxCharacters)
+NSString* StringByTruncatingString(NSString* string, NSUInteger maxCharacters)
 {
 	NSString* resultString;
 	if([string length] <= maxCharacters) {
@@ -235,10 +235,10 @@ NSString* StringByTruncatingString(NSString* string, unsigned maxCharacters)
 	return resultString;
 }
 
-NSString* StringByDuplicatingCharacter(unichar character, unsigned length)
+NSString* StringByDuplicatingCharacter(unichar character, NSUInteger length)
 {
 	unichar* buffer = (unichar*)malloc(length * sizeof(unichar));
-	for(unsigned i = 0; i < length; ++i) {
+	for(NSUInteger i = 0; i < length; ++i) {
 		buffer[i] = character;
 	}
 	NSString* string = [NSString stringWithCharacters:buffer length:length];
@@ -370,9 +370,9 @@ string ToStd(NSString* s)
 {
 	BOOL result = YES;
 
-	unsigned tokenCount = [tokens count];
-	unsigned searchOptions = caseInsensitive ? NSCaseInsensitiveSearch : 0;
-	for(unsigned i = 0; i < tokenCount; ++i) {
+	NSUInteger tokenCount = [tokens count];
+	NSUInteger searchOptions = caseInsensitive ? NSCaseInsensitiveSearch : 0;
+	for(NSUInteger i = 0; i < tokenCount; ++i) {
 		NSString* token = [tokens objectAtIndex:i];
 		if([self rangeOfString:token options:searchOptions].location == NSNotFound) {
 			result = NO;
@@ -387,9 +387,9 @@ string ToStd(NSString* s)
 {
 	BOOL result = NO;
 
-	unsigned tokenCount = [tokens count];
-	unsigned searchOptions = caseInsensitive ? NSCaseInsensitiveSearch : 0;
-	for(unsigned i = 0; i < tokenCount; ++i) {
+	NSUInteger tokenCount = [tokens count];
+	NSUInteger searchOptions = caseInsensitive ? NSCaseInsensitiveSearch : 0;
+	for(NSUInteger i = 0; i < tokenCount; ++i) {
 		NSString* token = [tokens objectAtIndex:i];
 		if([self rangeOfString:token options:searchOptions].location != NSNotFound) {
 			result = YES;

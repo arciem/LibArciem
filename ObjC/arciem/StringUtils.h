@@ -56,9 +56,9 @@ BOOL SearchAndReplace(NSString** destString, NSString* searchString, NSString* r
 NSString* StringFromOSType(OSType osType);
 OSType OSTypeFromString(NSString* osTypeString);
 
-NSString* StringByTruncatingString(NSString* string, unsigned maxCharacters);
+NSString* StringByTruncatingString(NSString* string, NSUInteger maxCharacters);
 
-NSString* StringByDuplicatingCharacter(unichar character, unsigned length);
+NSString* StringByDuplicatingCharacter(unichar character, NSUInteger length);
 NSString* BulletStringForString(NSString* string);
 
 NSString* StringFromBool(BOOL b, BOOL cStyle = NO);
