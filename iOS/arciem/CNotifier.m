@@ -125,7 +125,7 @@ static CNotifier* sInstance = nil;
 				NSString* message = [NSString stringWithFormat:@"Item %d", nextItem++];
 				NSInteger priority = arciem::random_range(0, 3);
 				
-				CNotifierItem* item = [[CNotifierItem alloc] initWithMessage:message priority:priority];
+				CNotifierItem* item = [CNotifierItem itemWithMessage:message priority:priority tapHandler:NULL];
 				[items addObject:item];
 				switch(priority) {
 					case 0:

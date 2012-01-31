@@ -40,6 +40,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 @property (strong, nonatomic) NSMutableSet* workersToAdd;
 @property (strong, nonatomic) NSMutableSet* workersToRemove;
 @property (nonatomic) BOOL needsAnimatedLayout;
+@property (strong, nonatomic) NSArray* notificationRunLoopModes;
 
 @end
 
@@ -51,6 +52,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 @synthesize workersToAdd = workersToAdd_;
 @synthesize workersToRemove = workersToRemove_;
 @synthesize needsAnimatedLayout = needsAnimatedLayout_;
+@synthesize notificationRunLoopModes = notificationRunLoopModes_;
 
 + (void)initialize
 {
@@ -71,6 +73,8 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 	self.finishedWorkerViews = [NSMutableArray array];
 	self.workersToAdd = [NSMutableSet set];
 	self.workersToRemove = [NSMutableSet set];
+	
+	self.notificationRunLoopModes = [NSArray arrayWithObject:NSRunLoopCommonModes];
 }
 
 - (id)initWithFrame:(CGRect)frame workerManager:(CWorkerManager*)workerManager
@@ -210,7 +214,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 	CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"setNeedsAnimatedLayout");
 	self.needsAnimatedLayout = YES;
 	NSNotification* notification = [NSNotification notificationWithName:@"needsAnimatedLayout" object:self];
-	[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:nil];
+	[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:self.notificationRunLoopModes];
 }
 
 - (void)beginObservingWorkers:(NSSet*)workers
@@ -286,7 +290,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 
 - (void)fadeThenRemoveView:(CWorkerDebugView*)view
 {
-	UIViewAnimationOptions options2 = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionOverrideInheritedCurve | UIViewAnimationOptionAllowUserInteraction;
+	UIViewAnimationOptions options2 = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionOverrideInheritedCurve;
 	[UIView animateWithDuration:kRemovalFadeAnimationDuration delay:0.0 options:options2 animations:^ {
 		view.alpha = 0.0;
 	} completion:^(BOOL finished){
@@ -304,7 +308,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 		[self sendSubviewToBack:view];
 	}
 
-	UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionCurveEaseOut;
+	UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut;
 	[UIView animateWithDuration:kLayoutAnimationDuration delay:0.0 options:options animations:^{
 		for(CWorkerDebugView* view in self.queuedWorkerViews) {
 			if(view.alpha != 1.0) {
@@ -319,7 +323,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 		}
 	} completion:NULL];
 	
-	UIViewAnimationOptions options2 = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionAllowUserInteraction;
+	UIViewAnimationOptions options2 = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut;
 	[UIView animateWithDuration:kRemovalSlideAnimationDuration delay:0.0 options:options2 animations:^{
 		NSUInteger row = 0;
 		for(CWorkerDebugView* view in self.finishedWorkerViews) {
@@ -373,7 +377,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 					}
 					[NSThread performBlockOnMainThread:^{
 						NSNotification* notification = [NSNotification notificationWithName:@"workerManagerViewNeedsSync" object:self];
-						[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:nil];
+						[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:self.notificationRunLoopModes];
 					}];
 				}
 					break;
@@ -384,7 +388,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 					}
 					[NSThread performBlockOnMainThread:^{
 						NSNotification* notification = [NSNotification notificationWithName:@"workerManagerViewNeedsSync" object:self];
-						[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:nil];
+						[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:self.notificationRunLoopModes];
 					}];
 				}
 					break;

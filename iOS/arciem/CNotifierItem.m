@@ -35,8 +35,9 @@
 @synthesize whiteText = whiteText_;
 @synthesize font = font_;
 @synthesize duration = duration_;
+@synthesize tapHandler = tapHandler_;
 
-- (id)initWithMessage:(NSString*)message priority:(NSInteger)priority
+- (id)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler
 {
 	if(self = [super init]) {
 		self.message = message;
@@ -46,14 +47,15 @@
 		self.whiteText = NO;
 		self.font = [UIFont boldSystemFontOfSize:14.0];
 		self.duration = 0.0;
+		self.tapHandler = tapHandler;
 	}
 	
 	return self;
 }
 
-+ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority
++ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler
 {
-	return [[self alloc] initWithMessage:message priority:priority];
+	return [[self alloc] initWithMessage:message priority:priority tapHandler:tapHandler];
 }
 
 @end

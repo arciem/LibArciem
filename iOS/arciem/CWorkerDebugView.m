@@ -165,7 +165,7 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 		CLogTrace(@"C_WORKER_DEBUG_VIEW", @"%@ observeValueForKeyPath:%@", self.worker, keyPath);
 		[NSThread performBlockOnMainThread:^ {
 			NSNotification* notification = [NSNotification notificationWithName:@"workerViewNeedsSync" object:self];
-			[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:nil];
+			[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
 		}];
 	}
 }

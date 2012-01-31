@@ -79,7 +79,7 @@ extern NSString* const sTapInBackgroundNotification;
 @property(readonly, nonatomic) CGFloat boundsHeight;
 
 @property(readonly, nonatomic) CGFloat boundsTop;
-@property(readonly, nonatomic) CGFloat bountdBottom;
+@property(readonly, nonatomic) CGFloat boundsBottom;
 @property(readonly, nonatomic) CGFloat boundsLeft;
 @property(readonly, nonatomic) CGFloat boundsRight;
 

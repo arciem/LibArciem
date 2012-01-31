@@ -20,8 +20,8 @@
 
 @interface CNotifierItem : NSObject
 
-- (id)initWithMessage:(NSString*)message priority:(NSInteger)priority;
-+ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority;
+- (id)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler;
++ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler;
 
 @property (copy, readonly, nonatomic) NSString* message;
 @property (readonly, nonatomic) NSInteger priority;
@@ -30,5 +30,6 @@
 @property (nonatomic) BOOL whiteText;
 @property (strong, nonatomic) UIFont* font;
 @property (nonatomic) NSTimeInterval duration;
+@property (copy, nonatomic) void (^tapHandler)(void);
 
 @end

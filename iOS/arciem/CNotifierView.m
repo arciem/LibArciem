@@ -20,11 +20,13 @@
 #import "UIViewUtils.h"
 #import "UIColorUtils.h"
 #import "CGUtils.h"
+#import "UIImageUtils.h"
 
 @interface CNotifierView ()
 
 @property (strong, nonatomic) UILabel* label;
 @property (strong, nonatomic) UIImageView* backgroundImageView;
+@property (strong, nonatomic) UIView* rightAccessoryView;
 
 @end
 
@@ -33,6 +35,7 @@
 @synthesize item = item_;
 @synthesize label = label_;
 @synthesize backgroundImageView = backgroundImageView_;
+@synthesize rightAccessoryView = rightAccessoryView_;
 
 - (void)setup
 {
@@ -47,6 +50,7 @@
 	[self addSubview:self.backgroundImageView];
 	
 	self.label = [[UILabel alloc] initWithFrame:self.bounds];
+	self.label.flexibleLeft = self.boundsLeft + 20;
 	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.label.opaque = NO;
 	self.label.backgroundColor = [UIColor clearColor];
@@ -58,11 +62,40 @@
 	[self addSubview:self.label];
 	
 	[self addObserver:self forKeyPath:@"item" options:0 context:NULL];
+
+	UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTap:)];
+	[self addGestureRecognizer:tapRecognizer];
 }
 
 - (void)dealloc
 {
 	[self removeObserver:self forKeyPath:@"item"];
+}
+
+- (UIView*)rightAccessoryView
+{
+	return rightAccessoryView_;
+}
+
+- (void)setRightAccessoryView:(UIView *)rightAccessoryView
+{
+	if(rightAccessoryView_ != rightAccessoryView) {
+		[rightAccessoryView_ removeFromSuperview];
+		rightAccessoryView_ = rightAccessoryView;
+		if(rightAccessoryView_ != nil) {
+			[rightAccessoryView_ sizeToFit];
+			rightAccessoryView_.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
+			rightAccessoryView_.top = self.boundsTop;
+			rightAccessoryView_.flexibleBottom = self.boundsBottom;
+			rightAccessoryView_.width = 30;
+			rightAccessoryView_.right = self.boundsRight;
+			[self addSubview:rightAccessoryView_];
+			
+			self.label.flexibleRight = rightAccessoryView_.left;
+		} else {
+			self.label.flexibleRight = self.boundsRight;
+		}
+	}
 }
 
 - (UIImage*)newImageForBackground
@@ -114,6 +147,17 @@
 		self.label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.8];
 		self.label.shadowOffset = CGSizeMake(0, 1);
 	}
+
+	UIImageView* rightAccessoryView = nil;
+	if(self.item.tapHandler != NULL) {
+		UIImage* rightAccessoryImage = [UIImage imageNamed:@"DisclosureIndicator"];
+		if(rightAccessoryImage != nil) {
+			rightAccessoryImage = [UIImage imageWithShapeImage:rightAccessoryImage tintColor:self.label.textColor shadowColor:self.label.shadowColor shadowOffset:self.label.shadowOffset shadowBlur:0.0];
+			rightAccessoryView = [[UIImageView alloc] initWithImage:rightAccessoryImage];
+			rightAccessoryView.contentMode = UIViewContentModeCenter;
+		}
+	}
+	self.rightAccessoryView = rightAccessoryView;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -125,6 +169,13 @@
 	}
 }
 
-
+- (void)didRecognizeTap:(UITapGestureRecognizer*)sender
+{
+	if(sender.state == UIGestureRecognizerStateEnded) {
+		if(self.item.tapHandler != NULL) {
+			self.item.tapHandler();
+		}
+	}
+}
 
 @end
