@@ -18,9 +18,7 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 
-@interface Geom : NSObject {
-
-}
+@interface Geom : NSObject
 
 + (CGRect)alignRectMinX:(CGRect)r toX:(CGFloat)x;
 + (CGRect)alignRectMidX:(CGRect)r toX:(CGFloat)x;
