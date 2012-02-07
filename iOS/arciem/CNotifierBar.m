@@ -20,6 +20,7 @@
 #import "CNotifier.h"
 #import "CNotifierView.h"
 #import "UIViewUtils.h"
+#import "ThreadUtils.h"
 
 NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification";
 
@@ -157,19 +158,14 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 	self.items = newOrderedItems;
 }
 
-- (void)setNeedsUpdateItems
-{
-//	CLogDebug(nil, @"%@ setNeedsUpdateItems", self);
-
-	NSNotification* notification = [NSNotification notificationWithName:kNeedsUpdateItemsNotification object:self];
-	[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:NSNotificationCoalescingOnName forModes:nil];
-}
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	if(object == [CNotifier sharedNotifier]) {
 		if([keyPath isEqualToString:@"items"]) {
-			[self setNeedsUpdateItems];
+			[NSThread performBlockOnMainThread:^ {
+				NSNotification* notification = [NSNotification notificationWithName:kNeedsUpdateItemsNotification object:self];
+				[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+			}];
 		}
 	}
 }

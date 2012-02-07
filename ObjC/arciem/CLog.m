@@ -151,3 +151,10 @@ void CLogTrace(NSString* tag, NSString *format, ...)
 	_CLog(kLogTrace, tag, format, args);
 }
 
+void CLogPrint(NSString* format, ...)
+{
+	va_list args;
+	va_start(args, format);
+	NSString* str = [[NSString alloc] initWithFormat:format arguments:args];
+	fprintf(stderr, "%s\n", [str UTF8String]);
+}

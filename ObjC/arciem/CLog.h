@@ -45,3 +45,5 @@ void CLogDebug(NSString* tag, NSString *format, ...);
 void CLogTrace(NSString* tag, NSString *format, ...);
 
 void CLogv(CLogLevel level, NSString *format, va_list args);
+
+void CLogPrint(NSString* format, ...);
