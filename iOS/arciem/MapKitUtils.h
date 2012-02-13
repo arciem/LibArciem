@@ -18,9 +18,12 @@
 
 #import <MapKit/MapKit.h>
 
-@protocol CGroupableAnnotation <MKAnnotation>
+@interface NSValue(MapKitUtils)
 
-@property (weak, nonatomic) id<CGroupableAnnotation> parentAnnotation;
-@property (strong, readonly, nonatomic) NSMutableArray* childAnnotations;
++ (NSValue*)valueWithCoordinate:(CLLocationCoordinate2D)coordinate;
+- (CLLocationCoordinate2D)coordinateValue;
 
 @end
+
+CLLocationCoordinate2D CentroidOfCoordinates(NSArray* coordinateValues);
+NSString* NSStringFromMKMapRect(MKMapRect rect);

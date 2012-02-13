@@ -20,10 +20,11 @@
 
 @interface NSThread (BlocksAdditions)
 
-- (void)performBlock:(void (^)())block;
-- (void)performBlock:(void (^)())block waitUntilDone:(BOOL)wait;
-+ (void)performBlockInBackground:(void (^)())block;
-+ (void)performBlockOnMainThread:(void (^)())block;
+- (void)performBlock:(void (^)(void))block;
+- (void)performBlock:(void (^)(void))block waitUntilDone:(BOOL)wait;
++ (void)performBlockInBackground:(void (^)(void))block;
++ (void)performBlockOnMainThread:(void (^)(void))block;
++ (void)performBlockOnMainThread:(void (^)(void))block afterDelay:(NSTimeInterval)delay;
 + (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2;
 
 @end

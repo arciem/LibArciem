@@ -20,7 +20,7 @@
 
 @implementation NSThread (BlocksAdditions)
 
-- (void)performBlock:(void (^)())block
+- (void)performBlock:(void (^)(void))block
 {
 	if ([[NSThread currentThread] isEqual:self]) {
 		block();
@@ -29,7 +29,7 @@
 	}
 }
 
-- (void)performBlock:(void (^)())block waitUntilDone:(BOOL)wait
+- (void)performBlock:(void (^)(void))block waitUntilDone:(BOOL)wait
 {
     [NSThread performSelector:@selector(ng_runBlock:)
                      onThread:self
@@ -37,24 +37,30 @@
                 waitUntilDone:wait];
 }
 
-+ (void)ng_runBlock:(void (^)())block
++ (void)ng_runBlock:(void (^)(void))block
 {
 	block();
 }
 
-+ (void)performBlockInBackground:(void (^)())block
++ (void)performBlockInBackground:(void (^)(void))block
 {
 	[self performSelectorInBackground:@selector(ng_runBlock:)
 	                           withObject:[block copy]];
 }
 
-+ (void)performBlockOnMainThread:(void (^)())block
++ (void)performBlockOnMainThread:(void (^)(void))block
 {
 	if([[self currentThread] isEqual:[self mainThread]]) {
 		block();
 	} else {
 		[[NSOperationQueue mainQueue] addOperationWithBlock:block];
 	}
+}
+
++ (void)performBlockOnMainThread:(void (^)(void))block afterDelay:(NSTimeInterval)delay
+{
+	int64_t delta = (int64_t)(1.0e9 * delay);
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), dispatch_get_main_queue(), block);
 }
 
 + (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2
