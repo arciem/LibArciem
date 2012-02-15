@@ -332,7 +332,7 @@ CGGradientRef GradientCreateWith4Colors(CGColorRef color1, CGColorRef color2, CG
 CGGradientRef GradientCreateGloss(CGColorRef color1, CGColorRef color2, CGColorRef color3, CGColorRef color4, CGColorSpaceRef colorSpace)
 {
 	const void* colorValues[] = { color1, color2, color3, color4 };
-	CGFloat locations[] = { 0.0, 0.5, 0.5, 1.0 };
+	CGFloat locations[] = { 0.0, 0.49, 0.51, 1.0 };
 	CFArrayRef colors = CFArrayCreate(NULL, colorValues, 4, NULL);
 	CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, colors, locations);
 	CFRelease(colors);
@@ -535,6 +535,13 @@ void ContextFillRectColor(CGContextRef context, CGRect rect, CGColorRef color)
 	CGContextRestoreGState(context);
 }
 
+void ContextFillRectGray(CGContextRef context, CGRect rect, CGFloat gray, CGFloat alpha)
+{
+	CGColorRef c = CreateColorWithGray(gray, alpha);
+	ContextFillRectColor(context, rect, c);
+	CGColorRelease(c);
+}
+
 void ContextFillPathColor(CGContextRef context, CGPathRef path, CGColorRef color)
 {
 	CGContextSaveGState(context);
@@ -702,4 +709,11 @@ CGColorRef CreateColorByInterpolatingColors(CGColorRef color1, CGColorRef color2
 	}
 	
 	return newColor;
+}
+
+void ContextDrawSavingState(CGContextRef context, void (^drawing)(void))
+{
+	CGContextSaveGState(context);
+	drawing();
+	CGContextRestoreGState(context);
 }

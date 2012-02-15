@@ -29,11 +29,13 @@
 + (UIColor*)systemNavigationGray;
 + (UIColor*)systemHighlightGray;
 
-+ (UIColor*)diagonalPatternColorWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale;
++ (UIImage*)diagonalRight:(BOOL)right patternImageWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale;
++ (UIColor*)diagonalRight:(BOOL)right patternColorWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale;
 
 - (UIColor*)colorByInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
 - (UIColor*)colorByCircularInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
 - (UIColor*)colorByCircularInterpolatingToHue:(UIColor*)color fraction:(CGFloat)fraction;
+- (UIColor*)colorByOffsettingHue:(CGFloat)offset;
 - (UIColor*)colorByDarkeningFraction:(CGFloat)fraction;
 - (UIColor*)colorByLighteningFraction:(CGFloat)fraction;
 - (UIColor*)colorByColorBurnFraction:(CGFloat)fraction;

@@ -21,6 +21,7 @@
 #import "Geom.h"
 #import "DeviceUtils.h"
 #import "UIColorUtils.h"
+#import "math_utils.hpp"
 
 @implementation UIImage (UIImageUtils)
 
@@ -510,6 +511,135 @@
 	resultImage = [self etchedButtonWithBackgroundImage:backgroundImage cornerRadius:cornerRadius glossAlpha:glossAlpha];
 
 	return resultImage;
+}
+
+- (UIImage*)imageForDarkBar:(BOOL)darkBar
+{
+	UIImage* resultImage = self;
+
+	UIColor *tintColor;
+	UIColor* shadowColor;
+	CGSize shadowOffset;
+
+	if(darkBar) {
+		tintColor = [UIColor whiteColor];
+		shadowOffset = CGSizeMake(0, -1);
+		shadowColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+		
+		resultImage = [UIImage imageWithShapeImage:self tintColor:tintColor shadowColor:shadowColor shadowOffset:shadowOffset shadowBlur:0.0];
+	} else {
+		tintColor = [UIColor colorWithHue:0.600 saturation:0.173 brightness:0.423 alpha:1.000];
+		shadowOffset = CGSizeMake(0, 1);
+		shadowColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
+		
+		resultImage = [UIImage imageWithShapeImage:self tintColor:tintColor shadowColor:shadowColor shadowOffset:shadowOffset shadowBlur:0.0];
+	}
+	
+	return resultImage;
+}
+
++ (UIImage*)barImageWithBackgroundPatternImage:(UIImage*)patternImage glossAlpha:(CGFloat)glossAlpha edgeTreatments:(void (^)(CGContextRef,CGRect))block
+{
+	UIImage* image = nil;
+	
+	CGRect bounds = {{0, 0}, {320, 44}};
+	UIGraphicsBeginImageContextWithOptions(bounds.size, YES, 0.0);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	
+	ContextDrawSavingState(context, ^{
+		CGFloat screenScale = ScreenScale();
+		CGFloat patternScale = patternImage.scale;
+		CGFloat scale = screenScale / patternScale ;
+		CGContextScaleCTM(context, scale, scale);
+		[patternImage drawAsPatternInRect:bounds];
+	});
+
+	if(glossAlpha > 0.0) {
+		CGColorRef glossColor1 = CreateColorWithGray(1.0, glossAlpha);
+		CGColorRef glossColor2 = CreateColorWithGray(1.0, glossAlpha * 0.25);
+		CGColorRef glossColor3 = CreateColorWithGray(1.0, 0.0);
+		CGColorRef glossColor4 = CreateColorWithGray(1.0, 0.0);
+		
+		CGGradientRef glossGradient = GradientCreateGloss(glossColor1, glossColor2, glossColor3, glossColor4, SharedColorSpaceDeviceGray());
+		
+		ContextFillRectGradientVertical(context, bounds, glossGradient);
+		
+		CGColorRelease(glossColor1);
+		CGColorRelease(glossColor2);
+		CGColorRelease(glossColor3);
+		CGColorRelease(glossColor4);
+		
+		CGGradientRelease(glossGradient);
+	}
+	
+	if(block != NULL) {
+		block(context, bounds);
+	}
+	
+	image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	return image;
+}
+
++ (UIImage*)navigationBarImageWithBackgroundPatternImage:(UIImage*)patternImage glossAlpha:(CGFloat)glossAlpha
+{
+	UIImage* result = [self barImageWithBackgroundPatternImage:patternImage glossAlpha:glossAlpha edgeTreatments:^(CGContextRef context, CGRect bounds) {
+		
+		CGRect r = bounds;
+		CGRect t;
+		
+		if(IsHiDPI()) {
+			CGRectDivide(r, &t, &r, 0.5, CGRectMinYEdge); ContextFillRectGray(context, t, 1.0, 0.30);
+			CGRectDivide(r, &t, &r, 0.5, CGRectMinYEdge); ContextFillRectGray(context, t, 1.0, 0.20);
+			CGRectDivide(r, &t, &r, 0.5, CGRectMinYEdge); ContextFillRectGray(context, t, 1.0, 0.06);
+
+			CGRectDivide(r, &t, &r, 0.5, CGRectMaxYEdge); ContextFillRectGray(context, t, 0.0, 1.0 - 0.38);
+			CGRectDivide(r, &t, &r, 0.5, CGRectMaxYEdge); ContextFillRectGray(context, t, 0.0, 1.0 - 0.53);
+			CGRectDivide(r, &t, &r, 0.5, CGRectMaxYEdge); ContextFillRectGray(context, t, 0.0, 1.0 - 0.84);
+		} else {
+			CGRectDivide(r, &t, &r, 1.0, CGRectMinYEdge); ContextFillRectGray(context, t, 1.0, 0.25);
+
+			CGRectDivide(r, &t, &r, 1.0, CGRectMaxYEdge); ContextFillRectGray(context, t, 0.0, 1.0 - 0.38);
+		}
+	}];
+	
+	return result;
+}
+
++ (UIImage*)navigationBarImageWithBackgroundPatternImage:(UIImage*)patternImage
+{
+	return [self navigationBarImageWithBackgroundPatternImage:patternImage glossAlpha:0.4];
+}
+
++ (UIImage*)toolbarImageWithBackgroundPatternImage:(UIImage*)patternImage toolbarPosition:(UIToolbarPosition)position glossAlpha:(CGFloat)glossAlpha
+{
+	UIImage* result = [self barImageWithBackgroundPatternImage:patternImage glossAlpha:glossAlpha edgeTreatments:^(CGContextRef context, CGRect bounds) {
+		CGRect r = bounds;
+		CGRect t;
+		
+		if(position == UIToolbarPositionBottom) {
+			if(IsHiDPI()) {
+				CGRectDivide(r, &t, &r, 0.5, CGRectMinYEdge); ContextFillRectGray(context, t, 0.0, 0.63);
+				CGRectDivide(r, &t, &r, 0.5, CGRectMinYEdge); ContextFillRectGray(context, t, 0.1, 0.49);
+				CGRectDivide(r, &t, &r, 0.5, CGRectMinYEdge); ContextFillRectGray(context, t, 0.4, 0.34);
+				CGRectDivide(r, &t, &r, 0.5, CGRectMinYEdge); ContextFillRectGray(context, t, 0.6, 0.20);
+				CGRectDivide(r, &t, &r, 0.5, CGRectMinYEdge); ContextFillRectGray(context, t, 0.8, 0.05);
+			} else {
+				CGRectDivide(r, &t, &r, 1.0, CGRectMinYEdge); ContextFillRectGray(context, t, 0.0, 0.7);
+				CGRectDivide(r, &t, &r, 1.0, CGRectMinYEdge); ContextFillRectGray(context, t, 1.0, 0.6);
+			}
+		} else {
+			// TODO
+		}
+	}];
+	
+	return result;
+}
+
++ (UIImage*)toolbarImageWithBackgroundPatternImage:(UIImage*)patternImage toolbarPosition:(UIToolbarPosition)position
+{
+	return [self toolbarImageWithBackgroundPatternImage:patternImage toolbarPosition:position glossAlpha:0.4];
 }
 
 @end

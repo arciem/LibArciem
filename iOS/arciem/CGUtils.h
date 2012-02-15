@@ -26,6 +26,7 @@ CGColorRef SharedBlackColor();
 CGColorRef SharedClearColor();
 
 void ContextFillRectColor(CGContextRef context, CGRect rect, CGColorRef color);
+void ContextFillRectGray(CGContextRef context, CGRect rect, CGFloat gray, CGFloat alpha);
 void ContextDrawCrossedBox(CGContextRef context, CGRect rect, CGColorRef color, float lineWidth, bool originIndicators = NO);
 CGPathRef CreateRoundedRectPath(CGRect rect, CGFloat radius, BOOL reverse);
 CGPathRef CreateTopRoundedRectPath(CGRect rect, CGFloat radius);
@@ -78,3 +79,5 @@ public:
 	CGContextSaveGStateS(CGContextRef context) : _context(context) { CGContextSaveGState(_context); }
 	~CGContextSaveGStateS() { CGContextRestoreGState(_context); }
 };
+
+void ContextDrawSavingState(CGContextRef context, void (^drawing)(void));

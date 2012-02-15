@@ -20,6 +20,7 @@
 #import "math_utils.hpp"
 #import <QuartzCore/QuartzCore.h>
 #import "Geom.h"
+#import "math_utils.hpp"
 
 @implementation UIColor(UIColorUtils)
 
@@ -95,6 +96,19 @@
 			h = arciem::circular_interpolate(fraction, h1, h2);
 			result = [UIColor colorWithHue:h saturation:s1 brightness:b1 alpha:a1];
 		}
+	}
+	
+	return result;
+}
+
+- (UIColor*)colorByOffsettingHue:(CGFloat)offset
+{
+	UIColor* result = self;
+	
+	CGFloat h, s, b, a;
+	if([self getHue:&h saturation:&s brightness:&b alpha:&a]) {
+		h = fmodf(h + offset, 1.0);
+		result = [UIColor colorWithHue:h saturation:s brightness:b alpha:a];
 	}
 	
 	return result;
@@ -362,11 +376,11 @@
 	return result;
 }
 
-+ (UIColor*)diagonalPatternColorWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale
++ (UIImage*)diagonalRight:(BOOL)right patternImageWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale
 {
 	CGRect imageBounds = CGRectZero;
 	imageBounds.size = size;
-
+	
 	UIGraphicsBeginImageContextWithOptions(size, YES, scale);
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
@@ -374,22 +388,39 @@
 	[color1 set];
 	CGContextFillRect(context, imageBounds);
 	
+	CGFloat minX = imageBounds.origin.x;
+	CGFloat maxX = minX + imageBounds.size.width;
+	CGFloat midX = minX + (imageBounds.size.width) / 2;
+	
+	CGFloat minY = imageBounds.origin.y;
+	CGFloat maxY = minY + imageBounds.size.height;
+	CGFloat midY = minY + (imageBounds.size.height) / 2;
+	
+	if(right) {
+		arciem::swap(minX, maxX);
+	}
+	
 	UIBezierPath* path = [[UIBezierPath alloc] init];
-	[path moveToPoint:[Geom rectMinXMinY:imageBounds]];
-	[path addLineToPoint:[Geom rectMidXMinY:imageBounds]];
-	[path addLineToPoint:[Geom rectMinXMidY:imageBounds]];
+	[path moveToPoint:CGPointMake(minX, minY)];
+	[path addLineToPoint:CGPointMake(midX, minY)];
+	[path addLineToPoint:CGPointMake(minX, midY)];
 	[path closePath];
-	[path moveToPoint:[Geom rectMaxXMinY:imageBounds]];
-	[path addLineToPoint:[Geom rectMaxXMidY:imageBounds]];
-	[path addLineToPoint:[Geom rectMidXMaxY:imageBounds]];
-	[path addLineToPoint:[Geom rectMinXMaxY:imageBounds]];
+	[path moveToPoint:CGPointMake(maxX, minY)];
+	[path addLineToPoint:CGPointMake(maxX, midY)];
+	[path addLineToPoint:CGPointMake(midX, maxY)];
+	[path addLineToPoint:CGPointMake(minX, maxY)];
 	[path closePath];
 	[color2 set];
 	[path fill];
 	
 	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
-	
+	return image;
+}
+
++ (UIColor*)diagonalRight:(BOOL)right patternColorWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale
+{
+	UIImage *image = [self diagonalRight:right patternImageWithColor1:color1 color2:color2 size:size scale:scale];
 	UIColor* color = [[UIColor alloc] initWithPatternImage:image];
 	return color;
 }
