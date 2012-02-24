@@ -666,6 +666,31 @@ CGColorRef CreateColorByLightening(CGColorRef color, CGFloat fractionLighter)
 	return CGColorCreate(SharedColorSpaceDeviceRGB(), newc);
 }
 
+CGColorRef CreateColorByColorDodge(CGColorRef color, CGFloat fractionLighter)
+{
+	const CGFloat* oldc = CGColorGetComponents(color);
+	CGFloat newc[4];
+	
+	size_t numberOfComponents = CGColorGetNumberOfComponents(color);
+	switch(numberOfComponents) {
+		case 2:
+			newc[0] = arciem::denormalize(fractionLighter, oldc[0], 1.0f);
+			newc[1] = newc[0];
+			newc[2] = newc[0];
+			newc[3] = oldc[1];
+			break;
+		case 4:
+			CGFloat invertedFraction = 1.0 - fractionLighter;
+			newc[0] = fminf(oldc[0] / invertedFraction, 1.0);
+			newc[1] = fminf(oldc[1] / invertedFraction, 1.0);
+			newc[2] = fminf(oldc[2] / invertedFraction, 1.0);
+			newc[3] = oldc[3];
+			break;
+	}
+	
+	return CGColorCreate(SharedColorSpaceDeviceRGB(), newc);
+}
+
 CGColorRef CreateColorByColorBurn(CGColorRef color, CGFloat fractionDarker)
 {
 	const CGFloat* oldc = CGColorGetComponents(color);
@@ -681,9 +706,9 @@ CGColorRef CreateColorByColorBurn(CGColorRef color, CGFloat fractionDarker)
 			break;
 		case 4:
 			CGFloat invertedFraction = 1.0 - fractionDarker;
-			newc[0] = 1.0 - ((1.0 - oldc[0]) / invertedFraction);
-			newc[1] = 1.0 - ((1.0 - oldc[1]) / invertedFraction);
-			newc[2] = 1.0 - ((1.0 - oldc[2]) / invertedFraction);
+			newc[0] = 1.0 - fminf((1.0 - oldc[0]) / invertedFraction, 1.0);
+			newc[1] = 1.0 - fminf((1.0 - oldc[1]) / invertedFraction, 1.0);
+			newc[2] = 1.0 - fminf((1.0 - oldc[2]) / invertedFraction, 1.0);
 			newc[3] = oldc[3];
 			break;
 	}

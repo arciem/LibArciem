@@ -50,10 +50,12 @@
 	[self addSubview:self.backgroundImageView];
 	
 	self.label = [[UILabel alloc] initWithFrame:self.bounds];
-	self.label.flexibleLeft = self.boundsLeft + 20;
+	self.label.flexibleLeft = self.boundsLeft + 10;
+	self.label.flexibleBottom -= 1;
 	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.label.opaque = NO;
 	self.label.backgroundColor = [UIColor clearColor];
+//	self.label.backgroundColor = [[UIColor greenColor] colorWithAlpha:0.5];
 	self.label.font = [UIFont boldSystemFontOfSize:14.0];
 	self.label.textAlignment = UITextAlignmentCenter;
 	self.label.adjustsFontSizeToFitWidth = YES;
@@ -140,11 +142,11 @@
 
 	if(self.item.whiteText) {
 		self.label.textColor = [UIColor whiteColor];
-		self.label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.8];
+		self.label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
 		self.label.shadowOffset = CGSizeMake(0, -1);
 	} else {
 		self.label.textColor = [UIColor blackColor];
-		self.label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.8];
+		self.label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.5];
 		self.label.shadowOffset = CGSizeMake(0, 1);
 	}
 

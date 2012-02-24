@@ -141,6 +141,15 @@
 	return result;
 }
 
+- (UIColor*)colorByColorDodgeFraction:(CGFloat)fraction
+{
+	CGColorRef color = CreateColorByColorDodge(self.CGColor, fraction);
+	UIColor* result = [UIColor colorWithCGColor:color];
+	CGColorRelease(color);
+	
+	return result;
+}
+
 - (UIColor*)colorByDeepeningFraction:(CGFloat)fraction
 {
 	UIColor* color = self;

@@ -17,10 +17,10 @@
  *******************************************************************************/
 
 #import "CNotifierBar.h"
-#import "CNotifier.h"
 #import "CNotifierView.h"
 #import "UIViewUtils.h"
 #import "ThreadUtils.h"
+#import "ObjectUtils.h"
 
 NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification";
 
@@ -39,6 +39,7 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 @synthesize sortDescriptors = sortDescriptors_;
 @synthesize rowHeight = rowHeight_;
 @synthesize rowCapacity = rowCapacity_;
+@synthesize notifier = notifier_;
 
 - (void)setup
 {
@@ -55,16 +56,35 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 	self.rowCapacity = 1;
 	self.rowHeight = self.height;
-
-	[[CNotifier sharedNotifier] addObserver:self forKeyPath:@"items" options:NSKeyValueObservingOptionInitial context:nil];
 	
+	[self addObserver:self forKeyPath:@"notifier" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateItemsSoon) name:kNeedsUpdateItemsNotification object:self];
 }
 
 - (void)dealloc
 {
+	self.notifier = nil;
+	[self removeObserver:self forKeyPath:@"notifier"];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kNeedsUpdateItemsNotification object:self];
-	[[CNotifier sharedNotifier] removeObserver:self forKeyPath:@"items"];
+}
+
++ (BOOL)automaticallyNotifiesObserversOfNotifier
+{
+	return NO;
+}
+
+- (CNotifier*)notifier
+{
+	return notifier_;
+}
+
+- (void)setNotifier:(CNotifier *)notifier
+{
+	if(notifier_ != notifier) {
+		[self willChangeValueForKey:@"notifier"];
+		notifier_ = notifier;
+		[self didChangeValueForKey:@"notifier"];
+	}
 }
 
 - (void)updateItemsSoon
@@ -78,7 +98,11 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 //	CLogDebug(nil, @"%@ updateItems", self);
 
 	NSArray* oldOrderedItems = self.items;
-	NSSet* newItems = [CNotifier sharedNotifier].items;
+	NSSet* newItems = self.notifier.items;
+	if(newItems == nil) {
+		newItems = [NSSet set];
+	}
+
 	NSArray* newOrderedItems = [newItems sortedArrayUsingDescriptors:self.sortDescriptors];
 
 	NSMutableSet* visibleItems = [NSMutableSet set];
@@ -160,7 +184,14 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if(object == [CNotifier sharedNotifier]) {
+	if(object == self) {
+		if([keyPath isEqualToString:@"notifier"]) {
+			CNotifier* oldNotifier = Denull([change objectForKey:NSKeyValueChangeOldKey]);
+			[oldNotifier removeObserver:self forKeyPath:@"items"];
+			CNotifier* newNotifier = Denull([change objectForKey:NSKeyValueChangeNewKey]);
+			[newNotifier addObserver:self forKeyPath:@"items" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) context:NULL];
+		}
+	} if(object == self.notifier) {
 		if([keyPath isEqualToString:@"items"]) {
 			[NSThread performBlockOnMainThread:^ {
 				NSNotification* notification = [NSNotification notificationWithName:kNeedsUpdateItemsNotification object:self];

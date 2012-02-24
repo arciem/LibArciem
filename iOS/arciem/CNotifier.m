@@ -21,16 +21,16 @@
 #import "UIColorUtils.h"
 #include "random.hpp"
 
-static CNotifier* sInstance = nil;
-
 @interface CNotifier ()
 
+@property (strong, nonatomic) NSMutableSet* subscriptions;
 @property (strong, nonatomic) NSMutableSet* internalItems;
 
 @end
 
 @implementation CNotifier
 
+@synthesize subscriptions = subscriptions_;
 @synthesize internalItems = internalItems_;
 @dynamic items;
 
@@ -39,61 +39,128 @@ static CNotifier* sInstance = nil;
 //	CLogSetTagActive(@"C_NOTIFIER", YES);
 }
 
-+ (CNotifier*)sharedNotifier
-{
-	@synchronized([CNotifier class]) {
-		if(sInstance == nil) {
-			sInstance = [[CNotifier alloc] init];
-		}
-	}
-	
-	return sInstance;
-}
-
 - (id)init
 {
-	@synchronized([CNotifier class]) {
-		if(sInstance == nil) {
-			if(self = [super init]) {
-				self.internalItems = [NSMutableSet set];
-			}
-		} else {
-			self = nil;
-		}
+	if(self = [super init]) {
+		self.subscriptions = [NSMutableSet set];
+		self.internalItems = [NSMutableSet set];
 	}
 	
 	return self;
 }
 
-- (void)addItem:(CNotifierItem*)item
+- (void)dealloc
 {
-	[NSThread performBlockOnMainThread:^{
-		@synchronized(self) {
-			if(![self hasItem:item]) {
-				NSSet* newItems = [NSSet setWithObject:item];
-				[self willChangeValueForKey:@"items" withSetMutation:NSKeyValueUnionSetMutation usingObjects:newItems];
-				[self.internalItems addObject:item];
+	@synchronized(self) {
+		for(CNotifier* notifier in [self.subscriptions copy]) {
+			[self unsubscribeFromNotifier:notifier];
+		}
+	}
+}
+
+- (void)subscribeToNotifier:(CNotifier*)notifier
+{
+	@synchronized(self) {
+		if(![self.subscriptions containsObject:notifier]) {
+			[self.subscriptions addObject:notifier];
+			[notifier addObserver:self forKeyPath:@"items" options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
+		}
+	}
+}
+
+- (void)unsubscribeFromNotifier:(CNotifier*)notifier
+{
+	@synchronized(self) {
+		if([self.subscriptions containsObject:notifier]) {
+			[self.subscriptions removeObject:notifier];
+			[notifier removeObserver:self forKeyPath:@"items"];
+		}
+	}
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	@synchronized(self) {
+		if([self.subscriptions containsObject:object]) {
+			if([keyPath isEqualToString:@"items"]) {
+				NSUInteger changeKind = [[change objectForKey:NSKeyValueChangeKindKey] unsignedIntegerValue];
+				switch(changeKind) {
+					case NSKeyValueChangeSetting: {
+						NSSet* newItems = [change objectForKey:NSKeyValueChangeNewKey];
+						[self addItems:newItems];
+					} break;
+					case NSKeyValueChangeInsertion: {
+						NSSet* newItems = [change objectForKey:NSKeyValueChangeNewKey];
+						[self addItems:newItems];
+					} break;
+					case NSKeyValueChangeRemoval: {
+						NSSet* oldItems = [change objectForKey:NSKeyValueChangeOldKey];
+						[self removeItems:oldItems];
+					} break;
+					default: {
+						NSAssert1(NO, @"Unimplemented change kind:%d", changeKind);
+					} break;
+				}
+			}
+		}
+	}
+}
+
++ (BOOL)automaticallyNotifiesObserversOfItems
+{
+	return NO;
+}
+
+- (void)addItems:(NSSet*)objects
+{
+	@synchronized(self) {
+		NSSet* newItems = [objects objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+			return ![self.items containsObject:obj];
+		}];
+		if(newItems.count > 0) {
+			[self willChangeValueForKey:@"items" withSetMutation:NSKeyValueUnionSetMutation usingObjects:newItems];
+			[self.internalItems unionSet:newItems];
+			[self didChangeValueForKey:@"items" withSetMutation:NSKeyValueUnionSetMutation usingObjects:newItems];
+			for(CNotifierItem* item in newItems) {
 				if(item.duration > 0.0) {
 					[self performSelector:@selector(removeItem:) withObject:item afterDelay:item.duration];
 				}
-				[self didChangeValueForKey:@"items" withSetMutation:NSKeyValueUnionSetMutation usingObjects:newItems];
 			}
 		}
-	}];
+	}
+}
+
+- (void)addItem:(CNotifierItem*)item
+{
+	if(item != nil) {
+		[self addItems:[NSSet setWithObject:item]];
+	}
+}
+
+- (void)removeItems:(NSSet*)objects
+{
+	@synchronized(self) {
+		NSSet* oldItems = [objects objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+			return [self.items containsObject:obj];
+		}];
+		if(oldItems.count > 0) {
+			for(CNotifierItem* item in oldItems) {
+				if(item.duration > 0.0) {
+					[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(removeItem:) object:item];
+				}
+			}
+			[self willChangeValueForKey:@"items" withSetMutation:NSKeyValueMinusSetMutation usingObjects:oldItems];
+			[self.internalItems minusSet:oldItems];
+			[self didChangeValueForKey:@"items" withSetMutation:NSKeyValueMinusSetMutation usingObjects:oldItems];
+		}
+	}
 }
 
 - (void)removeItem:(CNotifierItem*)item
 {
-	[NSThread performBlockOnMainThread:^{
-		@synchronized(self) {
-			if([self hasItem:item]) {
-				NSSet* oldItems = [NSSet setWithObject:item];
-				[self willChangeValueForKey:@"items" withSetMutation:NSKeyValueMinusSetMutation usingObjects:oldItems];
-				[self.internalItems removeObject:item];
-				[self didChangeValueForKey:@"items" withSetMutation:NSKeyValueMinusSetMutation usingObjects:oldItems];
-			}
-		}
-	}];
+	if(item != nil) {
+		[self removeItems:[NSSet setWithObject:item]];
+	}
 }
 
 - (BOOL)hasItem:(CNotifierItem*)item
@@ -114,7 +181,7 @@ static CNotifier* sInstance = nil;
 	return result;
 }
 
-+ (void)test
++ (void)testWithNotifier:(CNotifier*)notifier
 {
 	[NSThread performBlockInBackground:^{
 		[NSThread sleepForTimeInterval:3.0];
@@ -142,21 +209,21 @@ static CNotifier* sInstance = nil;
 						item.tintColor = [UIColor whiteColor];
 						break;
 				}
-				[[CNotifier sharedNotifier] addItem:item];
+				[notifier addItem:item];
 				CLogTrace(@"C_NOTIFIER", @"Add: %@", item.message);
 			} else {
 				if(items.count > 0) {
 					NSUInteger index = arciem::random_range(0, items.count);
 					CNotifierItem* item = [items objectAtIndex:index];
 					CLogTrace(@"C_NOTIFIER", @"Remove: %@", item.message);
-					[[CNotifier sharedNotifier] removeItem:item];
+					[notifier removeItem:item];
 					[items removeObject:item];
 				}
 			}
 			[NSThread sleepForTimeInterval:arciem::random_range(0.2, 4.0)];
 		}
 		for(CNotifierItem* item in items.reverseObjectEnumerator) {
-			[[CNotifier sharedNotifier] removeItem:item];
+			[notifier removeItem:item];
 			[NSThread sleepForTimeInterval:1.0];
 		}
 	}];

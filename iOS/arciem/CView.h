@@ -23,10 +23,11 @@ typedef enum {
 	kViewKeyboardAdjustmentTypeShrink
 } CViewKeyboardAdjustmentType;
 
-@interface CView : UIView
+@interface CView : UIView<UIGestureRecognizerDelegate>
 
-@property(strong, nonatomic) UIColor* debugColor;
-@property(nonatomic) CViewKeyboardAdjustmentType keyboardAdjustmentType;
+@property (strong, nonatomic) UIColor* debugColor;
+@property (nonatomic) CViewKeyboardAdjustmentType keyboardAdjustmentType;
+@property (nonatomic) BOOL tapResignsFirstResponder;
 
 - (void)setup;
 

@@ -39,6 +39,7 @@
 - (UIColor*)colorByDarkeningFraction:(CGFloat)fraction;
 - (UIColor*)colorByLighteningFraction:(CGFloat)fraction;
 - (UIColor*)colorByColorBurnFraction:(CGFloat)fraction;
+- (UIColor*)colorByColorDodgeFraction:(CGFloat)fraction;
 - (UIColor*)colorByDeepeningFraction:(CGFloat)fraction;
 - (UIColor*)colorBySaturatingFraction:(CGFloat)fraction;
 - (UIColor*)colorByDesaturatingFraction:(CGFloat)fraction;

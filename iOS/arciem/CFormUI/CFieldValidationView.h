@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2012 Arciem LLC
+ Copyright 2011 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,20 +16,11 @@
  
  *******************************************************************************/
 
-#import <Foundation/Foundation.h>
-#import "CNotifierItem.h"
+#import "CView.h"
+#import "CField.h"
 
-@interface CNotifier : NSObject
+@interface CFieldValidationView : CView
 
-- (void)addItem:(CNotifierItem*)item;
-- (void)removeItem:(CNotifierItem*)item;
-- (BOOL)hasItem:(CNotifierItem*)item;
-
-- (void)subscribeToNotifier:(CNotifier*)notifier;
-- (void)unsubscribeFromNotifier:(CNotifier*)notifier;
-
-+ (void)testWithNotifier:(CNotifier*)notifier;
-
-@property (nonatomic, readonly) NSSet* items;
+@property (strong, nonatomic) CField* field;
 
 @end

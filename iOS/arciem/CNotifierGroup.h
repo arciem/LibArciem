@@ -17,19 +17,17 @@
  *******************************************************************************/
 
 #import <Foundation/Foundation.h>
+#import "CNotifier.h"
 #import "CNotifierItem.h"
 
-@interface CNotifier : NSObject
+@interface CNotifierGroup2 : NSObject
+
+- (id)init;
+
+- (void)addNotifier:(CNotifier*)notifier;
+- (void)removeNotifier:(CNotifier*)notifier;
 
 - (void)addItem:(CNotifierItem*)item;
 - (void)removeItem:(CNotifierItem*)item;
-- (BOOL)hasItem:(CNotifierItem*)item;
-
-- (void)subscribeToNotifier:(CNotifier*)notifier;
-- (void)unsubscribeFromNotifier:(CNotifier*)notifier;
-
-+ (void)testWithNotifier:(CNotifier*)notifier;
-
-@property (nonatomic, readonly) NSSet* items;
 
 @end

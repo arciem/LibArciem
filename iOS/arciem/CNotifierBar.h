@@ -17,7 +17,10 @@
  *******************************************************************************/
 
 #import "CView.h"
+#import "CNotifier.h"
 
 @interface CNotifierBar : CView
+
+@property (strong, nonatomic) CNotifier* notifier;
 
 @end
