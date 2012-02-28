@@ -103,7 +103,7 @@ NSString* DeviceModel()
 
 NSString* StringByAppendingDeviceSuffix(NSString* s)
 {
-	s = [s stringByAppendingString:IsPhone() ? @"_Phone" : @"_Pad"];
+	s = [s stringByAppendingString:IsPhone() ? @"~iPhone" : @"~iPad"];
 //	CLogDebug(nil, @"string: %@", s);
 	return s;
 }

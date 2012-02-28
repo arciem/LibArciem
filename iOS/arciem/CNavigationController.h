@@ -20,4 +20,6 @@
 
 @interface CNavigationController : UINavigationController
 
+@property (strong, nonatomic) NSNumber* overrideDisablesAutomaticKeyboardDismissal;
+
 @end

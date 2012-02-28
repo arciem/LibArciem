@@ -22,5 +22,7 @@
 @interface CFieldValidationView : CView
 
 @property (strong, nonatomic) CField* field;
+@property (strong, nonatomic) UIColor* validMarkTintColor;
+@property (strong, nonatomic) UIColor* invalidMarkTintColor;
 
 @end

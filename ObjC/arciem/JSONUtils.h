@@ -18,9 +18,8 @@
 
 #import <UIKit/UIKit.h>
 
+@interface NSJSONSerialization (JSONUtils)
 
-@interface CNavigationBar : UINavigationBar
-
-@property(nonatomic) BOOL ignoreSlopRegion;
++ (id)JSONObjectWithURL:(NSURL *)url options:(NSJSONReadingOptions)opt error:(NSError **)error;
 
 @end

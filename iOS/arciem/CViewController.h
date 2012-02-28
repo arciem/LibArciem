@@ -19,12 +19,13 @@
 #import <UIKit/UIKit.h>
 #import "CImageView.h"
 
-enum CViewControllerState
+enum
 {
 	CViewControllerStateValid,
 	CViewControllerStateInvalid,
 	CViewControllerStateActivity
 };
+typedef NSUInteger CViewControllerState;
 
 extern NSString* const InterfaceDidChangeOrientationNotification;
 extern NSString* const InterfaceWillChangeOrientationNotification;

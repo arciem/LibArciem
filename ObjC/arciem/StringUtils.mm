@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import "StringUtils.h"
+#import "ObjectUtils.h"
 
 #ifdef __cplusplus
 using namespace std;
@@ -24,12 +25,17 @@ using namespace std;
 
 NSString* DenullString(NSString* s)
 {
-	return (s == nil || s == (id)[NSNull null]) ? @"" : s;
+	return Denull(s) == nil ? @"" : s;
 }
 
 BOOL IsEmptyString(NSString* s)
 {
 	return DenullString(s).length == 0;
+}
+
+NSString* EnnullString(NSString* s)
+{
+	return IsEmptyString(s) ? nil : s;
 }
 
 NSString* TrimCharacterSetFromStart(NSCharacterSet* set, NSString* str)

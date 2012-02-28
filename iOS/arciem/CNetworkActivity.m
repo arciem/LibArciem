@@ -57,11 +57,10 @@ static NSTimeInterval sLastRemoveTime = 0;
 
 - (NSString*)description
 {
-	return [NSString stringWithFormat:@"<%@:0x%x %@ %@>", 
-			[self class], self,
-			[self formatValueForKey:@"sequenceNumber" compact:YES],
-			[self formatBoolValueForKey:@"hasIndicator" compact:YES]
-			];
+	return [self formatObjectWithValues:[NSArray arrayWithObjects:
+										 [self formatValueForKey:@"sequenceNumber" compact:YES],
+										 [self formatBoolValueForKey:@"hasIndicator" compact:YES],
+										 nil]];
 }
 
 - (id)initWithIndicator:(BOOL)indicator

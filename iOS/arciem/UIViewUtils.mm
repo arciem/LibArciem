@@ -24,6 +24,7 @@
 #import "Geom.h"
 
 NSString* const sTapInBackgroundNotification = @"TapInBackground";
+static const NSTimeInterval kAnimationDuration = 0.4;
 
 @implementation UIView (UIViewUitls)
 
@@ -414,48 +415,25 @@ NSString* const sTapInBackgroundNotification = @"TapInBackground";
 - (void)addSubview:(UIView *)view animated:(BOOL)animated
 {
 	if(view.superview == nil) {
-		if(animated) {
-			view.alpha = 0.0;
-			[self addSubview:view];
-			[UIView beginAnimations:@"viewAppearance" context:nil];
-			[UIView setAnimationDelegate:self];
-			[UIView setAnimationDidStopSelector:@selector(appearanceAnimationDidStop:finished:context:)];
+		NSTimeInterval duration = animated ? kAnimationDuration : 0.0;
+		view.alpha = 0.0;
+		[self addSubview:view];
+		[UIView animateWithDuration:duration animations:^{
 			view.alpha = 1.0;
-//			[self retain];	// balanced in appearanceAnimationDidStop
-			[UIView commitAnimations];
-		} else {
-			[self addSubview:view];
-			view.alpha = 1.0;
-		}
+		}];
 	}
-}
-
-- (void)appearanceAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
-{
-//	[self release];
 }
 
 - (void)removeFromSuperviewAnimated:(BOOL)animated
 {
 	if(self.superview != nil) {
-		if(animated) {
-			[UIView beginAnimations:@"viewDisappearance" context:nil];
-			[UIView setAnimationDelegate:self];
-			[UIView setAnimationDidStopSelector:@selector(disappearanceAnimationDidStop:finished:context:)];
+		NSTimeInterval duration = animated ? kAnimationDuration : 0.0;
+		[UIView animateWithDuration:duration animations:^{
 			self.alpha = 0.0;
-//			[self.superview retain]; // balanced in disappearanceAnimationDidStop
-			[UIView commitAnimations];
-		} else {
+		} completion:^(BOOL finished) {
 			[self removeFromSuperview];
-		}
+		}];
 	}
-}
-
-- (void)disappearanceAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
-{
-//	UIView* superview = self.superview;
-	[self removeFromSuperview];
-//	[superview release];
 }
 
 - (void)tableHeaderFillWithTintColor:(UIColor*)tintColor

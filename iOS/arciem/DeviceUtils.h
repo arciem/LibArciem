@@ -43,3 +43,6 @@ NSString* APNSDeviceToken(NSData* s);
 - (NSArray *)loadDeviceNibNamed:(NSString *)name owner:(id)owner options:(NSDictionary *)options;
 
 @end
+
+@interface UIViewController (BundlePlatformAdditions)
+@end

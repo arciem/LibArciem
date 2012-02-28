@@ -20,6 +20,7 @@
 #import "ThreadUtils.h"
 #import "UIColorUtils.h"
 #include "random.hpp"
+#import "ObjectUtils.h"
 
 @interface CNotifier ()
 
@@ -32,6 +33,7 @@
 
 @synthesize subscriptions = subscriptions_;
 @synthesize internalItems = internalItems_;
+@synthesize name = name_;
 @dynamic items;
 
 + (void)initialize
@@ -52,15 +54,26 @@
 - (void)dealloc
 {
 	@synchronized(self) {
+		CLogTrace(@"C_NOTIFIER", @"%@ dealloc", self);
 		for(CNotifier* notifier in [self.subscriptions copy]) {
 			[self unsubscribeFromNotifier:notifier];
 		}
 	}
 }
 
+- (NSString*)description
+{
+	@synchronized(self) {
+		return [self formatObjectWithValues:[NSArray arrayWithObjects:
+											 [self formatValueForKey:@"name" compact:NO],
+											 nil]];
+	}
+}
+
 - (void)subscribeToNotifier:(CNotifier*)notifier
 {
 	@synchronized(self) {
+		CLogTrace(@"C_NOTIFIER", @"%@ subscribeToNotifier:%@", self, notifier);
 		if(![self.subscriptions containsObject:notifier]) {
 			[self.subscriptions addObject:notifier];
 			[notifier addObserver:self forKeyPath:@"items" options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
@@ -71,6 +84,7 @@
 - (void)unsubscribeFromNotifier:(CNotifier*)notifier
 {
 	@synchronized(self) {
+		CLogTrace(@"C_NOTIFIER", @"%@ unsubscribeFromNotifier:%@", self, notifier);
 		if([self.subscriptions containsObject:notifier]) {
 			[self.subscriptions removeObject:notifier];
 			[notifier removeObserver:self forKeyPath:@"items"];
@@ -118,6 +132,7 @@
 			return ![self.items containsObject:obj];
 		}];
 		if(newItems.count > 0) {
+			CLogTrace(@"C_NOTIFIER", @"%@ adding: %@", self, newItems);
 			[self willChangeValueForKey:@"items" withSetMutation:NSKeyValueUnionSetMutation usingObjects:newItems];
 			[self.internalItems unionSet:newItems];
 			[self didChangeValueForKey:@"items" withSetMutation:NSKeyValueUnionSetMutation usingObjects:newItems];
@@ -144,6 +159,7 @@
 			return [self.items containsObject:obj];
 		}];
 		if(oldItems.count > 0) {
+			CLogTrace(@"C_NOTIFIER", @"%@ removing: %@", self, oldItems);
 			for(CNotifierItem* item in oldItems) {
 				if(item.duration > 0.0) {
 					[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(removeItem:) object:item];

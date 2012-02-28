@@ -365,6 +365,8 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+	[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+
 	if(object == self.workerManager) {
 		if([keyPath isEqualToString:@"workers"]) {
 //			CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"workers change: %@", change);

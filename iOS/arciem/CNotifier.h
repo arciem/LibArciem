@@ -31,5 +31,6 @@
 + (void)testWithNotifier:(CNotifier*)notifier;
 
 @property (nonatomic, readonly) NSSet* items;
+@property (copy, nonatomic) NSString* name;
 
 @end

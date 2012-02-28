@@ -28,7 +28,7 @@ enum {
 
 @interface CStringField : CField
 
-@property (readonly, nonatomic) NSString* stringValue;
+@property (nonatomic) NSString* stringValue;
 @property (readonly, nonatomic) NSUInteger currentLength;
 @property (nonatomic) NSUInteger minLength;
 @property (nonatomic) NSUInteger maxLength;

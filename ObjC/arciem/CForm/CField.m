@@ -24,9 +24,8 @@ NSString* const CFieldErrorDomain = @"CFieldErrorDomain";
 
 @interface CField ()
 
-@property (strong, readwrite, nonatomic) id target;
-@property (strong, readwrite, nonatomic) NSString* key;
 @property (strong, readwrite, nonatomic) NSString* title;
+@property (strong, readwrite, nonatomic) NSString* key;
 @property (strong, readwrite, nonatomic) NSError* error;
 @property (readwrite, nonatomic) BOOL required;
 @property (readwrite, nonatomic) BOOL updateAutomatically;
@@ -37,9 +36,9 @@ NSString* const CFieldErrorDomain = @"CFieldErrorDomain";
 
 @implementation CField
 
-@synthesize target = target_;
-@synthesize key = key_;
 @synthesize title = title_;
+@synthesize key = key_;
+@synthesize value = value_;
 @synthesize required = required_;
 @synthesize state = state_;
 @synthesize updateAutomatically = updateAutomatically_;
@@ -47,22 +46,22 @@ NSString* const CFieldErrorDomain = @"CFieldErrorDomain";
 @synthesize currentRevision = currentRevision_;
 @synthesize lastRevisionValidated = lastRevisionValidated_;
 @dynamic needsValidation;
-@dynamic value;
 @dynamic empty;
+@dynamic isValid;
 
 - (void)setup
 {
 }
 
-- (id)initWithTitle:(NSString*)title target:(id)target key:(NSString*)key required:(BOOL)required updateAutomatically:(BOOL)updateAutomatically
+- (id)initWithTitle:(NSString*)title key:(NSString*)key value:(id)value required:(BOOL)required updateAutomatically:(BOOL)updateAutomatically
 {
 	if(self = [super init]) {
 		self.title = title;
-		self.target = target;
 		self.key = key;
+		self.value = value;
 		self.required = required;
 		self.updateAutomatically = updateAutomatically;
-		[self.target addObserver:self forKeyPath:self.key options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
+		[self addObserver:self forKeyPath:@"value" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
 
 		[self setup];
 	}
@@ -77,7 +76,7 @@ NSString* const CFieldErrorDomain = @"CFieldErrorDomain";
 - (void)armUpdate
 {
 	[self disarmUpdate];
-	[self performSelector:@selector(update) withObject:nil afterDelay:0.4];
+	[self performSelector:@selector(update) withObject:nil afterDelay:0.1];
 }
 
 - (void)armUpdateIfNeeded
@@ -110,7 +109,7 @@ NSString* const CFieldErrorDomain = @"CFieldErrorDomain";
 - (void)dealloc
 {
 	[self disarmUpdate];
-	[self.target removeObserver:self forKeyPath:self.key];
+	[self removeObserver:self forKeyPath:@"value"];
 	self.updateAutomatically = NO;
 }
 
@@ -126,6 +125,11 @@ NSString* const CFieldErrorDomain = @"CFieldErrorDomain";
 	} else {
 		success(CFieldStateValid);
 	}
+}
+
++ (NSSet*)keyPathsForValuesAffectingIsValid
+{
+	return [NSSet setWithObject:@"state"];
 }
 
 - (void)update
@@ -156,8 +160,8 @@ NSString* const CFieldErrorDomain = @"CFieldErrorDomain";
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if(object == self.target) {
-		if([keyPath isEqualToString:self.key]) {
+	if(object == self) {
+		if([keyPath isEqualToString:@"value"]) {
 			if(!Same([change objectForKey:NSKeyValueChangeOldKey], [change objectForKey:NSKeyValueChangeNewKey])) {
 				self.needsValidation = YES;
 			}
@@ -165,14 +169,33 @@ NSString* const CFieldErrorDomain = @"CFieldErrorDomain";
 	}
 }
 
-- (id)value
-{
-	return [self.target valueForKey:self.key];
-}
-
 - (BOOL)isEmpty
 {
 	return self.value == nil;
+}
+
+- (BOOL)isValid
+{
+	return self.state == CFieldStateValid || self.state == CFieldStateOmitted;
+}
+
++ (BOOL)automaticallyNotifiesObserversOfValue
+{
+	return NO;
+}
+
+- (id)value
+{
+	return value_;
+}
+
+- (void)setValue:(id)value
+{
+	if(!Same(value_, value)) {
+		[self willChangeValueForKey:@"value"];
+		value_ = value;
+		[self didChangeValueForKey:@"value"];
+	}
 }
 
 @end

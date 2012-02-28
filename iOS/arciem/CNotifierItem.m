@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import "CNotifierItem.h"
+#import "ObjectUtils.h"
 
 @interface CNotifierItem ()
 
@@ -37,6 +38,11 @@
 @synthesize duration = duration_;
 @synthesize tapHandler = tapHandler_;
 
++ (void)initialize
+{
+//	CLogSetTagActive(@"C_NOTIFIER_ITEM", YES);
+}
+
 - (id)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler
 {
 	if(self = [super init]) {
@@ -53,9 +59,25 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	CLogTrace(@"C_NOTIFIER_ITEM", @"%@ dealloc", self);
+}
+
 + (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler
 {
 	return [[self alloc] initWithMessage:message priority:priority tapHandler:tapHandler];
+}
+
+- (NSString*)description
+{
+	return [self formatObjectWithValues:[NSArray arrayWithObjects:
+										 [self formatValueForKey:@"message" compact:NO],
+										 [self formatValueForKey:@"priority" compact:NO],
+										 [self formatValueForKey:@"date" compact:NO],
+										 [self formatValueForKey:@"duration" compact:NO],
+										 [self formatValueForKey:@"tapHandler" compact:NO],
+										 nil]];
 }
 
 @end

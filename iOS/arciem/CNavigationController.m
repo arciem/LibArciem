@@ -19,22 +19,34 @@
 #import "CNavigationController.h"
 #import "CViewController.h"
 
+#if 0
 @interface UINavigationController (Superclass)
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item;
 
 @end
+#endif
 
 @implementation CNavigationController
 
+@synthesize overrideDisablesAutomaticKeyboardDismissal = overrideDisablesAutomaticKeyboardDismissal_;
+
 - (id)initWithRootViewController:(UIViewController *)rootViewController
 {
+	if(self = [super initWithRootViewController:rootViewController]) {
+		
+	}
+	
+	return self;
+#if 0
 // http://stackoverflow.com/questions/1869331/set-programmatically-a-custom-subclass-of-uinavigationbar-in-uinavigationcontroll
 	self = [[[NSBundle mainBundle] loadNibNamed:@"CNavigationController" owner:nil options:nil] objectAtIndex:0];
 	self.viewControllers = [NSArray arrayWithObject:rootViewController];
 	return self;
+#endif
 }
 
+#if 0
 // http://www.hanspinckaers.com/custom-action-on-back-button-uinavigationcontroller
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated
 {
@@ -114,6 +126,19 @@
 	}
 	
 	return shouldPop;
+}
+#endif
+
+- (BOOL)disablesAutomaticKeyboardDismissal
+{
+	BOOL disables = [super disablesAutomaticKeyboardDismissal];
+	
+	NSNumber* num = self.overrideDisablesAutomaticKeyboardDismissal;
+	if(num != nil) {
+		disables = [num boolValue];
+	}
+	
+	return disables;
 }
 
 @end

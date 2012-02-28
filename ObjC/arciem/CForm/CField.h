@@ -35,7 +35,7 @@ enum {
 
 @interface CField : NSObject
 
-- (id)initWithTitle:(NSString*)title target:(id)target key:(NSString*)key required:(BOOL)required updateAutomatically:(BOOL)updateAutomatically;
+- (id)initWithTitle:(NSString*)title key:(NSString*)key value:(id)value required:(BOOL)required updateAutomatically:(BOOL)updateAutomatically;
 
 // Override in subclasses.
 - (void)setup;
@@ -43,11 +43,10 @@ enum {
 
 - (void)update;
 
-@property (strong, readonly, nonatomic) id target;
-@property (strong, readonly, nonatomic) NSString* key;
 @property (strong, readonly, nonatomic) NSString* title;
+@property (strong, readonly, nonatomic) NSString* key;
+@property (copy, nonatomic) id value;
 @property (readonly, nonatomic, getter = isRequired) BOOL required;
-@property (readonly, nonatomic) id value;
 @property (readonly, nonatomic) NSUInteger currentRevision;
 @property (readonly, nonatomic) NSUInteger lastRevisionValidated;
 @property (readonly, nonatomic) BOOL needsValidation;
@@ -55,5 +54,6 @@ enum {
 @property (readonly, nonatomic) BOOL updateAutomatically;
 @property (nonatomic) CFieldState state;
 @property (strong, readonly, nonatomic) NSError* error;
+@property (readonly, nonatomic) BOOL isValid;
 
 @end

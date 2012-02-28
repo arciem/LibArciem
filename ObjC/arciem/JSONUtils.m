@@ -16,11 +16,15 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#import "JSONUtils.h"
 
+@implementation NSJSONSerialization (JSONUtils)
 
-@interface CNavigationBar : UINavigationBar
-
-@property(nonatomic) BOOL ignoreSlopRegion;
++ (id)JSONObjectWithURL:(NSURL *)url options:(NSJSONReadingOptions)opt error:(NSError **)error
+{
+	NSData* data = [NSData dataWithContentsOfURL:url];
+	id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:opt error:error];
+	return jsonObject;
+}
 
 @end

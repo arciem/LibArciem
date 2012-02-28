@@ -58,6 +58,11 @@ NSString* const CStringFieldErrorDomain = @"CStringFieldErrorDomain";
 	return DenullString(self.value);
 }
 
+- (void)setStringValue:(NSString *)stringValue
+{
+	self.value = EnnullString(stringValue);
+}
+
 - (BOOL)isEmpty
 {
 	return IsEmptyString(self.stringValue);

@@ -67,13 +67,12 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	if(nibNameOrNil != nil) {
 		nibNameOrNil = StringByAppendingDeviceSuffix(nibNameOrNil);
 	}
-
-	if((self = [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+	if((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+		[self setup];
 	}
 	
 	return self;
 }
-
 
 - (void)unload
 {
@@ -110,6 +109,11 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	}
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	// Empty so subclasses can call super with confidence.
+}
+
 #pragma mark -
 #pragma mark State
 
@@ -117,9 +121,6 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 {
 	// behavior provided by subclasses
 }
-
-#pragma mark -
-#pragma mark State
 
 - (CViewControllerState)state
 {

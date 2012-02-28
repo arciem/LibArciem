@@ -28,26 +28,9 @@
 
 @implementation CNavigationBar
 
-@synthesize backgroundImage = backgroundImage_;
-
 @synthesize ignoreSlopRegion = ignoreSlopRegion_;
 @synthesize lastPointInsidePoint = lastPointInsidePoint_;
 @synthesize lastPointInsideTimestamp = lastPointInsideTimestamp_;
-
-- (void)drawRect:(CGRect)rect 
-{
-	if (self.backgroundImage != nil) {
-		CGRect r = self.bounds;
-		[self.backgroundImage drawInRect:CGRectMake(0, 0, r.size.width, r.size.height)];
-	} else {
-		[super drawRect:rect];
-	}
-} 
-
-- (void)dealloc
-{
-	self.backgroundImage = nil;
-}
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
 {

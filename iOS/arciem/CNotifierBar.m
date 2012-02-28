@@ -41,6 +41,11 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 @synthesize rowCapacity = rowCapacity_;
 @synthesize notifier = notifier_;
 
++ (void)initialize
+{
+//	CLogSetTagActive(@"C_NOTIFIER_BAR", YES);
+}
+
 - (void)setup
 {
 	[super setup];
@@ -63,9 +68,17 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 - (void)dealloc
 {
+	CLogTrace(@"C_NOTIFIER_BAR", @"%@ dealloc", self);
 	self.notifier = nil;
 	[self removeObserver:self forKeyPath:@"notifier"];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kNeedsUpdateItemsNotification object:self];
+}
+
+- (NSString*)description
+{
+	return [self formatObjectWithValues:[NSArray arrayWithObjects:
+										 [self formatValueForKey:@"notifier" compact:NO],
+										 nil]];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfNotifier
@@ -89,13 +102,14 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 - (void)updateItemsSoon
 {
+	CLogTrace(@"C_NOTIFIER_BAR", @"%@ updateItemsSoon", self);
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateItems) object:nil];
-	[self performSelector:@selector(updateItems) withObject:nil afterDelay:0.5];
+	[self performSelector:@selector(updateItems) withObject:nil afterDelay:0.5 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
 }
 
 - (void)updateItems
 {
-//	CLogDebug(nil, @"%@ updateItems", self);
+	CLogTrace(@"C_NOTIFIER_BAR", @"%@ updateItems", self);
 
 	NSArray* oldOrderedItems = self.items;
 	NSSet* newItems = self.notifier.items;
@@ -184,18 +198,23 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+	[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	
 	if(object == self) {
 		if([keyPath isEqualToString:@"notifier"]) {
 			CNotifier* oldNotifier = Denull([change objectForKey:NSKeyValueChangeOldKey]);
 			[oldNotifier removeObserver:self forKeyPath:@"items"];
 			CNotifier* newNotifier = Denull([change objectForKey:NSKeyValueChangeNewKey]);
 			[newNotifier addObserver:self forKeyPath:@"items" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) context:NULL];
+			CLogTrace(@"C_NOTIFIER_BAR", @"%@ notifierChanged", self);
 		}
 	} if(object == self.notifier) {
 		if([keyPath isEqualToString:@"items"]) {
+			CLogTrace(@"C_NOTIFIER_BAR", @"%@ itemsChanged", self);
 			[NSThread performBlockOnMainThread:^ {
 				NSNotification* notification = [NSNotification notificationWithName:kNeedsUpdateItemsNotification object:self];
-				[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:NSNotificationCoalescingOnName forModes:nil];
+				[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+				CLogTrace(@"C_NOTIFIER_BAR", @"%@ posted notification:%@ runloopmode:%@", self, notification, [[NSRunLoop currentRunLoop] currentMode]);
 			}];
 		}
 	}

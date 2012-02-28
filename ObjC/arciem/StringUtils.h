@@ -24,6 +24,7 @@
 #endif
 
 NSString* DenullString(NSString* s);
+NSString* EnnullString(NSString* s);
 BOOL IsEmptyString(NSString* s);
 
 NSString* TrimWhitespaceFromStart(NSString* str);

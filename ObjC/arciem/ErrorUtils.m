@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import "ErrorUtils.h"
+#import "ObjectUtils.h"
 
 @implementation NSError (ErrorUtils)
 
