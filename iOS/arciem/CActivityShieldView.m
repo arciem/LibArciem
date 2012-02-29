@@ -27,7 +27,7 @@
 	[super setup];
 	
 	self.contentMode = UIViewContentModeRedraw;
-	self.userInteractionEnabled = NO;
+//	self.userInteractionEnabled = NO;
 	self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
 	UIActivityIndicatorView* activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];

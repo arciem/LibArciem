@@ -515,7 +515,7 @@
 
 - (UIImage*)imageForDarkBar:(BOOL)darkBar
 {
-	UIImage* resultImage = self;
+	UIImage* resultImage;
 
 	UIColor *tintColor;
 	UIColor* shadowColor;

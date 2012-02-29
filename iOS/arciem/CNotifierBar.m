@@ -63,7 +63,7 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 	self.rowHeight = self.height;
 	
 	[self addObserver:self forKeyPath:@"notifier" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateItemsSoon) name:kNeedsUpdateItemsNotification object:self];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(armUpdateItems) name:kNeedsUpdateItemsNotification object:self];
 }
 
 - (void)dealloc
@@ -100,16 +100,23 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 	}
 }
 
-- (void)updateItemsSoon
+- (void)disarmUpdateItems
 {
-	CLogTrace(@"C_NOTIFIER_BAR", @"%@ updateItemsSoon", self);
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateItems) object:nil];
-	[self performSelector:@selector(updateItems) withObject:nil afterDelay:0.5 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateItemsAnimated:) object:[NSNumber numberWithBool:YES]];
 }
 
-- (void)updateItems
+- (void)armUpdateItems
+{
+	CLogTrace(@"C_NOTIFIER_BAR", @"%@ armUpdateItems", self);
+	[self disarmUpdateItems];
+	[self performSelector:@selector(updateItemsAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.5 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+}
+
+- (void)updateItemsAnimated:(BOOL)animated
 {
 	CLogTrace(@"C_NOTIFIER_BAR", @"%@ updateItems", self);
+
+	[self disarmUpdateItems];
 
 	NSArray* oldOrderedItems = self.items;
 	NSSet* newItems = self.notifier.items;
@@ -128,13 +135,19 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 		}
 	}
 
+	__block NSUInteger countOfVisibleItemsWithTapHandlers = 0;
 	[newOrderedItems enumerateObjectsUsingBlock:^(CNotifierItem* newItem, NSUInteger idx, BOOL *stop) {
 		if(idx >= self.rowCapacity) {
 			[hiddenItems addObject:newItem];
 		} else {
 			[visibleItems addObject:newItem];
+			if(newItem.tapHandler != NULL) {
+				countOfVisibleItemsWithTapHandlers++;
+			}
 		}
 	}];
+	
+	self.userInteractionEnabled = countOfVisibleItemsWithTapHandlers > 0;
 	
 	NSArray* exitingViews = [self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest:^BOOL(CNotifierView* view, NSUInteger idx, BOOL *stop) {
 		return [hiddenItems containsObject:view.item];
@@ -167,7 +180,8 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 		}
 	}
 
-	[UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
+	NSTimeInterval duration = animated ? 0.5 : 0.0;
+	[UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
 		for(CNotifierView* view in self.subviews) {
 			if([exitingViews containsObject:view]) {
 				NSUInteger index = [oldOrderedItems indexOfObject:view.item];

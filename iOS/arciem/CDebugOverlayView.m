@@ -24,6 +24,7 @@
 @property (nonatomic) UIInterfaceOrientation orientation;
 @property (nonatomic) UIInterfaceOrientation lastSyncOrientation;
 @property (nonatomic) BOOL justMovedToSuperview;
+@property (strong, nonatomic) NSTimer* stayOnTopTimer;
 
 @end
 
@@ -34,6 +35,7 @@
 @synthesize lastSyncOrientation = lastSyncOrientation_;
 @synthesize contentEdgeInsets = contentEdgeInsets_;
 @synthesize justMovedToSuperview = justMovedToSuperview_;
+@synthesize stayOnTopTimer = stayOnTopTimer_;
 
 + (void)initialize
 {
@@ -45,14 +47,24 @@
 	[super setup];
 	
 //	self.debugColor = [UIColor blueColor];
-	self.userInteractionEnabled = NO;
 	self.lastSyncOrientation = [UIApplication sharedApplication].statusBarOrientation;
 	self.orientation = self.lastSyncOrientation;
 	CView* contentView = [[CView alloc] initWithFrame:CGRectZero];
 //	contentView.debugColor = [UIColor redColor];
-	contentView.userInteractionEnabled = NO;
 	self.contentView = contentView;
-//	self.contentEdgeInsets = UIEdgeInsetsMake(50, 50, 50, 50);
+}
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+	UIView* result = nil;
+	
+	CGPoint p = [self convertPoint:point toView:self.contentView];
+	result = [self.contentView hitTest:p withEvent:event];
+	if(result == self.contentView) {
+		result = nil;
+	}
+	
+	return result;
 }
 
 - (void)syncContentViewFrameAnimated:(BOOL)animated
@@ -154,14 +166,26 @@
 	[self syncContentViewFrameAnimated:NO];
 }
 
+- (void)stayOnTop
+{
+//	NSUInteger oldIndex = self.indexInSubviews;
+	
+	[self bringToFront];
+//	NSUInteger newIndex = self.indexInSubviews;
+//	CLogDebug(nil, @"stayOnTop superview:%@ runLoopMode:%@ oldIndex:%d newIndex:%d", self.superview, [[NSRunLoop currentRunLoop] currentMode], oldIndex, newIndex);
+}
+
 - (void)didMoveToSuperview
 {
 	[super didMoveToSuperview];
 	if(self.superview != nil) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+		self.stayOnTopTimer = [[NSTimer alloc] initWithFireDate:[NSDate distantPast] interval:1.0 target:self selector:@selector(stayOnTop) userInfo:nil repeats:YES];
+		[[NSRunLoop currentRunLoop] addTimer:self.stayOnTopTimer forMode:NSRunLoopCommonModes];
 		self.frame = self.superview.bounds;
 		self.justMovedToSuperview = YES;
 	} else {
+		[self.stayOnTopTimer invalidate];
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 	}
 }

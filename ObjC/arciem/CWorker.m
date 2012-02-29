@@ -56,6 +56,7 @@ static NSUInteger sNextSequenceNumber = 0;
 @synthesize retryDelayInterval = retryDelayInterval_;
 @synthesize error = error_;
 @synthesize titleItems_ = titleItems__;
+@synthesize startDelay = startDelay_;
 @dynamic dependencies;
 @dynamic titleItems;
 
@@ -204,11 +205,23 @@ static NSUInteger sNextSequenceNumber = 0;
 	return self.tryLimit == 0 || self.tryCount < self.tryLimit;
 }
 
+- (void)performDelay:(NSTimeInterval)delay
+{
+	if(!self.isCancelled && delay > 0.0) {
+		CLogTrace(nil, @"%@ starting delay: %f sec", self, delay);
+		NSDate* endDate = [NSDate dateWithTimeIntervalSinceNow:delay];
+		while(!self.isCancelled && [endDate timeIntervalSinceNow] > 0.0) {
+			[NSThread sleepForTimeInterval:0.1];
+		}
+		CLogTrace(nil, @"%@ ending delay", self);
+	}
+}
+
 - (void)performRetryDelay
 {
 	CLogTrace(@"C_WORKER", @"%@ starting retry delay: %f sec", self, self.retryDelayInterval);
 	// Here we block the thread, which is OK if we're not currently waiting on any run loop sources
-	[NSThread sleepForTimeInterval:self.retryDelayInterval];
+	[self performDelay:self.retryDelayInterval];
 	CLogTrace(@"C_WORKER", @"%@ ending retry delay", self, self.retryDelayInterval);
 }
 
@@ -223,6 +236,7 @@ static NSUInteger sNextSequenceNumber = 0;
 			CLogTrace(@"C_WORKER", @"%@ entered NSBlockOperation", worker_);
 			worker_.isActive = YES;
 			[worker_ operationDidBegin];
+			[worker_ performDelay:worker_.startDelay];
 			if(!worker_.isCancelled) {
 				if(worker_.tryCount > 1) {
 					[worker_ performRetryDelay];

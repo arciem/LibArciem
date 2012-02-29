@@ -101,11 +101,11 @@
 				switch(changeKind) {
 					case NSKeyValueChangeSetting: {
 						NSSet* newItems = [change objectForKey:NSKeyValueChangeNewKey];
-						[self addItems:newItems];
+						[self addItems:newItems withExpiry:NO];
 					} break;
 					case NSKeyValueChangeInsertion: {
 						NSSet* newItems = [change objectForKey:NSKeyValueChangeNewKey];
-						[self addItems:newItems];
+						[self addItems:newItems withExpiry:NO];
 					} break;
 					case NSKeyValueChangeRemoval: {
 						NSSet* oldItems = [change objectForKey:NSKeyValueChangeOldKey];
@@ -125,10 +125,10 @@
 	return NO;
 }
 
-- (void)addItems:(NSSet*)objects
+- (void)addItems:(NSSet*)items withExpiry:(BOOL)expire
 {
 	@synchronized(self) {
-		NSSet* newItems = [objects objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+		NSSet* newItems = [items objectsPassingTest:^BOOL(id obj, BOOL *stop) {
 			return ![self.items containsObject:obj];
 		}];
 		if(newItems.count > 0) {
@@ -136,13 +136,20 @@
 			[self willChangeValueForKey:@"items" withSetMutation:NSKeyValueUnionSetMutation usingObjects:newItems];
 			[self.internalItems unionSet:newItems];
 			[self didChangeValueForKey:@"items" withSetMutation:NSKeyValueUnionSetMutation usingObjects:newItems];
-			for(CNotifierItem* item in newItems) {
-				if(item.duration > 0.0) {
-					[self performSelector:@selector(removeItem:) withObject:item afterDelay:item.duration];
+			if(expire) {
+				for(CNotifierItem* item in newItems) {
+					if(item.duration > 0.0) {
+						[self performSelector:@selector(removeItem:) withObject:item afterDelay:item.duration];
+					}
 				}
 			}
 		}
 	}
+}
+
+- (void)addItems:(NSSet*)items
+{
+	[self addItems:items withExpiry:YES];
 }
 
 - (void)addItem:(CNotifierItem*)item
@@ -152,10 +159,10 @@
 	}
 }
 
-- (void)removeItems:(NSSet*)objects
+- (void)removeItems:(NSSet*)items
 {
 	@synchronized(self) {
-		NSSet* oldItems = [objects objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+		NSSet* oldItems = [items objectsPassingTest:^BOOL(id obj, BOOL *stop) {
 			return [self.items containsObject:obj];
 		}];
 		if(oldItems.count > 0) {

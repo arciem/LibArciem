@@ -29,6 +29,7 @@
 - (void)replaceSectionAtIndex:(NSUInteger)sectionIndex withSectionWithKey:(NSString*)newSectionKey;
 - (void)replaceSectionWithKey:(NSString*)oldSectionKey withSectionWithKey:(NSString*)newSectionKey;
 - (void)deleteRowWithKey:(NSString*)key withRowAnimation:(UITableViewRowAnimation)animation;
+- (void)setRowForKey:(NSString*)rowKey enabled:(BOOL)enabled withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)clearSelectionAnimated:(BOOL)animated;
 
 @end

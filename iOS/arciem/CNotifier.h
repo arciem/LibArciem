@@ -23,6 +23,10 @@
 
 - (void)addItem:(CNotifierItem*)item;
 - (void)removeItem:(CNotifierItem*)item;
+
+- (void)addItems:(NSSet*)items;
+- (void)removeItems:(NSSet*)items;
+
 - (BOOL)hasItem:(CNotifierItem*)item;
 
 - (void)subscribeToNotifier:(CNotifier*)notifier;

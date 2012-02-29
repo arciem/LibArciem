@@ -142,6 +142,44 @@
 	return result;
 }
 
+- (BOOL)isRowEnabled:(NSDictionary*)row
+{
+	BOOL enabled = YES;
+
+	NSNumber* enabledNumber = [row objectForKey:@"enabled"];
+	if(enabledNumber != nil) {
+		enabled = [enabledNumber boolValue];
+	}
+
+	return enabled;
+}
+
+- (void)setRow:(NSMutableDictionary*)row enabled:(BOOL)enabled
+{
+	[row setValue:[NSNumber numberWithBool:enabled] forKey:@"enabled"];
+}
+
+- (BOOL)isRowEnabledAtIndexPath:(NSIndexPath*)indexPath
+{
+	NSDictionary* row = [self rowAtIndexPath:indexPath];
+	return [self isRowEnabled:row];
+}
+
+- (void)setRowForKey:(NSString*)rowKey enabled:(BOOL)enabled withRowAnimation:(UITableViewRowAnimation)animation
+{
+	NSMutableDictionary* row = [self rowForKey:rowKey];
+	if(row != nil) {
+		BOOL oldEnabled = [self isRowEnabled:row];
+		if(oldEnabled != enabled) {
+			[self setRow:row enabled:enabled];
+			NSIndexPath* indexPath = [self indexPathOfRowForKey:rowKey];
+			if(indexPath != nil) {
+				[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:animation];
+			}
+		}
+	}
+}
+
 - (void)deleteRowWithKey:(NSString*)key withRowAnimation:(UITableViewRowAnimation)animation
 {
 	NSIndexPath* indexPath = [self indexPathOfRowForKey:key];
@@ -253,10 +291,25 @@
 	[self applyAttributes:[self.model objectForKey:@"textLabel"] toLabel:cell.textLabel];
 	[self applyAttributes:[row objectForKey:@"textLabel"] toLabel:cell.textLabel];
 	
+	BOOL enabled = [self isRowEnabledAtIndexPath:indexPath];
+	cell.textLabel.alpha = enabled ? 1.0 : 0.4;
+	cell.selectionStyle = enabled ? UITableViewCellSelectionStyleBlue : UITableViewCellSelectionStyleNone;
+	
 	return cell;
 }
 
 #pragma mark - UITableViewDelegate
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSIndexPath* result = indexPath;
+	
+	if(![self isRowEnabledAtIndexPath:indexPath]) {
+		result = nil;
+	}
+	
+	return result;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

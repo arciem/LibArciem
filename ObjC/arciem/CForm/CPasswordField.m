@@ -24,8 +24,7 @@
 - (void)setup
 {
 	[super setup];
-	self.minLength = 3;
-	self.maxLength = 10;
+	self.minLength = 6;
 }
 
 @end

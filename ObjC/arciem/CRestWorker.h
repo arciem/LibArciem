@@ -36,6 +36,10 @@ extern NSString* const CRestErrorDomain;
 extern NSString* const CRestErrorWorkerErrorKey;
 extern NSString* const CRestErrorFailingURLErrorKey;
 
+enum {
+	CRestOfflineError = 2121,
+};
+
 @interface CRestWorker : CWorker <NSURLConnectionDelegate>
 
 - (id)initWithRequest:(NSURLRequest*)request;

@@ -27,6 +27,7 @@
 @property (strong, nonatomic) UILabel* label;
 @property (strong, nonatomic) UIImageView* backgroundImageView;
 @property (strong, nonatomic) UIView* rightAccessoryView;
+@property (strong, nonatomic) UITapGestureRecognizer* tapRecognizer;
 
 @end
 
@@ -36,6 +37,7 @@
 @synthesize label = label_;
 @synthesize backgroundImageView = backgroundImageView_;
 @synthesize rightAccessoryView = rightAccessoryView_;
+@synthesize tapRecognizer = tapRecognizer_;
 
 - (void)setup
 {
@@ -50,8 +52,7 @@
 	[self addSubview:self.backgroundImageView];
 	
 	self.label = [[UILabel alloc] initWithFrame:self.bounds];
-	self.label.flexibleLeft = self.boundsLeft + 10;
-	self.label.flexibleBottom -= 1;
+	self.label.userInteractionEnabled = NO;
 	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.label.opaque = NO;
 	self.label.backgroundColor = [UIColor clearColor];
@@ -64,9 +65,6 @@
 	[self addSubview:self.label];
 	
 	[self addObserver:self forKeyPath:@"item" options:0 context:NULL];
-
-	UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTap:)];
-	[self addGestureRecognizer:tapRecognizer];
 }
 
 - (void)dealloc
@@ -87,16 +85,30 @@
 		if(rightAccessoryView_ != nil) {
 			[rightAccessoryView_ sizeToFit];
 			rightAccessoryView_.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
-			rightAccessoryView_.top = self.boundsTop;
-			rightAccessoryView_.flexibleBottom = self.boundsBottom;
-			rightAccessoryView_.width = 30;
-			rightAccessoryView_.right = self.boundsRight;
 			[self addSubview:rightAccessoryView_];
-			
-			self.label.flexibleRight = rightAccessoryView_.left;
-		} else {
-			self.label.flexibleRight = self.boundsRight;
 		}
+
+		[self setNeedsLayout];
+	}
+}
+
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+
+	self.label.frame = self.bounds;
+	self.label.flexibleLeft = self.boundsLeft + 10;
+	self.label.flexibleRight = self.boundsRight - 10;
+	self.label.flexibleBottom -= 1;
+
+	if(self.rightAccessoryView != nil) {
+		self.rightAccessoryView.top = self.boundsTop;
+		self.rightAccessoryView.flexibleBottom = self.boundsBottom;
+		self.rightAccessoryView.width = 30;
+		self.rightAccessoryView.right = self.boundsRight;
+		self.label.flexibleRight = self.rightAccessoryView.left;
+	} else {
+		self.label.flexibleRight = self.boundsRight - 10;
 	}
 }
 
@@ -160,6 +172,21 @@
 		}
 	}
 	self.rightAccessoryView = rightAccessoryView;
+
+	if(self.item.tapHandler != NULL) {
+		self.userInteractionEnabled = YES;
+		if(self.tapRecognizer == nil) {
+			self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTap:)];
+		}
+		[self addGestureRecognizer:self.tapRecognizer];
+	} else {
+		self.userInteractionEnabled = NO;
+		if(self.tapRecognizer != nil) {
+			[self removeGestureRecognizer:self.tapRecognizer];
+		}
+	}
+	
+//	CLogDebug(nil, @"syncToItem:%@ userInteractionEnabled:%d gestureRecognizers:%@", self.item, self.userInteractionEnabled, self.gestureRecognizers);
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

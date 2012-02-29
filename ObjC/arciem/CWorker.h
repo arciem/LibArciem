@@ -31,8 +31,9 @@
 @property (readonly, nonatomic) NSString* formattedErrorCode;
 @property (copy, nonatomic) NSMutableArray* titleItems;
 @property (strong, readonly, nonatomic) NSString* title;
+@property (nonatomic) NSTimeInterval startDelay; // extra thread sleep time before work done, default 0
 
-@property (nonatomic) NSUInteger tryLimit; // 0 -> no limit, default == 3
+@property (nonatomic) NSUInteger tryLimit; // 0 -> no limit, default 3
 @property (nonatomic) NSTimeInterval retryDelayInterval; // default 1 second
 @property (nonatomic) NSOperationQueuePriority queuePriority; // default NSOperationQueuePriorityNormal
 @property (weak, nonatomic) NSThread* callbackThread; // zeroing weak reference, we don't own our caller
@@ -57,6 +58,9 @@
 @property (copy, nonatomic) void (^success)(CWorker*);
 @property (copy, nonatomic) void (^failure)(CWorker*, NSError*);
 @property (copy, nonatomic) void (^finally)(CWorker*);
+
+// May be called from subclasses for debugging purposes
+- (void)performDelay:(NSTimeInterval)delay;
 
 // may be augmented with call to super
 - (NSOperation*)createOperationForTry;

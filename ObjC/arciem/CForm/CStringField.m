@@ -38,6 +38,12 @@ NSString* const CStringFieldErrorDomain = @"CStringFieldErrorDomain";
 @dynamic currentLength;
 @dynamic remainingLength;
 
+- (void)setup
+{
+	[super setup];
+	self.maxLength = 100;
+}
+
 + (NSSet*)keyPathsForValuesAffectingStringValue
 {
 	return [NSSet setWithObject:@"value"];

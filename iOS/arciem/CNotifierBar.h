@@ -23,4 +23,6 @@
 
 @property (strong, nonatomic) CNotifier* notifier;
 
+- (void)updateItemsAnimated:(BOOL)animated;
+
 @end

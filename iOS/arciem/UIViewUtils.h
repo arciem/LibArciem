@@ -44,8 +44,19 @@ extern NSString* const sTapInBackgroundNotification;
 
 - (void)addSubview:(UIView *)view animated:(BOOL)animated;
 - (void)removeFromSuperviewAnimated:(BOOL)animated;
-- (void)appearanceAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
-- (void)disappearanceAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context;
+
+@property(readonly, nonatomic) NSUInteger indexInSubviews;
+
+- (void)bringToFront;
+- (void)sentToBack;
+
+- (void)bringOneLevelUp;
+- (void)sendOneLevelDown;
+
+- (BOOL)isInFront;
+- (BOOL)isAtBack;
+
+- (void)swapDepthsWithView:(UIView*)swapView;
 
 + (void)distributeViewsVertically:(NSArray*)views;
 + (UIEdgeInsets)edgeInsetsNegate:(UIEdgeInsets)insets;

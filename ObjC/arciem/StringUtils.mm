@@ -708,3 +708,16 @@ NSString* StringWithURLEscapedParamaters(NSDictionary* params)
 	}
 	return [NSString stringWithComponents:outParams separator:@"&"];
 }
+
+NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* recordSeparator, NSString* keyValueSeparator)
+{
+	NSArray* records = [string componentsSeparatedByString:recordSeparator];
+	NSMutableDictionary* dict = [NSMutableDictionary dictionaryWithCapacity:records.count];
+	for(NSString* record in records) {
+		NSArray* components = [record componentsSeparatedByString:keyValueSeparator];
+		NSString* key = [components objectAtIndex:0];
+		NSString* value = [components objectAtIndex:1];
+		[dict setObject:value forKey:key];
+	}
+	return [dict copy];
+}

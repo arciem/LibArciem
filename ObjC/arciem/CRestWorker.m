@@ -24,6 +24,7 @@ NSString* const CRestErrorDomain = @"CRestErrorDomain";
 
 NSString* const CRestErrorFailingURLErrorKey = @"CRestErrorFailingURLErrorKey";
 NSString* const CRestErrorWorkerErrorKey = @"CRestErrorWorkerErrorKey";
+NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 
 @interface CRestWorker ()
 
@@ -121,10 +122,22 @@ NSString* const CRestErrorWorkerErrorKey = @"CRestErrorWorkerErrorKey";
 	self.activity = nil;
 }
 
+- (BOOL)isOffline
+{
+	return NO;
+}
+
 - (void)performOperationWork
 {
 	CLogTrace(@"C_REST_WORKER", @"%@ starting NSURLConnection", self);
-	self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:YES];
+	
+	if(self.isOffline) {
+		CLogTrace(@"C_REST_WORKER", @"%@ failing because offline", self);
+		self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
+		[self connection:self.connection didFailWithError:[NSError errorWithDomain:CRestErrorDomain code:CRestOfflineError userInfo:nil]];
+	} else {
+		self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:YES];
+	}
 	
 	// Here we don't want to block the thread as the NSURLConnection will call our delegate methods on the same thread we're on.
 	// So run the run loop until it is out of sources, at which point the callbacks will all be done.
