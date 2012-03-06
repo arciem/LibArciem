@@ -28,9 +28,8 @@ static UIImage* sInvalidImage = nil;
 
 @property (strong, readonly, nonatomic) UIView* validView;
 @property (strong, readonly, nonatomic) UIView* invalidView;
-@property (strong, readonly, nonatomic) UIView* indeterminateView;
-@property (strong, readonly, nonatomic) UIView* omittedView;
-@property (strong, readonly, nonatomic) UIView* processingView;
+@property (strong, readonly, nonatomic) UIView* needsValidationView;
+@property (strong, readonly, nonatomic) UIView* validatingView;
 @property (strong, nonatomic) UIView* contentView;
 @property (strong, nonatomic) UIView* lastContentView;
 
@@ -40,12 +39,11 @@ static UIImage* sInvalidImage = nil;
 
 @implementation CFieldValidationView
 
-@synthesize field = field_;
+@synthesize item = item_;
 @synthesize validView = validView_;
 @synthesize invalidView	= invalidView_;
-@synthesize indeterminateView = indeterminateView_;
-@synthesize omittedView = omittedView_;
-@synthesize processingView = processingView_;
+@synthesize needsValidationView = needsValidationView_;
+@synthesize validatingView = validatingView_;
 @synthesize contentView = contentView_;
 @synthesize lastContentView = lastContentView_;
 @synthesize validMarkTintColor = validMarkTintColor_;
@@ -62,7 +60,7 @@ static UIImage* sInvalidImage = nil;
 
 - (void)dealloc
 {
-	self.field = nil;
+	self.item = nil;
 }
 
 - (UIImage*)imageNamed:(NSString*)imageName tintColor:(UIColor*)tintColor
@@ -112,44 +110,33 @@ static UIImage* sInvalidImage = nil;
 	return invalidView_;
 }
 
-- (UIView*)indeterminateView
+- (UIView*)needsValidationView
 {
-//	if(indeterminateView_ == nil) {
-//		indeterminateView_ = [self viewWithImage:nil tintColor:[UIColor grayColor]];
-//	}
-	return indeterminateView_;
+	return needsValidationView_;
 }
 
-- (UIView*)omittedView
+- (UIView*)validatingView
 {
-	if(omittedView_ == nil) {
-		omittedView_ = [self viewWithImage:nil tintColor:[UIColor purpleColor]];
+	if(validatingView_ == nil) {
+		validatingView_ = [self viewWithImage:nil tintColor:[UIColor blueColor]];
 	}
-	return omittedView_;
+	return validatingView_;
 }
 
-- (UIView*)processingView
+- (CItem*)item
 {
-	if(processingView_ == nil) {
-		processingView_ = [self viewWithImage:nil tintColor:[UIColor blueColor]];
-	}
-	return processingView_;
+	return item_;
 }
 
-- (CField*)field
+- (void)setItem:(CItem *)item
 {
-	return field_;
-}
-
-- (void)setField:(CField *)field
-{
-	if(field_ != field) {
-		if(field_ != nil) {
-			[field_ removeObserver:self forKeyPath:@"state"];
+	if(item_ != item) {
+		if(item_ != nil) {
+			[item_ removeObserver:self forKeyPath:@"state"];
 		}
-		field_ = field;
-		if(field_ != nil) {
-			[field_ addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionInitial context:NULL];
+		item_ = item;
+		if(item_ != nil) {
+			[item_ addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionInitial context:NULL];
 		}
 	}
 }
@@ -180,20 +167,17 @@ static UIImage* sInvalidImage = nil;
 
 - (void)syncToState
 {
-	switch(self.field.state) {
-		case CFieldStateIndeterminate:
-			self.contentView = self.indeterminateView;
+	switch(self.item.state) {
+		case CItemStateNeedsValidation:
+			self.contentView = self.needsValidationView;
 			break;
-		case CFieldStateOmitted:
-			self.contentView = self.omittedView;
+		case CItemStateValidating:
+			self.contentView = self.validatingView;
 			break;
-		case CFieldStateValid:
+		case CItemStateValid:
 			self.contentView = self.validView;
 			break;
-		case CFieldStateProcessing:
-			self.contentView = self.processingView;
-			break;
-		case CFieldStateInvalid:
+		case CItemStateInvalid:
 			self.contentView = self.invalidView;
 			break;
 	}
@@ -203,7 +187,7 @@ static UIImage* sInvalidImage = nil;
 {
 	[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 
-	if(object == self.field) {
+	if(object == self.item) {
 		if([keyPath isEqualToString:@"state"]) {
 			[NSThread performBlockOnMainThread:^{
 				[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncToState) object:nil];

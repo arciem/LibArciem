@@ -16,15 +16,14 @@
  
  *******************************************************************************/
 
-#import "CPasswordField.h"
-#import "StringUtils.h"
+#import "CItem.h"
 
-@implementation CPasswordField
+@interface CBooleanItem : CItem
 
-- (void)setup
-{
-	[super setup];
-	self.minLength = 6;
-}
++ (CBooleanItem*)booleanItem;
++ (CBooleanItem*)booleanItemWithDictionary:(NSDictionary*)dict;
++ (CBooleanItem*)booleanItemWithTitle:(NSString*)title key:(NSString*)key boolValue:(BOOL)boolValue;
+
+@property(nonatomic) BOOL booleanValue;
 
 @end

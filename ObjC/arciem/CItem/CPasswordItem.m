@@ -16,13 +16,8 @@
  
  *******************************************************************************/
 
-#import "CView.h"
-#import "CItem.h"
+#import "CPasswordItem.h"
 
-@interface CFieldValidationView : CView
-
-@property (strong, nonatomic) CItem* item;
-@property (strong, nonatomic) UIColor* validMarkTintColor;
-@property (strong, nonatomic) UIColor* invalidMarkTintColor;
+@implementation CPasswordItem
 
 @end

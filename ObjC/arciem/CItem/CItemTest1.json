@@ -1,0 +1,41 @@
+{
+	"title": "Move Your Body",
+	"key": "body",
+	"value": true,
+	"type": "boolean",
+	"subitems": [
+		{
+			"title": "Head of Household",
+			"key": "head",
+			"required": true,
+			"type": "string",
+			"value": "Robert McNally",
+			"minLength": 10,
+			"maxLength": 100,
+			"subitems": [
+				{
+					"title": "Eye of My Apple",
+					"key": "eye",
+					"value": 10.9
+				},
+				{
+					"title": "Floating Nose",
+					"key": "nose",
+					"type": "string",
+					"minLength": 10,
+					"maxLength": 100
+				},
+				{
+					"title": "Mouth Wide Shut",
+					"key": "mouth",
+					"userInfo": [1, 2, 3]
+				}
+			]
+		},
+		{
+			"title": "Arm & Hammer",
+			"key": "arm",
+			"value": true
+		}
+	]
+}

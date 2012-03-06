@@ -16,8 +16,8 @@
  
  *******************************************************************************/
 
-#import "CStringField.h"
+#import "CStringItem.h"
 
-@interface CPasswordField : CStringField
+@interface CEmailItem : CStringItem
 
 @end

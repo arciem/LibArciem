@@ -16,17 +16,18 @@
  
  *******************************************************************************/
 
-#import "CField.h"
+#import "CItem.h"
 
-extern NSString* const CStringFieldErrorDomain;
+extern NSString* const CStringItemErrorDomain;
 
 enum {
-	CStringFieldErrorTooShort = 1000,
-	CStringFieldErrorTooLong,
-	CStringFieldErrorInvalidCharacters
+	CStringItemErrorTooShort = 1000,
+	CStringItemErrorTooLong,
+	CStringItemErrorInvalidCharacters,
+	CStringItemErrorSyntaxError
 };
 
-@interface CStringField : CField
+@interface CStringItem : CItem
 
 @property (nonatomic) NSString* stringValue;
 @property (readonly, nonatomic) NSUInteger currentLength;
@@ -34,6 +35,12 @@ enum {
 @property (nonatomic) NSUInteger maxLength;
 @property (readonly, nonatomic) NSInteger remainingLength;
 @property (copy, nonatomic) NSCharacterSet* validCharacterSet;
+@property (copy, nonatomic) NSString* validRegularExpression;
+
+- (id)initWithDictionary:(NSDictionary*)dict;
++ (CItem*)stringItem;
++ (CItem*)stringItemWithDictionary:(NSDictionary*)dict;
++ (CItem*)stringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue;
 
 - (BOOL)shouldChangeFromString:(NSString*)fromString toString:(NSString*)toString;
 - (BOOL)shouldChangeCharactersInRange:(NSRange)range inString:(NSString*)fromString toReplacementString:(NSString*)string resultString:(NSString**)resultString;

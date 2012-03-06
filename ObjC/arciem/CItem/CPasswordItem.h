@@ -16,14 +16,8 @@
  
  *******************************************************************************/
 
-#import "CStringField.h"
+#import "CStringItem.h"
 
-extern NSString* const CEmailFieldErrorDomain;
-
-enum {
-	CEmailFieldErrorInvalidAddress = 1000
-};
-
-@interface CEmailField : CStringField
+@interface CPasswordItem : CStringItem
 
 @end

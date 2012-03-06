@@ -19,6 +19,7 @@
 #import "DeviceUtils.h"
 #include <ifaddrs.h>
 #include <arpa/inet.h>
+#import "ObjectUtils.h"
 
 BOOL IsPhone()
 {
@@ -110,13 +111,8 @@ NSString* StringByAppendingDeviceSuffix(NSString* s)
 
 id<NSObject> DeviceClassAlloc(NSString* className)
 {
-	id instance = nil;
-	
 	className = StringByAppendingDeviceSuffix(className);
-	Class cls = NSClassFromString(className);
-	if(cls != nil) {
-		return [cls alloc];
-	}
+	id instance = ClassAlloc(className);
 	
 	return instance;
 }

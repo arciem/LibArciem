@@ -16,37 +16,21 @@
  
  *******************************************************************************/
 
-#import "CEmailField.h"
-#import "StringUtils.h"
+#import "CEmailItem.h"
 #import "ErrorUtils.h"
 
 // See http://www.regular-expressions.info/email.html
 static NSString* const kEmailRegularExpression = @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+(?:[A-Z]{2}|aero|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|xxx)$";
 
-NSString* const CEmailFieldErrorDomain = @"CEmailFieldErrorDomain";
+@implementation CEmailItem
 
-@implementation CEmailField
-
-- (void)setup
+- (id)initWithDictionary:(NSDictionary *)dict
 {
-	[super setup];
-}
-
-- (void)validateSuccess:(void (^)(CFieldState))success failure:(void (^)(NSError *))failure
-{
-	[super validateSuccess:^(CFieldState state) {
-		if(state == CFieldStateValid) {
-			NSStringCompareOptions options = NSCaseInsensitiveSearch | NSAnchoredSearch | NSRegularExpressionSearch;
-			NSRange range = [self.stringValue rangeOfString:kEmailRegularExpression options:options];
-			if(range.location != NSNotFound) {
-				success(state);
-			} else {
-				failure([NSError errorWithDomain:CEmailFieldErrorDomain code:CEmailFieldErrorInvalidAddress localizedDescription:@"Invalid e-mail address."]);
-			}
-		}
-	} failure:^(NSError* error) {
-		failure(error);
-	}];
+	if(self = [super initWithDictionary:dict]) {
+		self.validRegularExpression = kEmailRegularExpression;
+	}
+	
+	return self;
 }
 
 @end

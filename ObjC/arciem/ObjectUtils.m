@@ -70,6 +70,18 @@ void Switch(id key, NSDictionary* dict)
 	}
 }
 
+id<NSObject> ClassAlloc(NSString* className)
+{
+	id instance = nil;
+	
+	Class cls = NSClassFromString(className);
+	if(cls != nil) {
+		instance = [cls alloc];
+	}
+	
+	return instance;
+}
+
 @implementation NSObject (ObjectUtils)
 
 - (NSString*)formatKey:(NSString*)key value:(id)value compact:(BOOL)compact
@@ -88,6 +100,13 @@ void Switch(id key, NSDictionary* dict)
 			valueStr = @"NO";
 		} else if([value isKindOfClass:[NSNumber class]]) {
 			valueStr = [value description];
+		} else if([value isKindOfClass:[NSArray class]]) {
+			if(compact) {
+				NSArray* array = (NSArray*)value;
+				valueStr = [NSString stringWithFormat:@"<%@: %p, count:%d>", [array class], array, array.count];
+			} else {
+				valueStr = [value description];
+			}
 		} else if([value isKindOfClass:[NSDictionary class]]) {
 			if(compact) {
 				NSMutableString* buf = [NSMutableString stringWithString:@"{ "];
@@ -102,6 +121,16 @@ void Switch(id key, NSDictionary* dict)
 				valueStr = [NSString stringWithString:buf];
 			} else {
 				valueStr = [value description];
+			}
+		} else if([value isKindOfClass:[NSError class]]) {
+			if(compact) {
+				NSError* error = (NSError*)value;
+				NSString* message = error.localizedDescription;
+				message = StringByLimitingLengthOfString(message, compact ? kMaxCompactStringLength : NSUIntegerMax, YES);
+				message = StringBySurroundingStringWithQuotes(message, YES);
+				valueStr = [NSString stringWithFormat:@"<%@: %p, %@ %d %@>", [value class], value, error.domain, error.code, message];
+			} else {
+				value = [value description];
 			}
 		} else {
 			if(compact) {
