@@ -72,6 +72,8 @@
 + (CGPoint)rectMinXMaxY:(CGRect)r;
 + (CGPoint)rectMidXMaxY:(CGRect)r;
 + (CGPoint)rectMaxXMaxY:(CGRect)r;
++ (CGFloat)rectMidX:(CGRect)r;
++ (CGFloat)rectMidY:(CGRect)r;
 + (CGPoint)rectMid:(CGRect)r;
 
 + (CGSize)scaleSize:(CGSize)s bySX:(CGFloat)sx SY:(CGFloat)sy;

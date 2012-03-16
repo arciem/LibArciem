@@ -18,9 +18,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class CTableRowItem;
 
 @interface CTableViewCell : UITableViewCell
 
 - (void)setup;
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
 @end

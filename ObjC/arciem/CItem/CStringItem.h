@@ -23,6 +23,7 @@ extern NSString* const CStringItemErrorDomain;
 enum {
 	CStringItemErrorTooShort = 1000,
 	CStringItemErrorTooLong,
+	CStrubgItemErrorWrongLength,
 	CStringItemErrorInvalidCharacters,
 	CStringItemErrorSyntaxError
 };
@@ -36,13 +37,18 @@ enum {
 @property (readonly, nonatomic) NSInteger remainingLength;
 @property (copy, nonatomic) NSCharacterSet* validCharacterSet;
 @property (copy, nonatomic) NSString* validRegularExpression;
+@property (nonatomic) NSUInteger fieldCharacterWidth;
 
 - (id)initWithDictionary:(NSDictionary*)dict;
 + (CItem*)stringItem;
 + (CItem*)stringItemWithDictionary:(NSDictionary*)dict;
 + (CItem*)stringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue;
 
+- (BOOL)string:(NSString*)string matchesRegularExpression:(NSString*)regex;
+
+// May be overridden in subclasses
 - (BOOL)shouldChangeFromString:(NSString*)fromString toString:(NSString*)toString;
 - (BOOL)shouldChangeCharactersInRange:(NSRange)range inString:(NSString*)fromString toReplacementString:(NSString*)string resultString:(NSString**)resultString;
+- (NSString*)formatCharacterCount:(NSUInteger)count;
 
 @end

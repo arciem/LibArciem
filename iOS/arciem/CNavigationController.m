@@ -31,10 +31,15 @@
 
 @synthesize overrideDisablesAutomaticKeyboardDismissal = overrideDisablesAutomaticKeyboardDismissal_;
 
++ (void)initialize
+{
+//	CLogSetTagActive(@"C_NAVIGATION_CONTROLLER", YES);
+}
+
 - (id)initWithRootViewController:(UIViewController *)rootViewController
 {
 	if(self = [super initWithRootViewController:rootViewController]) {
-		
+		CLogTrace(@"C_NAVIGATION_CONTROLLER", @"%@ initWithRootViewController:", self, rootViewController);
 	}
 	
 	return self;
@@ -46,6 +51,10 @@
 #endif
 }
 
+- (void)dealloc
+{
+	CLogTrace(@"C_NAVIGATION_CONTROLLER", @"%@ dealloc", self);
+}
 #if 0
 // http://www.hanspinckaers.com/custom-action-on-back-button-uinavigationcontroller
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated

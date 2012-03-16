@@ -20,6 +20,7 @@
 #import "ObjectUtils.h"
 #import "StringUtils.h"
 #import "ErrorUtils.h"
+#import "CObserver.h"
 
 NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
@@ -28,6 +29,8 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	NSMutableArray* subitems__;
 }
 
+@property (copy, readwrite, nonatomic) NSMutableDictionary* dict;
+
 @property (weak, readwrite, nonatomic) CItem* superitem;
 @property (readonly, nonatomic) NSMutableArray* subitems_;
 @property (readonly, nonatomic) NSUInteger currentRevision;
@@ -35,53 +38,63 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 @property (readonly, nonatomic) NSUInteger validationsInProgress;
 @property (strong, nonatomic) NSMutableArray* subitemErrors;
 @property (readwrite, nonatomic, setter = setValidating:) BOOL isValidating;
-@property (readwrite, nonatomic) BOOL needsValidation;
+@property (strong, nonatomic) CObserver* valueObserver;
+@property (readwrite, nonatomic) BOOL isActive;
 
 @end
 
 @implementation CItem
 
-@synthesize title = title_;
-@synthesize key = key_;
-@synthesize value = value_;
-@synthesize userInfo = userInfo_;
+@synthesize dict = dict_;
 @synthesize error = error_;
-@synthesize required = required_;
-@synthesize currentRevision = currentRevision_;
-@synthesize lastValidatedRevision = lastValidatedRevision_;
 @synthesize subitemErrors = subitemErrors_;
-@synthesize validationsInProgress = validationsInProgress_;
-@synthesize validatesAutomatically = validatesAutomatically_;
-@synthesize isValidating = isValidating_;
 
 @synthesize superitem = superitem_;
-@dynamic subitems;
+
+@synthesize currentRevision = currentRevision_;
+@synthesize lastValidatedRevision = lastValidatedRevision_;
+
+@synthesize validatesAutomatically = validatesAutomatically_;
+@synthesize isRequired = isRequired_;
+@synthesize isHidden = isHidden_;
+@synthesize isDisabled = isDisabled_;
+
+@synthesize isActive = isActive_;
+@synthesize isValidating = isValidating_;
+@synthesize validationsInProgress = validationsInProgress_;
+@synthesize valueObserver = valueObserver_;
+
 @dynamic subitems_;
-@dynamic needsValidation;
-@dynamic isValid;
-@dynamic keyPath;
-@dynamic state;
 
 #pragma mark - Lifecycle
+
++ (void)initialize
+{
+//	CLogSetTagActive(@"C_ITEM", YES);
+}
 
 - (id)initWithDictionary:(NSDictionary*)dict
 {
 	if(self = [super init]) {
-		subitems__ = [NSMutableArray array];
-		if(dict != nil) {
-			title_ = Denull([dict objectForKey:@"title"]);
-			key_ = Denull([dict objectForKey:@"key"]);
-			currentRevision_ = 1;
-			value_ = Denull([dict objectForKey:@"value"]);
-			userInfo_ = Denull([dict objectForKey:@"userInfo"]);
-			required_ = [[dict objectForKey:@"required"] boolValue];
-			validatesAutomatically_ = [[dict objectForKey:@"validatesAutomatically"] boolValue];
-			[self addObserver:self forKeyPath:@"value" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
-			NSArray* subdicts = [dict objectForKey:@"subitems"];
-			for(NSDictionary* subdict in subdicts) {
-				[self addSubitem:[CItem itemWithDictionary:subdict]];
-			}
+		if(dict == nil) {
+			self.dict = [NSMutableDictionary dictionary];
+		} else {
+			self.dict = [dict mutableCopy];
 		}
+
+		[self incrementCurrentRevision];
+		isRequired_ = [[self.dict objectForKey:@"required"] boolValue];
+		isDisabled_ = [[self.dict objectForKey:@"disabled"] boolValue];
+		isHidden_ = [[self.dict objectForKey:@"hidden"] boolValue];
+		validatesAutomatically_ = [[self.dict objectForKey:@"validatesAutomatically"] boolValue];
+		
+		NSArray* subdicts = [self.dict objectForKey:@"subitems"];
+		subitems__ = [NSMutableArray array];
+		for(NSDictionary* subdict in subdicts) {
+			[self addSubitem:[CItem itemWithDictionary:subdict]];
+		}
+		[self.dict removeObjectForKey:@"subitems"];
+		CLogTrace(@"C_ITEM", @"%@ initWithDictionary", self);
 	}
 	return self;
 }
@@ -96,8 +109,11 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (void)dealloc
 {
-	[self disarmValidate];
-	[self removeObserver:self forKeyPath:@"value"];
+	CLogTrace(@"C_ITEM", @"%@ dealloc", [self formatObjectWithValues:nil]);
+	@autoreleasepool {
+		[self.subitems removeAllObjects];
+		subitems__ = nil;
+	}
 }
 
 + (CItem*)itemWithDictionary:(NSDictionary*)dict
@@ -115,17 +131,33 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		}
 	}
 
-	item = ClassAlloc(className);
+	item = (CItem*)ClassAlloc(className);
+	NSAssert1(item != nil, @"Attempt to instantiate undefined class:%@", className);
 
 	return [item initWithDictionary:dict];
 }
 
-+ (CItem*)itemForResourceName:(NSString*)resourceName withExtension:(NSString*)extension
+- (id)copyWithZone:(NSZone *)zone
 {
-	NSURL* url = [[NSBundle mainBundle] URLForResource:resourceName withExtension:extension];
-	NSData* data = [NSData dataWithContentsOfURL:url];
-	NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-	CItem* item = [CItem itemWithDictionary:dict];
+	CItem* item = [[[self class] allocWithZone:zone] init];
+	
+	item->dict_ = [self.dict mutableCopy];
+	item->error_ = [self.error copy];
+	item->subitemErrors_ = [self.subitemErrors mutableCopy];
+	
+	item->currentRevision_ = self.currentRevision;
+	item->lastValidatedRevision_ = self.lastValidatedRevision;
+	
+	item->validatesAutomatically_ = self.validatesAutomatically;
+	item->isRequired_ = self.isRequired;
+	item->isHidden_ = self.isHidden;
+	item->isDisabled_ = self.isDisabled;
+	
+	for(CItem* subitem in self.subitems) {
+		CItem* subitemCopy = [subitem copy];
+		[item addSubitem:subitemCopy];
+	}
+	
 	return item;
 }
 
@@ -143,6 +175,44 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 											  nil]];
 }
 
+#pragma mark - Activation
+
+// Behavior provided by subclasses
+- (void)activate
+{
+	NSAssert1(self.isActive == NO, @"Attempt to activate item that is already active:%@", self);
+	self.isActive = YES;
+	__weak CItem* self__ = self;
+	self.valueObserver = [CObserver observerWithKeyPath:@"value" ofObject:self action:^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		self__.needsValidation = YES;
+	}];
+}
+
+- (void)activateAll
+{
+	for(CItem* subitem in self.subitems) {
+		[subitem activateAll];
+	}
+	[self activate];
+}
+
+// Behavior provided by subclasses
+- (void)deactivate
+{
+	NSAssert1(self.isActive == YES, @"Attempt to deactivate item that is already inactive:%@", self);
+	self.isActive = NO;
+	[self disarmValidate];
+	self.valueObserver = nil;
+}
+
+- (void)deactivateAll
+{
+	for(CItem* subitem in self.subitems) {
+		[subitem deactivateAll];
+	}
+	[self deactivate];
+}
+
 #pragma mark - Utilities
 
 - (void)enumerateItemsToRootUsingBlock:(void (^)(CItem* item, BOOL* stop))block
@@ -155,15 +225,40 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	};
 }
 
+- (CItem*)rootItem
+{
+	__block CItem* result = nil;
+	
+	[self enumerateItemsToRootUsingBlock:^(CItem *item, BOOL *stop) {
+		result = item;
+	}];
+	
+	return result;
+}
+
+- (NSUInteger)indexOfSubitemForKey:(NSString*)key
+{
+	NSUInteger result = NSNotFound;
+	
+	NSUInteger rowIndex = 0;
+	for(CItem* subitem in self.subitems) {
+		if([key isEqualToString:subitem.key]) {
+			result = rowIndex;
+			break;
+		}
+		rowIndex++;
+	}
+	
+	return result;
+}
+
 - (CItem*)subitemForKey:(NSString*)key
 {
 	id result = nil;
 
-	for(CItem* subitem in self.subitems) {
-		if([key isEqualToString:subitem.key]) {
-			result = subitem;
-			break;
-		}
+	NSUInteger rowIndex = [self indexOfSubitemForKey:key];
+	if(rowIndex != NSNotFound) {
+		result = [self.subitems objectAtIndex:rowIndex];
 	}
 	
 	return result;
@@ -196,13 +291,13 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 			[self formatValueForKey:@"title" compact:compact],
 			[self formatValueForKey:@"key" compact:compact],
 			[self formatValueForKey:@"value" compact:compact],
-			[self formatValueForKey:@"userInfo" compact:compact],
-			[self formatBoolValueForKey:@"required" compact:compact hidingIf:NO],
+			[self formatBoolValueForKey:@"isRequired" compact:compact hidingIf:NO],
 			[self formatValueForKey:@"currentRevision" compact:compact],
 			[self formatValueForKey:@"lastValidatedRevision" compact:compact],
 			[self formatValueForKey:@"error" compact:compact],
 			[self formatValueForKey:@"subitemErrors" compact:compact],
 			[self formatBoolValueForKey:@"validatesAutomatically" compact:compact hidingIf:NO],
+			[self formatBoolValueForKey:@"isDisabled" compact:compact hidingIf:NO],
 			nil];
 }
 
@@ -219,6 +314,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (void)printHierarchy:(CItem*)item indent:(NSString*)indent level:(int)level
 {
+	NSString* activePrefix = self.isActive ? @"! " : @"  ";
 	NSString* statePrefix;
 	switch(item.state) {
 		case CItemStateNeedsValidation:
@@ -234,9 +330,10 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 			statePrefix = @"ERROR";
 			break;
 	}
-	NSString* reqPrefix = item.required ? @"REQ" : @"   ";
+	NSString* newPrefix = item.isNew ? @"NEW" : @"   ";
+	NSString* reqPrefix = item.isRequired ? @"REQ" : @"   ";
 	
-	NSArray* prefixes = [NSArray arrayWithObjects:statePrefix, reqPrefix, nil];
+	NSArray* prefixes = [NSArray arrayWithObjects:activePrefix, statePrefix, newPrefix, reqPrefix, nil];
 	NSString* prefix = [NSString stringWithComponents:prefixes separator:@" "];
 	CLogPrint(@"%@%@%3d %@", prefix, indent, level, [item descriptionCompact:YES]);
 	if(item.subitems.count > 0) {
@@ -253,15 +350,30 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	[self printHierarchy:self indent:@"" level:0];
 }
 
-#pragma  mark - KVC for item keys
+#pragma mark - KVC for subitems
 
 - (id)valueForUndefinedKey:(NSString *)key
 {
-	id value = [self subitemForKey:key];
+	id value = nil;
+	
+	value = [self subitemForKey:key];
 	if(value == nil) {
 		value = [super valueForUndefinedKey:key];
 	}
+	
 	return value;
+}
+
+#pragma mark - @property dict
+
+- (NSMutableDictionary*)dict
+{
+	return dict_;
+}
+
+- (void)setDict:(NSMutableDictionary *)dict
+{
+	dict_ = [dict mutableCopy];
 }
 
 #pragma mark - @property superitem
@@ -314,10 +426,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (void)insertObject:(CItem *)item inSubitems_AtIndex:(NSUInteger)index
 {
-	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"subitems"];
-	[subitems__ insertObject:item atIndex:index];
-	item.superitem = self;
-	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"subitems"];
+	[self insertSubitems_:[NSArray arrayWithObject:item] atIndexes:[NSIndexSet indexSetWithIndex:index]];
 }
 
 - (void)insertSubitems_:(NSArray *)array atIndexes:(NSIndexSet *)indexes
@@ -326,17 +435,17 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	[subitems__ insertObjects:array atIndexes:indexes];
 	[array enumerateObjectsUsingBlock:^(CItem* item, NSUInteger idx, BOOL *stop) {
 		item.superitem = self;
+		if(self.isActive) {
+			[item activateAll];
+		}
 	}];
 	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"subitems"];
+	[self setNeedsValidation:YES];
 }
 
 - (void)removeObjectFromSubitems_AtIndex:(NSUInteger)index
 {
-	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"subitems"];
-	CItem* item = [subitems__ objectAtIndex:index];
-	item.superitem = nil;
-	[subitems__ removeObjectAtIndex:index];
-	[self didChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"subitems"];
+	[self removeSubitems_AtIndexes:[NSIndexSet indexSetWithIndex:index]];
 }
 
 - (void)removeSubitems_AtIndexes:(NSIndexSet *)indexes
@@ -344,10 +453,14 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:@"subitems"];
 	[indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 		CItem* item = [subitems__ objectAtIndex:idx];
+		if(self.isActive) {
+			[item deactivateAll];
+		}
 		item.superitem = nil;
 	}];
 	[subitems__ removeObjectsAtIndexes:indexes];
 	[self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:@"subitems"];
+	[self setNeedsValidation:YES];
 }
 
 #pragma mark - hierarchy manipulation
@@ -355,6 +468,11 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 - (void)addSubitem:(CItem*)item
 {
 	[self.subitems addObject:item];
+}
+
+- (void)addSubitems:(NSArray*)items
+{
+	[self.subitems addObjectsFromArray:items];
 }
 
 - (void)removeFromSuperitem
@@ -389,6 +507,30 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	return result;
 }
 
+#pragma mark - @property dependentKeyPaths
+
+- (NSMutableArray*)dependentKeyPaths
+{
+	return [self.dict objectForKey:@"dependentKeyPaths"];
+}
+
+- (void)setDependentKeyPaths:(NSMutableArray *)dependentKeyPaths
+{
+	[self.dict setObject:[dependentKeyPaths mutableCopy] forKey:@"dependentKeyPaths"];
+}
+
+#pragma mark - @property mustEqualKeyPath
+
+- (NSString*)mustEqualKeyPath
+{
+	return [self.dict objectForKey:@"mustEqualKeyPath"];
+}
+
+- (void)setMustEqualKeyPath:(NSString *)keyPath
+{
+	[self.dict setObject:keyPath forKey:@"mustEqualKeyPath"];
+}
+
 #pragma mark - @property needsValidation
 
 + (NSSet*)keyPathsForValuesAffectingNeedsValidation
@@ -401,22 +543,35 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	return self.currentRevision != self.lastValidatedRevision;
 }
 
+#pragma mark - @property isNew
+
++ (NSSet*)keyPathsForValuesAffectingIsNew
+{
+	return [NSSet setWithObjects:@"lastValidatedRevision", nil];
+}
+
+- (BOOL)isNew
+{
+	return self.lastValidatedRevision <= 1;
+}
+
 - (void)setNeedsValidation:(BOOL)needsValidation
 {
-//	if(self.needsValidation != needsValidation) {
-		if(needsValidation) {
-			[self incrementCurrentRevision];
-			if(self.superitem != nil) {
-				self.superitem.needsValidation = YES;
-			} else {
-				if(self.state != CItemStateValidating) {
-					[self armValidateIfNeeded];
-				}
-			}
+	if(needsValidation) {
+		[self incrementCurrentRevision];
+		if(self.superitem == nil) {
+			[self armValidateIfNeeded];
 		} else {
-			[self syncLastValidatedRevision];
+			self.superitem.needsValidation = YES;
 		}
-//	}
+		for(NSString* keyPath in self.dependentKeyPaths) {
+			CItem* otherItem = [self.rootItem valueForKeyPath:keyPath];
+			otherItem.needsValidation = YES;
+		}
+		
+	} else {
+		[self syncLastValidatedRevision];
+	}
 }
 
 #pragma mark - @property currentRevision
@@ -433,11 +588,9 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (void)incrementCurrentRevision
 {
-	if(currentRevision_ == lastValidatedRevision_) {
-		[self willChangeValueForKey:@"currentRevision"];
-		currentRevision_++;
-		[self didChangeValueForKey:@"currentRevision"];
-	}
+	[self willChangeValueForKey:@"currentRevision"];
+	currentRevision_++;
+	[self didChangeValueForKey:@"currentRevision"];
 }
 
 #pragma mark - @property lastValidatedRevision
@@ -517,6 +670,30 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	}
 }
 
+#pragma mark - @property title
+
+- (NSString*)title
+{
+	return Denull([self.dict objectForKey:@"title"]);
+}
+
+- (void)setTitle:(NSString *)title
+{
+	[self.dict setObject:Ennull(title) forKey:@"title"];
+}
+
+#pragma mark - @property key
+
+- (NSString*)key
+{
+	return Denull([self.dict objectForKey:@"key"]);
+}
+
+- (void)setKey:(NSString *)key
+{
+	[self.dict setObject:Ennull(key) forKey:@"key"];
+}
+
 #pragma mark - @property value
 
 + (BOOL)automaticallyNotifiesObserversOfValue
@@ -524,16 +701,28 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	return NO;
 }
 
-- (id)value
+- (id)denullValue:(id)value
 {
-	return value_;
+	return Denull(value);
 }
 
-- (void)setValue:(id)value
+- (id)ennullValue:(id)value
 {
-	if(!Same(value_, value)) {
+	return Ennull(value);
+}
+
+- (id)value
+{
+	return [self denullValue:[self.dict objectForKey:@"value"]];
+}
+
+- (void)setValue:(id)newValue
+{
+	newValue = [self ennullValue:newValue];
+	id oldValue = [self ennullValue:[self.dict objectForKey:@"value"]];
+	if(!Same(oldValue, newValue)) {
 		[self willChangeValueForKey:@"value"];
-		value_ = value;
+		[self.dict setObject:newValue forKey:@"value"];
 		[self didChangeValueForKey:@"value"];
 	}
 }
@@ -579,8 +768,18 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 - (NSError*)validate
 {
 	NSError* error = nil;
-	if(self.required && self.isEmpty) {
+	
+	if(self.isRequired && self.isEmpty) {
 		error = [NSError errorWithDomain:CItemErrorDomain code:CItemErrorRequired localizedFormat:@"%@ is required.", self.title];
+	}
+	
+	if(error == nil) {
+		if(!IsEmptyString(self.mustEqualKeyPath)) {
+			CItem* otherItem = [self.rootItem valueForKeyPath:self.mustEqualKeyPath];
+			if(!Same(self.value, otherItem.value)) {
+				error = [NSError errorWithDomain:CItemErrorDomain code:CItemErrorNotEqualToOtherItem localizedFormat:@"Must be the same as %@.", otherItem.title];
+			}
+		}
 	}
 	return error;
 }
@@ -605,30 +804,47 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	}
 }
 
+- (void)validateSubtree
+{
+	if(self.needsValidation) {
+		self.needsValidation = NO;
+		[self incrementValidationsInProgress];
+		self.error = nil;
+		self.subitemErrors = nil;
+		for(CItem* subitem in self.subitems) {
+			[subitem validateSubtree];
+		}
+		__weak CItem* self__ = self;
+		[self validateWithCompletion:^(NSError* error) {
+			if(error != nil) {
+				self__.error = error;
+				[self__.superitem addSubitemError:error];
+			}
+			[self__ decrementValidationsInProgress];
+		}];
+	} else {
+		[self.superitem addSubitemError:self.error];
+	}
+}
+
 - (void)validateHierarchy
 {
 	[self disarmValidate];
-
+	
 	if(!self.isValidating) {
-		if(self.needsValidation) {
-			self.needsValidation = NO;
-			[self incrementValidationsInProgress];
-			self.error = nil;
-			self.subitemErrors = nil;
-			for(CItem* subitem in self.subitems) {
-				[subitem validateHierarchy];
+#if 0
+		static CObserver* observer = nil;
+		__weak CItem* self__ = self;
+		CObserverBlock action = ^(NSNumber* newValue, NSNumber* oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+			if(oldValue != nil && newValue.boolValue == NO) {
+				[self__ printHierarchy];
+				observer = nil;
 			}
-			__weak CItem* self__ = self;
-			[self validateWithCompletion:^(NSError* error) {
-				if(error != nil) {
-					self__.error = error;
-					[self__.superitem addSubitemError:error];
-				}
-				[self__ decrementValidationsInProgress];
-			}];
-		} else {
-			[self.superitem addSubitemError:self.error];
-		}
+		};
+		observer = [CObserver observerWithKeyPath:@"isValidating" ofObject:self action:action initial:action];
+#endif
+
+		[self validateSubtree];
 	}
 }
 
@@ -639,58 +855,87 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(validateHierarchy) object:nil];
 }
 
-- (void)armValidate
-{
-	[self disarmValidate];
-	[self performSelector:@selector(validateHierarchy) withObject:nil afterDelay:0.1];
-}
-
 - (void)armValidateIfNeeded
 {
-	if(self.needsValidation) {
+	[self disarmValidate];
+	if(self.isActive) {
 		if(self.validatesAutomatically) {
-			[self armValidate];
+			if(self.needsValidation) {
+				[self performSelector:@selector(validateHierarchy) withObject:nil afterDelay:0.1];
+			}
 		}
 	}
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+#pragma mark - @property isHidden
+
++ (BOOL)automaticallyNotifiesObserversOfIsHidden
 {
-//	CLogDebug(nil, @"observeValueForKeyPath:%@ ofObject:%@ change:%@ context:%p", keyPath, object, change, context);
-	if(object == self) {
-		if([keyPath isEqualToString:@"value"]) {
-			self.needsValidation = YES;
-		}
+	return NO;
+}
+
+- (BOOL)isHidden
+{
+	return isHidden_;
+}
+
+- (void)setHidden:(BOOL)isHidden
+{
+	if(isHidden_ != isHidden) {
+		[self willChangeValueForKey:@"isHidden"];
+		isHidden_ = isHidden;
+		[self didChangeValueForKey:@"isHidden"];
 	}
 }
 
-@end
-
-#pragma mark -
-
-@implementation CItemTest
-
-+ (void)initialize
+- (NSArray*)visibleSubitems
 {
-	CLogSetLevel(kLogAll);
+	NSMutableArray* result = [NSMutableArray array];
+	
+	for(CItem* subitem in self.subitems) {
+		if(!subitem.isHidden) {
+			[result addObject:subitem];
+		}
+	}
+	
+	return [result copy];
 }
 
-- (void)test
+#pragma mark - @property isDisabled
+
++ (BOOL)automaticallyNotifiesObserversOfIsDisabled
 {
-	CItem* item = [CItem itemForResourceName:@"CItemTest1" withExtension:@"json"];
-	[item printHierarchy];
-	[item validateHierarchy];
-	[item printHierarchy];
-	[item setValue:@"rose" forKeyPath:@"head.nose.value"];
-	[item printHierarchy];
-	[item validateHierarchy];
-	[item printHierarchy];
-	CLogDebug(nil, @"done");
+	return NO;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (BOOL)isDisabled
 {
-	CLogDebug(nil, @"observeValueForKeyPath:%@ ofObject:%@ change:%@ context:%p", keyPath, object, change, context);
+	return isDisabled_;
+}
+
+- (void)setDisabled:(BOOL)isDisabled
+{
+	if(isDisabled_ != isDisabled) {
+		[self willChangeValueForKey:@"isDisabled"];
+		isDisabled_ = isDisabled;
+		[self didChangeValueForKey:@"isDisabled"];
+	}
+}
+
+#pragma mark - Selection
+
+// Behavior provided by subclasses
+- (BOOL)didSelect
+{
+	return YES;
+}
+
+#pragma mark - Table Support
+
+- (NSArray*)tableRowItems
+{
+	NSAssert1(false, @"No table row items defined for:%@", self);
+	return nil;
 }
 
 @end

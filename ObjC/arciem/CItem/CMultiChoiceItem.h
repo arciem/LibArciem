@@ -16,38 +16,15 @@
  
  *******************************************************************************/
 
-#import "CTableViewCell.h"
-#import "UIViewUtils.h"
+#import "CItem.h"
+#import "CBooleanItem.h"
 
-@implementation CTableViewCell
+@interface CMultiChoiceItem : CItem
 
-- (void)setup
-{
-}
+@property (nonatomic) NSUInteger minValidChoices;
+@property (nonatomic) NSUInteger maxValidChoices;
+@property (readonly, nonatomic) NSUInteger choicesCount;
 
-- (void)awakeFromNib
-{
-	[self setup];
-}
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
-		[self setup];
-	}
-	return self;
-}
-
-- (void)drawRect:(CGRect)rect
-{
-	[super drawRect:rect];
-//	[self drawCrossedBox:self.bounds color:[UIColor redColor] lineWidth:1.0 originIndicators:YES];
-}
-
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-//	[self setNeedsDisplay];
-}
+- (void)didSelectSubitem:(CBooleanItem*)item;
 
 @end

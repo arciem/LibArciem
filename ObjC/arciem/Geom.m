@@ -338,6 +338,16 @@
 	return CGPointMake(CGRectGetMaxX(r), CGRectGetMaxY(r));
 }
 
++ (CGFloat)rectMidX:(CGRect)r
+{
+	return CGRectGetMidX(r);
+}
+
++ (CGFloat)rectMidY:(CGRect)r
+{
+	return CGRectGetMidY(r);
+}
+
 + (CGPoint)rectMid:(CGRect)r
 {
 	return CGPointMake(CGRectGetMidX(r), CGRectGetMidY(r));

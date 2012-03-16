@@ -17,26 +17,27 @@
  *******************************************************************************/
 
 #import <UIKit/UIKit.h>
+#import "CTableItem.h"
+#import "CTableRowItem.h"
+#import "CTableSectionItem.h"
 
 @protocol CTableManagerDelegate;
 
-@interface CTableManager : NSObject<UITableViewDelegate, UITableViewDataSource>
+@interface CTableManager : NSObject<UITableViewDelegate, UITableViewDataSource, CTableItemDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView* tableView;
-@property (strong, nonatomic) NSURL* modelURL;
+@property (strong, nonatomic) CTableItem* model;
 @property (weak, nonatomic) IBOutlet id<CTableManagerDelegate> delegate;
 
-- (void)replaceSectionAtIndex:(NSUInteger)sectionIndex withSectionWithKey:(NSString*)newSectionKey;
-- (void)replaceSectionWithKey:(NSString*)oldSectionKey withSectionWithKey:(NSString*)newSectionKey;
-- (void)deleteRowWithKey:(NSString*)key withRowAnimation:(UITableViewRowAnimation)animation;
-- (void)setRowForKey:(NSString*)rowKey enabled:(BOOL)enabled withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)clearSelectionAnimated:(BOOL)animated;
+- (void)setRowForKeyPath:(NSString*)keyPath disabled:(BOOL)disabled withRowAnimation:(UITableViewRowAnimation)animation;
+- (void)replaceSectionAtIndex:(NSUInteger)leavingSectionIndex withSectionWithKey:(NSString*)newSectionKey;
 
 @end
 
 @protocol CTableManagerDelegate <NSObject>
 
 @required
-- (void)tableManager:(CTableManager*)tableManager didSelectRow:(NSMutableDictionary*)row atIndexPath:(NSIndexPath *)indexPath;
+- (void)tableManager:(CTableManager*)tableManager didSelectRow:(CTableRowItem*)rowItem atIndexPath:(NSIndexPath *)indexPath;
 
 @end

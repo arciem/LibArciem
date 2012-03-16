@@ -23,8 +23,8 @@
 #include <string>
 #endif
 
-NSString* DenullString(NSString* s);
-NSString* EnnullString(NSString* s);
+NSString* EnsureRealString(NSString* s);
+NSString* AllowStringToBeNil(NSString* s);
 BOOL IsEmptyString(NSString* s);
 
 NSString* TrimWhitespaceFromStart(NSString* str);
@@ -46,6 +46,7 @@ BOOL StringContainsString(NSString* str1, NSString* str2);
 BOOL StringBeginsWithString(NSString* str1, NSString* str2);
 NSString* FormatInt(int i, int places, BOOL leadingZero);
 NSString* StringByDeletingRange(NSString* str, NSRange range);
+NSString* StripCharactersInSet(NSString* str, NSCharacterSet* set);
 NSString* StripControlCharacters(NSString* str);
 
 // returns YES if the string has non-zero length and contains at least one non-whitespace character
@@ -102,6 +103,8 @@ NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* 
 
 - (NSString*)stringByAddingPercentEscapes;
 - (NSString*)stringByReplacingPercentEscapes;
+
+- (NSArray*)allCharacters;
 
 @end
 

@@ -20,22 +20,33 @@
 #import "ObjectUtils.h"
 #import "JSONUtils.h"
 #import "UIColorUtils.h"
+#import "StringUtils.h"
+#import "CRowItemTableViewCell.h"
+#import "UIViewUtils.h"
 
 @interface CTableManager ()
 
-@property (strong, nonatomic) NSDictionary* model;
+@property (strong, nonatomic) NSArray* visibleSections;
+@property (strong, nonatomic) NSMutableDictionary* visibleRowsBySection;
 
 @end
 
 @implementation CTableManager
 
-@synthesize modelURL = modelURL_;
 @synthesize model = model_;
 @synthesize tableView = tableView_;
 @synthesize delegate = delegate_;
+@synthesize visibleSections = visibleSections_;
+@synthesize visibleRowsBySection = visibleRowsBySection_;
+
++ (void)initialize
+{
+//	CLogSetTagActive(@"C_TABLE_MANAGER", YES);
+}
 
 - (void)setup
 {
+	CLogDebug(@"C_TABLE_MANAGER", @"%@ setup", self);
 }
 
 - (void)awakeFromNib
@@ -52,88 +63,37 @@
 	return self;
 }
 
-- (NSURL*)modelURL
+- (void)dealloc
 {
-	return modelURL_;
+	CLogDebug(@"C_TABLE_MANAGER", @"%@ dealloc", self);
+	self.model = nil;
 }
 
-- (void)setModelURL:(NSURL *)modelURL
+- (CTableItem*)model
 {
-	if(!Same(modelURL_, modelURL)) {
-		modelURL_ = modelURL;
-		self.model = [NSJSONSerialization JSONObjectWithURL:modelURL_ options:NSJSONReadingMutableContainers error:nil];
+	return model_;
+}
 
-		[self.tableView reloadData];
+- (void)setModel:(CTableItem*)model
+{
+	if(!Same(model_, model)) {
+		model_.delegate = nil;
+		model_ = model;
+		if(model_ != nil) {
+			model_.delegate = self;
+			[self.tableView reloadData];
+		}
 	}
 }
 
-- (NSMutableArray*)orderedSectionKeys
+- (NSUInteger)indexOfSectionForKey:(NSString*)key
 {
-	return [self.model objectForKey:@"orderedSectionKeys"];
-}
-
-- (NSMutableDictionary*)sectionForKey:(NSString*)sectionKey
-{
-	return [[self.model objectForKey:@"sections"] objectForKey:sectionKey];
-}
-
-- (NSString*)sectionKeyAtIndex:(NSUInteger)sectionIndex
-{
-	return [[self orderedSectionKeys] objectAtIndex:sectionIndex];
-}
-
-- (NSMutableDictionary*)sectionAtIndex:(NSUInteger)sectionIndex
-{
-	return [self sectionForKey:[self sectionKeyAtIndex:sectionIndex]];
-}
-
-- (NSMutableArray*)orderedRowKeysForSection:(NSDictionary*)section
-{
-	return [section objectForKey:@"orderedRowKeys"];
-}
-
-- (NSMutableArray*)orderedRowKeysForSectionAtIndex:(NSUInteger)sectionIndex
-{
-	return [self orderedRowKeysForSection:[self sectionAtIndex:sectionIndex]];
-}
-
-- (NSString*)rowKeyAtIndexPath:(NSIndexPath*)indexPath
-{
-	return [[self orderedRowKeysForSectionAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-}
-
-- (NSMutableDictionary*)rowForKey:(NSString*)rowKey
-{
-	return [[self.model objectForKey:@"rows"] objectForKey:rowKey];
-}
-
-- (NSMutableDictionary*)rowAtIndexPath:(NSIndexPath*)indexPath
-{
-	return [self rowForKey:[self rowKeyAtIndexPath:indexPath]];
-}
-
-- (NSUInteger)indexOfSectionForKey:(NSString*)sectionKey
-{
-	return [[self orderedSectionKeys] indexOfObject:sectionKey];
-}
-
-- (NSIndexPath*)indexPathOfRowForKey:(NSString*)rowKey
-{
-	NSIndexPath* result = nil;
+	NSUInteger result = NSNotFound;
 	
 	NSUInteger sectionIndex = 0;
-	for(NSString* sectionKey in [self orderedSectionKeys]) {
-		NSDictionary* sectionDict = [self sectionForKey:sectionKey];
-		NSArray* orderedRowKeys = [self orderedRowKeysForSection:sectionDict];
-		NSUInteger rowIndex = 0;
-		for(NSString* aRowKey in orderedRowKeys) {
-			if([aRowKey isEqual:rowKey]) {
-				result = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
-				break;
-			}
-			rowIndex++;
-		}
-		if(result != nil) {
+	for(CTableSectionItem* section in self.sections) {
+		if([key isEqualToString:section.key]) {
+			result = sectionIndex;
 			break;
 		}
 		sectionIndex++;
@@ -142,69 +102,91 @@
 	return result;
 }
 
-- (BOOL)isRowEnabled:(NSDictionary*)row
+- (CTableSectionItem*)sectionForKey:(NSString*)key
 {
-	BOOL enabled = YES;
-
-	NSNumber* enabledNumber = [row objectForKey:@"enabled"];
-	if(enabledNumber != nil) {
-		enabled = [enabledNumber boolValue];
+	CTableSectionItem* result = nil;
+	
+	NSUInteger sectionIndex = [self indexOfSectionForKey:key];
+	if(sectionIndex != NSNotFound) {
+		result = [self.sections objectAtIndex:sectionIndex];
 	}
-
-	return enabled;
+	
+	return result;
 }
 
-- (void)setRow:(NSMutableDictionary*)row enabled:(BOOL)enabled
+- (NSUInteger)indexOfRowForKey:(NSString*)key inSection:(NSUInteger)sectionIndex
 {
-	[row setValue:[NSNumber numberWithBool:enabled] forKey:@"enabled"];
+	NSUInteger result = NSNotFound;
+	
+	NSUInteger rowIndex = 0;
+	for(CTableRowItem* row in [self rowsForSection:sectionIndex]) {
+		if([key isEqualToString:row.key]) {
+			result = rowIndex;
+			break;
+		}
+		rowIndex++;
+	}
+	
+	return result;
 }
 
-- (BOOL)isRowEnabledAtIndexPath:(NSIndexPath*)indexPath
+- (NSIndexPath*)indexPathOfRowForKeyPath:(NSString*)keyPath
 {
-	NSDictionary* row = [self rowAtIndexPath:indexPath];
-	return [self isRowEnabled:row];
+	NSIndexPath* result = nil;
+	
+	NSArray* comps = [keyPath componentsSeparatedByString:@"."];
+	NSString* sectionKey = [comps objectAtIndex:0];
+	NSUInteger sectionIndex = [self indexOfSectionForKey:sectionKey];
+	if(sectionIndex != NSNotFound) {
+		NSString* rowKey = [comps objectAtIndex:1];
+		NSUInteger rowIndex = [self indexOfRowForKey:rowKey inSection:sectionIndex];
+		if(rowIndex != NSNotFound) {
+			result = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
+		}
+	}
+	
+	return result;
 }
 
-- (void)setRowForKey:(NSString*)rowKey enabled:(BOOL)enabled withRowAnimation:(UITableViewRowAnimation)animation
+- (CTableRowItem*)rowForKeyPath:(NSString*)keyPath
 {
-	NSMutableDictionary* row = [self rowForKey:rowKey];
-	if(row != nil) {
-		BOOL oldEnabled = [self isRowEnabled:row];
-		if(oldEnabled != enabled) {
-			[self setRow:row enabled:enabled];
-			NSIndexPath* indexPath = [self indexPathOfRowForKey:rowKey];
-			if(indexPath != nil) {
-				[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:animation];
-			}
+	CTableRowItem* result = nil;
+	
+	NSIndexPath* indexPath = [self indexPathOfRowForKeyPath:keyPath];
+	if(indexPath != nil) {
+		result = [self rowAtIndexPath:indexPath];
+	}
+	
+	return result;
+}
+
+- (void)setRowForKeyPath:(NSString*)keyPath disabled:(BOOL)disabled withRowAnimation:(UITableViewRowAnimation)animation
+{
+	NSIndexPath* indexPath = [self indexPathOfRowForKeyPath:keyPath];
+	if(indexPath != nil) {
+		CTableRowItem* row = [self rowAtIndexPath:indexPath];
+		if(row.isDisabled != disabled) {
+			row.isDisabled = disabled;
+			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:animation];
 		}
 	}
 }
 
-- (void)deleteRowWithKey:(NSString*)key withRowAnimation:(UITableViewRowAnimation)animation
+- (void)replaceSectionAtIndex:(NSUInteger)leavingSectionIndex withSectionWithKey:(NSString*)newSectionKey
 {
-	NSIndexPath* indexPath = [self indexPathOfRowForKey:key];
-	if(indexPath != nil) {
-		NSArray* indexPaths = [NSArray arrayWithObject:indexPath];
-		NSMutableArray* keys = [self orderedRowKeysForSectionAtIndex:indexPath.section];
-		[keys removeObjectAtIndex:indexPath.row];
-		[self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
-	}
-}
+	CTableSectionItem* leavingSection = [self sectionForIndex:leavingSectionIndex];
+	leavingSection.isHidden = YES;
+	
+	CTableSectionItem* enteringSection = [self.model valueForKey:newSectionKey];
+	enteringSection.isHidden = NO;
 
-- (void)replaceSectionAtIndex:(NSUInteger)sectionIndex withSectionWithKey:(NSString*)newSectionKey
-{
-	NSMutableArray* orderedSectionKeys = [self orderedSectionKeys];
-	[orderedSectionKeys replaceObjectAtIndex:sectionIndex withObject:newSectionKey];
-	NSIndexSet* sectionIndexes = [NSIndexSet indexSetWithIndex:sectionIndex];
+	[self invalidateCache];
+
+	NSUInteger enteringSectionIndex = [self indexOfSectionForKey:newSectionKey];
+	
+	NSAssert2(enteringSectionIndex == leavingSectionIndex, @"Need adjacent sections in model. entering:%@ leaving:%@", enteringSectionIndex, leavingSectionIndex);
+	NSIndexSet* sectionIndexes = [NSIndexSet indexSetWithIndex:enteringSectionIndex];
 	[self.tableView reloadSections:sectionIndexes withRowAnimation:UITableViewRowAnimationAutomatic];
-}
-
-- (void)replaceSectionWithKey:(NSString*)oldSectionKey withSectionWithKey:(NSString*)newSectionKey
-{
-	NSUInteger sectionIndex = [self indexOfSectionForKey:oldSectionKey];
-	if(sectionIndex != NSNotFound) {
-		[self replaceSectionAtIndex:sectionIndex withSectionWithKey:newSectionKey];
-	}
 }
 
 - (void)clearSelectionAnimated:(BOOL)animated
@@ -214,88 +196,123 @@
 	}
 }
 
+- (void)invalidateCache
+{
+	self.visibleSections = nil;
+	self.visibleRowsBySection = nil;
+}
+
+- (NSArray*)sections
+{
+	if(self.visibleSections == nil) {
+		self.visibleSections = self.model.visibleSubitems;
+	}
+	return self.visibleSections;
+}
+
+- (CTableSectionItem*)sectionForIndex:(NSUInteger)sectionIndex
+{
+	return [self.sections objectAtIndex:sectionIndex];
+}
+
+- (NSArray*)rowsForSection:(NSUInteger)sectionIndex
+{
+	NSNumber* sectionIndexNumber = [NSNumber numberWithUnsignedInteger:sectionIndex];
+	NSMutableDictionary* dict = self.visibleRowsBySection;
+	if(dict == nil) {
+		dict = [NSMutableDictionary dictionary];
+		self.visibleRowsBySection = dict;
+	}
+	NSArray* rows = [dict objectForKey:sectionIndexNumber];
+	if(rows == nil) {
+		CTableSectionItem* section = [self sectionForIndex:sectionIndex];
+		rows = section.visibleSubitems;
+		[dict setObject:rows forKey:sectionIndexNumber];
+	}
+	return rows;
+}
+
+- (void)invalidateRowsForSection:(NSUInteger)sectionIndex
+{
+	NSNumber* sectionIndexNumber = [NSNumber numberWithUnsignedInteger:sectionIndex];
+	[self.visibleRowsBySection removeObjectForKey:sectionIndexNumber];
+}
+
+- (CTableRowItem*)rowAtIndexPath:(NSIndexPath*)indexPath
+{
+	NSArray* rows = [self rowsForSection:indexPath.section];
+	return [rows objectAtIndex:indexPath.row];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return [[self orderedSectionKeys] count];
+	return self.sections.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	return [[self sectionAtIndex:section] objectForKey:@"headerTitle"];
+	return [self sectionForIndex:section].title;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return [[self orderedRowKeysForSectionAtIndex:section] count];
+	return [self rowsForSection:section].count;
 }
 
-- (void)applyAttributes:(NSDictionary*)attributes toLabel:(UILabel*)label
+- (CRowItemTableViewCell*)createCellWithCellType:(NSString*)cellType reuseIdentifier:(NSString*)reuseIdentifier
 {
-	static NSDictionary* switchDict = nil;
-	if(switchDict == nil) {
-		switchDict = [NSDictionary dictionaryWithKeysAndObjects:
-					  @"adjustsFontSizeToFitWidth",
-					  ^(UILabel* lbl, id value) {
-						  lbl.adjustsFontSizeToFitWidth = [value boolValue];
-					  },
-					  @"minimumFontSize",
-					  ^(UILabel* lbl, id value) {
-						  lbl.minimumFontSize = [value floatValue]; 
-					  },
-					  @"fontSize",
-					  ^(UILabel* lbl, id value) {
-						  lbl.font = [UIFont fontWithName:lbl.font.fontName size:[value floatValue]];
-					  },
-					  @"textColor",
-					  ^(UILabel* lbl, id value) {
-						  lbl.textColor = [UIColor colorWithString:(NSString*)value];
-					  },
-					  nil];
-	}
-	for(NSString* key in attributes) {
-		void (^caseBlock)(UILabel*, id) = [switchDict objectForKey:key];
-		NSAssert1(caseBlock != NULL, @"No case found for key '%@'", key);
-		id value = [attributes objectForKey:key];
-		caseBlock(label, value);
-	}
+	CRowItemTableViewCell* cell = nil;
+	cell = (CRowItemTableViewCell*)ClassAlloc(cellType);
+	cell = [cell initWithReuseIdentifier:reuseIdentifier];
+	return cell;
+}
+
+- (CRowItemTableViewCell *)createCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	CRowItemTableViewCell* cell = nil;
+	
+	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
+	NSString* cellType = rowItem.cellType;
+	NSString* reuseIdentifier = nil;
+//	reuseIdentifier = cellType;
+	cell = [self createCellWithCellType:cellType reuseIdentifier:reuseIdentifier];
+	
+	return cell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSString* reuseIdentifier = @"identifier";
+	CRowItemTableViewCell* cell = nil;
 	
-	UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
-	
+	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
+//	NSString* cellType = rowItem.cellType;
+//	NSString* reuseIdentifier = cellType;
+//	cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
 	if(cell == nil) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+		cell = [self createCellForRowAtIndexPath:indexPath];
 	}
 
-	NSDictionary* row = [self rowAtIndexPath:indexPath];
-
-	static NSDictionary* accessoryTypeSymbols = nil;
-	if(accessoryTypeSymbols == nil) {
-		accessoryTypeSymbols = [NSDictionary dictionaryWithObjectsAndKeys:
-								[NSNumber numberWithUnsignedInt:UITableViewCellAccessoryNone], @"none",
-								[NSNumber numberWithUnsignedInt:UITableViewCellAccessoryDisclosureIndicator], @"disclosureIndicator",
-								[NSNumber numberWithUnsignedInt:UITableViewCellAccessoryDetailDisclosureButton], @"detailDisclosureButton",
-								[NSNumber numberWithUnsignedInt:UITableViewCellAccessoryCheckmark], @"checkmark",
-								nil];
-	}
-	NSNumber* accessoryTypeNumber = [accessoryTypeSymbols objectForKey:[row objectForKey:@"accessory"]];
-	cell.accessoryType = (UITableViewCellAccessoryType)[accessoryTypeNumber unsignedIntValue];
-	
-	cell.textLabel.text = [row objectForKey:@"text"];
-	
-	[self applyAttributes:[self.model objectForKey:@"textLabel"] toLabel:cell.textLabel];
-	[self applyAttributes:[row objectForKey:@"textLabel"] toLabel:cell.textLabel];
-	
-	BOOL enabled = [self isRowEnabledAtIndexPath:indexPath];
-	cell.textLabel.alpha = enabled ? 1.0 : 0.4;
-	cell.selectionStyle = enabled ? UITableViewCellSelectionStyleBlue : UITableViewCellSelectionStyleNone;
+	cell.rowItem = rowItem;
 	
 	return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	CGFloat result = tableView.rowHeight;
+
+	CRowItemTableViewCell* cell = [self createCellForRowAtIndexPath:indexPath];
+	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
+	cell.rowItem = rowItem;
+	cell.size = CGSizeMake(tableView.width, result);
+	[cell setNeedsLayout];
+	[cell layoutIfNeeded];
+	[cell sizeToFit];
+	result = cell.height;
+
+	return result;
 }
 
 #pragma mark - UITableViewDelegate
@@ -304,7 +321,8 @@
 {
 	NSIndexPath* result = indexPath;
 	
-	if(![self isRowEnabledAtIndexPath:indexPath]) {
+	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
+	if(rowItem.isUnselectable) {
 		result = nil;
 	}
 	
@@ -313,8 +331,37 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSMutableDictionary* row = [self rowAtIndexPath:indexPath];
-	[self.delegate tableManager:self didSelectRow:row atIndexPath:indexPath];
+	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
+	[self.delegate tableManager:self didSelectRow:rowItem atIndexPath:indexPath];
+}
+
+#pragma mark - @protocol CTableItemDelegate
+
+- (void)tableItem:(CTableItem*)tableItem sectionsDidChangeWithNew:(NSArray*)newItems old:(NSArray*)oldItems kind:(NSKeyValueChange)kind indexes:(NSIndexSet*)indexes
+{
+	CLogDebug(nil, @"tableItem:%@ sectionsDidChangeWithNew:%@ old:%@ kind:%d indexes:%@", tableItem, newItems, oldItems, kind, indexes);
+	NSAssert(false, @"Unimplemented.");
+}
+
+- (void)tableSectionItem:(CTableSectionItem*)tableSectionItem rowsDidChangeWithNew:(NSArray*)newItems old:(NSArray*)oldItems kind:(NSKeyValueChange)kind indexes:(NSIndexSet*)indexes
+{
+	CLogDebug(nil, @"tableSectionItem:%@ rowsDidChangeWithNew:%@ old:%@ kind:%d indexes:%@", tableSectionItem, newItems, oldItems, kind, indexes);
+	switch (kind) {
+		case NSKeyValueChangeInsertion: {
+			NSUInteger sectionIndex = [self.sections indexOfObject:tableSectionItem];
+			NSAssert(sectionIndex != NSNotFound, @"Couldn't find section.");
+			NSMutableArray* indexPaths = [NSMutableArray array];
+			[indexes enumerateIndexesUsingBlock:^(NSUInteger rowIndex, BOOL *stop) {
+				[indexPaths addObject:[NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex]];
+			}];
+			[self invalidateRowsForSection:sectionIndex];
+			[self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+		} break;
+			
+		default:
+			NSAssert1(false, @"Unimplemented change kind:%d", kind);
+			break;
+	}
 }
 
 @end

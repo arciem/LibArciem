@@ -23,19 +23,19 @@
 using namespace std;
 #endif
 
-NSString* DenullString(NSString* s)
+NSString* EnsureRealString(NSString* s)
 {
 	return Denull(s) == nil ? @"" : s;
 }
 
-BOOL IsEmptyString(NSString* s)
-{
-	return DenullString(s).length == 0;
-}
-
-NSString* EnnullString(NSString* s)
+NSString* AllowStringToBeNil(NSString* s)
 {
 	return IsEmptyString(s) ? nil : s;
+}
+
+BOOL IsEmptyString(NSString* s)
+{
+	return EnsureRealString(s).length == 0;
 }
 
 NSString* TrimCharacterSetFromStart(NSCharacterSet* set, NSString* str)
@@ -62,10 +62,9 @@ NSString* TrimCharacterSetFromEnd(NSCharacterSet* set, NSString* str)
     return [NSString stringWithString:m];
 }
 
-NSString* StripControlCharacters(NSString* str)
+NSString* StripCharactersInSet(NSString* str, NSCharacterSet* set)
 {
     NSMutableString* m = [NSMutableString stringWithString:str];
-    NSCharacterSet* set = [NSCharacterSet controlCharacterSet];
     for(int i = (int)[m length] - 1; i >= 0; --i) {
         if([set characterIsMember:[m characterAtIndex:i]]) {
             [m deleteCharactersInRange:NSMakeRange(i, 1)];
@@ -73,6 +72,11 @@ NSString* StripControlCharacters(NSString* str)
     }
     
     return [NSString stringWithString:m];
+}
+
+NSString* StripControlCharacters(NSString* str)
+{
+	return StripCharactersInSet(str, [NSCharacterSet controlCharacterSet]);
 }
 
 NSString* TrimCharacterSetFromStartAndEnd(NSCharacterSet* set, NSString* str)
@@ -446,6 +450,17 @@ string ToStd(NSString* s)
 	s = (__bridge_transfer NSString*)CFURLCreateStringByReplacingPercentEscapes(NULL, (__bridge CFStringRef)self, NULL);
 	
 	return s;
+}
+
+- (NSArray*)allCharacters
+{
+	NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:[self length]];
+	for (int i=0; i < [self length]; i++) {
+		NSString *ichar  = [NSString stringWithFormat:@"%c", [self characterAtIndex:i]];
+		[characters addObject:ichar];
+	}
+	
+	return [characters copy];
 }
 
 @end

@@ -1,0 +1,85 @@
+{
+	"type": "table",
+	"title": "Sidebar Menu",
+	"key": "sidebar",
+	"textLabel": {
+		"adjustsFontSizeToFitWidth": true,
+		"minimumFontSize": 12.0,
+		"fontSize": 17.0,
+		"textColor": "0.0 0.0 0.0"
+	},
+	"subitems": [
+		{
+			"type": "tableSection",
+			"title": "Fruit",
+			"key": "fruit",
+			"subitems": [
+				{
+					"type": "tableRow",
+					"title": "Apple",
+					"key": "apple",
+					"action": "section",
+					"disabled": true
+				},
+				{
+					"type": "tableRow",
+					"title": "Banana",
+					"key": "banana",
+					"action": "slice",
+					"disabled": true
+				},
+				{
+					"type": "tableRow",
+					"title": "Grape",
+					"key": "grape",
+					"action": "peel",
+					"textLabel": {
+						"textColor": "1.0 0.0 0.0"
+					}
+				},
+				{
+					"type": "tableRow",
+					"title": "Peach",
+					"key": "peach",
+					"action": "puree",
+					"textLabel": {
+						"textColor": "1.0 0.5 0.0"
+					}
+				}
+			]
+		},
+		{
+			"type": "tableSection",
+			"title": "Veggies",
+			"key": "veggies",
+			"subitems": [
+				{
+					"type": "tableRow",
+					"title": "Squash",
+					"key": "squash",
+					"action": "steam"
+				},
+				{
+					"type": "tableRow",
+					"title": "Carrot",
+					"key": "carrot",
+					"action": "toss"
+				},
+				{
+					"type": "tableRow",
+					"title": "Potato",
+					"key": "potato",
+					"action": "bake",
+					"disabled": true
+				},
+				{
+					"type": "tableRow",
+					"title": "Onion",
+					"key": "onion",
+					"action": "shred",
+					"disabled": true
+				}
+			]
+		}
+	]
+}

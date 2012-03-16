@@ -20,12 +20,13 @@
 #import "DeviceUtils.h"
 #import "UIViewUtils.h"
 #import "Geom.h"
+#import "CTapToDismissKeyboardManager.h"
 
 @interface CView ()
 
 @property (nonatomic) BOOL observingKeyboard;
 @property (nonatomic) BOOL isOS_3_2;
-@property (strong, nonatomic) UITapGestureRecognizer* resignFirstResponderTapRecognizer;
+@property (strong, nonatomic) CTapToDismissKeyboardManager* tapToDismissKeyboardManager;
 
 @end
 
@@ -34,7 +35,7 @@
 @synthesize debugColor = debugColor_;
 @synthesize keyboardAdjustmentType = keyboardAdjustmentType_;
 @dynamic tapResignsFirstResponder;
-@synthesize resignFirstResponderTapRecognizer = resignFirstResponderTapRecognizer_;
+@synthesize tapToDismissKeyboardManager = tapToDismissKeyboardManager_;
 @synthesize observingKeyboard;
 @synthesize isOS_3_2;
 
@@ -184,59 +185,23 @@
 
 - (BOOL)tapResignsFirstResponder
 {
-	return self.resignFirstResponderTapRecognizer != nil;
+	return self.tapToDismissKeyboardManager != nil;
 }
 
 - (void)setTapResignsFirstResponder:(BOOL)tapResignsFirstResponder
 {
 	if(self.tapResignsFirstResponder != tapResignsFirstResponder) {
 		if(tapResignsFirstResponder) {
-			self.resignFirstResponderTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapForResignFirstResponder:)];
-			self.resignFirstResponderTapRecognizer.delegate = self;
-			[self addGestureRecognizer:self.resignFirstResponderTapRecognizer];
+			self.tapToDismissKeyboardManager = [[CTapToDismissKeyboardManager alloc] initWithView:self];
 		} else {
-			[self removeGestureRecognizer:self.resignFirstResponderTapRecognizer];
-			self.resignFirstResponderTapRecognizer = nil;
+			self.tapToDismissKeyboardManager = nil;
 		}
-	}
-}
-
-- (void)tapForResignFirstResponder:(UIGestureRecognizer *)gestureRecognizer
-{
-	CGPoint p = [self.resignFirstResponderTapRecognizer locationInView:self];
-	UIView* hitView = [self hitTest:p withEvent:nil];
-//	CLogDebug(nil, @"tapForResignFirstResponder hitView:%@", hitView);
-	if(hitView == self) {
-		[[self findFirstResponder] resignFirstResponder];
 	}
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	// Empty so subclasses can call super with confidence.
-}
-
-#pragma - UIGestureRecognizerDelegate
-
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
-{
-	return YES;
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-{
-	BOOL should = YES;
-
-	if ([touch.view isKindOfClass:[UITextField class]] || [touch.view isKindOfClass:[UIButton class]]) {
-        should = NO;
-    }
-
-	return should;
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-	return NO;
 }
 
 @end

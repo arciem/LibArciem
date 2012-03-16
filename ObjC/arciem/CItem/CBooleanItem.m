@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import "CBooleanItem.h"
+#import "CMultiChoiceItem.h"
 
 @implementation CBooleanItem
 
@@ -51,6 +52,22 @@
 - (void)setBooleanValue:(BOOL)boolValue
 {
 	self.value = [NSNumber numberWithBool:boolValue];
+}
+
+- (BOOL)didSelect
+{
+	BOOL shouldDeselect = [super didSelect];
+
+	if([self.superitem isKindOfClass:[CMultiChoiceItem class]]) {
+		CMultiChoiceItem* parent = (CMultiChoiceItem*)self.superitem;
+		[parent didSelectSubitem:self];
+	} else {
+		self.booleanValue = !self.booleanValue;
+	}
+
+	shouldDeselect = YES;
+
+	return shouldDeselect;
 }
 
 @end

@@ -26,6 +26,7 @@ static UIImage* sInvalidImage = nil;
 
 @interface CFieldValidationView ()
 
+@property (strong, readonly, nonatomic) UIView* newView;
 @property (strong, readonly, nonatomic) UIView* validView;
 @property (strong, readonly, nonatomic) UIView* invalidView;
 @property (strong, readonly, nonatomic) UIView* needsValidationView;
@@ -40,6 +41,7 @@ static UIImage* sInvalidImage = nil;
 @implementation CFieldValidationView
 
 @synthesize item = item_;
+@synthesize newView = newView_;
 @synthesize validView = validView_;
 @synthesize invalidView	= invalidView_;
 @synthesize needsValidationView = needsValidationView_;
@@ -110,6 +112,11 @@ static UIImage* sInvalidImage = nil;
 	return invalidView_;
 }
 
+- (UIView*)newView
+{
+	return newView_;
+}
+
 - (UIView*)needsValidationView
 {
 	return needsValidationView_;
@@ -175,10 +182,10 @@ static UIImage* sInvalidImage = nil;
 			self.contentView = self.validatingView;
 			break;
 		case CItemStateValid:
-			self.contentView = self.validView;
+			self.contentView = self.item.isNew ? self.newView : self.validView;
 			break;
 		case CItemStateInvalid:
-			self.contentView = self.invalidView;
+			self.contentView = self.item.isNew ? self.newView : self.invalidView;
 			break;
 	}
 }
@@ -195,6 +202,11 @@ static UIImage* sInvalidImage = nil;
 			}];
 		}
 	}
+}
+
+- (CGSize)sizeThatFits:(CGSize)size
+{
+	return CGSizeMake(20, 20);
 }
 
 @end

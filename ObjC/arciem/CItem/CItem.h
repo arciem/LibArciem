@@ -21,7 +21,8 @@
 extern NSString* const CItemErrorDomain;
 
 enum {
-	CItemErrorRequired = 1000
+	CItemErrorRequired = 1000,
+	CItemErrorNotEqualToOtherItem
 };
 
 enum {
@@ -32,32 +33,42 @@ enum {
 };
 typedef NSUInteger CItemState;
 
-@interface CItem : NSObject
+@interface CItem : NSObject<NSCopying>
+
+@property (copy, readonly, nonatomic) NSMutableDictionary* dict;
 
 @property (strong, nonatomic) NSString* title;			// localized, human-readable
 @property (strong, nonatomic) NSString* key;			// NSKeyValueCoding-compatible
 @property (readonly, nonatomic) NSString* keyPath;
 @property (strong, nonatomic) id value;
-@property (strong, nonatomic) id userInfo;
 @property (strong, nonatomic) NSError* error;
-@property (nonatomic) BOOL required;
+@property (nonatomic) BOOL isRequired;
 @property (readonly, nonatomic) CItemState state;
 @property (nonatomic) BOOL validatesAutomatically;
+@property (nonatomic) BOOL needsValidation;
 
-@property (readonly, nonatomic) BOOL needsValidation;
+@property (readonly, nonatomic) BOOL isActive;
 @property (readonly, nonatomic) BOOL isValidating;
 @property (readonly, nonatomic) BOOL isEmpty;
 @property (readonly, nonatomic) BOOL isValid;
+@property (readonly, nonatomic) BOOL isNew;
+
+@property (nonatomic, setter = setHidden:) BOOL isHidden;
+@property (readonly, nonatomic) NSArray* visibleSubitems;
+
+@property (nonatomic, setter = setDisabled:) BOOL isDisabled;
 
 //@property (readonly, nonatomic) NSString* keyPath;
 
 @property (weak, readonly, nonatomic) CItem* superitem;
 @property (strong, readonly, nonatomic) NSMutableArray* subitems;
+@property (copy, nonatomic) NSMutableArray* dependentKeyPaths;
+@property (copy, nonatomic) NSString* mustEqualKeyPath;
+@property (readonly, nonatomic) CItem* rootItem;
 
 - (id)initWithDictionary:(NSDictionary*)dict;
 + (CItem*)item;
 + (CItem*)itemWithDictionary:(NSDictionary*)dict;
-+ (CItem*)itemForResourceName:(NSString*)resourceName withExtension:(NSString*)extension;
 + (CItem*)itemWithTitle:(NSString*)title key:(NSString*)key value:(id)value;
 
 // Override in subclasses.
@@ -65,17 +76,21 @@ typedef NSUInteger CItemState;
 - (NSError*)validate;
 - (void)validateWithCompletion:(void (^)(NSError* error))completion;
 - (NSArray*)descriptionStringsCompact:(BOOL)compact;
+- (BOOL)didSelect; // return of YES (the default) indicates immediate deselection
+- (void)activate;
+- (void)deactivate;
 
 - (NSString*)keyPathRelativeToItem:(CItem*)ancestorItem;
 - (void)addSubitem:(CItem*)item;
+- (void)addSubitems:(NSArray*)items;
 - (void)removeFromSuperitem;
+- (CItem*)subitemForKey:(NSString*)key;
+- (NSUInteger)indexOfSubitemForKey:(NSString*)key;
+- (void)activateAll;
+- (void)deactivateAll;
 
 - (void)printHierarchy;
 
-@end
-
-@interface CItemTest : NSObject
-
-- (void)test;
+- (NSArray*)tableRowItems;
 
 @end

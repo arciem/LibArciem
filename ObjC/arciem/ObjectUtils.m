@@ -75,9 +75,8 @@ id<NSObject> ClassAlloc(NSString* className)
 	id instance = nil;
 	
 	Class cls = NSClassFromString(className);
-	if(cls != nil) {
-		instance = [cls alloc];
-	}
+	NSCAssert1(cls != nil, @"No class named:%@", className);
+	instance = [cls alloc];
 	
 	return instance;
 }
@@ -172,10 +171,16 @@ id<NSObject> ClassAlloc(NSString* className)
 
 - (NSString*)formatObjectWithValues:(NSArray*)values
 {
+	NSString* s = nil;
 	NSString* o = [NSString stringWithFormat:@"%@:%p", [self class], self];
-	NSArray* v = [[NSArray arrayWithObject:o] arrayByAddingObjectsFromArray:values];
-	NSString* a = StringByJoiningNonemptyStringsWithString(v, @"; ");
-	NSString* s = [NSString stringWithFormat:@"<%@>", a];
+	NSString* a = nil;
+	if(values.count > 0) {
+		NSArray* v = [[NSArray arrayWithObject:o] arrayByAddingObjectsFromArray:values];
+		a = StringByJoiningNonemptyStringsWithString(v, @"; ");
+	} else {
+		a = o;
+	}
+	s = [NSString stringWithFormat:@"<%@>", a];
 	return s;
 }
 
@@ -245,6 +250,31 @@ static NSMutableSet* sAssociationKeys = nil;
     va_end(args);
     
     return [self dictionaryWithObjects:values forKeys:keys];
+}
+
+- (NSUInteger)unsignedIntegerValueForKey:(id)key defaultValue:(NSUInteger)defaultValue
+{
+	NSUInteger result = defaultValue;
+	
+	NSNumber* value = [self objectForKey:key];
+	if(value != nil) {
+		result = [value unsignedIntegerValue];
+	}
+	
+	return result;
+}
+
+@end
+
+@implementation NSMutableDictionary (ObjectUtils)
+
+- (void)overrideWithValuesFromDictionary:(NSDictionary*)dict
+{
+	for(id key in dict) {
+		if([self objectForKey:key] == nil) {
+			[self setObject:[[dict objectForKey:key] copy] forKey:key];
+		}
+	}
 }
 
 @end

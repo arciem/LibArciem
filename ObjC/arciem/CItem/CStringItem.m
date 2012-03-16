@@ -20,6 +20,7 @@
 #import "ObjectUtils.h"
 #import "StringUtils.h"
 #import "ErrorUtils.h"
+#import "CTableTextFieldItem.h"
 
 NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
@@ -39,6 +40,7 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 @dynamic stringValue;
 @dynamic currentLength;
 @dynamic remainingLength;
+@dynamic fieldCharacterWidth;
 
 #pragma mark - Lifecycle
 
@@ -77,6 +79,18 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 											 nil]];
 }
 
+- (id)copyWithZone:(NSZone *)zone
+{
+	CStringItem* item = [super copyWithZone:zone];
+	
+	item.minLength = self.minLength;
+	item.maxLength = self.maxLength;
+	item.validCharacterSet = self.validCharacterSet;
+	item.validRegularExpression = self.validRegularExpression;
+	
+	return item;
+}
+
 #pragma mark - Debugging
 
 - (NSArray*)descriptionStringsCompact:(BOOL)compact
@@ -95,14 +109,24 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	return [NSSet setWithObject:@"value"];
 }
 
+- (id)denullValue:(id)value
+{
+	return EnsureRealString(value);
+}
+
+- (id)ennullValue:(id)value
+{
+	return EnsureRealString(value);
+}
+
 - (NSString*)stringValue
 {
-	return DenullString(self.value);
+	return self.value;
 }
 
 - (void)setStringValue:(NSString *)stringValue
 {
-	self.value = EnnullString(stringValue);
+	self.value = stringValue;
 }
 
 - (BOOL)isEmpty
@@ -170,17 +194,35 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	return result;
 }
 
-- (BOOL)stringMatchesValidRegularExpression:(NSString*)string
+- (BOOL)string:(NSString*)string matchesRegularExpression:(NSString*)regex
 {
 	BOOL result = YES;
 	
-	if(self.validRegularExpression != nil) {
+	if(regex != nil) {
 		NSStringCompareOptions options = NSCaseInsensitiveSearch | NSAnchoredSearch | NSRegularExpressionSearch;
-		NSRange range = [self.stringValue rangeOfString:self.validRegularExpression options:options];
+		NSRange range = [string rangeOfString:regex options:options];
 		result = range.location != NSNotFound;
 	}
 	
 	return result;
+
+}
+
+- (BOOL)stringMatchesValidRegularExpression:(NSString*)string
+{
+	return [self string:string matchesRegularExpression:self.validRegularExpression];
+}
+
+#pragma mark - @property fieldCharacterWidth
+
+- (NSUInteger)fieldCharacterWidth
+{
+	return [[self.dict objectForKey:@"fieldCharacterWidth"] unsignedIntegerValue];
+}
+
+- (void)setFieldCharacterWidth:(NSUInteger)width
+{
+	[self.dict setObject:[NSNumber numberWithUnsignedInteger:width] forKey:@"fieldCharacterWidth"];
 }
 
 #pragma mark - Editing
@@ -200,7 +242,7 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 - (BOOL)shouldChangeCharactersInRange:(NSRange)range inString:(NSString*)fromString toReplacementString:(NSString*)string resultString:(NSString**)resultString
 {
-	NSString* toString = [DenullString(fromString) stringByReplacingCharactersInRange:range withString:string];
+	NSString* toString = [EnsureRealString(fromString) stringByReplacingCharactersInRange:range withString:string];
 	if(resultString != nil) {
 		*resultString = toString;
 	}
@@ -209,25 +251,64 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 #pragma mark - Validation
 
+// May be overridden in subclasses
+- (NSString*)formatCharacterCount:(NSUInteger)count
+{
+	NSString* format = count == 1 ? @"%d character" : @"%d characters";
+	return [NSString stringWithFormat:format, count];
+}
+
 - (NSError*)validate
 {
 	NSError* error = [super validate];
 	
 	if(error == nil) {
 		if(self.currentLength > 0) {
-			if(self.currentLength < self.minLength) {
-				error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorTooShort localizedFormat:@"%@ must be at least %d characters long.", self.title, self.minLength];
-			} else if(self.remainingLength < 0) {
-				error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorTooLong localizedFormat:@"%@ must be no more than %d characters long.", self.title, self.maxLength];
-			} else if(![self allCharactersValidInString:self.stringValue]) {
-				error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorInvalidCharacters localizedFormat:@"%@ contains invalid characters.", self.title];
-			} else if(![self stringMatchesValidRegularExpression:self.stringValue]) {
-				error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorSyntaxError localizedFormat:@"%@ is not valid.", self.title];
+			
+			if(error == nil) {
+				if(self.minLength == self.maxLength && self.currentLength != self.minLength) {
+					NSString* message = @"%@ must be exactly %@ long.";
+					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStrubgItemErrorWrongLength localizedFormat:message, self.title, [self formatCharacterCount:self.minLength]];
+				}
+			}
+			
+			if(error == nil) {
+				if(self.currentLength < self.minLength) {
+					NSString* message = @"%@ must be at least %@ long.";
+					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorTooShort localizedFormat:message, self.title, [self formatCharacterCount:self.minLength]];
+				}
+			}
+			
+			if(error == nil) {
+				if(self.remainingLength < 0) {
+					NSString* message = @"%@ must be no more than %@ long.";
+					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorTooLong localizedFormat:message, self.title, [self formatCharacterCount:self.maxLength]];
+				}				
+			}
+			
+			if(error == nil) {
+				if(![self allCharactersValidInString:self.stringValue]) {
+					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorInvalidCharacters localizedFormat:@"%@ contains invalid characters.", self.title];
+				}				
+			}
+			
+			if(error == nil) {
+				if(![self stringMatchesValidRegularExpression:self.stringValue]) {
+					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorSyntaxError localizedFormat:@"%@ is not valid.", self.title];
+				}
 			}
 		}
 	}
 	
 	return error;
+}
+
+#pragma mark - Table Support
+
+- (NSArray*)tableRowItems
+{
+	CTableTextFieldItem* rowItem = [CTableTextFieldItem itemWithKey:self.key title:self.title stringItem:self];
+	return [NSArray arrayWithObject:rowItem];
 }
 
 @end
