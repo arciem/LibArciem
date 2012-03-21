@@ -7,7 +7,7 @@
 // compile and run any of them on any platform, but your performance with the
 // non-native version will be less than optimal.
 
-#include "MurmurHash3.h"
+#include "murmur_hash_3.hpp"
 
 //-----------------------------------------------------------------------------
 // Platform-specific functions and macros
@@ -30,6 +30,8 @@
 #else	// defined(_MSC_VER)
 
 #define	FORCE_INLINE __attribute__((always_inline))
+
+namespace arciem {
 
 inline uint32_t rotl32 ( uint32_t x, int8_t r )
 {
@@ -330,6 +332,8 @@ void MurmurHash3_x64_128 ( const void * key, const int len,
   ((uint64_t*)out)[0] = h1;
   ((uint64_t*)out)[1] = h2;
 }
+
+} // namespace arciem
 
 //-----------------------------------------------------------------------------
 
