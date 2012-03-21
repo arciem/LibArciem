@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2012 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,4 +16,18 @@
  
  *******************************************************************************/
 
-#import "ArciemGeom.h"
+#import "CSetupServerItem.h"
+
+@implementation CSetupServerItem
+
+- (NSURL*)baseURL
+{
+	return [NSURL URLWithString:[self.dict objectForKey:@"baseURL"]];
+}
+
+- (void)setBaseURL:(NSURL *)baseURL
+{
+	[self.dict setObject:baseURL.absoluteString forKey:@"baseURL"];
+}
+
+@end

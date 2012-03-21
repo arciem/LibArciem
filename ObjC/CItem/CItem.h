@@ -41,6 +41,7 @@ typedef NSUInteger CItemState;
 @property (strong, nonatomic) NSString* key;			// NSKeyValueCoding-compatible
 @property (readonly, nonatomic) NSString* keyPath;
 @property (strong, nonatomic) id value;
+@property (strong, nonatomic) id defaultValue;
 @property (strong, nonatomic) NSError* error;
 @property (nonatomic) BOOL isRequired;
 @property (readonly, nonatomic) CItemState state;
@@ -65,10 +66,13 @@ typedef NSUInteger CItemState;
 @property (copy, nonatomic) NSMutableArray* dependentKeyPaths;
 @property (copy, nonatomic) NSString* mustEqualKeyPath;
 @property (readonly, nonatomic) CItem* rootItem;
+@property (readonly, nonatomic) NSString* jsonRepresentation;
 
 - (id)initWithDictionary:(NSDictionary*)dict;
+- (id)initWithJSONRepresentation:(NSString*)json;
 + (CItem*)item;
 + (CItem*)itemWithDictionary:(NSDictionary*)dict;
++ (CItem*)itemWithJSONRepresentation:(NSString*)json;
 + (CItem*)itemWithTitle:(NSString*)title key:(NSString*)key value:(id)value;
 
 // Override in subclasses.

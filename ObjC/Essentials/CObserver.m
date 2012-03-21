@@ -92,7 +92,7 @@
 
 + (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior
 {
-	return [[[self class] alloc] initWithKeyPath:keyPath ofObject:object action:action initial:initial prior:prior];
+	return [[self alloc] initWithKeyPath:keyPath ofObject:object action:action initial:initial prior:prior];
 }
 
 + (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action

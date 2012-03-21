@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2012 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,23 +16,10 @@
  
  *******************************************************************************/
 
-#import "CTableTextFieldItem.h"
+#import "CItem.h"
 
-@implementation CTableTextFieldItem
+@interface CSetupServerItem : CItem
 
-+ (CTableTextFieldItem*)itemWithKey:(NSString*)key title:(NSString*)title stringItem:(CStringItem*)item
-{
-	return [[[self class] alloc] initWithKey:key title:title model:item];
-}
-
-+ (CTableTextFieldItem*)itemWithKey:(NSString*)key title:(NSString*)title stringItems:(NSArray*)items
-{
-	return [[[self class] alloc] initWithKey:key title:title models:items];
-}
-
-- (NSString*)defaultCellType
-{
-	return @"CTextFieldItemTableViewCell";
-}
+@property (copy, nonatomic) NSURL* baseURL;
 
 @end

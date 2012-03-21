@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2012 Arciem LLC
+ Copyright 2011 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,18 +16,6 @@
  
  *******************************************************************************/
 
-#import "CTableCreditCardItem.h"
-
-@implementation CTableCreditCardItem
-
-+ (CTableCreditCardItem*)itemWithKey:(NSString*)key title:(NSString*)title creditCardItem:(CCreditCardItem*)item
-{
-	return [[[self class] alloc] initWithKey:key title:title model:item];
-}
-
-- (NSString*)defaultCellType
-{
-	return @"CCreditCardItemTableViewCell";
-}
+@interface CSetupNavigationController : UINavigationController
 
 @end

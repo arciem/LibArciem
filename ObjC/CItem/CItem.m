@@ -29,8 +29,6 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	NSMutableArray* subitems__;
 }
 
-@property (copy, readwrite, nonatomic) NSMutableDictionary* dict;
-
 @property (weak, readwrite, nonatomic) CItem* superitem;
 @property (readonly, nonatomic) NSMutableArray* subitems_;
 @property (readonly, nonatomic) NSUInteger currentRevision;
@@ -75,26 +73,50 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (id)initWithDictionary:(NSDictionary*)dict
 {
-	if(self = [super init]) {
-		if(dict == nil) {
-			self.dict = [NSMutableDictionary dictionary];
-		} else {
-			self.dict = [dict mutableCopy];
-		}
+	NSMutableDictionary* mutableDict = nil;
+	if(dict == nil) {
+		mutableDict = [NSMutableDictionary dictionary];
+	} else {
+		mutableDict = [dict mutableCopy];
+	}
+	
+	NSString* type = [mutableDict objectForKey:@"type"];
+	if(!IsEmptyString(type)) {
+		NSString* firstChar = [[type substringToIndex:1] uppercaseString];
+		NSString* remainingChars = [type substringFromIndex:1];
+		NSString* className = [NSString stringWithFormat:@"C%@%@Item", firstChar, remainingChars];
+		self = (CItem*)ClassAlloc(className);
+		NSAssert1(self != nil, @"Attempt to instantiate undefined class:%@", className);
+	}
+	[mutableDict removeObjectForKey:@"type"];
 
+	if(self = [super init]) {
+		dict_ = mutableDict;
 		[self incrementCurrentRevision];
-		isRequired_ = [[self.dict objectForKey:@"required"] boolValue];
-		isDisabled_ = [[self.dict objectForKey:@"disabled"] boolValue];
-		isHidden_ = [[self.dict objectForKey:@"hidden"] boolValue];
-		validatesAutomatically_ = [[self.dict objectForKey:@"validatesAutomatically"] boolValue];
+		isRequired_ = [[dict_ objectForKey:@"required"] boolValue];
+		isDisabled_ = [[dict_ objectForKey:@"disabled"] boolValue];
+		isHidden_ = [[dict_ objectForKey:@"hidden"] boolValue];
+		validatesAutomatically_ = [[dict_ objectForKey:@"validatesAutomatically"] boolValue];
 		
-		NSArray* subdicts = [self.dict objectForKey:@"subitems"];
+		NSArray* subdicts = [dict_ objectForKey:@"subitems"];
 		subitems__ = [NSMutableArray array];
 		for(NSDictionary* subdict in subdicts) {
 			[self addSubitem:[CItem itemWithDictionary:subdict]];
 		}
-		[self.dict removeObjectForKey:@"subitems"];
+		[dict_ removeObjectForKey:@"subitems"];
 		CLogTrace(@"C_ITEM", @"%@ initWithDictionary", self);
+	}
+	return self;
+}
+
+- (id)initWithJSONRepresentation:(NSString *)json
+{
+	NSData* data = [json dataUsingEncoding:NSUTF8StringEncoding];
+	NSError* error = nil;
+	NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+	NSAssert1(error == nil, @"Parsing JSON:%@", error);
+	if(self = [self initWithDictionary:dict]) {
+		
 	}
 	return self;
 }
@@ -118,23 +140,12 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 + (CItem*)itemWithDictionary:(NSDictionary*)dict
 {
-	CItem* item = nil;
+	return [[self alloc] initWithDictionary:dict];
+}
 
-	NSString* className = @"CItem";
-	
-	if(dict != nil) {
-		NSString* type = [dict objectForKey:@"type"];
-		if(!IsEmptyString(type)) {
-			NSString* firstChar = [[type substringToIndex:1] uppercaseString];
-			NSString* remainingChars = [type substringFromIndex:1];
-			className = [NSString stringWithFormat:@"C%@%@Item", firstChar, remainingChars];
-		}
-	}
-
-	item = (CItem*)ClassAlloc(className);
-	NSAssert1(item != nil, @"Attempt to instantiate undefined class:%@", className);
-
-	return [item initWithDictionary:dict];
++ (CItem*)itemWithJSONRepresentation:(NSString*)json
+{
+	return [[self alloc] initWithJSONRepresentation:json];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -362,18 +373,6 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	}
 	
 	return value;
-}
-
-#pragma mark - @property dict
-
-- (NSMutableDictionary*)dict
-{
-	return dict_;
-}
-
-- (void)setDict:(NSMutableDictionary *)dict
-{
-	dict_ = [dict mutableCopy];
 }
 
 #pragma mark - @property superitem
@@ -713,7 +712,11 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (id)value
 {
-	return [self denullValue:[self.dict objectForKey:@"value"]];
+	id value = [self denullValue:[self.dict objectForKey:@"value"]];
+	if(value == nil) {
+		value = self.defaultValue;
+	}
+	return value;
 }
 
 - (void)setValue:(id)newValue
@@ -724,6 +727,36 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		[self willChangeValueForKey:@"value"];
 		[self.dict setObject:newValue forKey:@"value"];
 		[self didChangeValueForKey:@"value"];
+	}
+}
+
+#pragma mark - @property defaultValue
+
++ (BOOL)automaticallyNotifiesObserversOfDefaultValue
+{
+	return NO;
+}
+
+- (id)defaultValue
+{
+	return [self denullValue:[self.dict objectForKey:@"defaultValue"]];
+}
+
+- (void)setDefaultValue:(id)newDefaultValue
+{
+	newDefaultValue = [self ennullValue:newDefaultValue];
+	id oldDefaultValue = [self ennullValue:[self.dict objectForKey:@"defaultValue"]];
+	if(!Same(oldDefaultValue, newDefaultValue)) {
+		id oldValue = [self denullValue:[self.dict objectForKey:@"value"]];
+		[self willChangeValueForKey:@"defaultValue"];
+		if(oldValue != nil) {
+			[self willChangeValueForKey:@"value"];
+		}
+		[self.dict setObject:newDefaultValue forKey:@"defaultValue"];
+		if(oldValue != nil) {
+			[self didChangeValueForKey:@"value"];
+		}
+		[self didChangeValueForKey:@"defaultValue"];
 	}
 }
 
@@ -920,6 +953,26 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		isDisabled_ = isDisabled;
 		[self didChangeValueForKey:@"isDisabled"];
 	}
+}
+
+#pragma mark - @property jsonRepresentation
+
+- (NSString*)jsonRepresentation
+{
+	NSMutableDictionary* outDict = [NSMutableDictionary dictionary];
+	
+	for(NSString* key in self.dict) {
+		id obj = [self.dict objectForKey:key];
+		if([obj respondsToSelector:@selector(jsonRepresentation)]) {
+			obj = [obj jsonRepresentation];
+		}
+		[outDict setObject:obj forKey:key];
+	}
+	NSError* error = nil;
+	NSData* outData = [NSJSONSerialization dataWithJSONObject:outDict options:0 error:&error];
+	NSAssert2(error == nil, @"Creating JSON Representation of %@: %@", self, error);
+	NSString* outString = [NSString stringWithData:outData encoding:NSUTF8StringEncoding];
+	return outString;
 }
 
 #pragma mark - Selection

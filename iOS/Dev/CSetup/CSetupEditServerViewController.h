@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2012 Arciem LLC
+ Copyright 2011 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,23 +16,22 @@
  
  *******************************************************************************/
 
-#import "CTableBooleanItem.h"
+#import "CSetupTableViewController.h"
+#import "CSetupServerItem.h"
 
-@implementation CTableBooleanItem
+@class CSetupEditServerViewController;
 
-+ (CTableBooleanItem*)itemWithKey:(NSString*)key title:(NSString*)title booleanItem:(CBooleanItem*)booleanItem
-{
-	return [[[self class] alloc] initWithKey:key title:title model:booleanItem];
-}
+@protocol SetupEditServerViewControllerDelegate <NSObject>
 
-- (NSString*)defaultCellType
-{
-	return @"CBooleanTableViewCell";
-}
+@required
+- (void)setupEditServerViewController:(CSetupEditServerViewController*)viewController didFinishSaving:(BOOL)saving;
 
-- (BOOL)isUnselectable
-{
-	return self.isDisabled;
-}
+@end
+
+@interface CSetupEditServerViewController : CSetupTableViewController <UITextFieldDelegate>
+
+@property(copy, nonatomic) CSetupServerItem* server;
+@property(nonatomic) BOOL addingNewServer;
+@property(assign, nonatomic) id<SetupEditServerViewControllerDelegate> delegate;
 
 @end

@@ -44,25 +44,27 @@
 
 + (CForm*)formWithRootItem:(CItem *)rootItem
 {
-	return [[[self class] alloc] initWithRootItem:rootItem];
+	return [[self alloc] initWithRootItem:rootItem];
 }
 
 + (CForm*)formForResourceName:(NSString*)resourceName withExtension:(NSString*)extension
 {
 	NSURL* url = [[NSBundle mainBundle] URLForResource:resourceName withExtension:extension];
 	NSData* data = [NSData dataWithContentsOfURL:url];
-	NSError* error = nil;
-	NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-	NSAssert1(error == nil, @"Error reading JSON:%@", error);
-	CItem* item = [CItem itemWithDictionary:dict];
+	NSString* json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	CItem* item = [CItem itemWithJSONRepresentation:json];
 	CForm* form = [self formWithRootItem:item];
 	return form;
+}
+
++ (CForm*)formForResourceName:(NSString*)resourceName
+{
+	return [self formForResourceName:resourceName withExtension:@"json"];
 }
 
 - (void)dealloc
 {
 	self.rootItem = nil;
 }
-
 
 @end

@@ -16,18 +16,23 @@
  
  *******************************************************************************/
 
-#import "CTableButtonItem.h"
+#import "CTableBooleanItem.h"
 
-@implementation CTableButtonItem
+@implementation CTableBooleanItem
 
-+ (CTableButtonItem*)itemWithKey:(NSString*)key title:(NSString*)title item:(CItem*)item
++ (CTableBooleanItem*)itemWithKey:(NSString*)key title:(NSString*)title booleanItem:(CBooleanItem*)booleanItem
 {
-	return [[[self class] alloc] initWithKey:key title:title model:item];
+	return [[self alloc] initWithKey:key title:title model:booleanItem];
 }
 
 - (NSString*)defaultCellType
 {
-	return @"CButtonTableViewCell";
+	return @"CBooleanTableViewCell";
+}
+
+- (BOOL)isUnselectable
+{
+	return self.isDisabled;
 }
 
 @end

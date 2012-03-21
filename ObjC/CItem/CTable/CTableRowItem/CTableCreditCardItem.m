@@ -16,18 +16,18 @@
  
  *******************************************************************************/
 
-#import "CTableNoteItem.h"
+#import "CTableCreditCardItem.h"
 
-@implementation CTableNoteItem
+@implementation CTableCreditCardItem
 
-+ (CTableNoteItem*)itemWithKey:(NSString*)key title:(NSString*)title item:(CNoteItem*)item
++ (CTableCreditCardItem*)itemWithKey:(NSString*)key title:(NSString*)title creditCardItem:(CCreditCardItem*)item
 {
-	return [[[self class] alloc] initWithKey:key title:title model:item];
+	return [[self alloc] initWithKey:key title:title model:item];
 }
 
 - (NSString*)defaultCellType
 {
-	return @"CNoteTableViewCell";
+	return @"CCreditCardItemTableViewCell";
 }
 
 @end

@@ -16,23 +16,23 @@
  
  *******************************************************************************/
 
-#import "CTableMultiChoiceItem.h"
+#import "CTableTextFieldItem.h"
 
-@implementation CTableMultiChoiceItem
+@implementation CTableTextFieldItem
 
-+ (CTableMultiChoiceItem*)itemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
++ (CTableTextFieldItem*)itemWithKey:(NSString*)key title:(NSString*)title stringItem:(CStringItem*)item
 {
-	return [[[self class] alloc] initWithKey:key title:title model:item];
+	return [[self alloc] initWithKey:key title:title model:item];
 }
 
-- (BOOL)isUnselectable
++ (CTableTextFieldItem*)itemWithKey:(NSString*)key title:(NSString*)title stringItems:(NSArray*)items
 {
-	return YES;
+	return [[self alloc] initWithKey:key title:title models:items];
 }
 
 - (NSString*)defaultCellType
 {
-	return @"CMultiChoiceItemTableViewCell";
+	return @"CTextFieldItemTableViewCell";
 }
 
 @end

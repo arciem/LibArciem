@@ -16,18 +16,23 @@
  
  *******************************************************************************/
 
-#import "CTitleTableItem.h"
+#import "CTableAddRepeatingItem.h"
 
-@implementation CTitleTableItem
+@implementation CTableAddRepeatingItem
 
-+ (CTitleTableItem*)itemWithKey:(NSString*)key title:(NSString*)title item:(CItem*)item
++ (CTableAddRepeatingItem*)itemWithKey:(NSString*)key title:(NSString*)title repeatingItem:(CRepeatingItem*)repeatingItem
 {
-	return [[[self class] alloc] initWithKey:key title:title model:item];
+	return [[self alloc] initWithKey:key title:title model:repeatingItem];
 }
 
 - (NSString*)defaultCellType
 {
-	return @"CTitleTableViewCell";
+	return @"CAddRepeatingItemTableViewCell";
+}
+
+- (BOOL)isUnselectable
+{
+	return self.isDisabled;
 }
 
 @end

@@ -16,37 +16,30 @@
  
  *******************************************************************************/
 
-#import "CTableSectionItem.h"
-#import "CObserver.h"
-#import "CTableItem.h"
+#import "CSetupServerTableViewCell.h"
 
-@interface CTableSectionItem ()
+@implementation CSetupServerTableViewCell
 
-@property (strong, nonatomic) CObserver* subitemsObserver;
+@synthesize server = server_;
 
-@end
-
-@implementation CTableSectionItem
-
-@synthesize subitemsObserver = subitemsObserver_;
-
-- (id)initWithDictionary:(NSDictionary *)dict
+- (id)initWithReuseIdentifier:(NSString*)reuseIdentifier
 {
-	if(self = [super initWithDictionary:dict]) {
+	if(self = [self initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier]) {
 		
-		CObserverBlock action = ^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-			[(CTableItem*)self.superitem tableSectionItem:self rowsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
-		};
-		
-		self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
 	}
-	
 	return self;
 }
 
-+ (CTableSectionItem*)item
+- (CSetupServerItem*)server
 {
-	return [[[self class] alloc] init];
+	return server_;
+}
+
+- (void)setServer:(CSetupServerItem *)server
+{
+	server_ = server;
+	self.textLabel.text = server.title;
+	self.detailTextLabel.text = server.baseURL.absoluteString;
 }
 
 @end

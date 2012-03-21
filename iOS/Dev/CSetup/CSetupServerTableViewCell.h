@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2012 Arciem LLC
+ Copyright 2011 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,23 +16,12 @@
  
  *******************************************************************************/
 
-#import "CTableAddRepeatingItem.h"
+#import "CSetupServerItem.h"
 
-@implementation CTableAddRepeatingItem
+@interface CSetupServerTableViewCell : UITableViewCell
 
-+ (CTableAddRepeatingItem*)itemWithKey:(NSString*)key title:(NSString*)title repeatingItem:(CRepeatingItem*)repeatingItem
-{
-	return [[[self class] alloc] initWithKey:key title:title model:repeatingItem];
-}
+@property(copy, nonatomic) CSetupServerItem* server;
 
-- (NSString*)defaultCellType
-{
-	return @"CAddRepeatingItemTableViewCell";
-}
-
-- (BOOL)isUnselectable
-{
-	return self.isDisabled;
-}
+- (id)initWithReuseIdentifier:(NSString*)reuseIdentifier;
 
 @end

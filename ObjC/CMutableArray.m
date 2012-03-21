@@ -44,7 +44,7 @@
 
 + (id)arrayWithOwner:(id)owner key:(NSString*)key
 {
-	return [[[self class] alloc] initWithOwner:owner key:key];
+	return [[self alloc] initWithOwner:owner key:key];
 }
 
 #pragma mark - Primitive NSArray overrides

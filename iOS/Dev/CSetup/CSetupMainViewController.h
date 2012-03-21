@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2012 Arciem LLC
+ Copyright 2011 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,15 +16,21 @@
  
  *******************************************************************************/
 
-#import "CItem.h"
+#import "CSetupTableViewController.h"
+#import "CSetupEditServerViewController.h"
 
-@interface CForm : NSObject
+@class CSetupMainViewController;
 
-@property (strong, nonatomic) CItem* rootItem;
+@protocol CSetupMainViewControllerDelegate <NSObject>
 
-- (id)initWithRootItem:(CItem*)rootItem;
+@required
 
-+ (CForm*)formForResourceName:(NSString*)resourceName withExtension:(NSString*)extension;
-+ (CForm*)formWithRootItem:(CItem*)rootItem;
+- (void)setupMainViewController:(CSetupMainViewController*)viewController didFinishChangingServer:(BOOL)serverChanged;
+
+@end
+
+@interface CSetupMainViewController : CSetupTableViewController<SetupEditServerViewControllerDelegate>
+
+@property (assign, nonatomic) id<CSetupMainViewControllerDelegate> delegate;
 
 @end

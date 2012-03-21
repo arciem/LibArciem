@@ -59,7 +59,7 @@
 
 + (CTableItem*)item
 {
-	return [[[self class] alloc] init];
+	return [[self alloc] init];
 }
 
 - (void)tableSectionItem:(CTableSectionItem*)tableSectionItem rowsDidChangeWithNew:(NSArray*)newItems old:(NSArray*)oldItems kind:(NSKeyValueChange)kind indexes:(NSIndexSet*)indexes
