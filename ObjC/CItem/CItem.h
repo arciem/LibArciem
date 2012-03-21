@@ -76,6 +76,7 @@ typedef NSUInteger CItemState;
 + (CItem*)itemWithTitle:(NSString*)title key:(NSString*)key value:(id)value;
 
 // Override in subclasses.
+- (void)setup;
 - (BOOL)isEmpty;
 - (NSError*)validate;
 - (void)validateWithCompletion:(void (^)(NSError* error))completion;

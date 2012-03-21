@@ -80,12 +80,10 @@ static NSDictionary* sCardTypeRegularExpressions;
 
 @synthesize cardType = cardType_;
 
-- (id)initWithDictionary:(NSDictionary *)dict
+- (void)setup
 {
-	if(self = [super initWithDictionary:dict]) {
-		self.validCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789 -"];
-	}
-	return self;
+	[super setup];
+	self.validCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789 -"];
 }
 
 - (NSArray*)validCardTypes

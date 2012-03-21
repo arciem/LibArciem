@@ -33,18 +33,13 @@
 @synthesize delegate = delegate_;
 @dynamic textLabel;
 
-- (id)initWithDictionary:(NSDictionary *)dict
+- (void)setup
 {
-	if(self = [super initWithDictionary:dict]) {
-		
-		CObserverBlock action = ^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-			[self.delegate tableItem:self sectionsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
-		};
-		
-		self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
-	}
+	CObserverBlock action = ^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[self.delegate tableItem:self sectionsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
+	};
 	
-	return self;
+	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
 }
 
 - (NSMutableDictionary*)textLabel

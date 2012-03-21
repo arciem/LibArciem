@@ -24,13 +24,9 @@ static NSString* const kEmailRegularExpression = @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(
 
 @implementation CEmailItem
 
-- (id)initWithDictionary:(NSDictionary *)dict
+- (void)setup
 {
-	if(self = [super initWithDictionary:dict]) {
-		self.validRegularExpression = kEmailRegularExpression;
-	}
-	
-	return self;
+	self.validRegularExpression = kEmailRegularExpression;
 }
 
 @end

@@ -44,20 +44,18 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 #pragma mark - Lifecycle
 
-- (id)initWithDictionary:(NSDictionary*)dict
+- (void)setup
 {
-	if(self = [super initWithDictionary:dict]) {
-		NSNumber* maxLengthNumber = [dict objectForKey:@"maxLength"];
-		if(maxLengthNumber == nil) {
-			maxLength_ = 100;
-		} else {
-			maxLength_ = [maxLengthNumber unsignedIntValue];
-		}
-		
-		minLength_ = [[dict objectForKey:@"minLength"] unsignedIntValue];
+	[super setup];
+
+	NSNumber* maxLengthNumber = [self.dict objectForKey:@"maxLength"];
+	if(maxLengthNumber == nil) {
+		maxLength_ = 100;
+	} else {
+		maxLength_ = [maxLengthNumber unsignedIntValue];
 	}
 	
-	return self;
+	minLength_ = [[self.dict objectForKey:@"minLength"] unsignedIntValue];
 }
 
 + (CItem*)stringItemWithDictionary:(NSDictionary*)dict
@@ -266,7 +264,7 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 		if(self.currentLength > 0) {
 			
 			if(error == nil) {
-				if(self.minLength == self.maxLength && self.currentLength != self.minLength) {
+				if(self.minLength > 0 && self.minLength == self.maxLength && self.currentLength != self.minLength) {
 					NSString* message = @"%@ must be exactly %@ long.";
 					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStrubgItemErrorWrongLength localizedFormat:message, self.title, [self formatCharacterCount:self.minLength]];
 				}

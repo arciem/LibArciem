@@ -33,13 +33,11 @@
 @synthesize maxValidChoices = maxValidChoices_;
 @dynamic choicesCount;
 
-- (id)initWithDictionary:(NSDictionary *)dict
+- (void)setup
 {
-	if(self = [super initWithDictionary:dict]) {
-		self.minValidChoices = [dict unsignedIntegerValueForKey:@"minValidChoices" defaultValue:1];
-		self.maxValidChoices = [dict unsignedIntegerValueForKey:@"maxValidChoices" defaultValue:1];
-	}
-	return self;
+	[super setup];
+	self.minValidChoices = [self.dict unsignedIntegerValueForKey:@"minValidChoices" defaultValue:1];
+	self.maxValidChoices = [self.dict unsignedIntegerValueForKey:@"maxValidChoices" defaultValue:1];
 }
 
 - (id)copyWithZone:(NSZone *)zone

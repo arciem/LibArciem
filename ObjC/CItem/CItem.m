@@ -71,6 +71,11 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 //	CLogSetTagActive(@"C_ITEM", YES);
 }
 
+- (void)setup
+{
+	// behavior provided by subclasses
+}
+
 - (id)initWithDictionary:(NSDictionary*)dict
 {
 	NSMutableDictionary* mutableDict = nil;
@@ -104,6 +109,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 			[self addSubitem:[CItem itemWithDictionary:subdict]];
 		}
 		[dict_ removeObjectForKey:@"subitems"];
+		[self setup];
 		CLogTrace(@"C_ITEM", @"%@ initWithDictionary", self);
 	}
 	return self;

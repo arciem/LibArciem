@@ -39,7 +39,6 @@ enum {
 @property (copy, nonatomic) NSString* validRegularExpression;
 @property (nonatomic) NSUInteger fieldCharacterWidth;
 
-- (id)initWithDictionary:(NSDictionary*)dict;
 + (CItem*)stringItem;
 + (CItem*)stringItemWithDictionary:(NSDictionary*)dict;
 + (CItem*)stringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue;

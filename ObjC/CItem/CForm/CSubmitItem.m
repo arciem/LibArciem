@@ -31,14 +31,6 @@
 @synthesize rootStateObserver = rootStateObserver_;
 @synthesize action = action_;
 
-- (id)initWithDictionary:(NSDictionary *)dict
-{
-	if(self = [super initWithDictionary:dict]) {
-	}
-	
-	return self;
-}
-
 - (id)copyWithZone:(NSZone *)zone
 {
 	CSubmitItem* item = [super copyWithZone:zone];

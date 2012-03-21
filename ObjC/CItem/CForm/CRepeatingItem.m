@@ -33,14 +33,12 @@
 @synthesize endRepeatRowItem = endRepeatRowItem_;
 @synthesize subitemsObserver = subitemsObserver_;
 
-- (id)initWithDictionary:(NSDictionary *)dict
+- (void)setup
 {
-	if(self = [super initWithDictionary:dict]) {
-		for(NSInteger i = 0; i < self.startRepeats; i++) {
-			[self addSubitemFromTemplate];
-		}
+	[super setup];
+	for(NSInteger i = 0; i < self.startRepeats; i++) {
+		[self addSubitemFromTemplate];
 	}
-	return self;
 }
 
 - (NSDictionary*)templateDict

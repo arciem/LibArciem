@@ -30,18 +30,13 @@
 
 @synthesize subitemsObserver = subitemsObserver_;
 
-- (id)initWithDictionary:(NSDictionary *)dict
+- (void)setup
 {
-	if(self = [super initWithDictionary:dict]) {
-		
-		CObserverBlock action = ^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-			[(CTableItem*)self.superitem tableSectionItem:self rowsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
-		};
-		
-		self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
-	}
+	CObserverBlock action = ^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[(CTableItem*)self.superitem tableSectionItem:self rowsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
+	};
 	
-	return self;
+	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
 }
 
 + (CTableSectionItem*)item
