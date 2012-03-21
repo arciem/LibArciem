@@ -23,7 +23,7 @@
 
 #include <arciem/geometry/geometry.hpp>
 #include <arciem/geometry/delta3.hpp>
-#include <arciem/math_utils.hpp>
+#include <arciem/essentials/math_utils.hpp>
 
 namespace arciem {
 

@@ -18,7 +18,7 @@
 
 #include <algorithm>
 #import "random.hpp"
-#import "math_utils.hpp"
+#include <arciem/essentials/math_utils.hpp>
 #import "CGUtils.h"
 #import "Geom.h"
 

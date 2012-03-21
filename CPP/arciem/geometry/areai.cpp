@@ -22,7 +22,7 @@
 #include <arciem/stringstreams.hpp>
 #include <iostream>
 
-#include <arciem/math_utils.hpp>
+#include <arciem/essentials/math_utils.hpp>
 
 using namespace std;
 

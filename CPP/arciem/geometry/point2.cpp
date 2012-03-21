@@ -22,7 +22,7 @@
 #include <arciem/stringstreams.hpp>
 
 #include <arciem/geometry/area.hpp>
-#include <arciem/math_utils.hpp>
+#include <arciem/essentials/math_utils.hpp>
 
 namespace arciem {
 

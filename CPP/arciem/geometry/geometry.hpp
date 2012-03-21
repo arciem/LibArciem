@@ -20,7 +20,7 @@
 #define ARCIEM_GEOMETRY_HPP
 
 #include <cmath>
-#include <arciem/math_utils.hpp>
+#include <arciem/essentials/math_utils.hpp>
 
 namespace arciem {
 

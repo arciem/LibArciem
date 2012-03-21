@@ -17,7 +17,7 @@
  *******************************************************************************/
 
 #include "random.hpp"
-#include "math_utils.hpp"
+#include <arciem/essentials/math_utils.hpp>
 
 #include <stdlib.h>
 #include <time.h>

@@ -17,10 +17,10 @@
  *******************************************************************************/
 
 #import "UIColorUtils.h"
-#import "math_utils.hpp"
+#include <arciem/essentials/math_utils.hpp>
 #import <QuartzCore/QuartzCore.h>
 #import "Geom.h"
-#import "math_utils.hpp"
+#include <arciem/essentials/math_utils.hpp>
 #import "StringUtils.h"
 
 @implementation UIColor(UIColorUtils)

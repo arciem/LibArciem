@@ -22,7 +22,7 @@
 #include <string>
 
 #include <arciem/geometry/delta2.hpp>
-#include <arciem/math_utils.hpp>
+#include <arciem/essentials/math_utils.hpp>
 
 namespace arciem {
 
