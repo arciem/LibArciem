@@ -21,7 +21,7 @@
 #import "Geom.h"
 #import "DeviceUtils.h"
 #import "UIColorUtils.h"
-#include <arciem/essentials/math_utils.hpp>
+#include "math_utils.hpp"
 
 @implementation UIImage (UIImageUtils)
 

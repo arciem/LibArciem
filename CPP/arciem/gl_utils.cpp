@@ -17,7 +17,7 @@
  *******************************************************************************/
 
 #include "gl_utils.hpp"
-#include "math_utils.hpp"
+#include <arciem/essentials/math_utils.hpp>
 
 namespace arciem {
 
