@@ -24,7 +24,7 @@
 #import "CRowItemTableViewCell.h"
 #import "UIViewUtils.h"
 
-@interface CTableManager ()
+@interface CTableManager () <CRowItemTableViewCellDelegate>
 
 @property (strong, nonatomic) NSArray* visibleSections;
 @property (strong, nonatomic) NSMutableDictionary* visibleRowsBySection;
@@ -38,6 +38,7 @@
 @synthesize delegate = delegate_;
 @synthesize visibleSections = visibleSections_;
 @synthesize visibleRowsBySection = visibleRowsBySection_;
+@synthesize cachesAllCells = cachesAllCells_;
 
 + (void)initialize
 {
@@ -77,6 +78,7 @@
 - (void)setModel:(CTableItem*)model
 {
 	if(!Same(model_, model)) {
+		[self invalidateAllCachedCells];
 		model_.delegate = nil;
 		model_ = model;
 		if(model_ != nil) {
@@ -266,7 +268,48 @@
 	CRowItemTableViewCell* cell = nil;
 	cell = (CRowItemTableViewCell*)ClassAlloc(cellType);
 	cell = [cell initWithReuseIdentifier:reuseIdentifier];
+	cell.delegate = self;
 	return cell;
+}
+
+- (CRowItemTableViewCell*)cachedCellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+	CRowItemTableViewCell* cell = nil;
+	
+	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
+	cell = [rowItem.dict objectForKey:@"cell"];
+	
+	return cell;
+}
+
+- (void)setCachedCell:(CRowItemTableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
+	[rowItem.dict setObject:cell forKey:@"cell"]; 
+}
+
+- (void)invalidateAllCachedCells
+{
+	for(CTableSectionItem* sectionItem in self.model.subitems) {
+		for(CTableRowItem* rowItem in sectionItem.subitems) {
+			[rowItem.dict removeObjectForKey:@"cell"];
+		}
+	}
+}
+
+- (BOOL)cachesAllCells
+{
+	return cachesAllCells_;
+}
+
+- (void)setCachesAllCells:(BOOL)cachesAllCells
+{
+	if(cachesAllCells_ != cachesAllCells) {
+		cachesAllCells_ = cachesAllCells;
+		if(cachesAllCells_ == NO) {
+			[self invalidateAllCachedCells];
+		}
+	}
 }
 
 - (CRowItemTableViewCell *)createCellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -275,8 +318,7 @@
 	
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
 	NSString* cellType = rowItem.cellType;
-	NSString* reuseIdentifier = nil;
-//	reuseIdentifier = cellType;
+	NSString* reuseIdentifier = cellType;
 	cell = [self createCellWithCellType:cellType reuseIdentifier:reuseIdentifier];
 	
 	return cell;
@@ -287,14 +329,19 @@
 	CRowItemTableViewCell* cell = nil;
 	
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
-//	NSString* cellType = rowItem.cellType;
-//	NSString* reuseIdentifier = cellType;
-//	cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+	NSString* cellType = rowItem.cellType;
+	NSString* reuseIdentifier = cellType;
+	cell = [self cachedCellForRowAtIndexPath:indexPath];
 	if(cell == nil) {
-		cell = [self createCellForRowAtIndexPath:indexPath];
+		cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+		if(cell == nil) {
+			cell = [self createCellForRowAtIndexPath:indexPath];
+			if(self.cachesAllCells) {
+				[self setCachedCell:cell forRowAtIndexPath:indexPath];
+			}
+		}
+		cell.rowItem = rowItem;
 	}
-
-	cell.rowItem = rowItem;
 	
 	return cell;
 }
@@ -304,6 +351,9 @@
 	CGFloat result = tableView.rowHeight;
 
 	CRowItemTableViewCell* cell = [self createCellForRowAtIndexPath:indexPath];
+	if(self.cachesAllCells) {
+		[self setCachedCell:cell forRowAtIndexPath:indexPath];
+	}
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
 	cell.rowItem = rowItem;
 	cell.size = CGSizeMake(tableView.width, result);
@@ -361,6 +411,16 @@
 		default:
 			NSAssert1(false, @"Unimplemented change kind:%d", kind);
 			break;
+	}
+}
+
+#pragma mark - @protocol CRowItemTableViewCellDelegate
+
+- (void)rowItemTableViewCellDidGainFocus:(CRowItemTableViewCell *)cell
+{
+	NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
+	if(indexPath != nil) {
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 	}
 }
 

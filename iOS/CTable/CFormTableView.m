@@ -47,6 +47,7 @@
 {
 	NSAssert1(self.tableManager == nil, @"setup should only be called once: %@", self);
 	self.tableManager = [[CTableManager alloc] init];
+	self.tableManager.cachesAllCells = YES;
 	self.tableManager.tableView = self;
 	self.tableManager.delegate = self;
 	self.dataSource = self.tableManager;
@@ -77,81 +78,6 @@
 {
 	return model_;
 }
-
-#if 0
-- (NSArray*)tableRowItemsForModel:(CItem*)model
-{
-	NSMutableArray* rowItems = [NSMutableArray array];
-
-	if([model isKindOfClass:[CCreditCardItem class]]) {
-		CCreditCardItem* ccItem = (CCreditCardItem*)model;
-		CTableCreditCardItem* rowItem = [CTableCreditCardItem itemWithKey:ccItem.key title:ccItem.title creditCardItem:ccItem];
-		[rowItems addObject:rowItem];
-	} else if([model isKindOfClass:[CStringItem class]]) {
-		CTableTextFieldItem* rowItem = [CTableTextFieldItem itemWithKey:model.key title:model.title stringItem:(CStringItem*)model];
-		[rowItems addObject:rowItem];
-	} else if([model isKindOfClass:[CMultiChoiceItem class]]) {
-		CTableMultiChoiceItem* rowItem = [CTableMultiChoiceItem itemWithKey:model.key title:model.title multiChoiceItem:(CMultiChoiceItem*)model];
-		[rowItems addObject:rowItem];
-		for(CBooleanItem* item in model.subitems) {
-			CTableBooleanItem* rowItem = [CTableBooleanItem itemWithKey:item.key title:item.title booleanItem:item];
-			[rowItems addObject:rowItem];
-		}
-	} else if([model isKindOfClass:[CMultiTextItem class]] && model.subitems.count == 2) {
-		CTableTextFieldItem* rowItem = [CTableTextFieldItem itemWithKey:model.key title:model.title stringItems:model.subitems];
-		[rowItems addObject:rowItem];
-	} else if([model isKindOfClass:[CSubmitItem class]]) {
-		CTableButtonItem* rowItem = [CTableButtonItem itemWithKey:model.key title:model.title item:model];
-		[rowItems addObject:rowItem];
-	} else if([model isKindOfClass:[CRepeatingItem class]]) {
-		CRepeatingItem* repeatingItem = (CRepeatingItem*)model;
-		for(CItem* initialItem in repeatingItem.subitems) {
-			NSArray* newRowItems = [self tableRowItemsForModel:initialItem];
-			for(CTableRowItem* rowItem in newRowItems) {
-				[rowItems addObject:rowItem];
-			}
-		}
-		CTableAddRepeatingItem* endRepeatRowItem = [CTableAddRepeatingItem itemWithKey:model.key title:model.title repeatingItem:repeatingItem];
-		[rowItems addObject:endRepeatRowItem];
-		__weak CFormTableView* self__ = self;
-		CObserverBlock action = ^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-//			CLogDebug(nil, @"newValue:%@ oldValue:%@ kind:%d indexes:%@", newValue, oldValue, kind, indexes);
-			if(kind == NSKeyValueChangeSetting) {
-				[endRepeatRowItem.superitem.subitems removeAllObjects];
-			}
-			if(kind == NSKeyValueChangeInsertion || kind == NSKeyValueChangeSetting) {
-				NSArray* newModels = (NSArray*)newValue;
-				//				[self__.tableManager.model printHierarchy];
-				NSUInteger endRepeatRowItemIndex = [endRepeatRowItem.superitem.subitems indexOfObject:endRepeatRowItem];
-				NSAssert(endRepeatRowItemIndex != NSNotFound, @"Couldn't find endRepeatRowItem.");
-				for(CItem* item in newModels) {
-					NSArray* newRowItems = [self__ tableRowItemsForModel:item];
-					NSMutableIndexSet* indexes = [NSMutableIndexSet indexSet];
-					NSUInteger currentIndex = endRepeatRowItemIndex;
-					for(CItem* item in newRowItems) {
-						[indexes addIndex:currentIndex];
-						currentIndex++;
-					}
-					[endRepeatRowItem.superitem.subitems insertObjects:newRowItems atIndexes:indexes];
-				}
-				//				[self__.tableManager.model printHierarchy];
-			} else {
-				NSAssert1(false, @"Unimplemented change kind:%d", kind);
-			}
-		};
-		CObserver* observer = [CObserver observerWithKeyPath:@"subitems" ofObject:repeatingItem action:action];
-		[self.observers addObject:observer];
-	} else if([model isKindOfClass:[CNoteItem class]]) {
-		CNoteItem* noteItem = (CNoteItem*)model;
-		CTableNoteItem* rowItem = [CTableNoteItem itemWithKey:noteItem.key title:noteItem.title item:noteItem];
-		[rowItems addObject:rowItem];
-	} else {
-		NSAssert1(false, @"No known table row item for model item:%@", model);
-	}
-
-	return rowItems;
-}
-#endif
 
 - (CTableItem*)tableItemForModel:(CItem*)model
 {
@@ -194,11 +120,11 @@
 	if(model_ != model) {
 		[self.observers removeAllObjects];
 		model_ = model;
+		model_.printHierarchyAfterValidate = YES;
 		CTableItem* tableModel = nil;
 		if(model != nil) {
 			tableModel = [self tableItemForModel:model_];
 			[self addSubstitutions:tableModel];
-//			[tableModel printHierarchy];
 		}
 		self.tableManager.model = tableModel;
 	}

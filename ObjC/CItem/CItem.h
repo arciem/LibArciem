@@ -68,6 +68,8 @@ typedef NSUInteger CItemState;
 @property (readonly, nonatomic) CItem* rootItem;
 @property (readonly, nonatomic) NSString* jsonRepresentation;
 
+@property (nonatomic) BOOL printHierarchyAfterValidate;
+
 - (id)initWithDictionary:(NSDictionary*)dict;
 - (id)initWithJSONRepresentation:(NSString*)json;
 + (CItem*)item;

@@ -20,6 +20,8 @@
 #import "CTableRowItem.h"
 #import "CFieldValidationView.h"
 
+@protocol CRowItemTableViewCellDelegate;
+
 @interface CRowItemTableViewCell : CTableViewCell
 
 @property (strong, nonatomic) CTableRowItem* rowItem;
@@ -27,6 +29,7 @@
 @property (readonly, nonatomic) NSArray* validationViews;
 @property (readonly, nonatomic) NSUInteger validationViewsNeeded;
 @property (weak, nonatomic) CItem* activeItem;
+@property (weak, nonatomic) id<CRowItemTableViewCellDelegate> delegate;
 
 - (void)setNumberOfValidationViewsTo:(NSUInteger)count;
 
@@ -35,5 +38,13 @@
 - (void)model:(CItem*)model valueDidChangeFrom:(id)oldValue to:(id)newValue;
 - (NSUInteger)validationViewsNeeded;
 - (void)syncValidationViews;
+
+@end
+
+@protocol CRowItemTableViewCellDelegate <NSObject>
+
+@required
+
+- (void)rowItemTableViewCellDidGainFocus:(CRowItemTableViewCell*)cell;
 
 @end

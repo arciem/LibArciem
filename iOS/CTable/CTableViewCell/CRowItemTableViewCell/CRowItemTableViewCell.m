@@ -23,6 +23,8 @@
 #import "UIViewUtils.h"
 #import "CTapToDismissKeyboardManager.h"
 
+static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
+
 @interface CRowItemTableViewCell ()
 
 @property (strong, readwrite, nonatomic) NSMutableArray* mutableValidationViews;
@@ -38,7 +40,13 @@
 @synthesize activeItem = activeItem_;
 @synthesize tapDismiss1 = tapDismiss1_;
 @synthesize tapDismiss2 = tapDismiss2_;
+@synthesize delegate = delegate_;
 @dynamic validationViewsNeeded;
+
++ (void)initialize
+{
+//	CLogSetTagActive(sClassTag, YES);
+}
 
 - (void)setup
 {
@@ -47,10 +55,13 @@
 	self.textLabel.backgroundColor = [UIColor clearColor];
 
 	[self addObserver:self forKeyPath:@"rowItem" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
+
+	CLogTrace(sClassTag, @"%@ setup", self);
 }
 
 - (void)dealloc
 {
+	CLogTrace(sClassTag, @"%@ dealloc", self);
 	self.rowItem = nil;
 	[self removeObserver:self forKeyPath:@"rowItem"];
 }

@@ -62,6 +62,8 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 @synthesize validationsInProgress = validationsInProgress_;
 @synthesize valueObserver = valueObserver_;
 
+@synthesize printHierarchyAfterValidate = printHierarchyAfterValidate_;
+
 @dynamic subitems_;
 
 #pragma mark - Lifecycle
@@ -860,9 +862,16 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 				[self__.superitem addSubitemError:error];
 			}
 			[self__ decrementValidationsInProgress];
+			
+			if(self__.printHierarchyAfterValidate) {
+				[self__ printHierarchy];
+			}
 		}];
 	} else {
 		[self.superitem addSubitemError:self.error];
+		for(NSError* subitemError in self.subitemErrors) {
+			[self.superitem addSubitemError:subitemError];
+		}
 	}
 }
 

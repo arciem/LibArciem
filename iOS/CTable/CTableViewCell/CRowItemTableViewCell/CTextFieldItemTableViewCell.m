@@ -244,6 +244,8 @@
 	if(textField.clearsOnBeginEditing) {
 		self.activeItem.value = @"";
 	}
+	
+	[self.delegate rowItemTableViewCellDidGainFocus:self];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField

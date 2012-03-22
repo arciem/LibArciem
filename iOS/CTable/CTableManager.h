@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UITableView* tableView;
 @property (strong, nonatomic) CTableItem* model;
 @property (weak, nonatomic) IBOutlet id<CTableManagerDelegate> delegate;
+@property (nonatomic) BOOL cachesAllCells;
 
 - (void)clearSelectionAnimated:(BOOL)animated;
 - (void)setRowForKeyPath:(NSString*)keyPath disabled:(BOOL)disabled withRowAnimation:(UITableViewRowAnimation)animation;
