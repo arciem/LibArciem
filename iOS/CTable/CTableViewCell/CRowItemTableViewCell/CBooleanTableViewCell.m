@@ -19,14 +19,17 @@
 #import "CBooleanTableViewCell.h"
 #import "DeviceUtils.h"
 #import "CBooleanItem.h"
+#import "UIViewUtils.h"
 
 @implementation CBooleanTableViewCell
+
+@synthesize checkmarkButton = checkmarkButton_;
 
 - (void)setup
 {
 	[super setup];
 	
-	self.indentationLevel = 1;
+//	self.indentationLevel = 1;
 	
 	UIFont* font;
 	if(IsPad()) {
@@ -40,7 +43,7 @@
 - (CGSize)sizeThatFits:(CGSize)size
 {
 	if(IsPhone()) {
-		size.height = 30;
+		size.height = 34;
 	}
 	
 	return size;
@@ -49,7 +52,8 @@
 - (void)syncCheckMark
 {
 	CBooleanItem* item = (CBooleanItem*)self.rowItem.model;
-	self.accessoryType = item.booleanValue ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+//	self.accessoryType = item.booleanValue ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+	self.checkmarkButton.selected = item.booleanValue;
 }
 
 - (void)syncToRowItem
@@ -69,4 +73,44 @@
 	return 0;
 }
 
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+	
+	[self.checkmarkButton sizeToFit];
+
+	self.checkmarkButton.left = 20;
+	self.checkmarkButton.centerY = self.contentView.boundsCenterY;
+	
+	self.textLabel.flexibleLeft = self.checkmarkButton.right + 8;
+}
+
+#pragma mark - @property checkmarkButton
+
+- (UIButton*)checkmarkButton
+{
+	if(checkmarkButton_ == nil) {
+		UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+		UIImage* selectedImage = [UIImage imageNamed:@"SurveyCheckYes"];
+		[button setImage:selectedImage forState:UIControlStateSelected];
+		UIImage* unselectedImage = [UIImage imageNamed:@"SurveyCheckNo"];
+		[button setImage:unselectedImage forState:UIControlStateNormal];
+		self.checkmarkButton = button;
+	}
+	
+	return checkmarkButton_;
+}
+
+- (void)setCheckmarkButton:(UIButton *)checkmarkButton
+{
+	if(checkmarkButton_ != checkmarkButton) {
+		[checkmarkButton_ removeFromSuperview];
+		checkmarkButton_ = checkmarkButton;
+		if(checkmarkButton_ != nil) {
+			[self.contentView addSubview:checkmarkButton_];
+			checkmarkButton_.userInteractionEnabled = NO;
+		}
+		[self setNeedsLayout];
+	}
+}
 @end

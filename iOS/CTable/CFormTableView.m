@@ -120,7 +120,7 @@
 	if(model_ != model) {
 		[self.observers removeAllObjects];
 		model_ = model;
-		model_.printHierarchyAfterValidate = YES;
+//		model_.printHierarchyAfterValidate = YES;
 		CTableItem* tableModel = nil;
 		if(model != nil) {
 			tableModel = [self tableItemForModel:model_];

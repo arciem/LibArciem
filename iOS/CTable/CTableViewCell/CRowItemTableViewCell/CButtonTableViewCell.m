@@ -20,11 +20,13 @@
 #import "UIViewUtils.h"
 #import "CSubmitItem.h"
 #import "CObserver.h"
+#import "CSlowCall.h"
 
 @interface CButtonTableViewCell ()
 
 @property (strong, nonatomic) CObserver* modelDisabledObserver;
 @property (strong, readwrite, nonatomic) UIButton* button;
+@property (strong, readonly, nonatomic) CSlowCall* syncStateSlowCall;
 
 @end
 
@@ -32,6 +34,7 @@
 
 @synthesize button = button_;
 @synthesize modelDisabledObserver = modelDisabledObserver_;
+@synthesize syncStateSlowCall = syncStateSlowCall_;
 
 - (void)setup
 {
@@ -43,7 +46,18 @@
 	[self addSubview:self.button];
 
 	self.textLabel.hidden = YES;
+}
+
+- (CSlowCall*)syncStateSlowCall
+{
+	if(syncStateSlowCall_ == nil) {
+		__weak CButtonTableViewCell* self__ = self;
+		syncStateSlowCall_ = [CSlowCall slowCallWithDelay:0.2 block:^(id object) {
+			[self__ syncToState];
+		}];
+	}
 	
+	return syncStateSlowCall_;
 }
 
 - (CGSize)sizeThatFits:(CGSize)size
@@ -57,6 +71,11 @@
 	return 0;
 }
 
+- (void)syncToState
+{
+	self.button.enabled = !self.rowItem.model.isDisabled;
+}
+
 - (void)syncToRowItem
 {
 	[super syncToRowItem];
@@ -68,9 +87,7 @@
 		
 		__unsafe_unretained CButtonTableViewCell* self__ = self;
 		CObserverBlock action = ^(NSNumber* newValue, NSNumber* oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-//			BOOL oldDisabled = oldValue.boolValue;
-			BOOL newDisabled = newValue.boolValue;
-			self__.button.enabled = !newDisabled;
+			[self__.syncStateSlowCall arm];
 		};
 		
 		self.modelDisabledObserver = [CObserver observerWithKeyPath:@"isDisabled" ofObject:self.rowItem.model action:action initial:action];

@@ -16,10 +16,19 @@
  
  *******************************************************************************/
 
-#import "CRowItemTableViewCell.h"
+#import "CNotifier.h"
 
-@interface CBooleanTableViewCell : CRowItemTableViewCell
+@interface CNetworkController : NSObject
 
-@property (strong, nonatomic) UIButton* checkmarkButton;
+@property (copy, readonly, nonatomic) NSString* hostName;
+@property (strong, readonly, nonatomic) CNotifier* notifier;
+@property (readonly, nonatomic) BOOL isReachable;
+@property (nonatomic, setter = setOffline:) BOOL isOffline;
+
++ (CNetworkController*)sharedInstance;
+
+- (void)startWithHostName:(NSString*)hostName networkReachabilityNotifierItem:(CNotifierItem*)networkReachabilityNotifierItem hostReachabilityNotifierItem:(CNotifierItem*)hostReachabilityNotifierItem networkReachableNotifierItem:(CNotifierItem*)networkReachableNotifierItem offlineNotifierItem:(CNotifierItem*)offlineNotifierItem;
+
+- (void)toggleOffline;
 
 @end

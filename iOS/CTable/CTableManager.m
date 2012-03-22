@@ -23,11 +23,13 @@
 #import "StringUtils.h"
 #import "CRowItemTableViewCell.h"
 #import "UIViewUtils.h"
+#import "CSlowCall.h"
 
 @interface CTableManager () <CRowItemTableViewCellDelegate>
 
 @property (strong, nonatomic) NSArray* visibleSections;
 @property (strong, nonatomic) NSMutableDictionary* visibleRowsBySection;
+@property (strong, readonly, nonatomic) CSlowCall* scrollToRowSlowCall;
 
 @end
 
@@ -39,6 +41,7 @@
 @synthesize visibleSections = visibleSections_;
 @synthesize visibleRowsBySection = visibleRowsBySection_;
 @synthesize cachesAllCells = cachesAllCells_;
+@synthesize scrollToRowSlowCall = scrollToRowSlowCall_;
 
 + (void)initialize
 {
@@ -246,6 +249,20 @@
 	return [rows objectAtIndex:indexPath.row];
 }
 
+- (CSlowCall*)scrollToRowSlowCall
+{
+	if(scrollToRowSlowCall_ == nil) {
+		scrollToRowSlowCall_ = [CSlowCall slowCallWithDelay:0.5 target:self selector:@selector(scrollToRowAtIndexPath:)];
+	}
+	
+	return scrollToRowSlowCall_;
+}
+
+- (void)scrollToRowAtIndexPath:(NSIndexPath*)indexPath
+{
+	[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -420,7 +437,7 @@
 {
 	NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
 	if(indexPath != nil) {
-		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+		[self.scrollToRowSlowCall armWithObject:indexPath];
 	}
 }
 

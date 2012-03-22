@@ -166,10 +166,10 @@
 		UIKeyboardType keyboardType = UIKeyboardTypeDefault;
 		if([model isKindOfClass:[CPasswordItem class]]) {
 			textField.secureTextEntry = YES;
-			textField.clearsOnBeginEditing = YES;
+//			textField.clearsOnBeginEditing = YES;
 		} else {
 			textField.secureTextEntry = NO;
-			textField.clearsOnBeginEditing = NO;
+//			textField.clearsOnBeginEditing = NO;
 		}
 		if([model isKindOfClass:[CEmailItem class]]) {
 			keyboardType = UIKeyboardTypeEmailAddress;
