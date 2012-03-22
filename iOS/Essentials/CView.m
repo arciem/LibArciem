@@ -25,7 +25,6 @@
 @interface CView ()
 
 @property (nonatomic) BOOL observingKeyboard;
-@property (nonatomic) BOOL isOS_3_2;
 @property (strong, nonatomic) CTapToDismissKeyboardManager* tapToDismissKeyboardManager;
 
 @end
@@ -37,16 +36,17 @@
 @dynamic tapResignsFirstResponder;
 @synthesize tapToDismissKeyboardManager = tapToDismissKeyboardManager_;
 @synthesize observingKeyboard;
-@synthesize isOS_3_2;
 
-#pragma mark -
-#pragma mark Lifecycle
+#pragma mark - Lifecycle
 
++ (void)initialize
+{
+//	CLogSetTagActive(@"C_VIEW", YES);
+}
 - (void)setup
 {
 	self.opaque = NO;
 	self.backgroundColor = [UIColor clearColor];
-	self.isOS_3_2 = IsOSVersionAtLeast(@"3.2");
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -70,8 +70,7 @@
 	self.keyboardAdjustmentType = kViewKeyboardAdjustmentTypeNone;
 }
 
-#pragma mark -
-#pragma mark Drawing
+#pragma mark - Drawing
 
 - (void)drawRect:(CGRect)rect
 {
@@ -89,14 +88,13 @@
 	}
 }
 
-#pragma mark -
-#pragma mark Keyboard Adjustment
+#pragma mark - Keyboard Adjustment
 
 - (void)startObservingKeyboard
 {
 	if(!self.observingKeyboard) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillMove:) name:UIKeyboardWillShowNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillMove:) name:UIKeyboardWillHideNotification object:nil];
 		self.observingKeyboard = YES;
 	}
 }
@@ -125,60 +123,45 @@
 	}
 }
 
+// The returned rectangle is in the receiver's superview's coordinate system to faciliate the adjustment of the receiver's frame within that same system.
 - (CGRect)endKeyboardRectangleFromNotification:(NSNotification*)notification
 {
-	// Note: We are using the literal strings for UIKeyboardBoundsUserInfoKey and UIKeyboardCenterEndUserInfoKey because they are deprecated
-	// when building against SDK 3.2 or later, but we're still supporting a minimum deployment platform of 3.0. Using the literal strings
-	// avoids compile-time deprecation warnings.
-
-	CGRect keyboardScreenFrame;
-	CGRect keyboardSuperviewFrame;
-	
-	if (self.isOS_3_2) {
-		keyboardScreenFrame = [[notification.userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"] CGRectValue];
-		keyboardSuperviewFrame = [self.superview convertRect:keyboardScreenFrame fromView:nil];		
-	} else {
-		CGPoint center = [[notification.userInfo objectForKey:@"UIKeyboardCenterEndUserInfoKey"] CGPointValue];
-		keyboardScreenFrame = [[notification.userInfo objectForKey:@"UIKeyboardBoundsUserInfoKey"] CGRectValue];
-		keyboardScreenFrame = [Geom alignRectMid:keyboardScreenFrame toPoint:center];
-		//CLogDebug(nil, @"endKeyboardRectangle before convertRect: %@", NSStringFromCGRect(keyboardScreenFrame));
-		keyboardSuperviewFrame = [self.superview convertRect:keyboardScreenFrame fromView:nil];
-	}
+	CGRect keyboardScreenFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+	CGRect keyboardSuperviewFrame = [self.superview convertRect:keyboardScreenFrame fromView:nil];		
 	return keyboardSuperviewFrame;
 }
 
-- (void)setAnimationKeysFromNotification:(NSNotification*)notification
+- (void)keyboardWillMove:(NSNotification*)notification
 {
-	CGFloat duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-	[UIView setAnimationDuration:duration];
-	UIViewAnimationCurve curve = (UIViewAnimationCurve)[[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
-	[UIView setAnimationCurve:curve];
-}
-
-- (void)keyboardWillShow:(NSNotification*)notification
-{
-//	CLogDebug(nil, @"keyboardWillShow: %@", notification.userInfo);
-	CGRect endKeyboardRectangle = [self endKeyboardRectangleFromNotification:notification];
-//	CLogDebug(nil, @"endKeyboardRectangle: %@", NSStringFromCGRect(endKeyboardRectangle));
-	
 	if(self.keyboardAdjustmentType == kViewKeyboardAdjustmentTypeShrink) {
-		[UIView beginAnimations:@"keyboardAdjust" context:nil];
-		[self setAnimationKeysFromNotification:notification];
-		self.flexibleBottom = CGRectGetMinY(endKeyboardRectangle);
-		[UIView commitAnimations];
-	}
-}
+		CGRect endKeyboardRectangle = [self endKeyboardRectangleFromNotification:notification];
+		// The keyboard doesn't just move up and down-- when pushing a new UIViewController on a UINavigationController's stack, the keyboard can actually animate sideways out of the frame without moving down at all. So instead of merely following the top of the keyboard, we actually need to see whether it's final position intersects the receiver's superview at all. If not, then the bottom of the receiver should be at the maximum position, regardless of the vertical position of the keyboard.
+		CGFloat newMaxY = self.superview.boundsBottom;
+		if(CGRectIntersectsRect(endKeyboardRectangle, self.superview.bounds)) {
+			newMaxY = CGRectGetMinY(endKeyboardRectangle);
+		}
+		CLogTrace(@"C_VIEW", @"%@ keyboardWillMove endKeyboardRectangle:%@ newMaxY:%f", self, NSStringFromCGRect(endKeyboardRectangle), newMaxY);
 
-- (void)keyboardWillHide:(NSNotification*)notification
-{
-//	CLogDebug(nil, @"keyboardWillHide: %@", notification.userInfo);
-	CGRect endKeyboardRectangle = [self endKeyboardRectangleFromNotification:notification];
-//	CLogDebug(nil, @"endKeyboardRectangle: %@", NSStringFromCGRect(endKeyboardRectangle));
-
-	if(self.keyboardAdjustmentType == kViewKeyboardAdjustmentTypeShrink) {
-		[UIView beginAnimations:@"keyboardAdjust" context:nil];
-		[self setAnimationKeysFromNotification:notification];
-		self.flexibleBottom = CGRectGetMinY(endKeyboardRectangle);
+		CGFloat duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+		UIViewAnimationCurve curve = (UIViewAnimationCurve)[[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+		UIViewAnimationOptions options = 0;
+		switch(curve) {
+			case UIViewAnimationCurveEaseInOut:
+				options |= UIViewAnimationOptionCurveEaseInOut;
+				break;
+			case UIViewAnimationCurveEaseIn:
+				options |= UIViewAnimationOptionCurveEaseIn;
+				break;
+			case UIViewAnimationCurveEaseOut:
+				options |= UIViewAnimationOptionCurveEaseOut;
+				break;
+			case UIViewAnimationCurveLinear:
+				options |= UIViewAnimationOptionCurveLinear;
+				break;
+		}
+		[UIView animateWithDuration:duration delay:0 options:options animations:^{
+			self.flexibleBottom = newMaxY;
+		} completion:NULL];
 		[UIView commitAnimations];
 	}
 }

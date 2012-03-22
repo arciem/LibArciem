@@ -21,5 +21,12 @@
 @interface CButtonTableViewCell : CRowItemTableViewCell
 
 @property (strong, readonly, nonatomic) UIButton* button;
+@property (readonly, nonatomic) BOOL isButtonEnabled;
+
+- (void)syncToState;
+- (void)setNeedsSyncToState;
+
+// May be overridden in subclasses
+- (BOOL)isButtonEnabled;
 
 @end

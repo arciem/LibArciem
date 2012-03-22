@@ -71,9 +71,20 @@
 	return 0;
 }
 
+- (BOOL)isButtonEnabled
+{
+	return !self.rowItem.model.isDisabled;
+}
+
 - (void)syncToState
 {
-	self.button.enabled = !self.rowItem.model.isDisabled;
+	[self.syncStateSlowCall disarm];
+	self.button.enabled = self.isButtonEnabled;
+}
+
+- (void)setNeedsSyncToState
+{
+	[self.syncStateSlowCall arm];
 }
 
 - (void)syncToRowItem
@@ -87,7 +98,7 @@
 		
 		__unsafe_unretained CButtonTableViewCell* self__ = self;
 		CObserverBlock action = ^(NSNumber* newValue, NSNumber* oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-			[self__.syncStateSlowCall arm];
+			[self__ setNeedsSyncToState];
 		};
 		
 		self.modelDisabledObserver = [CObserver observerWithKeyPath:@"isDisabled" ofObject:self.rowItem.model action:action initial:action];

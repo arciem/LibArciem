@@ -39,8 +39,7 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 @synthesize transitionForNextPush = transitionForNextPush_;
 @synthesize activityShieldView = activityShieldView_;
 
-#pragma mark -
-#pragma mark Lifecycle
+#pragma mark - Lifecycle
 
 - (void)setup
 {
@@ -114,8 +113,7 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	// Empty so subclasses can call super with confidence.
 }
 
-#pragma mark -
-#pragma mark State
+#pragma mark - State
 
 - (void)stateDidChangeFrom:(CViewControllerState)oldState to:(CViewControllerState)newState
 {
@@ -166,27 +164,26 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	return YES;
 }
 
-#pragma mark -
-#pragma mark UIViewController
+#pragma mark - UIViewController
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+	BOOL should = YES;
+	
 	if (IsPhone()) {
-		return (interfaceOrientation == UIInterfaceOrientationPortrait);
-	} else {
-		return YES;
+		should = interfaceOrientation == UIInterfaceOrientationPortrait;
 	}
+	
+	return should;
 }
 
-#pragma mark -
-#pragma mark CImageViewLayoutDelegate
+#pragma mark - CImageViewLayoutDelegate
 
 - (void)viewLayoutSubviews:(UIView*)view
 {
 }
 
-#pragma mark -
-#pragma mark Shield view
+#pragma mark - Shield view
 
 - (BOOL)activityShieldViewVisible
 {

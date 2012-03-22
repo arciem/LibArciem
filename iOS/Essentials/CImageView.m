@@ -23,8 +23,7 @@
 
 @synthesize layoutDelegate = layoutDelegate_;
 
-#pragma mark -
-#pragma mark Layout
+#pragma mark - Layout
 
 - (void)dealloc
 {

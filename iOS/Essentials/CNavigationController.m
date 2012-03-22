@@ -114,8 +114,7 @@
 	}
 }
 
-#pragma mark -
-#pragma mark UINavigationBarDelegate
+#pragma mark - UINavigationBarDelegate
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
 {
