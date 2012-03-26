@@ -21,5 +21,6 @@
 @interface CSubmitItem : CItem
 
 @property (copy, nonatomic) void (^action)(void);
+@property (nonatomic, setter = setEditing:) BOOL isEditing;
 
 @end

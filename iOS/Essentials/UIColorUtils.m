@@ -39,6 +39,11 @@
 	return [self colorWithRGBValue:0x0081ee];
 }
 
++ (UIColor*)systemDoneButtonBlue
+{
+	return [[self colorWithRGBValue:0x0067df] colorByLighteningFraction:0.2];
+}
+
 + (UIColor*)systemNavigationGray
 {
 	return [self colorWithRGBValue:0x666666];

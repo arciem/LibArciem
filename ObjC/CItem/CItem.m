@@ -486,7 +486,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 {
 	if(self.superitem != nil) {
 		NSUInteger index = [self.superitem.subitems indexOfObject:self];
-		[self.subitems removeObjectAtIndex:index];
+		[self.superitem.subitems removeObjectAtIndex:index];
 	}
 }
 

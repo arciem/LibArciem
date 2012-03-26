@@ -18,10 +18,11 @@
 
 #import "CTableRowItem.h"
 #import "CStringItem.h"
+#import "CMultiTextItem.h"
 
 @interface CTableTextFieldItem : CTableRowItem
 
 + (CTableTextFieldItem*)itemWithKey:(NSString*)key title:(NSString*)title stringItem:(CStringItem*)item;
-+ (CTableTextFieldItem*)itemWithKey:(NSString*)key title:(NSString*)title stringItems:(NSArray*)items;
++ (CTableTextFieldItem*)itemWithKey:(NSString*)key title:(NSString*)title multiTextItem:(CMultiTextItem*)item;
 
 @end

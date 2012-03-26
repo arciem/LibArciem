@@ -28,6 +28,8 @@
 @implementation CTableRowItem
 
 @synthesize nonretainedModels = nonretainedModels_;
+@synthesize isDeletable = isDeletable_;
+@synthesize isReorderable = isReorderable_;
 @dynamic model;
 
 + (void)initialize
@@ -121,6 +123,8 @@
 	str = [str arrayByAddingObject:[self formatValueForKey:@"model" compact:compact]];
 	return str;
 }
+
+#pragma mark - @property isUnselectable
 
 - (BOOL)isUnselectable
 {

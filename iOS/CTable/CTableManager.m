@@ -24,6 +24,7 @@
 #import "CRowItemTableViewCell.h"
 #import "UIViewUtils.h"
 #import "CSlowCall.h"
+#import "CRepeatingItem.h"
 
 @interface CTableManager () <CRowItemTableViewCellDelegate>
 
@@ -382,6 +383,51 @@
 	return result;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
+	CLogDebug(nil, @"%@ canMoveRowAtIndexPath:%@ value:%d", self, indexPath, rowItem.isReorderable);
+	return rowItem.isReorderable;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+	CLogDebug(nil, @"moveRowAtIndexPath:%@ toIndexPath:%@", sourceIndexPath, destinationIndexPath);
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSAssert1(editingStyle == UITableViewCellEditingStyleDelete, @"Unimplemented editing style:%d", editingStyle);
+	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
+	[rowItem.model removeFromSuperitem];
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+	NSIndexPath* result = nil;
+	
+	NSUInteger sourceSectionIndex = sourceIndexPath.section;
+	NSUInteger proposedSectionIndex = proposedDestinationIndexPath.section;
+	NSMutableIndexSet* allowedIndexes = [NSMutableIndexSet indexSet];
+	NSArray* rows = [self rowsForSection:sourceSectionIndex];
+	[rows enumerateObjectsUsingBlock:^(CTableRowItem* row, NSUInteger idx, BOOL *stop) {
+		if(row.isReorderable) {
+			[allowedIndexes addIndex:idx];
+		}
+	}];
+	
+	NSUInteger proposedRowIndex = proposedDestinationIndexPath.row;
+	if(proposedRowIndex < allowedIndexes.firstIndex) {
+		proposedRowIndex = allowedIndexes.firstIndex;
+	} else if(proposedRowIndex > allowedIndexes.lastIndex) {
+		proposedRowIndex = allowedIndexes.lastIndex;
+	}
+	
+	result = [NSIndexPath indexPathForRow:proposedRowIndex inSection:proposedSectionIndex];
+
+	return result;
+}
+
 #pragma mark - UITableViewDelegate
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -402,17 +448,41 @@
 	[self.delegate tableManager:self didSelectRow:rowItem atIndexPath:indexPath];
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	UITableViewCellEditingStyle result = UITableViewCellEditingStyleNone;
+	
+	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
+	if(rowItem.isDeletable) {
+		result = UITableViewCellEditingStyleDelete;
+	}
+	
+	return result;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	BOOL result = NO;
+
+	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
+	if(rowItem.isDeletable) {
+		result = YES;
+	}
+
+	return result;
+}
+
 #pragma mark - @protocol CTableItemDelegate
 
 - (void)tableItem:(CTableItem*)tableItem sectionsDidChangeWithNew:(NSArray*)newItems old:(NSArray*)oldItems kind:(NSKeyValueChange)kind indexes:(NSIndexSet*)indexes
 {
-	CLogDebug(nil, @"tableItem:%@ sectionsDidChangeWithNew:%@ old:%@ kind:%d indexes:%@", tableItem, newItems, oldItems, kind, indexes);
+//	CLogDebug(nil, @"tableItem:%@ sectionsDidChangeWithNew:%@ old:%@ kind:%d indexes:%@", tableItem, newItems, oldItems, kind, indexes);
 	NSAssert(false, @"Unimplemented.");
 }
 
 - (void)tableSectionItem:(CTableSectionItem*)tableSectionItem rowsDidChangeWithNew:(NSArray*)newItems old:(NSArray*)oldItems kind:(NSKeyValueChange)kind indexes:(NSIndexSet*)indexes
 {
-	CLogDebug(nil, @"tableSectionItem:%@ rowsDidChangeWithNew:%@ old:%@ kind:%d indexes:%@", tableSectionItem, newItems, oldItems, kind, indexes);
+//	CLogDebug(nil, @"tableSectionItem:%@ rowsDidChangeWithNew:%@ old:%@ kind:%d indexes:%@", tableSectionItem, newItems, oldItems, kind, indexes);
 	switch (kind) {
 		case NSKeyValueChangeInsertion: {
 			NSUInteger sectionIndex = [self.sections indexOfObject:tableSectionItem];
@@ -424,7 +494,16 @@
 			[self invalidateRowsForSection:sectionIndex];
 			[self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 		} break;
-			
+		case NSKeyValueChangeRemoval: {
+			NSUInteger sectionIndex = [self.sections indexOfObject:tableSectionItem];
+			NSAssert(sectionIndex != NSNotFound, @"Couldn't find section.");
+			NSMutableArray* indexPaths = [NSMutableArray array];
+			[indexes enumerateIndexesUsingBlock:^(NSUInteger rowIndex, BOOL *stop) {
+				[indexPaths addObject:[NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex]];
+			}];
+			[self invalidateRowsForSection:sectionIndex];
+			[self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+		} break;
 		default:
 			NSAssert1(false, @"Unimplemented change kind:%d", kind);
 			break;

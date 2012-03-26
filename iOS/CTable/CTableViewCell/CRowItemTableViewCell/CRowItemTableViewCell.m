@@ -22,6 +22,7 @@
 #import "CTableItem.h"
 #import "UIViewUtils.h"
 #import "CTapToDismissKeyboardManager.h"
+#import "CObserver.h"
 
 static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 
@@ -30,6 +31,8 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 @property (strong, readwrite, nonatomic) NSMutableArray* mutableValidationViews;
 @property (strong, nonatomic) CTapToDismissKeyboardManager* tapDismiss1;
 @property (strong, nonatomic) CTapToDismissKeyboardManager* tapDismiss2;
+@property (strong, nonatomic) CObserver* rowItemObserver;
+@property (strong, nonatomic) NSMutableArray* modelValueObservers;
 
 @end
 
@@ -41,6 +44,8 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 @synthesize tapDismiss1 = tapDismiss1_;
 @synthesize tapDismiss2 = tapDismiss2_;
 @synthesize delegate = delegate_;
+@synthesize rowItemObserver = rowItemObserver_;
+@synthesize modelValueObservers = modelValueObservers_;
 @dynamic validationViewsNeeded;
 
 + (void)initialize
@@ -54,7 +59,11 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 
 	self.textLabel.backgroundColor = [UIColor clearColor];
 
-	[self addObserver:self forKeyPath:@"rowItem" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
+//	[self addObserver:self forKeyPath:@"rowItem" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
+	__weak CRowItemTableViewCell* self__ = self;
+	self.rowItemObserver = [CObserver observerWithKeyPath:@"rowItem" ofObject:self action:^(CTableRowItem* newRowItem, CTableRowItem* oldRowItem, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[self__ rowItemDidChangeFrom:oldRowItem to:newRowItem];
+	}];
 
 	CLogTrace(sClassTag, @"%@ setup", self);
 }
@@ -62,8 +71,21 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 - (void)dealloc
 {
 	CLogTrace(sClassTag, @"%@ dealloc", self);
+	self.rowItemObserver = nil;
 	self.rowItem = nil;
-	[self removeObserver:self forKeyPath:@"rowItem"];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+	[super setEditing:editing animated:animated];
+
+	NSTimeInterval duration = animated ? 0.3 : 0.0;
+	CGFloat alpha = editing ? 0.0 : 1.0;
+	[UIView animateWithDuration:duration animations:^{
+		for(CFieldValidationView* view in self.mutableValidationViews) {
+			view.alpha = alpha;
+		}
+	}];
 }
 
 - (CFieldValidationView*)validationViewAtIndex:(NSUInteger)index
@@ -156,7 +178,12 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 // May be overridden by subclasses
 - (NSUInteger)validationViewsNeeded
 {
-	return self.rowItem.models.count;
+	return self.models.count;
+}
+
+- (NSArray*)models
+{
+	return self.rowItem.models;
 }
 
 // May be overridden by subclasses
@@ -164,7 +191,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 {
 	[self setNumberOfValidationViewsTo:self.validationViewsNeeded];
 	[self.validationViews enumerateObjectsUsingBlock:^(CFieldValidationView* view, NSUInteger idx, BOOL *stop) {
-		CItem* model = [self.rowItem.models objectAtIndex:idx];
+		CItem* model = [self.models objectAtIndex:idx];
 		view.item = model;
 	}];
 }
@@ -229,42 +256,23 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 - (void)rowItemDidChangeFrom:(CTableRowItem*)oldRowItem to:(CTableRowItem*)newRowItem
 {
 	if(oldRowItem != newRowItem) {
-		for(CItem* oldModel in oldRowItem.models) {
-			[oldModel removeObserver:self forKeyPath:@"value"];
-		}
-		for(CItem* newModel in newRowItem.models) {
-			[newModel addObserver:self forKeyPath:@"value" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) context:NULL];
-		}
 		[self syncToRowItem];
+		self.modelValueObservers = [NSMutableArray array];
+		__weak CRowItemTableViewCell* self__ = self;
+		for(CItem* newModel in newRowItem.models) {
+			CObserver* modelValueObserver = [CObserver observerWithKeyPath:@"value" ofObject:newModel action:^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+				[self__ model:newModel valueDidChangeFrom:oldValue to:newValue];
+			} initial:^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+				[self__ model:newModel valueDidChangeFrom:oldValue to:newValue];
+			}];
+			[self.modelValueObservers addObject:modelValueObserver];
+		}
 	}
 }
 
 - (void)model:(CItem*)model valueDidChangeFrom:(id)oldValue to:(id)newValue
 {
 //	CLogDebug(nil, @"model:%@ valueDidChangeFrom:%@ to:%@", model, oldValue, newValue);
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-	[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-	
-	if(object == self) {
-		if([keyPath isEqualToString:@"rowItem"]) {
-			CTableRowItem* oldRowItem = Denull([change objectForKey:NSKeyValueChangeOldKey]);
-			CTableRowItem* newRowItem = Denull([change objectForKey:NSKeyValueChangeNewKey]);
-			[self rowItemDidChangeFrom:oldRowItem to:newRowItem];
-		}
-	} else if([keyPath isEqualToString:@"value"]) {
-		for(CItem* model in self.rowItem.models) {
-			if(object == model) {
-				id oldValue = Denull([change objectForKey:NSKeyValueChangeOldKey]);
-				id newValue = Denull([change objectForKey:NSKeyValueChangeNewKey]);
-				if(oldValue != newValue) {
-					[self model:model valueDidChangeFrom:oldValue to:newValue];
-				}
-			}
-		}
-	}
 }
 
 #pragma mark - @propery activeItem

@@ -26,7 +26,7 @@
 - (NSArray*)tableRowItems
 {
 	NSAssert1(self.subitems.count == 2, @"count of %d not supported.", self.subitems.count);
-	CTableTextFieldItem* rowItem = [CTableTextFieldItem itemWithKey:self.key title:self.title stringItems:self.subitems];
+	CTableTextFieldItem* rowItem = [CTableTextFieldItem itemWithKey:self.key title:self.title multiTextItem:self];
 	return [NSArray arrayWithObject:rowItem];
 }
 

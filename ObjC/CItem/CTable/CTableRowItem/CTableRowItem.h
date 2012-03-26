@@ -26,6 +26,8 @@
 @property (copy, nonatomic) NSMutableDictionary* textLabel;
 @property (readonly, nonatomic) NSString* defaultCellType;
 @property (readonly, nonatomic) BOOL isUnselectable;
+@property (nonatomic) BOOL isDeletable;
+@property (nonatomic) BOOL isReorderable;
 
 - (id)initWithKey:(NSString*)key title:(NSString*)title models:(NSArray*)models;
 - (id)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model;

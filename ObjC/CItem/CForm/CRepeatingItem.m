@@ -114,12 +114,27 @@
 				NSArray* newRowItems = [item tableRowItems];
 				NSMutableIndexSet* indexes = [NSMutableIndexSet indexSet];
 				NSUInteger currentIndex = endRepeatRowItemIndex;
-				for(CItem* item in newRowItems) {
+				for(CTableRowItem* rowItem in newRowItems) {
+					rowItem.isDeletable = YES;
+					rowItem.isReorderable = YES;
 					[indexes addIndex:currentIndex];
 					currentIndex++;
 				}
 				[self.endRepeatRowItem.superitem.subitems insertObjects:newRowItems atIndexes:indexes];
 			}
+		} else if(kind == NSKeyValueChangeRemoval) {
+			NSArray* oldRowItems = (NSArray*)oldValue;
+			NSUInteger endRepeatRowItemIndex = [self.endRepeatRowItem.superitem.subitems indexOfObject:self.endRepeatRowItem];
+			NSAssert(endRepeatRowItemIndex != NSNotFound, @"Couldn't find endRepeatRowItem.");
+
+			NSUInteger count = self.subitems.count + oldRowItems.count;
+			
+			NSMutableIndexSet* adjustedIndexes = [NSMutableIndexSet indexSet];
+			[indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+				NSUInteger index = endRepeatRowItemIndex - count + idx;
+				[adjustedIndexes addIndex:index];
+			}];
+			[self.endRepeatRowItem.superitem.subitems removeObjectsAtIndexes:adjustedIndexes];
 		} else {
 			NSAssert1(false, @"Unimplemented change kind:%d", kind);
 		}
@@ -142,6 +157,8 @@
 	for(CItem* initialItem in self.subitems) {
 		NSArray* newRowItems = [initialItem tableRowItems];
 		for(CTableRowItem* rowItem in newRowItems) {
+			rowItem.isDeletable = YES;
+			rowItem.isReorderable = YES;
 			[rowItems addObject:rowItem];
 		}
 	}

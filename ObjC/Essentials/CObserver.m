@@ -22,7 +22,7 @@
 @interface CObserver ()
 
 @property (strong, nonatomic) NSString* keyPath;
-@property (weak, nonatomic) id object;
+@property (assign, nonatomic) id object;
 @property (copy, nonatomic) CObserverBlock action;
 @property (copy, nonatomic) CObserverBlock initial;
 @property (copy, nonatomic) CObserverBlock prior;
@@ -86,7 +86,7 @@
 - (void)dealloc
 {
 	CLogTrace(@"C_OBSERVER", @"%@ dealloc", self);
-	NSAssert1(self.object != nil, @"object deallocated before observer for keyPath:%@", self.keyPath);
+//	NSAssert1(self.object != nil, @"object deallocated before observer for keyPath:%@", self.keyPath);
 	[self.object removeObserver:self forKeyPath:self.keyPath context:NULL];
 }
 

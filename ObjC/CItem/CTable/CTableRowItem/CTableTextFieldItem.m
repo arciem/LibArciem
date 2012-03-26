@@ -25,9 +25,9 @@
 	return [[self alloc] initWithKey:key title:title model:item];
 }
 
-+ (CTableTextFieldItem*)itemWithKey:(NSString*)key title:(NSString*)title stringItems:(NSArray*)items
++ (CTableTextFieldItem*)itemWithKey:(NSString*)key title:(NSString*)title multiTextItem:(CMultiTextItem*)item;
 {
-	return [[self alloc] initWithKey:key title:title models:items];
+	return [[self alloc] initWithKey:key title:title model:item];
 }
 
 - (NSString*)defaultCellType

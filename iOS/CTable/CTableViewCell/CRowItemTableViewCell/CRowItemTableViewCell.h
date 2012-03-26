@@ -30,6 +30,7 @@
 @property (readonly, nonatomic) NSUInteger validationViewsNeeded;
 @property (weak, nonatomic) CItem* activeItem;
 @property (weak, nonatomic) id<CRowItemTableViewCellDelegate> delegate;
+@property (readonly, nonatomic) NSArray* models;
 
 - (void)setNumberOfValidationViewsTo:(NSUInteger)count;
 

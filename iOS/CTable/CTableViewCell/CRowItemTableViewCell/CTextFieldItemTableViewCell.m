@@ -20,6 +20,7 @@
 #import "DeviceUtils.h"
 #import "UIViewUtils.h"
 #import "CStringItem.h"
+#import "CMultiTextItem.h"
 #import "CPasswordItem.h"
 #import "Geom.h"
 #import "CEmailItem.h"
@@ -92,11 +93,30 @@
 	}
 }
 
+- (NSArray*)models
+{
+	NSArray* result = nil;
+	
+	CItem* model = self.rowItem.model;
+	if([model isKindOfClass:[CStringItem class]]) {
+		result = self.rowItem.models;
+	} else if([model isKindOfClass:[CMultiTextItem class]]) {
+		CMultiTextItem* multiTextItem = (CMultiTextItem*)model;
+		result = multiTextItem.subitems;
+	}
+	
+	NSAssert1(result != nil, @"Unknown model:%@", model);
+
+	return result;
+}
+
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
 	
-	NSUInteger count = self.rowItem.models.count;
+	CLogDebug(nil, @"%@ layoutSubviews", self);
+
+	NSUInteger count = self.models.count;
 	
 	CGRect area = CGRectZero;
 
@@ -124,7 +144,7 @@
 	for(UITextField* textField in self.textFields) {
 		CGRect r = fieldRect;
 		
-		CStringItem* model = [self.rowItem.models objectAtIndex:index];
+		CStringItem* model = [self.models objectAtIndex:index];
 		NSUInteger fieldCharacterWidth = model.fieldCharacterWidth;
 		if(fieldCharacterWidth > 0) {
 			CGFloat xHeight = font.xHeight;
@@ -156,11 +176,11 @@
 {
 	[super syncToRowItem];
 
-	[self setNumberOfTextFieldsTo:self.rowItem.models.count];
+	[self setNumberOfTextFieldsTo:self.models.count];
 
 	NSUInteger index = 0;
 	for(UITextField* textField in self.textFields) {
-		CStringItem* model = [self.rowItem.models objectAtIndex:index];
+		CStringItem* model = [self.models objectAtIndex:index];
 		textField.placeholder = model.title;
 		textField.clearButtonMode = UITextFieldViewModeWhileEditing;
 		UIKeyboardType keyboardType = UIKeyboardTypeDefault;
@@ -210,7 +230,7 @@
 	
 	NSUInteger index = [self indexOfTextField:textField];
 	if(index != NSNotFound) {
-		result = [self.rowItem.models objectAtIndex:index];
+		result = [self.models objectAtIndex:index];
 	}
 	
 	return result;

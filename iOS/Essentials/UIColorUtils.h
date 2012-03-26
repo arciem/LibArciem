@@ -27,6 +27,8 @@
 
 + (UIColor*)systemNavigationBlue;
 + (UIColor*)systemHighlightBlue;
++ (UIColor*)systemDoneButtonBlue;
+
 + (UIColor*)systemNavigationGray;
 + (UIColor*)systemHighlightGray;
 

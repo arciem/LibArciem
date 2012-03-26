@@ -23,12 +23,14 @@
 @interface CSubmitItem ()
 
 @property (strong, nonatomic) CObserver* rootStateObserver;
+@property (strong, nonatomic) CObserver* isEditingObserver;
 
 @end
 
 @implementation CSubmitItem
 
 @synthesize rootStateObserver = rootStateObserver_;
+@synthesize isEditingObserver = isEditingObserver_;
 @synthesize action = action_;
 
 - (id)copyWithZone:(NSZone *)zone
@@ -49,17 +51,19 @@
 	};
 	
 	self.rootStateObserver = [CObserver observerWithKeyPath:@"state" ofObject:self.rootItem action:action initial:action];
+	self.isEditingObserver = [CObserver observerWithKeyPath:@"isEditing" ofObject:self action:action];
 }
 
 - (void)deactivate
 {
 	[super deactivate];
 	self.rootStateObserver = nil;
+	self.isEditingObserver = nil;
 }
 
 - (void)syncState
 {
-	BOOL isValid = self.rootItem.isValid;
+	BOOL isValid = self.rootItem.isValid && !self.isEditing;
 	self.isDisabled = !isValid;
 }
 
@@ -69,6 +73,20 @@
 {
 	CTableButtonItem* rowItem = [CTableButtonItem itemWithKey:self.key title:self.title item:self];
 	return [NSArray arrayWithObject:rowItem];
+}
+
+#pragma mark - @property isEditing
+
+- (BOOL)isEditing
+{
+	return [[self.dict objectForKey:@"isEditing"] boolValue];
+}
+
+- (void)setEditing:(BOOL)isEditing
+{
+	[self willChangeValueForKey:@"isEditing"];
+	[self.dict setObject:[NSNumber numberWithBool:isEditing] forKey:@"isEditing"];
+	[self didChangeValueForKey:@"isEditing"];
 }
 
 @end
