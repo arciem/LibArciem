@@ -20,6 +20,7 @@
 #import "DeviceUtils.h"
 #import "CFieldValidationView.h"
 #import "UIViewUtils.h"
+#import "CTableMultiChoiceItem.h"
 
 @implementation CMultiChoiceItemTableViewCell
 
@@ -47,6 +48,18 @@
 	self.textLabel.flexibleLeft = validationView.right + 8;
 }
 #endif
+
+- (void)syncToRowItem
+{
+	[super syncToRowItem];
+	
+	CTableMultiChoiceItem* model = (CTableMultiChoiceItem*)self.rowItem;
+	if(model.requiresDrillDown) {
+		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	} else {
+		self.accessoryType = UITableViewCellAccessoryNone;
+	}
+}
 
 - (CGSize)sizeThatFits:(CGSize)size
 {

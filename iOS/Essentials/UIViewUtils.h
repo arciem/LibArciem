@@ -99,3 +99,33 @@ extern NSString* const sTapInBackgroundNotification;
 @property(readonly, nonatomic) CGPoint boundsCenter;
 
 @end
+
+@interface CFrame : NSObject
+
+@property(weak, readonly, nonatomic) UIView* view;
+@property(nonatomic) CGRect frame;
+
+@property(nonatomic) CGPoint origin;
+@property(nonatomic) CGSize size;
+@property(nonatomic) CGFloat width;
+@property(nonatomic) CGFloat height;
+@property(nonatomic) CGPoint center;
+
+// setting these will not change the size of the view, only its position
+@property(nonatomic) CGFloat top;
+@property(nonatomic) CGFloat bottom;
+@property(nonatomic) CGFloat left;
+@property(nonatomic) CGFloat right;
+
+@property(nonatomic) CGFloat centerX;
+@property(nonatomic) CGFloat centerY;
+
+// setting these will change the size of the view
+@property(nonatomic) CGFloat flexibleTop;
+@property(nonatomic) CGFloat flexibleBottom;
+@property(nonatomic) CGFloat flexibleLeft;
+@property(nonatomic) CGFloat flexibleRight;
+
++ (CFrame*)frameWithView:(UIView*)view;
+
+@end

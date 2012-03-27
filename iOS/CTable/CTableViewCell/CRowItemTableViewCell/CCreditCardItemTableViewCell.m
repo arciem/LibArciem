@@ -21,6 +21,7 @@
 #import "CCreditCardItem.h"
 #import "UIViewUtils.h"
 #import "Geom.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface CCreditCardItemTableViewCell ()
 
@@ -50,7 +51,7 @@
 		self.cardTypeObserver = nil;
 	} else {
 		__unsafe_unretained CCreditCardItemTableViewCell* self__ = self;
-		CObserverBlock action = ^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 			[self__ syncCardType];
 		};
 		self.cardTypeObserver = [CObserver observerWithKeyPath:@"cardType" ofObject:self.rowItem.model action:action initial:action];
@@ -63,6 +64,12 @@
 			NSAssert1(image != nil, @"no image found for name:%@", imageName);
 			UIImageView* view = [[UIImageView alloc] initWithImage:image];
 			view.contentMode = UIViewContentModeTopLeft;
+			
+			view.layer.shadowColor = [UIColor blackColor].CGColor;
+			view.layer.shadowOffset = CGSizeMake(0, 1);
+			view.layer.shadowOpacity = 0.5;
+			view.layer.shadowRadius = 1.0;
+			
 //			[view sizeToFit];
 			[self.contentView addSubview:view];
 			[self.cardTypeViews addObject:view];

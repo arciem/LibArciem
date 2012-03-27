@@ -97,7 +97,7 @@
 		[self.button setTitle:self.rowItem.model.title forState:UIControlStateNormal];
 		
 		__unsafe_unretained CButtonTableViewCell* self__ = self;
-		CObserverBlock action = ^(NSNumber* newValue, NSNumber* oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		CObserverBlock action = ^(id object, NSNumber* newValue, NSNumber* oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 			[self__ setNeedsSyncToState];
 		};
 		

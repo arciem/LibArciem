@@ -61,7 +61,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 
 //	[self addObserver:self forKeyPath:@"rowItem" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
 	__weak CRowItemTableViewCell* self__ = self;
-	self.rowItemObserver = [CObserver observerWithKeyPath:@"rowItem" ofObject:self action:^(CTableRowItem* newRowItem, CTableRowItem* oldRowItem, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.rowItemObserver = [CObserver observerWithKeyPath:@"rowItem" ofObject:self action:^(id object, CTableRowItem* newRowItem, CTableRowItem* oldRowItem, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[self__ rowItemDidChangeFrom:oldRowItem to:newRowItem];
 	}];
 
@@ -260,9 +260,9 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 		self.modelValueObservers = [NSMutableArray array];
 		__weak CRowItemTableViewCell* self__ = self;
 		for(CItem* newModel in newRowItem.models) {
-			CObserver* modelValueObserver = [CObserver observerWithKeyPath:@"value" ofObject:newModel action:^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+			CObserver* modelValueObserver = [CObserver observerWithKeyPath:@"value" ofObject:newModel action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 				[self__ model:newModel valueDidChangeFrom:oldValue to:newValue];
-			} initial:^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+			} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 				[self__ model:newModel valueDidChangeFrom:oldValue to:newValue];
 			}];
 			[self.modelValueObservers addObject:modelValueObserver];

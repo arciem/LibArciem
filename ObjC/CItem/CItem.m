@@ -202,7 +202,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	NSAssert1(self.isActive == NO, @"Attempt to activate item that is already active:%@", self);
 	self.isActive = YES;
 	__weak CItem* self__ = self;
-	self.valueObserver = [CObserver observerWithKeyPath:@"value" ofObject:self action:^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.valueObserver = [CObserver observerWithKeyPath:@"value" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		self__.needsValidation = YES;
 	}];
 }

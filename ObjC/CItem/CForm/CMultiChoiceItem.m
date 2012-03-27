@@ -21,11 +21,12 @@
 #import "CBooleanItem.h"
 #import "ObjectUtils.h"
 #import "CTableMultiChoiceItem.h"
-#import "CTableBooleanItem.h"
 #import "CDividerItem.h"
-#import "CTableDividerItem.h"
 
 @interface CMultiChoiceItem ()
+
+@property (strong, nonatomic) CObserver* subitemsObserver;
+@property (strong, nonatomic) NSArray* subitemValueObservers;
 
 @end
 
@@ -33,12 +34,22 @@
 
 @synthesize minValidChoices = minValidChoices_;
 @synthesize maxValidChoices = maxValidChoices_;
+@synthesize selectedSubitems = selectedSubitems_;
+@synthesize subitemsObserver = subitemsObserver_;
+@synthesize subitemValueObservers = subitemValueObservers_;
+
 @dynamic choicesCount;
 
 - (void)setup
 {
 	[super setup];
 	[self syncToChoices];
+	
+	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[self syncToSubitems];
+	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[self syncToSubitems];
+	}];
 }
 
 - (NSUInteger)minValidChoices
@@ -92,7 +103,7 @@
 	return count;
 }
 
- - (void)didSelectSubitem:(CBooleanItem*)item
+ - (void)selectSubitem:(CBooleanItem*)item
 {
 	BOOL oldValue = item.booleanValue;
 	BOOL newValue = !oldValue;
@@ -161,6 +172,55 @@
 	}];
 }
 
+#pragma mark - @property selectedSubitems
+
+- (NSArray*)selectedSubitems
+{
+	return selectedSubitems_;
+}
+
+- (void)setSelectedSubitems:(NSArray *)selectedSubitems
+{
+	[self willChangeValueForKey:@"selectedSubitems"];
+	selectedSubitems_ = selectedSubitems;
+	[self didChangeValueForKey:@"selectedSubitems"];
+}
+
+- (void)syncToSubitems
+{
+	NSMutableArray* selectedSubitems = [NSMutableArray array];
+	
+	[self.subitems enumerateObjectsUsingBlock:^(CItem* item, NSUInteger idx, BOOL *stop) {
+		if([item isKindOfClass:[CBooleanItem class]]) {
+			CBooleanItem* booleanItem = (CBooleanItem*)item;
+			if(booleanItem.booleanValue) {
+				[selectedSubitems addObject:booleanItem];
+			}
+		}
+	}];
+	
+	self.selectedSubitems = selectedSubitems;
+}
+
+#pragma mark - @property selectedSubitem
+
++ (NSSet*)keyPathsForValuesAffectingSelectedSubitem
+{
+	return [NSSet setWithObject:@"selectedSubitems"];
+}
+
+- (CBooleanItem*)selectedSubitem
+{
+	CBooleanItem* result = nil;
+	
+	NSArray* selectedSubitems = self.selectedSubitems;
+	if(selectedSubitems.count > 0) {
+		result = (CBooleanItem*)[selectedSubitems objectAtIndex:0];
+	}
+	
+	return result;
+}
+
 #pragma mark - Table Support
 
 - (NSArray*)tableRowItems
@@ -170,19 +230,8 @@
 	[rowItems addObject:rowItem];
 	if(!rowItem.requiresDrillDown) {
 		for(CItem* item in self.subitems) {
-			CTableRowItem* rowItem = nil;
-			
-			if([item isKindOfClass:[CBooleanItem class]]) {
-				CBooleanItem* booleanItem = (CBooleanItem*)item;
-				rowItem = [CTableBooleanItem itemWithKey:item.key title:item.title booleanItem:booleanItem];
-			} else if([item isKindOfClass:[CDividerItem class]]) {
-				CDividerItem* dividerItem = (CDividerItem*)item;
-				rowItem = [CTableDividerItem itemWithKey:item.key title:item.title dividerItem:dividerItem];
-			} else {
-				NSAssert1(false, @"Unknown multichoice item:%@", item);
-			}
-			
-			[rowItems addObject:rowItem];
+			NSArray* newRowItems = [item tableRowItems];
+			[rowItems addObjectsFromArray:newRowItems];
 		}
 	}
 	return rowItems;

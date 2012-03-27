@@ -35,7 +35,7 @@
 
 - (void)setup
 {
-	CObserverBlock action = ^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[self.delegate tableItem:self sectionsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
 	};
 	

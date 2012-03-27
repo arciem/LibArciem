@@ -17,12 +17,19 @@
  *******************************************************************************/
 
 #import "CDividerItem.h"
+#import "CTableDividerItem.h"
 
 @implementation CDividerItem
 
 + (CDividerItem*)dividerItem
 {
 	return [[self alloc] init];
+}
+
+- (NSArray*)tableRowItems
+{
+	CTableDividerItem* item = [CTableDividerItem itemWithKey:self.key title:self.title dividerItem:self];
+	return [NSArray arrayWithObject:item];
 }
 
 @end

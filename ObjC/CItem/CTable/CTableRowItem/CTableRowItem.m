@@ -57,7 +57,11 @@
 
 - (id)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model
 {
-	if(self = [self initWithKey:key title:title models:[NSArray arrayWithObject:model]]) {
+	NSArray* models = nil;
+	if(model != nil) {
+		models = [NSArray arrayWithObject:model];
+	}
+	if(self = [self initWithKey:key title:title models:models]) {
 	}
 	
 	return self;
@@ -72,7 +76,7 @@
 {
 	[super activate];
 	CLogDebug(nil, @"%@ activate", self);
-	self.isHiddenObserver = [CObserver observerWithKeyPath:@"isHidden" ofObject:self action:^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.isHiddenObserver = [CObserver observerWithKeyPath:@"isHidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[(CTableSectionItem*)self.superitem tableRowItem:self didChangeHiddenFrom:[oldValue boolValue] to:[newValue boolValue]];
 	}];
 }

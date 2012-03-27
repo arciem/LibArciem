@@ -546,3 +546,195 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 }
 
 @end
+
+@interface CFrame ()
+
+@property (weak, readwrite, nonatomic) UIView* view;
+
+@end
+
+
+@implementation CFrame
+
+@synthesize view = view_;
+@synthesize frame = frame_;
+
+- (id)initWithView:(UIView*)view
+{
+	if(self = [super init]) {
+		view_ = view;
+	}
+	
+	return self;
+}
+
++ (CFrame*)frameWithView:(UIView*)view
+{
+	return [[self alloc] initWithView:view];
+}
+
+- (void)dealloc
+{
+	if(!CGRectEqualToRect(frame_, view_.frame)) {
+		view_.frame = CGRectIntegral(frame_);
+	}
+}
+
+- (CGPoint)origin
+{
+	return self.frame.origin;
+}
+
+- (CGSize)size
+{
+	return self.frame.size;
+}
+
+- (CGFloat)width
+{
+	return self.frame.size.width;
+}
+
+- (CGFloat)height
+{
+	return self.frame.size.height;
+}
+
+- (CGPoint)center
+{
+	return CGPointMake(self.centerX, self.centerY);
+}
+
+- (CGFloat)top
+{
+	return self.frame.origin.y;
+}
+
+- (CGFloat)bottom
+{
+	return CGRectGetMaxY(self.frame);
+}
+
+- (CGFloat)left
+{
+	return self.frame.origin.x;
+}
+
+- (CGFloat)right
+{
+	return CGRectGetMaxX(self.frame);
+}
+
+- (CGFloat)centerX
+{
+	return self.left + self.width / 2;
+}
+
+- (CGFloat)centerY
+{
+	return self.top + self.height / 2;
+}
+
+- (CGFloat)flexibleTop
+{
+	return self.top;
+}
+
+- (CGFloat)flexibleBottom
+{
+	return self.bottom;
+}
+
+- (CGFloat)flexibleLeft
+{
+	return self.left;
+}
+
+- (CGFloat)flexibleRight
+{
+	return self.right;
+}
+
+- (void)setOrigin:(CGPoint)origin
+{
+	frame_.origin = origin;
+}
+
+- (void)setSize:(CGSize)size
+{
+	frame_.size = size;
+}
+
+- (void)setWidth:(CGFloat)width
+{
+	frame_.size.width = width;
+}
+
+- (void)setHeight:(CGFloat)height
+{
+	frame_.size.height = height;
+}
+
+- (void)setTop:(CGFloat)top
+{
+	frame_.origin.y = top;
+}
+
+- (void)setBottom:(CGFloat)bottom
+{
+	frame_.origin.y = bottom - frame_.size.height;
+}
+
+- (void)setLeft:(CGFloat)left
+{
+	frame_.origin.x = left;
+}
+
+- (void)setRight:(CGFloat)right
+{
+	frame_.origin.x = right - frame_.size.width;
+}
+
+- (void)setCenterX:(CGFloat)x
+{
+	frame_.origin.x = x - frame_.size.width / 2;
+}
+
+- (void)setCenterY:(CGFloat)y
+{
+	frame_.origin.y = y - frame_.size.height / 2;
+}
+
+- (void)setCenter:(CGPoint)center
+{
+	frame_.origin.x = center.x - frame_.size.width / 2;
+	frame_.origin.y = center.y - frame_.size.height / 2;
+}
+
+- (void)setFlexibleTop:(CGFloat)top
+{
+	CGFloat delta = top - self.top;
+	frame_.origin.y = top;
+	frame_.size.height -= delta;
+}
+
+- (void)setFlexibleBottom:(CGFloat)bottom
+{
+	CGFloat delta = self.bottom - bottom;
+	frame_.size.height -= delta;
+}
+
+- (void)setFlexibleLeft:(CGFloat)left
+{
+	CGFloat delta = left - self.left;
+	frame_.origin.x = left;
+	frame_.size.width -= delta;
+}
+
+- (void)setFlexibleRight:(CGFloat)right
+{
+	CGFloat delta = self.right - right;
+	frame_.size.width -= delta;
+}
+
+@end

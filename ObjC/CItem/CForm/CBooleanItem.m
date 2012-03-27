@@ -18,6 +18,7 @@
 
 #import "CBooleanItem.h"
 #import "CMultiChoiceItem.h"
+#import "CTableBooleanItem.h"
 
 @implementation CBooleanItem
 
@@ -60,7 +61,7 @@
 
 	if([self.superitem isKindOfClass:[CMultiChoiceItem class]]) {
 		CMultiChoiceItem* parent = (CMultiChoiceItem*)self.superitem;
-		[parent didSelectSubitem:self];
+		[parent selectSubitem:self];
 	} else {
 		self.booleanValue = !self.booleanValue;
 	}
@@ -68,6 +69,12 @@
 	shouldDeselect = YES;
 
 	return shouldDeselect;
+}
+
+- (NSArray*)tableRowItems
+{
+	CTableBooleanItem* item = [CTableBooleanItem itemWithKey:self.key title:self.title booleanItem:self];
+	return [NSArray arrayWithObject:item];
 }
 
 @end
