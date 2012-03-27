@@ -18,16 +18,34 @@
 
 #import "CTableMultiChoiceItem.h"
 
+@interface CTableMultiChoiceItem ()
+
+
+
+@end
+
 @implementation CTableMultiChoiceItem
+
+@synthesize requiresDrillDown = requiresDrillDown_;
+
+- (id)initWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
+{
+	if(self = [super initWithKey:key title:title model:item]) {
+		if(self.model.subitems.count > 4) {
+			self.requiresDrillDown = YES;
+		}
+	}
+	return self;
+}
 
 + (CTableMultiChoiceItem*)itemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
 {
-	return [[self alloc] initWithKey:key title:title model:item];
+	return [[self alloc] initWithKey:key title:title multiChoiceItem:item];
 }
 
 - (BOOL)isUnselectable
 {
-	return YES;
+	return !self.requiresDrillDown;
 }
 
 - (NSString*)defaultCellType

@@ -455,7 +455,7 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-	CLogDebug(nil, @"moveRowAtIndexPath:%@ toIndexPath:%@", sourceIndexPath, destinationIndexPath);
+//	CLogDebug(nil, @"moveRowAtIndexPath:%@ toIndexPath:%@", sourceIndexPath, destinationIndexPath);
 	NSAssert(sourceIndexPath.section == destinationIndexPath.section, @"Moving between sections unsupported.");
 
 	NSInteger moveOffset = destinationIndexPath.row - sourceIndexPath.row;

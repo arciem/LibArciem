@@ -77,7 +77,7 @@
 
 - (void)syncCardType
 {
-	CLogDebug(nil, @"cardType:%@", self.creditCardItem.cardType);
+//	CLogDebug(nil, @"cardType:%@", self.creditCardItem.cardType);
 	[self layoutCardViewsAnimated:YES];
 }
 			
@@ -129,7 +129,7 @@
 			frame = CGRectIntegral(frame);
 			view.frame = frame;
 			
-			CLogDebug(nil, @"%@: %@", cardType, view);
+//			CLogDebug(nil, @"%@: %@", cardType, view);
 			
 			x += frame.size.width + kGutter;
 		}

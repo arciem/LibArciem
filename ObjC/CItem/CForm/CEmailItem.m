@@ -26,7 +26,9 @@ static NSString* const kEmailRegularExpression = @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(
 
 - (void)setup
 {
+	[super setup];
 	self.validRegularExpression = kEmailRegularExpression;
+	self.autocapitalization = @"none";
 }
 
 @end

@@ -20,4 +20,10 @@
 
 @implementation CPasswordItem
 
+- (void)setup
+{
+	[super setup];
+	self.autocapitalization = @"none";
+}
+
 @end

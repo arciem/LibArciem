@@ -23,6 +23,7 @@
 #import "CTableBooleanItem.h"
 #import "CRepeatingItem.h"
 #import "CTableAddRepeatingItem.h"
+#import "CTableMultiChoiceItem.h"
 
 @interface CFormTableView ()
 
@@ -146,6 +147,8 @@
 		CRepeatingItem* repeatingItem = (CRepeatingItem*)row.model;
 		deselect();
 		[repeatingItem addSubitemFromTemplate];
+	} else if([row isKindOfClass:[CTableMultiChoiceItem class]]) {
+		
 	}
 }
 

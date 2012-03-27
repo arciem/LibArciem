@@ -24,6 +24,7 @@
 @property (nonatomic) NSUInteger minValidChoices;
 @property (nonatomic) NSUInteger maxValidChoices;
 @property (readonly, nonatomic) NSUInteger choicesCount;
+@property (copy, nonatomic) NSArray* choices;
 
 - (void)didSelectSubitem:(CBooleanItem*)item;
 

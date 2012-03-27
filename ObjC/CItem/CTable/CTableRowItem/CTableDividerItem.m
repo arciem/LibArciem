@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2012 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,13 +16,18 @@
  
  *******************************************************************************/
 
-#import "CTableRowItem.h"
-#import "CMultiChoiceItem.h"
+#import "CTableDividerItem.h"
 
-@interface CTableMultiChoiceItem : CTableRowItem
+@implementation CTableDividerItem
 
-@property (nonatomic) BOOL requiresDrillDown;
++ (CTableDividerItem*)itemWithKey:(NSString*)key title:(NSString*)title dividerItem:(CDividerItem*)dividerItem
+{
+	return [[self alloc] initWithKey:key title:title model:dividerItem];
+}
 
-+ (CTableMultiChoiceItem*)itemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item;
+- (NSString*)defaultCellType
+{
+	return @"CDividerTableViewCell";
+}
 
 @end

@@ -56,6 +56,8 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	}
 	
 	minLength_ = [[self.dict objectForKey:@"minLength"] unsignedIntValue];
+	
+	[self syncToValidCharacters];
 }
 
 + (CItem*)stringItemWithDictionary:(NSDictionary*)dict
@@ -165,6 +167,38 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 - (NSInteger)remainingLength
 {
 	return [self remainingLengthForLength:self.currentLength];
+}
+
+#pragma mark - @property autocapitalization
+
+- (NSString*)autocapitalization
+{
+	return [self.dict objectForKey:@"autocapitalization"];
+}
+
+- (void)setAutocapitalization:(NSString *)autocapitalization
+{
+	[self.dict setObject:autocapitalization forKey:@"autocapitalization"];
+}
+
+#pragma mark - @property validCharacters
+
+- (NSString*)validCharacters
+{
+	return [self.dict objectForKey:@"validCharacters"];
+}
+
+- (void)setValidCharacters:(NSString *)validCharacters
+{
+	[self.dict setObject:validCharacters forKey:@"validCharacters"];
+	[self syncToValidCharacters];
+}
+
+- (void)syncToValidCharacters
+{
+	if(!IsEmptyString(self.validCharacters)) {
+		self.validCharacterSet = [NSCharacterSet characterSetWithCharactersInString:self.validCharacters];
+	}
 }
 
 #pragma mark - @property validCharacterSet

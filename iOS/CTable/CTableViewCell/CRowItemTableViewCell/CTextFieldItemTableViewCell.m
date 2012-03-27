@@ -25,6 +25,7 @@
 #import "Geom.h"
 #import "CEmailItem.h"
 #import "CPhoneItem.h"
+#import "StringUtils.h"
 
 @interface CTextFieldItemTableViewCell ()
 
@@ -191,6 +192,19 @@
 			textField.secureTextEntry = NO;
 //			textField.clearsOnBeginEditing = NO;
 		}
+		
+		if([model.autocapitalization isEqualToString:@"none"]) {
+			textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+		} else if([model.autocapitalization isEqualToString:@"words"]) {
+			textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+		} else if([model.autocapitalization isEqualToString:@"all"]) {
+			textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+		} else if(IsEmptyString(model.autocapitalization) || [model.autocapitalization isEqualToString:@"sentences"]) {
+			textField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+		} else {
+			NSAssert1(false, @"Unknown autocapitalization type:%@", model.autocapitalization);
+		}
+		
 		if([model isKindOfClass:[CEmailItem class]]) {
 			keyboardType = UIKeyboardTypeEmailAddress;
 		} else if([model isKindOfClass:[CPhoneItem class]]) {

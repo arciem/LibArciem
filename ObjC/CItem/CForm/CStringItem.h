@@ -36,8 +36,10 @@ enum {
 @property (nonatomic) NSUInteger maxLength;
 @property (readonly, nonatomic) NSInteger remainingLength;
 @property (copy, nonatomic) NSCharacterSet* validCharacterSet;
+@property (copy, nonatomic) NSString* validCharacters;
 @property (copy, nonatomic) NSString* validRegularExpression;
 @property (nonatomic) NSUInteger fieldCharacterWidth;
+@property (nonatomic) NSString* autocapitalization; // sentences, none, words, all
 
 + (CItem*)stringItem;
 + (CItem*)stringItemWithDictionary:(NSDictionary*)dict;
