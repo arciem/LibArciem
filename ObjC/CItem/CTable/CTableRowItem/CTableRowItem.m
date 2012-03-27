@@ -18,10 +18,13 @@
 
 #import "CTableRowItem.h"
 #import "ObjectUtils.h"
+#import "CObserver.h"
+#import "CTableSectionItem.h"
 
 @interface CTableRowItem ()
 
 @property (strong, nonatomic) NSMutableArray* nonretainedModels;
+@property (strong, nonatomic) CObserver* isHiddenObserver;
 
 @end
 
@@ -30,6 +33,7 @@
 @synthesize nonretainedModels = nonretainedModels_;
 @synthesize isDeletable = isDeletable_;
 @synthesize isReorderable = isReorderable_;
+@synthesize isHiddenObserver = isHiddenObserver_;
 @dynamic model;
 
 + (void)initialize
@@ -62,6 +66,22 @@
 - (void)dealloc
 {
 	CLogTrace(@"C_TABLE_ROW_ITEM", @"%@ dealloc", [self formatObjectWithValues:nil]);
+}
+
+- (void)activate
+{
+	[super activate];
+	CLogDebug(nil, @"%@ activate", self);
+	self.isHiddenObserver = [CObserver observerWithKeyPath:@"isHidden" ofObject:self action:^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[(CTableSectionItem*)self.superitem tableRowItem:self didChangeHiddenFrom:[oldValue boolValue] to:[newValue boolValue]];
+	}];
+}
+
+- (void)deactivate
+{
+	CLogDebug(nil, @"%@ deactivate", self);
+	self.isHiddenObserver = nil;
+	[super deactivate];
 }
 
 - (NSString*)cellType

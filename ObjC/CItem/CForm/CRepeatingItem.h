@@ -26,6 +26,7 @@
 @property (nonatomic) NSUInteger maxValidRepeats;
 @property (nonatomic) NSUInteger startRepeats;
 @property (copy, nonatomic) NSString* addAnotherPrompt;
+@property (nonatomic) BOOL isReordering;
 
 - (CItem*)addSubitemFromTemplate;
 

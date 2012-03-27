@@ -29,11 +29,14 @@
 @implementation CTableSectionItem
 
 @synthesize subitemsObserver = subitemsObserver_;
+@synthesize isReordering = isReordering_;
 
 - (void)setup
 {
 	CObserverBlock action = ^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[(CTableItem*)self.superitem tableSectionItem:self rowsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
+		if(!self.isReordering) {
+			[(CTableItem*)self.superitem tableSectionItem:self rowsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
+		}
 	};
 	
 	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
@@ -42,6 +45,11 @@
 + (CTableSectionItem*)item
 {
 	return [[self alloc] init];
+}
+
+- (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden
+{
+	[(CTableItem*)self.superitem tableRowItem:rowItem didChangeHiddenFrom:fromHidden to:toHidden];
 }
 
 @end

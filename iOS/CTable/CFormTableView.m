@@ -27,7 +27,6 @@
 @interface CFormTableView ()
 
 @property (strong, nonatomic) CTableManager* tableManager;
-@property (strong, nonatomic) NSMutableArray* observers;
 
 @end
 
@@ -36,7 +35,6 @@
 @synthesize model = model_;
 @synthesize tableManager = tableManager_;
 @synthesize cellClassSubstitutions = cellClassSubstitutions_;
-@synthesize observers = observers_;
 
 + (void)initialize
 {
@@ -52,7 +50,6 @@
 	self.tableManager.delegate = self;
 	self.dataSource = self.tableManager;
 	self.delegate = self.tableManager;
-	self.observers = [NSMutableArray array];
 }
 
 - (void)awakeFromNib
@@ -118,13 +115,14 @@
 - (void)setModel:(CItem *)model
 {
 	if(model_ != model) {
-		[self.observers removeAllObjects];
+		[model_ deactivateAll];
 		model_ = model;
 //		model_.printHierarchyAfterValidate = YES;
 		CTableItem* tableModel = nil;
 		if(model != nil) {
 			tableModel = [self tableItemForModel:model_];
 			[self addSubstitutions:tableModel];
+			[tableModel activateAll];
 		}
 		self.tableManager.model = tableModel;
 	}

@@ -62,4 +62,9 @@
 	[self.delegate tableSectionItem:tableSectionItem rowsDidChangeWithNew:newItems old:oldItems kind:kind indexes:indexes];
 }
 
+- (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden
+{
+	[self.delegate tableRowItem:rowItem didChangeHiddenFrom:fromHidden to:toHidden];
+}
+
 @end

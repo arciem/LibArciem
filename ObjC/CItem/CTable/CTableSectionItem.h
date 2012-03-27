@@ -18,8 +18,14 @@
 
 #import "CItem.h"
 
+@class CTableRowItem;
+
 @interface CTableSectionItem : CItem
 
+@property (nonatomic) BOOL isReordering;
+
 + (CTableSectionItem*)item;
+
+- (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden;
 
 @end

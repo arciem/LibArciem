@@ -178,6 +178,60 @@
 	}
 }
 
+- (NSIndexPath*)indexPathForRow:(CTableRowItem*)rowItem
+{
+	__block NSIndexPath* indexPath = nil;
+	[self.visibleSections enumerateObjectsUsingBlock:^(CTableSectionItem* sectionItem, NSUInteger sectionIndex, BOOL *stop) {
+		NSArray* rows = [self rowsForSection:sectionIndex];
+		[rows enumerateObjectsUsingBlock:^(CTableRowItem* aRowItem, NSUInteger rowIndex, BOOL *stop) {
+			if(aRowItem == rowItem) {
+				indexPath = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
+				*stop = YES;
+			}
+		}];
+		
+		if(indexPath != nil) {
+			*stop = YES;
+		}
+	}];
+	
+	return indexPath;
+}
+
+- (NSIndexPath*)indexPathForShowingHiddenRow:(CTableRowItem*)rowItem
+{
+	NSIndexPath* indexPath = nil;
+	
+	CTableSectionItem* sectionItem = (CTableSectionItem*)rowItem.superitem;
+	NSUInteger sectionIndex = [self.visibleSections indexOfObject:sectionItem];
+	if(sectionIndex != NSNotFound) {
+		NSArray* rows = sectionItem.visibleSubitems;
+		NSUInteger rowIndex = [rows indexOfObject:rowItem];
+		if(rowIndex != NSNotFound) {
+			indexPath = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
+		}
+	}
+	
+	return indexPath;
+}
+
+- (void)setRow:(CTableRowItem*)rowItem hidden:(BOOL)hidden withRowAnimation:(UITableViewRowAnimation)animation
+{
+	if(hidden) {
+		NSIndexPath* indexPath = [self indexPathForRow:rowItem];
+		if(indexPath != nil) {
+			[self invalidateRowAtIndexPath:indexPath];
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:animation];
+		}
+	} else {
+		NSIndexPath* indexPath = [self indexPathForShowingHiddenRow:rowItem];
+		if(indexPath != nil) {
+			[self invalidateRowsForSection:indexPath.section];
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:animation];
+		}
+	}
+}
+
 - (void)replaceSectionAtIndex:(NSUInteger)leavingSectionIndex withSectionWithKey:(NSString*)newSectionKey
 {
 	CTableSectionItem* leavingSection = [self sectionForIndex:leavingSectionIndex];
@@ -221,7 +275,7 @@
 	return [self.sections objectAtIndex:sectionIndex];
 }
 
-- (NSArray*)rowsForSection:(NSUInteger)sectionIndex
+- (NSMutableArray*)rowsForSection:(NSUInteger)sectionIndex
 {
 	NSNumber* sectionIndexNumber = [NSNumber numberWithUnsignedInteger:sectionIndex];
 	NSMutableDictionary* dict = self.visibleRowsBySection;
@@ -229,10 +283,10 @@
 		dict = [NSMutableDictionary dictionary];
 		self.visibleRowsBySection = dict;
 	}
-	NSArray* rows = [dict objectForKey:sectionIndexNumber];
+	NSMutableArray* rows = [dict objectForKey:sectionIndexNumber];
 	if(rows == nil) {
 		CTableSectionItem* section = [self sectionForIndex:sectionIndex];
-		rows = section.visibleSubitems;
+		rows = [section.visibleSubitems mutableCopy];
 		[dict setObject:rows forKey:sectionIndexNumber];
 	}
 	return rows;
@@ -242,6 +296,15 @@
 {
 	NSNumber* sectionIndexNumber = [NSNumber numberWithUnsignedInteger:sectionIndex];
 	[self.visibleRowsBySection removeObjectForKey:sectionIndexNumber];
+}
+
+- (void)invalidateRowAtIndexPath:(NSIndexPath*)indexPath
+{
+	NSNumber* sectionIndexNumber = [NSNumber numberWithUnsignedInteger:indexPath.section];
+	NSMutableArray* rows = [self.visibleRowsBySection objectForKey:sectionIndexNumber];
+	if(rows != nil) {
+		[rows removeObjectAtIndex:indexPath.row];
+	}
 }
 
 - (CTableRowItem*)rowAtIndexPath:(NSIndexPath*)indexPath
@@ -386,13 +449,42 @@
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
-	CLogDebug(nil, @"%@ canMoveRowAtIndexPath:%@ value:%d", self, indexPath, rowItem.isReorderable);
+//	CLogDebug(nil, @"%@ canMoveRowAtIndexPath:%@ value:%d", self, indexPath, rowItem.isReorderable);
 	return rowItem.isReorderable;
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
 	CLogDebug(nil, @"moveRowAtIndexPath:%@ toIndexPath:%@", sourceIndexPath, destinationIndexPath);
+	NSAssert(sourceIndexPath.section == destinationIndexPath.section, @"Moving between sections unsupported.");
+
+	NSInteger moveOffset = destinationIndexPath.row - sourceIndexPath.row;
+
+	NSMutableArray* sourceRows = [self rowsForSection:sourceIndexPath.section];
+	CTableRowItem* rowItem = [sourceRows objectAtIndex:sourceIndexPath.row];
+	CTableSectionItem* sectionItem = (CTableSectionItem*)rowItem.superitem;
+	NSUInteger rowIndex = [sectionItem.subitems indexOfObject:rowItem];
+	NSUInteger rowDestinationIndex = rowIndex + moveOffset;
+	
+	sectionItem.isReordering = YES;
+	[sectionItem.subitems removeObject:rowItem];
+	[sectionItem.subitems insertObject:rowItem atIndex:rowDestinationIndex];
+	sectionItem.isReordering = NO;
+
+	CItem* modelItem = rowItem.model;
+	CRepeatingItem* repeatingItem = (CRepeatingItem*)modelItem.superitem;
+	NSUInteger modelItemIndex = [repeatingItem.subitems indexOfObject:modelItem];
+	NSUInteger modelDestinationIndex = modelItemIndex + moveOffset;
+
+	repeatingItem.isReordering = YES;
+	[repeatingItem.subitems removeObject:modelItem];
+	[repeatingItem.subitems insertObject:modelItem atIndex:modelDestinationIndex];
+	repeatingItem.isReordering = NO;
+	
+	[self invalidateRowsForSection:sourceIndexPath.section];
+	
+	[self.model printHierarchy];
+	[repeatingItem printHierarchy];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -508,6 +600,12 @@
 			NSAssert1(false, @"Unimplemented change kind:%d", kind);
 			break;
 	}
+}
+
+- (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden
+{
+	CLogDebug(nil, @"%@ tableRowItem:%@ didChangeHiddenFrom:%d to:%d", self, rowItem, fromHidden, toHidden);
+	[self setRow:rowItem hidden:rowItem.isHidden withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - @protocol CRowItemTableViewCellDelegate
