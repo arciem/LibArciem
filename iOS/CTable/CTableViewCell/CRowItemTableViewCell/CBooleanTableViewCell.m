@@ -77,12 +77,13 @@
 {
 	[super layoutSubviews];
 	
-	[self.checkmarkButton sizeToFit];
+	CFrame* checkmarkButtonFrame = self.checkmarkButton.cframe;
+	[checkmarkButtonFrame sizeToFit];
 
-	self.checkmarkButton.left = 20;
-	self.checkmarkButton.centerY = self.contentView.boundsCenterY;
+	checkmarkButtonFrame.left = 20;
+	checkmarkButtonFrame.centerY = self.contentView.boundsCenterY;
 	
-	self.textLabel.flexibleLeft = self.checkmarkButton.right + 8;
+	self.textLabel.cframe.flexibleLeft = checkmarkButtonFrame.right + 8;
 }
 
 #pragma mark - @property checkmarkButton

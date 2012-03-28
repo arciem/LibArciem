@@ -245,7 +245,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 		CGRect frame = CGRectMake(0, 0, (self.boundsWidth / 2) - 5, kCWorkerDebugViewHeight);
 		CWorkerDebugView* view = [[CWorkerDebugView alloc] initWithFrame:frame worker:worker];
 		view.alpha = 0.0;
-		view.centerX = self.boundsLeft;
+		view.cframe.centerX = self.boundsLeft;
 		view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		[self.queuedWorkerViews addObject:view];
 		[self addSubview:view];
@@ -255,7 +255,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 	if(addedWorkers.count > 0) {
 		[self updateQueuedWorkerViewsRows];
 		for(CWorkerDebugView* view in addedViews) {
-			view.top = [self topForView:view];
+			view.cframe.top = [self topForView:view];
 		}
 		[self setNeedsAnimatedLayout];
 	}

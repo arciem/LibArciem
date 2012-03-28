@@ -437,7 +437,7 @@
 	}
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
 	cell.rowItem = rowItem;
-	cell.size = CGSizeMake(tableView.width, result);
+	cell.cframe.size = CGSizeMake(tableView.width, result);
 	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	[cell sizeToFit];

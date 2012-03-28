@@ -149,10 +149,10 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	[super layoutSubviews];
 
 	for(CFieldValidationView* validationView in self.validationViews) {
-		[validationView sizeToFit];
-		validationView.right = self.contentView.boundsRight - 10;
-		validationView.centerY = self.boundsCenterY;
-		validationView.frame = CGRectIntegral(self.validationView.frame);
+		CFrame* validationViewFrame = validationView.cframe;
+		[validationViewFrame sizeToFit];
+		validationViewFrame.right = self.contentView.boundsRight - 10;
+		validationViewFrame.centerY = self.boundsCenterY;
 	}
 }
 

@@ -20,6 +20,8 @@
 
 extern NSString* const sTapInBackgroundNotification;
 
+@class CFrame;
+
 @interface UIView (UIViewUtils)
 
 - (void)fillRect:(CGRect)rect color:(UIColor*)color;
@@ -64,25 +66,18 @@ extern NSString* const sTapInBackgroundNotification;
 // See: http://stackoverflow.com/questions/2997501/cgcontextsetshadow-shadow-direction-reversed-between-ios-3-0-and-4-0
 + (NSInteger)shadowVerticalMultiplier;
 
-@property(nonatomic) CGPoint origin;
-@property(nonatomic) CGSize size;
-@property(nonatomic) CGFloat width;
-@property(nonatomic) CGFloat height;
+@property(readonly, nonatomic) CGPoint origin;
+@property(readonly, nonatomic) CGSize size;
+@property(readonly, nonatomic) CGFloat width;
+@property(readonly, nonatomic) CGFloat height;
 
-// setting these will not change the size of the view, only its position
-@property(nonatomic) CGFloat top;
-@property(nonatomic) CGFloat bottom;
-@property(nonatomic) CGFloat left;
-@property(nonatomic) CGFloat right;
+@property(readonly, nonatomic) CGFloat top;
+@property(readonly, nonatomic) CGFloat bottom;
+@property(readonly, nonatomic) CGFloat left;
+@property(readonly, nonatomic) CGFloat right;
 
-@property(nonatomic) CGFloat centerX;
-@property(nonatomic) CGFloat centerY;
-
-// setting these will change the size of the view
-@property(nonatomic) CGFloat flexibleTop;
-@property(nonatomic) CGFloat flexibleBottom;
-@property(nonatomic) CGFloat flexibleLeft;
-@property(nonatomic) CGFloat flexibleRight;
+@property(readonly, nonatomic) CGFloat centerX;
+@property(readonly, nonatomic) CGFloat centerY;
 
 @property(readonly, nonatomic) CGPoint boundsOrigin;
 @property(readonly, nonatomic) CGSize boundsSize;
@@ -97,6 +92,8 @@ extern NSString* const sTapInBackgroundNotification;
 @property(readonly, nonatomic) CGFloat boundsCenterX;
 @property(readonly, nonatomic) CGFloat boundsCenterY;
 @property(readonly, nonatomic) CGPoint boundsCenter;
+
+- (CFrame*)cframe NS_RETURNS_RETAINED;
 
 @end
 
@@ -126,6 +123,8 @@ extern NSString* const sTapInBackgroundNotification;
 @property(nonatomic) CGFloat flexibleLeft;
 @property(nonatomic) CGFloat flexibleRight;
 
-+ (CFrame*)frameWithView:(UIView*)view;
++ (CFrame*)frameWithView:(UIView*)view NS_RETURNS_RETAINED;
+
+- (void)sizeToFit;
 
 @end

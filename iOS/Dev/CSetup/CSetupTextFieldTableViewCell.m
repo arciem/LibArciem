@@ -79,9 +79,10 @@
 	[self.textLabel sizeToFit];
 	self.textLabel.frame = CGRectIntegral([Geom alignRectMidY:self.textLabel.frame toY:CGRectGetMidY(self.contentView.bounds)]);
 
-	self.textField.frame = self.textLabel.frame;
-	self.textField.flexibleRight = self.contentView.boundsRight - 10;
-	self.textField.flexibleLeft = self.textFieldLeft;
+	CFrame* textFieldFrame = self.textField.cframe;
+	textFieldFrame.frame = self.textLabel.frame;
+	textFieldFrame.flexibleRight = self.contentView.boundsRight - 10;
+	textFieldFrame.flexibleLeft = self.textFieldLeft;
 }
 
 @end

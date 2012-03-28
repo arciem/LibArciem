@@ -111,11 +111,10 @@
 	
 	UIFont* font = self.button.titleLabel.font;
 	CGSize titleSize = [self.rowItem.model.title sizeWithFont:font];
-	self.button.width = roundf(titleSize.width / 2.0) * 2.0 + 20;
-	self.button.height = 28;
-
-	self.button.center = self.boundsCenter;
-	self.button.frame = CGRectIntegral(self.button.frame);
+	CFrame* buttonFrame = self.button.cframe;
+	buttonFrame.width = roundf(titleSize.width / 2.0) * 2.0 + 20;
+	buttonFrame.height = 28;
+	buttonFrame.center = self.boundsCenter;
 }
 
 - (IBAction)tapped

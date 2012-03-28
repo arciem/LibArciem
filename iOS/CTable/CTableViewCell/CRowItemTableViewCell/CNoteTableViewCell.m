@@ -57,11 +57,11 @@
 
 	CGRect bounds = self.bounds;
 	CGRect insetBounds = UIEdgeInsetsInsetRect(bounds, self.labelInsets);
-	CGRect textLabelFrame = [self convertRect:insetBounds toView:self.contentView];
-	CGFloat originalWidth = textLabelFrame.size.width;
-	self.textLabel.frame = textLabelFrame;
-	[self.textLabel sizeToFit];
-	self.textLabel.width = originalWidth;
+	CFrame* textLabelFrame = self.textLabel.cframe;
+	textLabelFrame.frame = [self convertRect:insetBounds toView:self.contentView];
+	CGFloat originalWidth = textLabelFrame.width;
+	[textLabelFrame sizeToFit];
+	textLabelFrame.width = originalWidth;
 }
 
 - (NSUInteger)validationViewsNeeded

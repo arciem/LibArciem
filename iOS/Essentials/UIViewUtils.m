@@ -545,6 +545,11 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	[self.superview exchangeSubviewAtIndex:self.indexInSubviews withSubviewAtIndex:swapView.indexInSubviews];
 }
 
+- (CFrame*)cframe NS_RETURNS_RETAINED
+{
+	return [CFrame frameWithView:self];
+}
+
 @end
 
 @interface CFrame ()
@@ -553,22 +558,29 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 @end
 
-
 @implementation CFrame
 
 @synthesize view = view_;
 @synthesize frame = frame_;
 
++ (void)initialize
+{
+	CLogSetTagActive(@"C_FRAME", YES);
+}
+
 - (id)initWithView:(UIView*)view
 {
 	if(self = [super init]) {
 		view_ = view;
+		frame_ = view_.frame;
 	}
+	
+	CLogTrace(@"C_FRAME", @"%@ initWithView:%@", self, view_);
 	
 	return self;
 }
 
-+ (CFrame*)frameWithView:(UIView*)view
++ (CFrame*)frameWithView:(UIView*)view NS_RETURNS_RETAINED
 {
 	return [[self alloc] initWithView:view];
 }
@@ -578,26 +590,27 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	if(!CGRectEqualToRect(frame_, view_.frame)) {
 		view_.frame = CGRectIntegral(frame_);
 	}
+	CLogTrace(@"C_FRAME", @"%@ dealloc:%@", self, view_);
 }
 
 - (CGPoint)origin
 {
-	return self.frame.origin;
+	return frame_.origin;
 }
 
 - (CGSize)size
 {
-	return self.frame.size;
+	return frame_.size;
 }
 
 - (CGFloat)width
 {
-	return self.frame.size.width;
+	return frame_.size.width;
 }
 
 - (CGFloat)height
 {
-	return self.frame.size.height;
+	return frame_.size.height;
 }
 
 - (CGPoint)center
@@ -607,22 +620,22 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (CGFloat)top
 {
-	return self.frame.origin.y;
+	return frame_.origin.y;
 }
 
 - (CGFloat)bottom
 {
-	return CGRectGetMaxY(self.frame);
+	return CGRectGetMaxY(frame_);
 }
 
 - (CGFloat)left
 {
-	return self.frame.origin.x;
+	return frame_.origin.x;
 }
 
 - (CGFloat)right
 {
-	return CGRectGetMaxX(self.frame);
+	return CGRectGetMaxX(frame_);
 }
 
 - (CGFloat)centerX
@@ -735,6 +748,11 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 {
 	CGFloat delta = self.right - right;
 	frame_.size.width -= delta;
+}
+
+- (void)sizeToFit
+{
+	frame_.size = [view_ sizeThatFits:frame_.size];
 }
 
 @end

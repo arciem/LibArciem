@@ -160,7 +160,7 @@
 				break;
 		}
 		[UIView animateWithDuration:duration delay:0 options:options animations:^{
-			self.flexibleBottom = newMaxY;
+			self.cframe.flexibleBottom = newMaxY;
 		} completion:NULL];
 		[UIView commitAnimations];
 	}

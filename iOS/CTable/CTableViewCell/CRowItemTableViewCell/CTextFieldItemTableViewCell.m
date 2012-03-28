@@ -160,13 +160,13 @@
 		textField.font = font;
 		
 		CFieldValidationView* validationView = [validationViews objectAtIndex:index];
-		validationView.centerY = textField.centerY;
+		CFrame* validationViewFrame = validationView.cframe;
+		validationViewFrame.centerY = textField.centerY;
 		if(count == 2 && index == 0) {
-			validationView.right = textField.left - 8;
+			validationViewFrame.right = textField.left - 8;
 		} else {
-			validationView.left = textField.right + 8;
+			validationViewFrame.left = textField.right + 8;
 		}
-		validationView.frame = CGRectIntegral(validationView.frame);
 
 		fieldRect.origin.x += fieldRect.size.width + gap;
 		index++;
