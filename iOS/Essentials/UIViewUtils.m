@@ -137,6 +137,11 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	return nil;
 }
 
+- (void)resignAnyFirstResponder
+{
+	[[self findFirstResponder] resignFirstResponder];
+}
+
 // Disabled because compiler complains of possible leak in performSelector due to unknown selector
 #if 0
 - (void)viewHierarchyPerformSelector:(SEL)selector withObject:(id)object

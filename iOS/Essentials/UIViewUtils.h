@@ -39,6 +39,7 @@ extern NSString* const sTapInBackgroundNotification;
 - (void)printResponderChain;
 - (UIResponder*)findNextResponderRespondingToSelector:(SEL)selector;
 - (UIResponder*)findFirstResponder;
+- (void)resignAnyFirstResponder;
 - (CGRect)subviewFramesUnion;
 - (void)sizeToFitSubviews;
 - (void)removeAllSubviews;
