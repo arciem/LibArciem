@@ -52,7 +52,9 @@ id<NSObject> ClassAlloc(NSString* className);
 // Creates and initializes a dictionary with key value pairs, with the keys specified first instead of the objects.
 + (id)dictionaryWithKeysAndObjects:(id)firstKey, ... NS_REQUIRES_NIL_TERMINATION;
 
-- (NSUInteger)unsignedIntegerValueForKey:(id)key defaultValue:(NSUInteger)defaultValue;
+- (id)valueForKey:(NSString*)key defaultValue:(id)defaultValue;
+- (NSUInteger)unsignedIntegerValueForKey:(NSString*)key defaultValue:(NSUInteger)defaultValue;
+- (NSString*)stringValueForKey:(NSString*)key defaultValue:(NSString*)defaultValue;
 
 @end
 

@@ -21,6 +21,7 @@
 #import "CCreditCardItem.h"
 #import "UIViewUtils.h"
 #import "Geom.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface CCreditCardItemTableViewCell ()
 
@@ -50,7 +51,7 @@
 		self.cardTypeObserver = nil;
 	} else {
 		__unsafe_unretained CCreditCardItemTableViewCell* self__ = self;
-		CObserverBlock action = ^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 			[self__ syncCardType];
 		};
 		self.cardTypeObserver = [CObserver observerWithKeyPath:@"cardType" ofObject:self.rowItem.model action:action initial:action];
@@ -63,6 +64,12 @@
 			NSAssert1(image != nil, @"no image found for name:%@", imageName);
 			UIImageView* view = [[UIImageView alloc] initWithImage:image];
 			view.contentMode = UIViewContentModeTopLeft;
+			
+			view.layer.shadowColor = [UIColor blackColor].CGColor;
+			view.layer.shadowOffset = CGSizeMake(0, 1);
+			view.layer.shadowOpacity = 0.5;
+			view.layer.shadowRadius = 1.0;
+			
 //			[view sizeToFit];
 			[self.contentView addSubview:view];
 			[self.cardTypeViews addObject:view];
@@ -77,7 +84,7 @@
 
 - (void)syncCardType
 {
-	CLogDebug(nil, @"cardType:%@", self.creditCardItem.cardType);
+//	CLogDebug(nil, @"cardType:%@", self.creditCardItem.cardType);
 	[self layoutCardViewsAnimated:YES];
 }
 			
@@ -108,11 +115,10 @@
 		CGFloat bottomY = self.textField.top - 8;
 		for(NSString* cardType in self.creditCardItem.validCardTypes) {
 			UIView* view = [self.cardTypeViewsByType objectForKey:cardType];
+			CFrame* viewFrame = view.cframe;
 			
-			CGRect frame;
-			frame.size = view.frame.size;
-			frame.origin.y = bottomY - frame.size.height;
-			frame.origin.x = x;
+			viewFrame.top = bottomY - viewFrame.size.height;
+			viewFrame.left = x;
 			
 			if(self.creditCardItem.cardType == nil) {
 				view.alpha = 1.0;
@@ -120,18 +126,13 @@
 				if([cardType isEqualToString:self.creditCardItem.cardType]) {
 					[view bringToFront];
 					view.alpha = 1.0;
-					frame = [Geom alignRectMidX:frame toX:self.contentView.boundsCenterX];
+					viewFrame.frame = [Geom alignRectMidX:viewFrame.frame toX:self.contentView.boundsCenterX];
 				} else {
 					view.alpha = 0.0;
 				}
 			}
 			
-			frame = CGRectIntegral(frame);
-			view.frame = frame;
-			
-			CLogDebug(nil, @"%@: %@", cardType, view);
-			
-			x += frame.size.width + kGutter;
+			x += viewFrame.width + kGutter;
 		}
 	}];
 }
@@ -139,8 +140,8 @@
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
-	self.textField.bottom = self.contentView.boundsHeight - 5;
-	self.validationView.centerY = self.textField.centerY;
+	self.textField.cframe.bottom = self.contentView.boundsHeight - 5;
+	self.validationView.cframe.centerY = self.textField.centerY;
 	[self layoutCardViewsAnimated:NO];
 }
 

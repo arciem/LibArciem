@@ -84,6 +84,7 @@ static NSDictionary* sCardTypeRegularExpressions;
 {
 	[super setup];
 	self.validCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789 -"];
+	self.keyboardType = @"numberPad";
 }
 
 - (NSArray*)validCardTypes

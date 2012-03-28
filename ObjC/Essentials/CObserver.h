@@ -18,14 +18,27 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^CObserverBlock)(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet* indexes);
+typedef void(^CObserverBlock)(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet* indexes);
 
 @interface CObserver : NSObject
 
 - (id)initWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
+- (id)initWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
+
 
 + (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action;
 + (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial;
 + (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
+
++ (CObserver*)observerWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action;
++ (CObserver*)observerWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial;
++ (CObserver*)observerWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
+
+- (void)addObject:(id)object;
+- (void)removeObject:(id)object;
+- (void)addObjects:(NSArray*)array;
+- (void)removeObjects:(NSArray*)array;
+
+@property (copy, nonatomic) NSArray* objects;
 
 @end

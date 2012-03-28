@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2012 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,28 +16,11 @@
  
  *******************************************************************************/
 
-#import "CTableMultiChoiceItem.h"
+#import <Foundation/Foundation.h>
 
-@implementation CTableMultiChoiceItem
+@interface UITextField (TextUtils)
 
-- (id)initWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
-{
-	if(self = [super initWithKey:key title:title model:item]) {
-		if(self.model.subitems.count <= 4) {
-			self.requiresDrillDown = NO;
-		}
-	}
-	return self;
-}
-
-+ (CTableMultiChoiceItem*)itemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
-{
-	return [[self alloc] initWithKey:key title:title multiChoiceItem:item];
-}
-
-- (NSString*)defaultCellType
-{
-	return @"CMultiChoiceItemTableViewCell";
-}
+- (UITextRange*)textRangeFromRange:(NSRange)range;
+- (void)setInsertionPointToOffset:(NSUInteger)offset;
 
 @end

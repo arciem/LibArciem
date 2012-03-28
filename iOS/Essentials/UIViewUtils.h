@@ -17,8 +17,11 @@
  *******************************************************************************/
 
 #import <UIKit/UIKit.h>
+#import "Geom.h"
 
 extern NSString* const sTapInBackgroundNotification;
+
+@class CFrame;
 
 @interface UIView (UIViewUtils)
 
@@ -37,6 +40,7 @@ extern NSString* const sTapInBackgroundNotification;
 - (void)printResponderChain;
 - (UIResponder*)findNextResponderRespondingToSelector:(SEL)selector;
 - (UIResponder*)findFirstResponder;
+- (void)resignAnyFirstResponder;
 - (CGRect)subviewFramesUnion;
 - (void)sizeToFitSubviews;
 - (void)removeAllSubviews;
@@ -61,13 +65,47 @@ extern NSString* const sTapInBackgroundNotification;
 + (void)distributeViewsVertically:(NSArray*)views;
 + (UIEdgeInsets)edgeInsetsNegate:(UIEdgeInsets)insets;
 
-// See: http://stackoverflow.com/questions/2997501/cgcontextsetshadow-shadow-direction-reversed-between-ios-3-0-and-4-0
-+ (NSInteger)shadowVerticalMultiplier;
+@property(readonly, nonatomic) CGPoint origin;
+@property(readonly, nonatomic) CGSize size;
+@property(readonly, nonatomic) CGFloat width;
+@property(readonly, nonatomic) CGFloat height;
+
+@property(readonly, nonatomic) CGFloat top;
+@property(readonly, nonatomic) CGFloat bottom;
+@property(readonly, nonatomic) CGFloat left;
+@property(readonly, nonatomic) CGFloat right;
+
+@property(readonly, nonatomic) CGFloat centerX;
+@property(readonly, nonatomic) CGFloat centerY;
+
+@property(readonly, nonatomic) CGPoint boundsOrigin;
+@property(readonly, nonatomic) CGSize boundsSize;
+@property(readonly, nonatomic) CGFloat boundsWidth;
+@property(readonly, nonatomic) CGFloat boundsHeight;
+
+@property(readonly, nonatomic) CGFloat boundsTop;
+@property(readonly, nonatomic) CGFloat boundsBottom;
+@property(readonly, nonatomic) CGFloat boundsLeft;
+@property(readonly, nonatomic) CGFloat boundsRight;
+
+@property(readonly, nonatomic) CGFloat boundsCenterX;
+@property(readonly, nonatomic) CGFloat boundsCenterY;
+@property(readonly, nonatomic) CGPoint boundsCenter;
+
+- (CFrame*)cframe NS_RETURNS_RETAINED;
+
+@end
+
+@interface CFrame : NSObject
+
+@property(weak, readonly, nonatomic) UIView* view;
+@property(nonatomic) CGRect frame;
 
 @property(nonatomic) CGPoint origin;
 @property(nonatomic) CGSize size;
 @property(nonatomic) CGFloat width;
 @property(nonatomic) CGFloat height;
+@property(nonatomic) CGPoint center;
 
 // setting these will not change the size of the view, only its position
 @property(nonatomic) CGFloat top;
@@ -84,18 +122,8 @@ extern NSString* const sTapInBackgroundNotification;
 @property(nonatomic) CGFloat flexibleLeft;
 @property(nonatomic) CGFloat flexibleRight;
 
-@property(readonly, nonatomic) CGPoint boundsOrigin;
-@property(readonly, nonatomic) CGSize boundsSize;
-@property(readonly, nonatomic) CGFloat boundsWidth;
-@property(readonly, nonatomic) CGFloat boundsHeight;
++ (CFrame*)frameWithView:(UIView*)view NS_RETURNS_RETAINED;
 
-@property(readonly, nonatomic) CGFloat boundsTop;
-@property(readonly, nonatomic) CGFloat boundsBottom;
-@property(readonly, nonatomic) CGFloat boundsLeft;
-@property(readonly, nonatomic) CGFloat boundsRight;
-
-@property(readonly, nonatomic) CGFloat boundsCenterX;
-@property(readonly, nonatomic) CGFloat boundsCenterY;
-@property(readonly, nonatomic) CGPoint boundsCenter;
+- (void)sizeToFit;
 
 @end

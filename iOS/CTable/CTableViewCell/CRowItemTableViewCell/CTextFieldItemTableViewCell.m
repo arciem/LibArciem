@@ -21,10 +21,8 @@
 #import "UIViewUtils.h"
 #import "CStringItem.h"
 #import "CMultiTextItem.h"
-#import "CPasswordItem.h"
-#import "Geom.h"
-#import "CEmailItem.h"
-#import "CPhoneItem.h"
+#import "StringUtils.h"
+#import "TextUtils.h"
 
 @interface CTextFieldItemTableViewCell ()
 
@@ -57,8 +55,9 @@
 		UITextField* field = [[UITextField alloc] initWithFrame:CGRectZero];
 		//		field.backgroundColor = [UIColor greenColor];
 		field.borderStyle = UITextBorderStyleRoundedRect;
-		field.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//		field.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		field.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+		field.contentMode = UIViewContentModeRedraw;
 		[self.textFields addObject:field];
 		[self.contentView addSubview:field];
 		field.delegate = self;
@@ -114,40 +113,27 @@
 {
 	[super layoutSubviews];
 	
-	CLogDebug(nil, @"%@ layoutSubviews", self);
+//	CLogDebug(nil, @"%@ layoutSubviews", self);
 
 	NSUInteger count = self.models.count;
 	
-	CGRect area = CGRectZero;
+	CGFloat gap = IsPad() ? 20 : 10;
 
-	UIFont* font;
-	CGFloat gap;
-	if(IsPad()) {
-		area.size = CGSizeMake(400, 31);
-		font = [UIFont boldSystemFontOfSize:20];
-		gap = 20;
-	} else {
-		area.size = CGSizeMake(250, 31);
-		font = [UIFont systemFontOfSize:14];
-		gap = 10;
-	}
-
-	area = CGRectIntegral([Geom alignRectMid:area toPoint:[Geom rectMid:self.contentView.bounds]]);
-
-	CGRect fieldRect = area;
+	CGRect layoutFrame = self.layoutFrame;
+	
+	__block CGRect fieldRect = layoutFrame;
 	if(count > 2) gap += 30;
-	fieldRect.size.width = area.size.width / count - (gap / 2) * (count - 1);
+	fieldRect.size.width = layoutFrame.size.width / count - (gap / 2) * (count - 1);
 	fieldRect = CGRectIntegral(fieldRect);
 	
 	NSArray* validationViews = self.validationViews;
-	NSUInteger index = 0;
-	for(UITextField* textField in self.textFields) {
+	[self.textFields enumerateObjectsUsingBlock:^(UITextField* textField, NSUInteger idx, BOOL *stop) {
 		CGRect r = fieldRect;
 		
-		CStringItem* model = [self.models objectAtIndex:index];
+		CStringItem* model = [self.models objectAtIndex:idx];
 		NSUInteger fieldCharacterWidth = model.fieldCharacterWidth;
 		if(fieldCharacterWidth > 0) {
-			CGFloat xHeight = font.xHeight;
+			CGFloat xHeight = self.font.xHeight;
 			CGFloat width = fieldCharacterWidth * xHeight * 1.2 + 40;
 			if(width < r.size.width) {
 				CGFloat insetAmount = floorf((r.size.width - width) / 2);
@@ -155,21 +141,62 @@
 			}
 		}
 		
-		textField.frame = r;
-		textField.font = font;
+		textField.cframe.frame = r;
+		textField.font = self.font;
 		
-		CFieldValidationView* validationView = [validationViews objectAtIndex:index];
-		validationView.centerY = textField.centerY;
-		if(count == 2 && index == 0) {
-			validationView.right = textField.left - 8;
+		CFieldValidationView* validationView = [validationViews objectAtIndex:idx];
+		CFrame* validationViewFrame = validationView.cframe;
+		validationViewFrame.centerY = textField.centerY;
+		if(count == 2 && idx == self.textFields.count - 1) {
+			validationViewFrame.left = textField.right + 8;
 		} else {
-			validationView.left = textField.right + 8;
+			validationViewFrame.right = textField.left - 8;
 		}
-		validationView.frame = CGRectIntegral(validationView.frame);
-
+		
 		fieldRect.origin.x += fieldRect.size.width + gap;
-		index++;
+	}];
+}
+
+- (UIKeyboardType)keyboardTypeForModel:(CStringItem*)model
+{
+	UIKeyboardType result = UIKeyboardTypeDefault;
+	
+	NSString* keyboardType = model.keyboardType;
+	if([keyboardType isEqualToString:@"emailAddress"]) {
+		result = UIKeyboardTypeEmailAddress;
+	} else if([keyboardType isEqualToString:@"phonePad"]) {
+		result = UIKeyboardTypePhonePad;
+	} else if([keyboardType isEqualToString:@"numberPad"]) {
+		result = UIKeyboardTypeNumberPad;
+	} else if([keyboardType isEqualToString:@"asciiCapable"]) {
+		result = UIKeyboardTypeASCIICapable;
+	} else if(IsEmptyString(keyboardType) || [keyboardType isEqualToString:@"default"]) {
+		// no action
+	} else {
+		NSAssert1(false, @"Unknown keyboardType:%@", keyboardType);
 	}
+	
+	return result;
+}
+
+- (UITextAutocapitalizationType)autocapitalizationTypeForModel:(CStringItem*)model
+{
+	UITextAutocapitalizationType result = UITextAutocapitalizationTypeSentences;
+
+	NSString* autocapitalizationType = model.autocapitalizationType;
+	if([autocapitalizationType isEqualToString:@"none"]) {
+		result = UITextAutocapitalizationTypeNone;
+	} else if([autocapitalizationType isEqualToString:@"words"]) {
+		result = UITextAutocapitalizationTypeWords;
+	} else if([autocapitalizationType isEqualToString:@"all"]) {
+		result = UITextAutocapitalizationTypeAllCharacters;
+	} else if(IsEmptyString(autocapitalizationType) || [autocapitalizationType isEqualToString:@"sentences"]) {
+		// no action
+	} else {
+		NSAssert1(false, @"Unknown autocapitalizationType:%@", autocapitalizationType);
+	}
+	
+	return result;
 }
 
 - (void)syncToRowItem
@@ -178,31 +205,17 @@
 
 	[self setNumberOfTextFieldsTo:self.models.count];
 
-	NSUInteger index = 0;
-	for(UITextField* textField in self.textFields) {
+	[self.textFields enumerateObjectsUsingBlock:^(UITextField* textField, NSUInteger index, BOOL *stop) {
 		CStringItem* model = [self.models objectAtIndex:index];
+
 		textField.placeholder = model.title;
-		textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-		UIKeyboardType keyboardType = UIKeyboardTypeDefault;
-		if([model isKindOfClass:[CPasswordItem class]]) {
-			textField.secureTextEntry = YES;
-//			textField.clearsOnBeginEditing = YES;
-		} else {
-			textField.secureTextEntry = NO;
-//			textField.clearsOnBeginEditing = NO;
-		}
-		if([model isKindOfClass:[CEmailItem class]]) {
-			keyboardType = UIKeyboardTypeEmailAddress;
-		} else if([model isKindOfClass:[CPhoneItem class]]) {
-			keyboardType = UIKeyboardTypePhonePad;
-		}
-		textField.keyboardType = keyboardType;
-		
 		textField.text = model.stringValue;
-		
-		index++;
-	}
-	
+
+		textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+		textField.autocapitalizationType = [self autocapitalizationTypeForModel:model];
+		textField.keyboardType = [self keyboardTypeForModel:model];
+		textField.secureTextEntry = model.secureTextEntry;
+	}];
 }
 
 - (void)model:(CItem*)model valueDidChangeFrom:(id)oldValue to:(id)newValue
@@ -224,9 +237,9 @@
 	return result;
 }
 
-- (CItem*)modelForTextField:(UITextField*)textField
+- (CStringItem*)modelForTextField:(UITextField*)textField
 {
-	CItem* result = nil;
+	CStringItem* result = nil;
 	
 	NSUInteger index = [self indexOfTextField:textField];
 	if(index != NSNotFound) {
@@ -243,10 +256,13 @@
 	BOOL shouldChange = NO;
 	
 	NSString* resultString = nil;
-	CStringItem* model = (CStringItem*)[self modelForTextField:textField];
+	CStringItem* model = [self modelForTextField:textField];
 	shouldChange = [model shouldChangeCharactersInRange:range inString:textField.text toReplacementString:string resultString:&resultString];
 	if(shouldChange) {
 		model.value = resultString;
+		textField.text = resultString;
+		[textField setInsertionPointToOffset:range.location + string.length];
+		shouldChange = NO;
 	}
 	
 	return shouldChange;
@@ -259,10 +275,12 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-	self.activeItem = [self modelForTextField:textField];
+	CStringItem* model = [self modelForTextField:textField];
+	self.activeItem = model;
+	model.isEditing = YES;
 
 	if(textField.clearsOnBeginEditing) {
-		self.activeItem.value = @"";
+		model.value = @"";
 	}
 	
 	[self.delegate rowItemTableViewCellDidGainFocus:self];
@@ -270,7 +288,9 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-	[self.activeItem validate];
+	CStringItem* model = [self modelForTextField:textField];
+	[model validate];
+	model.isEditing = NO;
 	self.activeItem = nil;
 }
 

@@ -137,6 +137,11 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	return nil;
 }
 
+- (void)resignAnyFirstResponder
+{
+	[[self findFirstResponder] resignFirstResponder];
+}
+
 // Disabled because compiler complains of possible leak in performSelector due to unknown selector
 #if 0
 - (void)viewHierarchyPerformSelector:(SEL)selector withObject:(id)object
@@ -492,17 +497,6 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	return UIEdgeInsetsMake(-insets.top, -insets.left, -insets.bottom, -insets.right);
 }
 
-+ (NSInteger)shadowVerticalMultiplier
-{
-    static NSInteger shadowVerticalMultiplier = 0;
-    if (0 == shadowVerticalMultiplier) {
-        CGFloat systemVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-        shadowVerticalMultiplier = (systemVersion < 3.2f) ? 1 : -1;
-    }
-	
-    return shadowVerticalMultiplier;
-}
-
 - (NSUInteger)indexInSubviews
 {
 	return [self.superview.subviews indexOfObject:self];
@@ -543,6 +537,216 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 - (void)swapDepthsWithView:(UIView*)swapView
 {
 	[self.superview exchangeSubviewAtIndex:self.indexInSubviews withSubviewAtIndex:swapView.indexInSubviews];
+}
+
+- (CFrame*)cframe NS_RETURNS_RETAINED
+{
+	return [CFrame frameWithView:self];
+}
+
+@end
+
+@interface CFrame ()
+
+@property (weak, readwrite, nonatomic) UIView* view;
+
+@end
+
+@implementation CFrame
+
+@synthesize view = view_;
+@synthesize frame = frame_;
+
++ (void)initialize
+{
+//	CLogSetTagActive(@"C_FRAME", YES);
+}
+
+- (id)initWithView:(UIView*)view
+{
+	if(self = [super init]) {
+		view_ = view;
+		frame_ = view_.frame;
+	}
+	
+	CLogTrace(@"C_FRAME", @"%@ initWithView:%@", self, view_);
+	
+	return self;
+}
+
++ (CFrame*)frameWithView:(UIView*)view NS_RETURNS_RETAINED
+{
+	return [[self alloc] initWithView:view];
+}
+
+- (void)dealloc
+{
+	if(!CGRectEqualToRect(frame_, view_.frame)) {
+		view_.frame = CGRectIntegral(frame_);
+	}
+	CLogTrace(@"C_FRAME", @"%@ dealloc:%@", self, view_);
+}
+
+- (CGPoint)origin
+{
+	return frame_.origin;
+}
+
+- (CGSize)size
+{
+	return frame_.size;
+}
+
+- (CGFloat)width
+{
+	return frame_.size.width;
+}
+
+- (CGFloat)height
+{
+	return frame_.size.height;
+}
+
+- (CGPoint)center
+{
+	return CGPointMake(self.centerX, self.centerY);
+}
+
+- (CGFloat)top
+{
+	return frame_.origin.y;
+}
+
+- (CGFloat)bottom
+{
+	return CGRectGetMaxY(frame_);
+}
+
+- (CGFloat)left
+{
+	return frame_.origin.x;
+}
+
+- (CGFloat)right
+{
+	return CGRectGetMaxX(frame_);
+}
+
+- (CGFloat)centerX
+{
+	return self.left + self.width / 2;
+}
+
+- (CGFloat)centerY
+{
+	return self.top + self.height / 2;
+}
+
+- (CGFloat)flexibleTop
+{
+	return self.top;
+}
+
+- (CGFloat)flexibleBottom
+{
+	return self.bottom;
+}
+
+- (CGFloat)flexibleLeft
+{
+	return self.left;
+}
+
+- (CGFloat)flexibleRight
+{
+	return self.right;
+}
+
+- (void)setOrigin:(CGPoint)origin
+{
+	frame_.origin = origin;
+}
+
+- (void)setSize:(CGSize)size
+{
+	frame_.size = size;
+}
+
+- (void)setWidth:(CGFloat)width
+{
+	frame_.size.width = width;
+}
+
+- (void)setHeight:(CGFloat)height
+{
+	frame_.size.height = height;
+}
+
+- (void)setTop:(CGFloat)top
+{
+	frame_.origin.y = top;
+}
+
+- (void)setBottom:(CGFloat)bottom
+{
+	frame_.origin.y = bottom - frame_.size.height;
+}
+
+- (void)setLeft:(CGFloat)left
+{
+	frame_.origin.x = left;
+}
+
+- (void)setRight:(CGFloat)right
+{
+	frame_.origin.x = right - frame_.size.width;
+}
+
+- (void)setCenterX:(CGFloat)x
+{
+	frame_.origin.x = x - frame_.size.width / 2;
+}
+
+- (void)setCenterY:(CGFloat)y
+{
+	frame_.origin.y = y - frame_.size.height / 2;
+}
+
+- (void)setCenter:(CGPoint)center
+{
+	frame_.origin.x = center.x - frame_.size.width / 2;
+	frame_.origin.y = center.y - frame_.size.height / 2;
+}
+
+- (void)setFlexibleTop:(CGFloat)top
+{
+	CGFloat delta = top - self.top;
+	frame_.origin.y = top;
+	frame_.size.height -= delta;
+}
+
+- (void)setFlexibleBottom:(CGFloat)bottom
+{
+	CGFloat delta = self.bottom - bottom;
+	frame_.size.height -= delta;
+}
+
+- (void)setFlexibleLeft:(CGFloat)left
+{
+	CGFloat delta = left - self.left;
+	frame_.origin.x = left;
+	frame_.size.width -= delta;
+}
+
+- (void)setFlexibleRight:(CGFloat)right
+{
+	CGFloat delta = self.right - right;
+	frame_.size.width -= delta;
+}
+
+- (void)sizeToFit
+{
+	frame_.size = [view_ sizeThatFits:frame_.size];
 }
 
 @end

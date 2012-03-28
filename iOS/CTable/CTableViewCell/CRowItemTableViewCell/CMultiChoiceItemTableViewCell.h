@@ -16,8 +16,8 @@
  
  *******************************************************************************/
 
-#import "CRowItemTableViewCell.h"
+#import "CSummaryTableViewCell.h"
 
-@interface CMultiChoiceItemTableViewCell : CRowItemTableViewCell
+@interface CMultiChoiceItemTableViewCell : CSummaryTableViewCell
 
 @end

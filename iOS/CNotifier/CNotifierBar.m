@@ -175,6 +175,7 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 			CNotifierView* view = [[CNotifierView alloc] initWithFrame:CGRectMake(0, top, self.width, self.rowHeight)];
 			view.item = item;
 			view.alpha = alpha;
+			[view layoutIfNeeded];
 			[enteringViews addObject:view];
 			[self addSubview:view];
 		}
@@ -186,20 +187,21 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 			if([exitingViews containsObject:view]) {
 				NSUInteger index = [oldOrderedItems indexOfObject:view.item];
 				if(index == 0 && !willSlideInFromTop) {
-					view.top = -self.rowHeight;
+					view.cframe.top = -self.rowHeight;
 				} else {
 					view.alpha = 0.0;
 				}
 			} else {
 				NSUInteger index = [newOrderedItems indexOfObject:view.item];
 				if(index != NSNotFound) {
-					view.top = self.rowHeight * index;
+					view.cframe.top = self.rowHeight * index;
 				}
 				view.alpha = 1.0;
 			}
 		}
 		
-		self.height = fminf(fmaxf(newItems.count, 0), self.rowCapacity) * self.rowHeight;
+		CFrame* myFrame = [CFrame frameWithView:self];
+		myFrame.height = fminf(fmaxf(newItems.count, 0), self.rowCapacity) * self.rowHeight;
 
 	} completion:^(BOOL finished) {
 		for(CNotifierView* view in exitingViews) {

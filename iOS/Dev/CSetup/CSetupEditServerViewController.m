@@ -61,8 +61,7 @@
 
 - (void)endEditing
 {
-	UIResponder* firstResponder = [self.view findFirstResponder];
-	[firstResponder resignFirstResponder];
+	[self.view resignAnyFirstResponder];
 }
 
 - (void)cancel

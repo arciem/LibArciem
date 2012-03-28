@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2012 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,15 +16,23 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
-#import "CItem.h"
-#import "CTableManager.h"
+#import "TextUtils.h"
 
-@interface CFormTableView : UITableView<CTableManagerDelegate>
+@implementation UITextField (TextUtils)
 
-@property (strong, nonatomic) CItem* model;
-@property (strong, nonatomic) NSDictionary* cellClassSubstitutions; // key:oldClassName -> value:newClassName
+- (UITextRange*)textRangeFromRange:(NSRange)range
+{
+	UITextPosition* fromPosition = [self positionFromPosition:self.beginningOfDocument offset:range.location];
+	UITextPosition* toPosition = [self positionFromPosition:fromPosition offset:range.length];
+	UITextRange* textRange = [self textRangeFromPosition:fromPosition toPosition:toPosition];
+	return textRange;
+}
 
-- (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style;
+- (void)setInsertionPointToOffset:(NSUInteger)offset
+{
+	NSRange range = NSMakeRange(offset, 0);
+	UITextRange* textRange = [self textRangeFromRange:range];
+	self.selectedTextRange = textRange;
+}
 
 @end

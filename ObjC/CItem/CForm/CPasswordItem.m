@@ -20,4 +20,11 @@
 
 @implementation CPasswordItem
 
+- (void)setup
+{
+	[super setup];
+	self.autocapitalizationType = @"none";
+	self.secureTextEntry = YES;
+}
+
 @end

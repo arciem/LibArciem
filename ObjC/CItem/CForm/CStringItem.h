@@ -36,8 +36,12 @@ enum {
 @property (nonatomic) NSUInteger maxLength;
 @property (readonly, nonatomic) NSInteger remainingLength;
 @property (copy, nonatomic) NSCharacterSet* validCharacterSet;
+@property (copy, nonatomic) NSString* validCharacters;
 @property (copy, nonatomic) NSString* validRegularExpression;
 @property (nonatomic) NSUInteger fieldCharacterWidth;
+@property (strong, nonatomic) NSString* autocapitalizationType; // sentences, none, words, all
+@property (strong, nonatomic) NSString* keyboardType; // default, emailAddress, phonePad, asciiCapable
+@property (nonatomic) BOOL secureTextEntry;
 
 + (CItem*)stringItem;
 + (CItem*)stringItemWithDictionary:(NSDictionary*)dict;

@@ -198,6 +198,36 @@
 	return indexPath;
 }
 
+- (NSIndexPath*)indexPathForModel:(CItem*)model
+{
+	__block NSIndexPath* indexPath = nil;
+	
+	if(model != nil) {
+		[self.sections enumerateObjectsUsingBlock:^(CTableSectionItem* sectionItem, NSUInteger sectionIndex, BOOL *stop) {
+			NSArray* rows = [self rowsForSection:sectionIndex];
+			[rows enumerateObjectsUsingBlock:^(CTableRowItem* rowItem, NSUInteger rowIndex, BOOL *stop) {
+				NSArray* models = rowItem.models;
+				[models enumerateObjectsUsingBlock:^(CItem* item, NSUInteger idx, BOOL *stop) {
+					if(item == model) {
+						indexPath = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
+						*stop = YES;
+					}
+				}];
+				
+				if(indexPath != nil) {
+					*stop = YES;
+				}
+			}];
+			
+			if(indexPath != nil) {
+				*stop = YES;
+			}
+		}];
+	}
+	
+	return indexPath;
+}
+
 - (NSIndexPath*)indexPathForShowingHiddenRow:(CTableRowItem*)rowItem
 {
 	NSIndexPath* indexPath = nil;
@@ -437,7 +467,7 @@
 	}
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
 	cell.rowItem = rowItem;
-	cell.size = CGSizeMake(tableView.width, result);
+	cell.cframe.size = CGSizeMake(tableView.width, result);
 	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	[cell sizeToFit];
@@ -455,7 +485,7 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-	CLogDebug(nil, @"moveRowAtIndexPath:%@ toIndexPath:%@", sourceIndexPath, destinationIndexPath);
+//	CLogDebug(nil, @"moveRowAtIndexPath:%@ toIndexPath:%@", sourceIndexPath, destinationIndexPath);
 	NSAssert(sourceIndexPath.section == destinationIndexPath.section, @"Moving between sections unsupported.");
 
 	NSInteger moveOffset = destinationIndexPath.row - sourceIndexPath.row;
@@ -483,8 +513,8 @@
 	
 	[self invalidateRowsForSection:sourceIndexPath.section];
 	
-	[self.model printHierarchy];
-	[repeatingItem printHierarchy];
+//	[self.model printHierarchy];
+//	[repeatingItem printHierarchy];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -604,7 +634,7 @@
 
 - (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden
 {
-	CLogDebug(nil, @"%@ tableRowItem:%@ didChangeHiddenFrom:%d to:%d", self, rowItem, fromHidden, toHidden);
+//	CLogDebug(nil, @"%@ tableRowItem:%@ didChangeHiddenFrom:%d to:%d", self, rowItem, fromHidden, toHidden);
 	[self setRow:rowItem hidden:rowItem.isHidden withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 

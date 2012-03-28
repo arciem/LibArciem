@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2012 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,28 +16,23 @@
  
  *******************************************************************************/
 
-#import "CTableMultiChoiceItem.h"
+#import "CTableSummaryItem.h"
 
-@implementation CTableMultiChoiceItem
+@implementation CTableSummaryItem
 
-- (id)initWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
+@synthesize requiresDrillDown = requiresDrillDown_;
+
+- (id)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model
 {
-	if(self = [super initWithKey:key title:title model:item]) {
-		if(self.model.subitems.count <= 4) {
-			self.requiresDrillDown = NO;
-		}
+	if(self = [super initWithKey:key title:title model:model]) {
+		requiresDrillDown_ = YES;
 	}
 	return self;
 }
 
-+ (CTableMultiChoiceItem*)itemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
+- (BOOL)isUnselectable
 {
-	return [[self alloc] initWithKey:key title:title multiChoiceItem:item];
-}
-
-- (NSString*)defaultCellType
-{
-	return @"CMultiChoiceItemTableViewCell";
+	return !self.requiresDrillDown;
 }
 
 @end

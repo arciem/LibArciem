@@ -24,6 +24,7 @@
 {
 	[super setup];
 	self.validCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+	self.keyboardType = @"phonePad";
 }
 
 - (NSString*)formatCharacterCount:(NSUInteger)count

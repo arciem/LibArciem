@@ -20,6 +20,7 @@
 #import "CRepeatingItem.h"
 #import "StringUtils.h"
 #import "DeviceUtils.h"
+#import "UIViewUtils.h"
 
 @implementation CAddRepeatingItemTableViewCell
 
@@ -27,13 +28,7 @@
 {
 	[super setup];
 	
-	UIFont* font;
-	if(IsPad()) {
-		font = [UIFont boldSystemFontOfSize:20];
-	} else {
-		font = [UIFont boldSystemFontOfSize:14];
-	}
-	self.textLabel.font = font;
+	self.textLabel.font = self.font;
 }
 
 - (void)syncToRowItem
@@ -60,6 +55,12 @@
 - (NSUInteger)validationViewsNeeded
 {
 	return 0;
+}
+
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+	self.textLabel.cframe.flexibleLeft = CGRectGetMinX(self.layoutFrame);
 }
 
 @end

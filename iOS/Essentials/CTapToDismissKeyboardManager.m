@@ -50,7 +50,7 @@
 	CGPoint p = [self.tapRecognizer locationInView:view];
 	UIView* hitView = [view hitTest:p withEvent:nil];
 	if(hitView == view) {
-		[[view.window findFirstResponder] resignFirstResponder];
+		[view.window resignAnyFirstResponder];
 	}
 }
 

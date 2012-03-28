@@ -105,7 +105,7 @@
 {
 	[super activate];
 
-	CObserverBlock action = ^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		if(!self.isReordering) {
 			if(kind == NSKeyValueChangeSetting) {
 				[self.endRepeatRowItem.superitem.subitems removeAllObjects];
@@ -146,7 +146,7 @@
 		}
 	};
 	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action];
-	self.isHiddenObserver = [CObserver observerWithKeyPath:@"isHidden" ofObject:self action:^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.isHiddenObserver = [CObserver observerWithKeyPath:@"isHidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		self.endRepeatRowItem.isHidden = [newValue boolValue];
 	}];
 }

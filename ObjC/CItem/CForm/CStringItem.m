@@ -56,6 +56,8 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	}
 	
 	minLength_ = [[self.dict objectForKey:@"minLength"] unsignedIntValue];
+	
+	[self syncToValidCharacters];
 }
 
 + (CItem*)stringItemWithDictionary:(NSDictionary*)dict
@@ -167,6 +169,62 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	return [self remainingLengthForLength:self.currentLength];
 }
 
+#pragma mark - @property autocapitalizationType
+
+- (NSString*)autocapitalizationType
+{
+	return [self.dict objectForKey:@"autocapitalizationType"];
+}
+
+- (void)setAutocapitalizationType:(NSString *)autocapitalizationType
+{
+	[self.dict setObject:autocapitalizationType forKey:@"autocapitalizationType"];
+}
+
+#pragma mark - @property keyboardType
+
+- (NSString*)keyboardType
+{
+	return [self.dict objectForKey:@"keyboardType"];
+}
+
+- (void)setKeyboardType:(NSString *)keyboardType
+{
+	[self.dict setObject:keyboardType forKey:@"keyboardType"];
+}
+
+#pragma mark - @property secureTextEntry
+
+- (BOOL)secureTextEntry
+{
+	return [[self.dict objectForKey:@"secureTextEntry"] boolValue];
+}
+
+- (void)setSecureTextEntry:(BOOL)secureTextEntry
+{
+	[self.dict setObject:[NSNumber numberWithBool:secureTextEntry] forKey:@"secureTextEntry"];
+}
+
+#pragma mark - @property validCharacters
+
+- (NSString*)validCharacters
+{
+	return [self.dict objectForKey:@"validCharacters"];
+}
+
+- (void)setValidCharacters:(NSString *)validCharacters
+{
+	[self.dict setObject:validCharacters forKey:@"validCharacters"];
+	[self syncToValidCharacters];
+}
+
+- (void)syncToValidCharacters
+{
+	if(!IsEmptyString(self.validCharacters)) {
+		self.validCharacterSet = [NSCharacterSet characterSetWithCharactersInString:self.validCharacters];
+	}
+}
+
 #pragma mark - @property validCharacterSet
 
 - (NSCharacterSet*)validCharacterSet
@@ -242,6 +300,9 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 {
 	NSString* toString = [EnsureRealString(fromString) stringByReplacingCharactersInRange:range withString:string];
 	if(resultString != nil) {
+		if([self.autocapitalizationType isEqualToString:@"all"]) {
+			toString = [toString uppercaseString];
+		}
 		*resultString = toString;
 	}
 	return [self shouldChangeFromString:fromString toString:toString];

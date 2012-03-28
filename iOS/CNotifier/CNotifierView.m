@@ -96,19 +96,21 @@
 {
 	[super layoutSubviews];
 
-	self.label.frame = self.bounds;
-	self.label.flexibleLeft = self.boundsLeft + 10;
-	self.label.flexibleRight = self.boundsRight - 10;
-	self.label.flexibleBottom -= 1;
+	CFrame* labelFrame = self.label.cframe;
+	labelFrame.frame = self.bounds;
+	labelFrame.flexibleLeft = self.boundsLeft + 10;
+	labelFrame.flexibleRight = self.boundsRight - 10;
+	labelFrame.flexibleBottom -= 1;
 
 	if(self.rightAccessoryView != nil) {
-		self.rightAccessoryView.top = self.boundsTop;
-		self.rightAccessoryView.flexibleBottom = self.boundsBottom;
-		self.rightAccessoryView.width = 30;
-		self.rightAccessoryView.right = self.boundsRight;
-		self.label.flexibleRight = self.rightAccessoryView.left;
+		CFrame* rightAccessoryViewFrame = self.rightAccessoryView.cframe;
+		rightAccessoryViewFrame.top = self.boundsTop;
+		rightAccessoryViewFrame.flexibleBottom = self.boundsBottom;
+		rightAccessoryViewFrame.width = 30;
+		rightAccessoryViewFrame.right = self.boundsRight;
+		labelFrame.flexibleRight = rightAccessoryViewFrame.left;
 	} else {
-		self.label.flexibleRight = self.boundsRight - 10;
+		labelFrame.flexibleRight = self.boundsRight - 10;
 	}
 }
 

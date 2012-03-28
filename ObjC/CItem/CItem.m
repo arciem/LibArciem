@@ -31,8 +31,8 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 @property (weak, readwrite, nonatomic) CItem* superitem;
 @property (readonly, nonatomic) NSMutableArray* subitems_;
-@property (readonly, nonatomic) NSUInteger currentRevision;
-@property (readonly, nonatomic) NSUInteger lastValidatedRevision;
+@property (nonatomic) NSUInteger currentRevision;
+@property (nonatomic) NSUInteger lastValidatedRevision;
 @property (readonly, nonatomic) NSUInteger validationsInProgress;
 @property (strong, nonatomic) NSMutableArray* subitemErrors;
 @property (readwrite, nonatomic, setter = setValidating:) BOOL isValidating;
@@ -46,19 +46,16 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 @synthesize dict = dict_;
 @synthesize error = error_;
 @synthesize subitemErrors = subitemErrors_;
-
 @synthesize superitem = superitem_;
-
 @synthesize currentRevision = currentRevision_;
 @synthesize lastValidatedRevision = lastValidatedRevision_;
-
 @synthesize validatesAutomatically = validatesAutomatically_;
 @synthesize isRequired = isRequired_;
 @synthesize isHidden = isHidden_;
 @synthesize isDisabled = isDisabled_;
-
 @synthesize isActive = isActive_;
 @synthesize isValidating = isValidating_;
+@synthesize isEditing = isEditing_;
 @synthesize validationsInProgress = validationsInProgress_;
 @synthesize valueObserver = valueObserver_;
 
@@ -202,7 +199,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	NSAssert1(self.isActive == NO, @"Attempt to activate item that is already active:%@", self);
 	self.isActive = YES;
 	__weak CItem* self__ = self;
-	self.valueObserver = [CObserver observerWithKeyPath:@"value" ofObject:self action:^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.valueObserver = [CObserver observerWithKeyPath:@"value" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		self__.needsValidation = YES;
 	}];
 }
@@ -562,6 +559,16 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	return self.lastValidatedRevision <= 1;
 }
 
+- (void)setNew:(BOOL)isNew
+{
+	if(isNew) {
+		self.currentRevision = 1;
+		self.lastValidatedRevision = 0;
+	} else {
+		[self syncLastValidatedRevision];
+	}
+}
+
 - (void)setNeedsValidation:(BOOL)needsValidation
 {
 	if(needsValidation) {
@@ -593,11 +600,18 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	return currentRevision_;
 }
 
+- (void)setCurrentRevision:(NSUInteger)currentRevision
+{
+	if(currentRevision_ != currentRevision) {
+		[self willChangeValueForKey:@"currentRevision"];
+		currentRevision_ = currentRevision;
+		[self didChangeValueForKey:@"currentRevision"];
+	}
+}
+
 - (void)incrementCurrentRevision
 {
-	[self willChangeValueForKey:@"currentRevision"];
-	currentRevision_++;
-	[self didChangeValueForKey:@"currentRevision"];
+	self.currentRevision = currentRevision_ + 1;
 }
 
 #pragma mark - @property lastValidatedRevision
@@ -612,13 +626,18 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	return lastValidatedRevision_;
 }
 
-- (void)syncLastValidatedRevision
+- (void)setLastValidatedRevision:(NSUInteger)lastValidatedRevision
 {
-	if(lastValidatedRevision_ != currentRevision_) {
+	if(lastValidatedRevision_ != lastValidatedRevision) {
 		[self willChangeValueForKey:@"lastValidatedRevision"];
-		lastValidatedRevision_ = currentRevision_;
+		lastValidatedRevision_ = lastValidatedRevision;
 		[self didChangeValueForKey:@"lastValidatedRevision"];
 	}
+}
+
+- (void)syncLastValidatedRevision
+{
+	self.lastValidatedRevision = currentRevision_;
 }
 
 #pragma mark - @property validationsInProgress
@@ -674,6 +693,27 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		[self willChangeValueForKey:@"isValidating"];
 		isValidating_ = isValidating;
 		[self didChangeValueForKey:@"isValidating"];
+	}
+}
+
+#pragma mark - @property isEditing
+
++ (BOOL)automaticallyNotifiesObserversOfIsEditing
+{
+	return NO;
+}
+
+- (BOOL)isEditing
+{
+	return isEditing_;
+}
+
+- (void)setEditing:(BOOL)isEditing
+{
+	if(isEditing_ != isEditing) {
+		[self willChangeValueForKey:@"isEditing"];
+		isEditing_ = isEditing;
+		[self didChangeValueForKey:@"isEditing"];
 	}
 }
 
@@ -880,18 +920,6 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	[self disarmValidate];
 	
 	if(!self.isValidating) {
-#if 0
-		static CObserver* observer = nil;
-		__weak CItem* self__ = self;
-		CObserverBlock action = ^(NSNumber* newValue, NSNumber* oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-			if(oldValue != nil && newValue.boolValue == NO) {
-				[self__ printHierarchy];
-				observer = nil;
-			}
-		};
-		observer = [CObserver observerWithKeyPath:@"isValidating" ofObject:self action:action initial:action];
-#endif
-
 		[self validateSubtree];
 	}
 }

@@ -29,15 +29,12 @@
 {
 	[super setup];
 	
-//	self.indentationLevel = 1;
-	
-	UIFont* font;
-	if(IsPad()) {
-		font = [UIFont systemFontOfSize:20];
-	} else {
-		font = [UIFont systemFontOfSize:14];
-	}
-	self.textLabel.font = font;
+	self.textLabel.font = self.font;
+}
+
+- (UIFont*)font
+{
+	return [UIFont systemFontOfSize:self.fontSize];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size
@@ -52,7 +49,6 @@
 - (void)syncCheckMark
 {
 	CBooleanItem* item = (CBooleanItem*)self.rowItem.model;
-//	self.accessoryType = item.booleanValue ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 	self.checkmarkButton.selected = item.booleanValue;
 }
 
@@ -77,12 +73,26 @@
 {
 	[super layoutSubviews];
 	
-	[self.checkmarkButton sizeToFit];
+	CGRect layoutFrame = self.layoutFrame;
 
-	self.checkmarkButton.left = 20;
-	self.checkmarkButton.centerY = self.contentView.boundsCenterY;
-	
-	self.textLabel.flexibleLeft = self.checkmarkButton.right + 8;
+	if(IsPad()) {
+		CFrame* textLabelFrame = self.textLabel.cframe;
+		textLabelFrame.flexibleLeft = CGRectGetMinX(layoutFrame);
+		
+		CFrame* checkmarkButtonFrame = self.checkmarkButton.cframe;
+		[checkmarkButtonFrame sizeToFit];
+		
+		checkmarkButtonFrame.right = textLabelFrame.left - 6;
+		checkmarkButtonFrame.centerY = self.contentView.boundsCenterY;
+	} else {
+		CFrame* checkmarkButtonFrame = self.checkmarkButton.cframe;
+		[checkmarkButtonFrame sizeToFit];
+		checkmarkButtonFrame.left = CGRectGetMinX(layoutFrame);
+		checkmarkButtonFrame.centerY = self.contentView.boundsCenterY;
+		
+		CFrame* textLabelFrame = self.textLabel.cframe;
+		textLabelFrame.flexibleLeft = checkmarkButtonFrame.right + 6;
+	}
 }
 
 #pragma mark - @property checkmarkButton

@@ -19,12 +19,21 @@
 #import "CItem.h"
 #import "CBooleanItem.h"
 
+extern NSString* const CMultiChoiceItemErrorDomain;
+
+enum {
+	CMultiChoiceItemErrorWrongChoiceCount = 3000
+};
+
 @interface CMultiChoiceItem : CItem
 
 @property (nonatomic) NSUInteger minValidChoices;
 @property (nonatomic) NSUInteger maxValidChoices;
 @property (readonly, nonatomic) NSUInteger choicesCount;
+@property (copy, nonatomic) NSArray* choices;
+@property (readonly, nonatomic) CBooleanItem* selectedSubitem;
+@property (readonly, strong, nonatomic) NSIndexSet* selectedSubitemIndexes;
 
-- (void)didSelectSubitem:(CBooleanItem*)item;
+- (void)selectSubitem:(CBooleanItem*)item;
 
 @end

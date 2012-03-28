@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2012 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,28 +16,19 @@
  
  *******************************************************************************/
 
-#import "CTableMultiChoiceItem.h"
+#import "CDividerTableViewCell.h"
 
-@implementation CTableMultiChoiceItem
+@implementation CDividerTableViewCell
 
-- (id)initWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
+- (CGSize)sizeThatFits:(CGSize)size
 {
-	if(self = [super initWithKey:key title:title model:item]) {
-		if(self.model.subitems.count <= 4) {
-			self.requiresDrillDown = NO;
-		}
-	}
-	return self;
+	size.height = 20;
+	return size;
 }
 
-+ (CTableMultiChoiceItem*)itemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
+- (NSUInteger)validationViewsNeeded
 {
-	return [[self alloc] initWithKey:key title:title multiChoiceItem:item];
-}
-
-- (NSString*)defaultCellType
-{
-	return @"CMultiChoiceItemTableViewCell";
+	return 0;
 }
 
 @end

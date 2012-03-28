@@ -57,7 +57,11 @@
 
 - (id)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model
 {
-	if(self = [self initWithKey:key title:title models:[NSArray arrayWithObject:model]]) {
+	NSArray* models = nil;
+	if(model != nil) {
+		models = [NSArray arrayWithObject:model];
+	}
+	if(self = [self initWithKey:key title:title models:models]) {
 	}
 	
 	return self;
@@ -68,18 +72,19 @@
 	CLogTrace(@"C_TABLE_ROW_ITEM", @"%@ dealloc", [self formatObjectWithValues:nil]);
 }
 
+
 - (void)activate
 {
 	[super activate];
-	CLogDebug(nil, @"%@ activate", self);
-	self.isHiddenObserver = [CObserver observerWithKeyPath:@"isHidden" ofObject:self action:^(id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+//	CLogDebug(nil, @"%@ activate", self);
+	self.isHiddenObserver = [CObserver observerWithKeyPath:@"isHidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[(CTableSectionItem*)self.superitem tableRowItem:self didChangeHiddenFrom:[oldValue boolValue] to:[newValue boolValue]];
 	}];
 }
 
 - (void)deactivate
 {
-	CLogDebug(nil, @"%@ deactivate", self);
+//	CLogDebug(nil, @"%@ deactivate", self);
 	self.isHiddenObserver = nil;
 	[super deactivate];
 }
@@ -139,9 +144,10 @@
 
 - (NSArray*)descriptionStringsCompact:(BOOL)compact
 {
-	NSArray* str = [super descriptionStringsCompact:YES];
-	str = [str arrayByAddingObject:[self formatValueForKey:@"model" compact:compact]];
-	return str;
+	NSArray* strings = [super descriptionStringsCompact:YES];
+	strings = [strings arrayByAddingObject:[self formatValueForKey:@"model" compact:compact]];
+	strings = [strings arrayByAddingObject:[self formatValueForKey:@"indentationLevel" compact:compact]];
+	return strings;
 }
 
 #pragma mark - @property isUnselectable
@@ -149,6 +155,18 @@
 - (BOOL)isUnselectable
 {
 	return YES;
+}
+
+#pragma mark - @property indentationLevel
+
+- (NSInteger)indentationLevel
+{
+	return [[self.dict objectForKey:@"indentationLevel"] integerValue];
+}
+
+- (void)setIndentationLevel:(NSInteger)indentationLevel
+{
+	[self.dict setObject:[NSNumber numberWithInteger:indentationLevel] forKey:@"indentationLevel"];
 }
 
 @end

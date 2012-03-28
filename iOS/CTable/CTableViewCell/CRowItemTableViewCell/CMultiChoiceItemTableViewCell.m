@@ -17,49 +17,30 @@
  *******************************************************************************/
 
 #import "CMultiChoiceItemTableViewCell.h"
-#import "DeviceUtils.h"
-#import "CFieldValidationView.h"
-#import "UIViewUtils.h"
+#import "CTableMultiChoiceItem.h"
 
 @implementation CMultiChoiceItemTableViewCell
 
-- (void)setup
+- (void)syncToModelValue:(id)value
 {
-	[super setup];
+	[super syncToModelValue:value];
 	
-//	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	UIFont* font;
-	if(IsPad()) {
-		font = [UIFont boldSystemFontOfSize:20];
+	CTableMultiChoiceItem* rowItem = (CTableMultiChoiceItem*)self.rowItem;
+	NSString* title = self.rowItem.title;
+	if(rowItem.requiresDrillDown) {
+		CMultiChoiceItem* model = (CMultiChoiceItem*)rowItem.model;
+		NSIndexSet* selectedIndexes = model.selectedSubitemIndexes;
+		if(selectedIndexes.count == 0) {
+			title = [NSString stringWithFormat:@"%@...", title];
+		} else if(selectedIndexes.count == 1) {
+			title = [NSString stringWithFormat:@"%@: %@", title, model.selectedSubitem.title];
+		} else {
+			title = [NSString stringWithFormat:@"%@: (%d selected)", title, selectedIndexes.count];
+		}
 	} else {
-		font = [UIFont boldSystemFontOfSize:14];
+		title = [NSString stringWithFormat:@"%@...", title];
 	}
-	self.textLabel.font = font;
-}
-
-#if 0
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	
-	CFieldValidationView* validationView = self.validationView;
-	validationView.left = self.boundsLeft;
-	self.textLabel.flexibleLeft = validationView.right + 8;
-}
-#endif
-
-- (CGSize)sizeThatFits:(CGSize)size
-{
-	if(IsPhone()) {
-		size.height = 30;
-	}
-	
-	return size;
-}
-
-- (NSUInteger)validationViewsNeeded
-{
-	return 0;
+	self.textLabel.text = title;
 }
 
 @end

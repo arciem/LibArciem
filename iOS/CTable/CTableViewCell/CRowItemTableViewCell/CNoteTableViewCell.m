@@ -18,6 +18,7 @@
 
 #import "CNoteTableViewCell.h"
 #import "UIViewUtils.h"
+#import "DeviceUtils.h"
 
 @interface CNoteTableViewCell ()
 
@@ -33,7 +34,11 @@
 {
 	[super setup];
 	
-	self.labelInsets = UIEdgeInsetsMake(8, 10, 8, 10);
+	if(IsPhone()) {
+		self.labelInsets = UIEdgeInsetsMake(8, 10, 8, 10);
+	} else {
+		self.labelInsets = UIEdgeInsetsMake(8, 100, 8, 100);
+	}
 
 	UILabel* label = self.textLabel;
 	label.textColor = [UIColor grayColor];
@@ -57,11 +62,11 @@
 
 	CGRect bounds = self.bounds;
 	CGRect insetBounds = UIEdgeInsetsInsetRect(bounds, self.labelInsets);
-	CGRect textLabelFrame = [self convertRect:insetBounds toView:self.contentView];
-	CGFloat originalWidth = textLabelFrame.size.width;
-	self.textLabel.frame = textLabelFrame;
-	[self.textLabel sizeToFit];
-	self.textLabel.width = originalWidth;
+	CFrame* textLabelFrame = self.textLabel.cframe;
+	textLabelFrame.frame = [self convertRect:insetBounds toView:self.contentView];
+	CGFloat originalWidth = textLabelFrame.width;
+	[textLabelFrame sizeToFit];
+	textLabelFrame.width = originalWidth;
 }
 
 - (NSUInteger)validationViewsNeeded
