@@ -492,17 +492,6 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	return UIEdgeInsetsMake(-insets.top, -insets.left, -insets.bottom, -insets.right);
 }
 
-+ (NSInteger)shadowVerticalMultiplier
-{
-    static NSInteger shadowVerticalMultiplier = 0;
-    if (0 == shadowVerticalMultiplier) {
-        CGFloat systemVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-        shadowVerticalMultiplier = (systemVersion < 3.2f) ? 1 : -1;
-    }
-	
-    return shadowVerticalMultiplier;
-}
-
 - (NSUInteger)indexInSubviews
 {
 	return [self.superview.subviews indexOfObject:self];

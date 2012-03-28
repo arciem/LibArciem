@@ -63,9 +63,6 @@ extern NSString* const sTapInBackgroundNotification;
 + (void)distributeViewsVertically:(NSArray*)views;
 + (UIEdgeInsets)edgeInsetsNegate:(UIEdgeInsets)insets;
 
-// See: http://stackoverflow.com/questions/2997501/cgcontextsetshadow-shadow-direction-reversed-between-ios-3-0-and-4-0
-+ (NSInteger)shadowVerticalMultiplier;
-
 @property(readonly, nonatomic) CGPoint origin;
 @property(readonly, nonatomic) CGSize size;
 @property(readonly, nonatomic) CGFloat width;
