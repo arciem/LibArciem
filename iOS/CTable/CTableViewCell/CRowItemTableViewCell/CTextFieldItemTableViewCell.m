@@ -58,8 +58,9 @@
 		UITextField* field = [[UITextField alloc] initWithFrame:CGRectZero];
 		//		field.backgroundColor = [UIColor greenColor];
 		field.borderStyle = UITextBorderStyleRoundedRect;
-		field.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//		field.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		field.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+		field.contentMode = UIViewContentModeRedraw;
 		[self.textFields addObject:field];
 		[self.contentView addSubview:field];
 		field.delegate = self;
@@ -115,7 +116,7 @@
 {
 	[super layoutSubviews];
 	
-	CLogDebug(nil, @"%@ layoutSubviews", self);
+//	CLogDebug(nil, @"%@ layoutSubviews", self);
 
 	NSUInteger count = self.models.count;
 	
@@ -128,7 +129,8 @@
 		font = [UIFont boldSystemFontOfSize:20];
 		gap = 20;
 	} else {
-		area.size = CGSizeMake(250, 31);
+		CGFloat margins = self.isEditing ? 20 : 70;
+		area.size = CGSizeMake(self.contentView.width - margins, 31);
 		font = [UIFont systemFontOfSize:14];
 		gap = 10;
 	}

@@ -18,6 +18,7 @@
 
 #import "CNoteTableViewCell.h"
 #import "UIViewUtils.h"
+#import "DeviceUtils.h"
 
 @interface CNoteTableViewCell ()
 
@@ -33,7 +34,11 @@
 {
 	[super setup];
 	
-	self.labelInsets = UIEdgeInsetsMake(8, 10, 8, 10);
+	if(IsPhone()) {
+		self.labelInsets = UIEdgeInsetsMake(8, 10, 8, 10);
+	} else {
+		self.labelInsets = UIEdgeInsetsMake(8, 100, 8, 100);
+	}
 
 	UILabel* label = self.textLabel;
 	label.textColor = [UIColor grayColor];

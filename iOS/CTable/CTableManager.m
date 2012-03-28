@@ -483,8 +483,8 @@
 	
 	[self invalidateRowsForSection:sourceIndexPath.section];
 	
-	[self.model printHierarchy];
-	[repeatingItem printHierarchy];
+//	[self.model printHierarchy];
+//	[repeatingItem printHierarchy];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -604,7 +604,7 @@
 
 - (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden
 {
-	CLogDebug(nil, @"%@ tableRowItem:%@ didChangeHiddenFrom:%d to:%d", self, rowItem, fromHidden, toHidden);
+//	CLogDebug(nil, @"%@ tableRowItem:%@ didChangeHiddenFrom:%d to:%d", self, rowItem, fromHidden, toHidden);
 	[self setRow:rowItem hidden:rowItem.isHidden withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 

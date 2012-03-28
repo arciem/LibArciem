@@ -554,7 +554,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 + (void)initialize
 {
-	CLogSetTagActive(@"C_FRAME", YES);
+//	CLogSetTagActive(@"C_FRAME", YES);
 }
 
 - (id)initWithView:(UIView*)view
