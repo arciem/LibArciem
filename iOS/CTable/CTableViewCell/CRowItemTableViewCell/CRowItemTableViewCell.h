@@ -31,6 +31,9 @@
 @property (weak, nonatomic) CItem* activeItem;
 @property (weak, nonatomic) id<CRowItemTableViewCellDelegate> delegate;
 @property (readonly, nonatomic) NSArray* models;
+@property (readonly, nonatomic) CGFloat fontSize;
+@property (readonly, nonatomic) UIFont* font;
+@property (readonly, nonatomic) CGRect layoutFrame;
 
 - (void)setNumberOfValidationViewsTo:(NSUInteger)count;
 

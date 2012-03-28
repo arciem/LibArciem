@@ -21,12 +21,16 @@
 #import "CBooleanItem.h"
 #import "ObjectUtils.h"
 #import "CTableMultiChoiceItem.h"
+#import "CTableBooleanItem.h"
 #import "CDividerItem.h"
+#import "ErrorUtils.h"
+
+NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 
 @interface CMultiChoiceItem ()
 
 @property (strong, nonatomic) CObserver* subitemsObserver;
-@property (strong, nonatomic) NSArray* subitemValueObservers;
+@property (strong, nonatomic) CObserver* subitemsValueObserver;
 
 @end
 
@@ -34,21 +38,43 @@
 
 @synthesize minValidChoices = minValidChoices_;
 @synthesize maxValidChoices = maxValidChoices_;
-@synthesize selectedSubitems = selectedSubitems_;
 @synthesize subitemsObserver = subitemsObserver_;
-@synthesize subitemValueObservers = subitemValueObservers_;
+@synthesize subitemsValueObserver = subitemsValueObserver_;
 
 @dynamic choicesCount;
 
 - (void)setup
 {
 	[super setup];
-	[self syncToChoices];
-	
-	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self syncToSubitems];
+	[self setupChoices];
+
+	self.subitemsValueObserver = [CObserver observerWithKeyPath:@"value" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[self updateValue];
 	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self syncToSubitems];
+		[self updateValue];
+	}];
+
+	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:^(id object, NSArray* newSubitems, NSArray* oldSubitems, NSKeyValueChange kind, NSIndexSet *indexes) {
+		NSAssert1(newSubitems == nil || [newSubitems isKindOfClass:[NSArray class]], @"newSubitems not of expected type:%@", newSubitems);
+		NSAssert1(oldSubitems == nil || [oldSubitems isKindOfClass:[NSArray class]], @"oldSubitems not of expected type:%@", oldSubitems);
+		switch(kind) {
+			case NSKeyValueChangeSetting:
+				self.subitemsValueObserver.objects = newSubitems;
+				break;
+			case NSKeyValueChangeInsertion:
+				[self.subitemsValueObserver addObjects:newSubitems];
+				break;
+			case NSKeyValueChangeRemoval:
+				[self.subitemsValueObserver removeObjects:oldSubitems];
+				break;
+			case NSKeyValueChangeReplacement:
+				[self.subitemsValueObserver removeObjects:oldSubitems];
+				[self.subitemsValueObserver addObjects:newSubitems];
+				break;
+		}
+	} initial:^(id object, NSArray* newSubitems, NSArray* oldSubitems, NSKeyValueChange kind, NSIndexSet *indexes) {
+		NSAssert1(newSubitems == nil || [newSubitems isKindOfClass:[NSArray class]], @"newSubitems not of expected type:%@", newSubitems);
+		self.subitemsValueObserver.objects = newSubitems;
 	}];
 }
 
@@ -86,6 +112,24 @@
 - (BOOL)isEmpty
 {
 	return NO;
+}
+
+- (NSError*)validate
+{
+	NSError* error = [super validate];
+	
+	if(error == nil) {
+		NSUInteger choicesCount = self.choicesCount;
+		if(self.minValidChoices > 0 && self.maxValidChoices > 0 && choicesCount != self.minValidChoices) {
+			error = [NSError errorWithDomain:CMultiChoiceItemErrorDomain code:CMultiChoiceItemErrorWrongChoiceCount localizedFormat:@"Choose only %d %@.", self.minValidChoices, self.title];
+		} else if(self.minValidChoices > 0 && choicesCount < self.minValidChoices) {
+			error = [NSError errorWithDomain:CMultiChoiceItemErrorDomain code:CMultiChoiceItemErrorWrongChoiceCount localizedFormat:@"Choose at least %d %@.", self.minValidChoices, self.title];
+		} else if(self.maxValidChoices > 0 && choicesCount > self.maxValidChoices) {
+			error = [NSError errorWithDomain:CMultiChoiceItemErrorDomain code:CMultiChoiceItemErrorWrongChoiceCount localizedFormat:@"Choose at most %d %@.", self.maxValidChoices, self.title];
+		}
+	}
+	
+	return error;
 }
 
 - (NSUInteger)choicesCount
@@ -142,10 +186,10 @@
 - (void)setChoices:(NSArray *)choices
 {
 	[self.dict setObject:choices forKey:@"choices"];
-	[self syncToChoices];
+	[self setupChoices];
 }
 
-- (void)syncToChoices
+- (void)setupChoices
 {
 	[self.subitems removeAllObjects];
 
@@ -170,52 +214,51 @@
 		
 		[self addSubitem:item];
 	}];
-}
-
-#pragma mark - @property selectedSubitems
-
-- (NSArray*)selectedSubitems
-{
-	return selectedSubitems_;
-}
-
-- (void)setSelectedSubitems:(NSArray *)selectedSubitems
-{
-	[self willChangeValueForKey:@"selectedSubitems"];
-	selectedSubitems_ = selectedSubitems;
-	[self didChangeValueForKey:@"selectedSubitems"];
-}
-
-- (void)syncToSubitems
-{
-	NSMutableArray* selectedSubitems = [NSMutableArray array];
 	
-	[self.subitems enumerateObjectsUsingBlock:^(CItem* item, NSUInteger idx, BOOL *stop) {
-		if([item isKindOfClass:[CBooleanItem class]]) {
-			CBooleanItem* booleanItem = (CBooleanItem*)item;
+	self.isNew = YES;
+}
+
+#pragma mark - @property selectedSubitemIndexes
+
+- (NSIndexSet*)selectedSubitemIndexes
+{
+	return (NSIndexSet*)self.value;
+}
+
+- (void)setSelectedSubitemIndexes:(NSIndexSet *)selectedSubitemIndexes
+{
+	self.value = selectedSubitemIndexes;
+//	CLogDebug(nil, @"%@ selectedSubitemIndexes:%@", self, self.value);
+}
+
+- (void)updateValue
+{
+	self.selectedSubitemIndexes = [self.subitems indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		BOOL result = NO;
+		if([obj isKindOfClass:[CBooleanItem class]]) {
+			CBooleanItem* booleanItem = (CBooleanItem*)obj;
 			if(booleanItem.booleanValue) {
-				[selectedSubitems addObject:booleanItem];
+				result = YES;
 			}
 		}
+		return result;
 	}];
-	
-	self.selectedSubitems = selectedSubitems;
 }
 
 #pragma mark - @property selectedSubitem
 
 + (NSSet*)keyPathsForValuesAffectingSelectedSubitem
 {
-	return [NSSet setWithObject:@"selectedSubitems"];
+	return [NSSet setWithObject:@"value"];
 }
 
 - (CBooleanItem*)selectedSubitem
 {
 	CBooleanItem* result = nil;
 	
-	NSArray* selectedSubitems = self.selectedSubitems;
-	if(selectedSubitems.count > 0) {
-		result = (CBooleanItem*)[selectedSubitems objectAtIndex:0];
+	NSUInteger index = self.selectedSubitemIndexes.firstIndex;
+	if(index != NSNotFound) {
+		result = [self.subitems objectAtIndex:index];
 	}
 	
 	return result;
@@ -231,6 +274,10 @@
 	if(!rowItem.requiresDrillDown) {
 		for(CItem* item in self.subitems) {
 			NSArray* newRowItems = [item tableRowItems];
+			for(CTableRowItem* rowItem in newRowItems) {
+				rowItem.indentationLevel = 1;
+				CLogDebug(nil, @"%@ created", rowItem);
+			}
 			[rowItems addObjectsFromArray:newRowItems];
 		}
 	}

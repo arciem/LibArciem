@@ -18,6 +18,7 @@
 
 #import "CEmailItem.h"
 #import "ErrorUtils.h"
+#import "ObjectUtils.h"
 
 // See http://www.regular-expressions.info/email.html
 static NSString* const kEmailRegularExpression = @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+(?:[A-Z]{2}|aero|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|xxx)$";
@@ -28,7 +29,8 @@ static NSString* const kEmailRegularExpression = @"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(
 {
 	[super setup];
 	self.validRegularExpression = kEmailRegularExpression;
-	self.autocapitalization = @"none";
+	self.autocapitalizationType = @"none";
+	self.keyboardType = @"emailAddress";
 }
 
 @end

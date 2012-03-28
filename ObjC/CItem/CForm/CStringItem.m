@@ -169,16 +169,40 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	return [self remainingLengthForLength:self.currentLength];
 }
 
-#pragma mark - @property autocapitalization
+#pragma mark - @property autocapitalizationType
 
-- (NSString*)autocapitalization
+- (NSString*)autocapitalizationType
 {
-	return [self.dict objectForKey:@"autocapitalization"];
+	return [self.dict objectForKey:@"autocapitalizationType"];
 }
 
-- (void)setAutocapitalization:(NSString *)autocapitalization
+- (void)setAutocapitalizationType:(NSString *)autocapitalizationType
 {
-	[self.dict setObject:autocapitalization forKey:@"autocapitalization"];
+	[self.dict setObject:autocapitalizationType forKey:@"autocapitalizationType"];
+}
+
+#pragma mark - @property keyboardType
+
+- (NSString*)keyboardType
+{
+	return [self.dict objectForKey:@"keyboardType"];
+}
+
+- (void)setKeyboardType:(NSString *)keyboardType
+{
+	[self.dict setObject:keyboardType forKey:@"keyboardType"];
+}
+
+#pragma mark - @property secureTextEntry
+
+- (BOOL)secureTextEntry
+{
+	return [[self.dict objectForKey:@"secureTextEntry"] boolValue];
+}
+
+- (void)setSecureTextEntry:(BOOL)secureTextEntry
+{
+	[self.dict setObject:[NSNumber numberWithBool:secureTextEntry] forKey:@"secureTextEntry"];
 }
 
 #pragma mark - @property validCharacters
@@ -276,6 +300,9 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 {
 	NSString* toString = [EnsureRealString(fromString) stringByReplacingCharactersInRange:range withString:string];
 	if(resultString != nil) {
+		if([self.autocapitalizationType isEqualToString:@"all"]) {
+			toString = [toString uppercaseString];
+		}
 		*resultString = toString;
 	}
 	return [self shouldChangeFromString:fromString toString:toString];

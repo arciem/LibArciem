@@ -52,7 +52,8 @@ typedef NSUInteger CItemState;
 @property (readonly, nonatomic) BOOL isValidating;
 @property (readonly, nonatomic) BOOL isEmpty;
 @property (readonly, nonatomic) BOOL isValid;
-@property (readonly, nonatomic) BOOL isNew;
+@property (nonatomic, setter = setNew:) BOOL isNew;
+@property (nonatomic, setter = setEditing:) BOOL isEditing;
 
 @property (nonatomic, setter = setHidden:) BOOL isHidden;
 @property (readonly, nonatomic) NSArray* visibleSubitems;

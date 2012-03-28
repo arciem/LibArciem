@@ -198,6 +198,36 @@
 	return indexPath;
 }
 
+- (NSIndexPath*)indexPathForModel:(CItem*)model
+{
+	__block NSIndexPath* indexPath = nil;
+	
+	if(model != nil) {
+		[self.sections enumerateObjectsUsingBlock:^(CTableSectionItem* sectionItem, NSUInteger sectionIndex, BOOL *stop) {
+			NSArray* rows = [self rowsForSection:sectionIndex];
+			[rows enumerateObjectsUsingBlock:^(CTableRowItem* rowItem, NSUInteger rowIndex, BOOL *stop) {
+				NSArray* models = rowItem.models;
+				[models enumerateObjectsUsingBlock:^(CItem* item, NSUInteger idx, BOOL *stop) {
+					if(item == model) {
+						indexPath = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
+						*stop = YES;
+					}
+				}];
+				
+				if(indexPath != nil) {
+					*stop = YES;
+				}
+			}];
+			
+			if(indexPath != nil) {
+				*stop = YES;
+			}
+		}];
+	}
+	
+	return indexPath;
+}
+
 - (NSIndexPath*)indexPathForShowingHiddenRow:(CTableRowItem*)rowItem
 {
 	NSIndexPath* indexPath = nil;

@@ -252,16 +252,23 @@ static NSMutableSet* sAssociationKeys = nil;
     return [self dictionaryWithObjects:values forKeys:keys];
 }
 
-- (NSUInteger)unsignedIntegerValueForKey:(id)key defaultValue:(NSUInteger)defaultValue
+- (id)valueForKey:(NSString*)key defaultValue:(id)defaultValue
 {
-	NSUInteger result = defaultValue;
-	
-	NSNumber* value = [self objectForKey:key];
-	if(value != nil) {
-		result = [value unsignedIntegerValue];
+	id result = [self objectForKey:key];
+	if(result == nil) {
+		result = defaultValue;
 	}
-	
 	return result;
+}
+
+- (NSUInteger)unsignedIntegerValueForKey:(NSString*)key defaultValue:(NSUInteger)defaultValue
+{
+	return [[self valueForKey:key defaultValue:[NSNumber numberWithUnsignedInt:defaultValue]] unsignedIntegerValue];
+}
+
+- (NSString*)stringValueForKey:(NSString*)key defaultValue:(NSString*)defaultValue
+{
+	return [self valueForKey:key defaultValue:defaultValue];
 }
 
 @end

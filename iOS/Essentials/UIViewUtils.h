@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import <UIKit/UIKit.h>
+#import "Geom.h"
 
 extern NSString* const sTapInBackgroundNotification;
 

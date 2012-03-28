@@ -16,12 +16,10 @@
  
  *******************************************************************************/
 
-#import "CTableRowItem.h"
+#import "CTableSummaryItem.h"
 #import "CMultiChoiceItem.h"
 
-@interface CTableMultiChoiceItem : CTableRowItem
-
-@property (nonatomic) BOOL requiresDrillDown;
+@interface CTableMultiChoiceItem : CTableSummaryItem
 
 + (CTableMultiChoiceItem*)itemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item;
 

@@ -175,6 +175,7 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 			CNotifierView* view = [[CNotifierView alloc] initWithFrame:CGRectMake(0, top, self.width, self.rowHeight)];
 			view.item = item;
 			view.alpha = alpha;
+			[view layoutIfNeeded];
 			[enteringViews addObject:view];
 			[self addSubview:view];
 		}

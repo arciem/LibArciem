@@ -22,7 +22,7 @@
 @interface CObserver ()
 
 @property (strong, nonatomic) NSString* keyPath;
-@property (strong, nonatomic) NSMutableArray* objects;
+@property (strong, nonatomic) NSMutableArray* mutableObjects;
 @property (copy, nonatomic) CObserverBlock action;
 @property (copy, nonatomic) CObserverBlock initial;
 @property (copy, nonatomic) CObserverBlock prior;
@@ -33,7 +33,7 @@
 @implementation CObserver
 
 @synthesize keyPath = keyPath_;
-@synthesize objects = objects_;
+@synthesize mutableObjects = mutableObjects_;
 @synthesize action = action_;
 @synthesize initial = initial_;
 @synthesize prior = prior_;
@@ -48,7 +48,7 @@
 {
 	if(self = [super init]) {
 		self.keyPath = keyPath;
-		self.objects = [NSMutableArray array];
+		self.mutableObjects = [NSMutableArray array];
 		self.action = action;
 		self.initial = initial;
 		self.prior = prior;
@@ -89,7 +89,7 @@
 {
 	__block NSUInteger foundIndex = NSNotFound;
 
-	[self.objects enumerateObjectsUsingBlock:^(NSValue* value, NSUInteger idx, BOOL *stop) {
+	[self.mutableObjects enumerateObjectsUsingBlock:^(NSValue* value, NSUInteger idx, BOOL *stop) {
 		if([value nonretainedObjectValue] == object) {
 			foundIndex = idx;
 			*stop = YES;
@@ -99,20 +99,65 @@
 	return foundIndex;
 }
 
+- (void)addObject_:(id)object
+{
+	[self.mutableObjects addObject:[NSValue valueWithNonretainedObject:object]];
+	[object addObserver:self forKeyPath:self.keyPath options:self.options context:NULL];
+}
+
+- (void)removeObject:(id)object atIndex_:(NSUInteger)index
+{
+	[self.mutableObjects removeObjectAtIndex:index];
+	[object removeObserver:self forKeyPath:self.keyPath];
+}
+
 - (void)addObject:(id)object
 {
-	NSUInteger index = [self indexOfObject:object];
-	NSAssert1(index == NSNotFound, @"Attempt to add already-observed object:%@", object);
-	[self.objects addObject:[NSValue valueWithNonretainedObject:object]];
-	[object addObserver:self forKeyPath:self.keyPath options:self.options context:NULL];
+	if(object != nil) {
+		NSUInteger index = [self indexOfObject:object];
+		NSAssert1(index == NSNotFound, @"Attempt to add already-observed object:%@", object);
+		[self addObject_:object];
+	}
 }
 
 - (void)removeObject:(id)object
 {
-	NSUInteger index = [self indexOfObject:object];
-	NSAssert1(index != NSNotFound, @"Attempt to remove non-observed object:%@", object);
-	[self.objects removeObjectAtIndex:index];
-	[object removeObserver:self forKeyPath:self.keyPath];
+	if(object != nil) {
+		NSUInteger index = [self indexOfObject:object];
+		NSAssert1(index != NSNotFound, @"Attempt to remove non-observed object:%@", object);
+		[self removeObject:object atIndex_:index];
+	}
+}
+
+- (void)addObjects:(NSArray*)array
+{
+	for(id object in array) {
+		[self addObject:object];
+	}
+}
+
+- (void)removeObjects:(NSArray*)array
+{
+	for(id object in array) {
+		[self removeObject:object];
+	}
+}
+
+- (NSArray*)objects
+{
+	return [self.mutableObjects copy];
+}
+
+- (void)setObjects:(NSArray*)objects
+{
+	[objects enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL *stop) {
+		NSUInteger index = [self indexOfObject:object];
+		if(index == NSNotFound) {
+			[self addObject_:object];
+		} else {
+			[self removeObject:object atIndex_:index];
+		}
+	}];
 }
 
 - (id)initWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior
@@ -143,11 +188,11 @@
 {
 	CLogTrace(@"C_OBSERVER", @"%@ dealloc", self);
 //	NSAssert1(self.object != nil, @"object deallocated before observer for keyPath:%@", self.keyPath);
-	[self.objects enumerateObjectsUsingBlock:^(NSValue* value, NSUInteger idx, BOOL *stop) {
+	[self.mutableObjects enumerateObjectsUsingBlock:^(NSValue* value, NSUInteger idx, BOOL *stop) {
 		id object = [value nonretainedObjectValue];
 		[object removeObserver:self forKeyPath:self.keyPath context:NULL];
 	}];
-	self.objects = nil;
+	self.mutableObjects = nil;
 }
 
 + (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior

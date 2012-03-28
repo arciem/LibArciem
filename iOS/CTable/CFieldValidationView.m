@@ -20,6 +20,7 @@
 #import "UIImageUtils.h"
 #import "ThreadUtils.h"
 #import "UIColorUtils.h"
+#import "CObserver.h"
 
 static UIImage* sValidImage = nil;
 static UIImage* sInvalidImage = nil;
@@ -33,6 +34,8 @@ static UIImage* sInvalidImage = nil;
 @property (strong, readonly, nonatomic) UIView* validatingView;
 @property (strong, nonatomic) UIView* contentView;
 @property (strong, nonatomic) UIView* lastContentView;
+@property (strong, nonatomic) CObserver* itemStateObserver;
+@property (strong, nonatomic) CObserver* itemEditingObserver;
 
 - (void)syncToState;
 
@@ -50,6 +53,8 @@ static UIImage* sInvalidImage = nil;
 @synthesize lastContentView = lastContentView_;
 @synthesize validMarkTintColor = validMarkTintColor_;
 @synthesize invalidMarkTintColor = invalidMarkTintColor_;
+@synthesize itemStateObserver = itemStateObserver_;
+@synthesize itemEditingObserver = itemEditingObserver_;
 
 - (void)setup
 {
@@ -58,6 +63,16 @@ static UIImage* sInvalidImage = nil;
 	self.userInteractionEnabled = NO;
 	self.validMarkTintColor = [[UIColor greenColor] colorByDarkeningFraction:0.2];
 	self.invalidMarkTintColor = [[UIColor redColor] colorByDarkeningFraction:0.1];
+	
+	self.itemStateObserver = [CObserver observerWithKeyPath:@"state" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[self armSyncToState];
+	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[self armSyncToState];
+	}];
+	
+	self.itemEditingObserver = [CObserver observerWithKeyPath:@"isEditing" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[self armSyncToState];
+	}];
 }
 
 - (void)dealloc
@@ -138,13 +153,11 @@ static UIImage* sInvalidImage = nil;
 - (void)setItem:(CItem *)item
 {
 	if(item_ != item) {
-		if(item_ != nil) {
-			[item_ removeObserver:self forKeyPath:@"state"];
-		}
+		[self.itemStateObserver removeObject:item_];
+		[self.itemEditingObserver removeObject:item_];
 		item_ = item;
-		if(item_ != nil) {
-			[item_ addObserver:self forKeyPath:@"state" options:NSKeyValueObservingOptionInitial context:NULL];
-		}
+		[self.itemStateObserver addObject:item_];
+		[self.itemEditingObserver addObject:item_];
 	}
 }
 
@@ -161,14 +174,15 @@ static UIImage* sInvalidImage = nil;
 		contentView_ = contentView;
 		
 		if(contentView_ != nil) {
-			contentView_.frame = self.bounds;
-			contentView_.alpha = 0.0;
 			[self addSubview:contentView_];
-			[UIView animateWithDuration:0.3 animations:^{
-				contentView_.alpha = 1.0;
-				self.lastContentView.alpha = 0.0;
-			}];
 		}
+
+		contentView_.frame = self.bounds;
+		contentView_.alpha = 0.0;
+		[UIView animateWithDuration:0.3 animations:^{
+			contentView_.alpha = 1.0;
+			self.lastContentView.alpha = 0.0;
+		}];
 	}
 }
 
@@ -182,7 +196,15 @@ static UIImage* sInvalidImage = nil;
 			self.contentView = self.validatingView;
 			break;
 		case CItemStateValid:
-			self.contentView = self.item.isNew ? self.newView : self.validView;
+			if(self.item.isNew) {
+				self.contentView = self.newView;
+			} else {
+				if(self.item.isEditing) {
+					self.contentView = self.validView;
+				} else {
+					self.contentView = self.newView;
+				}
+			}
 			break;
 		case CItemStateInvalid:
 			self.contentView = self.item.isNew ? self.newView : self.invalidView;
@@ -190,18 +212,12 @@ static UIImage* sInvalidImage = nil;
 	}
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)armSyncToState
 {
-	[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-
-	if(object == self.item) {
-		if([keyPath isEqualToString:@"state"]) {
-			[NSThread performBlockOnMainThread:^{
-				[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncToState) object:nil];
-				[self performSelector:@selector(syncToState) withObject:nil afterDelay:0.2];
-			}];
-		}
-	}
+	[NSThread performBlockOnMainThread:^{
+		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncToState) object:nil];
+		[self performSelector:@selector(syncToState) withObject:nil afterDelay:0.2];
+	}];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size

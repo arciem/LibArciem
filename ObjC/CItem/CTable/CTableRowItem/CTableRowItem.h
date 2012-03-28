@@ -28,6 +28,7 @@
 @property (readonly, nonatomic) BOOL isUnselectable;
 @property (nonatomic) BOOL isDeletable;
 @property (nonatomic) BOOL isReorderable;
+@property (nonatomic) NSInteger indentationLevel;
 
 - (id)initWithKey:(NSString*)key title:(NSString*)title models:(NSArray*)models;
 - (id)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model;

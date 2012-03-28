@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2012 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,28 +16,23 @@
  
  *******************************************************************************/
 
-#import "CTableMultiChoiceItem.h"
+#import "TextUtils.h"
 
-@implementation CTableMultiChoiceItem
+@implementation UITextField (TextUtils)
 
-- (id)initWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
+- (UITextRange*)textRangeFromRange:(NSRange)range
 {
-	if(self = [super initWithKey:key title:title model:item]) {
-		if(self.model.subitems.count <= 4) {
-			self.requiresDrillDown = NO;
-		}
-	}
-	return self;
+	UITextPosition* fromPosition = [self positionFromPosition:self.beginningOfDocument offset:range.location];
+	UITextPosition* toPosition = [self positionFromPosition:fromPosition offset:range.length];
+	UITextRange* textRange = [self textRangeFromPosition:fromPosition toPosition:toPosition];
+	return textRange;
 }
 
-+ (CTableMultiChoiceItem*)itemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
+- (void)setInsertionPointToOffset:(NSUInteger)offset
 {
-	return [[self alloc] initWithKey:key title:title multiChoiceItem:item];
-}
-
-- (NSString*)defaultCellType
-{
-	return @"CMultiChoiceItemTableViewCell";
+	NSRange range = NSMakeRange(offset, 0);
+	UITextRange* textRange = [self textRangeFromRange:range];
+	self.selectedTextRange = textRange;
 }
 
 @end

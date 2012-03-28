@@ -39,7 +39,9 @@ enum {
 @property (copy, nonatomic) NSString* validCharacters;
 @property (copy, nonatomic) NSString* validRegularExpression;
 @property (nonatomic) NSUInteger fieldCharacterWidth;
-@property (nonatomic) NSString* autocapitalization; // sentences, none, words, all
+@property (strong, nonatomic) NSString* autocapitalizationType; // sentences, none, words, all
+@property (strong, nonatomic) NSString* keyboardType; // default, emailAddress, phonePad, asciiCapable
+@property (nonatomic) BOOL secureTextEntry;
 
 + (CItem*)stringItem;
 + (CItem*)stringItemWithDictionary:(NSDictionary*)dict;

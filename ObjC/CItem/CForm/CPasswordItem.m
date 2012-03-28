@@ -23,7 +23,8 @@
 - (void)setup
 {
 	[super setup];
-	self.autocapitalization = @"none";
+	self.autocapitalizationType = @"none";
+	self.secureTextEntry = YES;
 }
 
 @end

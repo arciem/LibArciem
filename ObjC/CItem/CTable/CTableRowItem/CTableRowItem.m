@@ -72,6 +72,7 @@
 	CLogTrace(@"C_TABLE_ROW_ITEM", @"%@ dealloc", [self formatObjectWithValues:nil]);
 }
 
+
 - (void)activate
 {
 	[super activate];
@@ -143,9 +144,10 @@
 
 - (NSArray*)descriptionStringsCompact:(BOOL)compact
 {
-	NSArray* str = [super descriptionStringsCompact:YES];
-	str = [str arrayByAddingObject:[self formatValueForKey:@"model" compact:compact]];
-	return str;
+	NSArray* strings = [super descriptionStringsCompact:YES];
+	strings = [strings arrayByAddingObject:[self formatValueForKey:@"model" compact:compact]];
+	strings = [strings arrayByAddingObject:[self formatValueForKey:@"indentationLevel" compact:compact]];
+	return strings;
 }
 
 #pragma mark - @property isUnselectable
@@ -153,6 +155,18 @@
 - (BOOL)isUnselectable
 {
 	return YES;
+}
+
+#pragma mark - @property indentationLevel
+
+- (NSInteger)indentationLevel
+{
+	return [[self.dict objectForKey:@"indentationLevel"] integerValue];
+}
+
+- (void)setIndentationLevel:(NSInteger)indentationLevel
+{
+	[self.dict setObject:[NSNumber numberWithInteger:indentationLevel] forKey:@"indentationLevel"];
 }
 
 @end
