@@ -23,6 +23,9 @@
 #import "CMultiTextItem.h"
 #import "StringUtils.h"
 #import "TextUtils.h"
+#import "CDateItem.h"
+#import "ObjectUtils.h"
+#import "CMonthAndYearPicker.h"
 
 @interface CTextFieldItemTableViewCell ()
 
@@ -99,6 +102,8 @@
 	CItem* model = self.rowItem.model;
 	if([model isKindOfClass:[CStringItem class]]) {
 		result = self.rowItem.models;
+	} else if([model isKindOfClass:[CDateItem class]]) {
+		result = self.rowItem.models;
 	} else if([model isKindOfClass:[CMultiTextItem class]]) {
 		CMultiTextItem* multiTextItem = (CMultiTextItem*)model;
 		result = multiTextItem.subitems;
@@ -124,36 +129,36 @@
 	__block CGRect fieldRect = layoutFrame;
 	if(count > 2) gap += 30;
 	fieldRect.size.width = layoutFrame.size.width / count - (gap / 2) * (count - 1);
-	fieldRect = CGRectIntegral(fieldRect);
 	
 	NSArray* validationViews = self.validationViews;
 	[self.textFields enumerateObjectsUsingBlock:^(UITextField* textField, NSUInteger idx, BOOL *stop) {
-		CGRect r = fieldRect;
+		
+		textField.font = self.font;
+
+		CFrame* textFieldFrame = textField.cframe;
+		textFieldFrame.frame = fieldRect;
 		
 		CStringItem* model = [self.models objectAtIndex:idx];
-		NSUInteger fieldCharacterWidth = model.fieldCharacterWidth;
-		if(fieldCharacterWidth > 0) {
-			CGFloat xHeight = self.font.xHeight;
-			CGFloat width = fieldCharacterWidth * xHeight * 1.2 + 40;
-			if(width < r.size.width) {
-				CGFloat insetAmount = floorf((r.size.width - width) / 2);
-				r = CGRectInset(r, insetAmount, 0);
+		NSUInteger fieldWidthCharacters = model.fieldWidthCharacters;
+		if(fieldWidthCharacters > 0) {
+			CGFloat characterWidthPoints = [@"0" sizeWithFont:self.font].width;
+			textFieldFrame.width = fieldWidthCharacters * characterWidthPoints + 20;
+			if(textField.clearButtonMode != UITextFieldViewModeNever) {
+				textFieldFrame.width += 50;
 			}
 		}
 		
-		textField.cframe.frame = r;
-		textField.font = self.font;
-		
 		CFieldValidationView* validationView = [validationViews objectAtIndex:idx];
 		CFrame* validationViewFrame = validationView.cframe;
-		validationViewFrame.centerY = textField.centerY;
+		validationViewFrame.centerY = textFieldFrame.centerY;
 		if(count == 2 && idx == self.textFields.count - 1) {
-			validationViewFrame.left = textField.right + 8;
+			textFieldFrame.right = CGRectGetMaxX(self.layoutFrame);
+			validationViewFrame.left = textFieldFrame.right + 8;
 		} else {
-			validationViewFrame.right = textField.left - 8;
+			validationViewFrame.right = textFieldFrame.left - 8;
 		}
 		
-		fieldRect.origin.x += fieldRect.size.width + gap;
+		fieldRect.origin.x += textFieldFrame.width + gap;
 	}];
 }
 
@@ -192,11 +197,53 @@
 		result = UITextAutocapitalizationTypeAllCharacters;
 	} else if(IsEmptyString(autocapitalizationType) || [autocapitalizationType isEqualToString:@"sentences"]) {
 		// no action
-	} else {
+	} else {	
 		NSAssert1(false, @"Unknown autocapitalizationType:%@", autocapitalizationType);
 	}
 	
 	return result;
+}
+
+- (UIControl*)inputViewForModel:(CItem*)model
+{
+	UIControl* inputView = nil;
+	
+	if([model isKindOfClass:[CDateItem class]]) {
+		CDateItem* dateItem = (CDateItem*)model;
+		
+		if([dateItem.datePickerMode isEqualToString:@"monthAndYear"]) {
+			CMonthAndYearPicker* picker = [[CMonthAndYearPicker alloc] init];
+			picker.minimumDate = dateItem.minDate;
+			picker.maximumDate = dateItem.maxDate;
+			picker.date = dateItem.dateValue;
+			
+			inputView = picker;
+		} else {
+			UIDatePickerMode datePickerMode = UIDatePickerModeDateAndTime;
+			if([dateItem.datePickerMode isEqualToString:@"time"]) {
+				datePickerMode = UIDatePickerModeTime;
+			} else if([dateItem.datePickerMode isEqualToString:@"date"]) {
+				datePickerMode = UIDatePickerModeDate;
+			} else if([dateItem.datePickerMode isEqualToString:@"dateAndTime"]) {
+				datePickerMode = UIDatePickerModeDateAndTime;
+			} else if([dateItem.datePickerMode isEqualToString:@"countDownTimer"]) {
+				datePickerMode = UIDatePickerModeCountDownTimer;
+			} else {
+				NSAssert1(NO, @"Unknown date picker mode:%@", dateItem.datePickerMode);
+			}
+			UIDatePicker* picker = [[UIDatePicker alloc] init];
+			picker.date = dateItem.dateValue;
+			picker.datePickerMode = datePickerMode;
+			picker.minimumDate = dateItem.minDate;
+			picker.maximumDate = dateItem.maxDate;
+			
+			inputView = picker;
+		}
+	} else {
+		NSAssert1(NO, @"Cannot create input view for model:%@", model);
+	}
+	
+	return inputView;
 }
 
 - (void)syncToRowItem
@@ -206,16 +253,50 @@
 	[self setNumberOfTextFieldsTo:self.models.count];
 
 	[self.textFields enumerateObjectsUsingBlock:^(UITextField* textField, NSUInteger index, BOOL *stop) {
-		CStringItem* model = [self.models objectAtIndex:index];
+		CItem* model = [self.models objectAtIndex:index];
 
 		textField.placeholder = model.title;
-		textField.text = model.stringValue;
 
-		textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-		textField.autocapitalizationType = [self autocapitalizationTypeForModel:model];
-		textField.keyboardType = [self keyboardTypeForModel:model];
-		textField.secureTextEntry = model.secureTextEntry;
+		if([model isKindOfClass:[CStringItem class]]) {
+			CStringItem* stringItem = (CStringItem*)model;
+			textField.text = stringItem.stringValue;
+			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+			textField.autocapitalizationType = [self autocapitalizationTypeForModel:stringItem];
+			textField.keyboardType = [self keyboardTypeForModel:stringItem];
+			textField.secureTextEntry = stringItem.secureTextEntry;
+		} else {
+			UIControl* control = [self inputViewForModel:model];
+			textField.inputView = control;
+			textField.clearButtonMode = UITextFieldViewModeNever;
+			[control addTarget:self action:@selector(inputViewValueChanged:event:) forControlEvents:UIControlEventValueChanged];
+			[control setAssociatedObject:[NSNumber numberWithUnsignedInt:index] forKey:@"index"];
+		}
 	}];
+}
+
+- (void)inputViewValueChanged:(id)sender event:(UIEvent*)event
+{
+	NSUInteger index = [[sender associatedObjectForKey:@"index"] unsignedIntValue];
+	UITextField* textField = [self textFieldAtIndex:index];
+	CItem* model = [self.models objectAtIndex:index];
+	if([model isKindOfClass:[CDateItem class]]) {
+		CDateItem* dateItem = (CDateItem*)model;
+		if([sender isKindOfClass:[UIDatePicker class]]) {
+			UIDatePicker* picker = (UIDatePicker*)sender;
+			dateItem.dateValue = picker.date;
+		} else if ([sender isKindOfClass:[CMonthAndYearPicker class]]) {
+			CMonthAndYearPicker* picker = (CMonthAndYearPicker*)sender;
+			dateItem.dateValue = picker.date;
+		} else {
+			NSAssert1(NO, @"Unknown sender:%@", sender);
+		}
+		NSString* formattedDate = dateItem.formattedDateValue;
+		textField.text = formattedDate;
+
+//		CLogDebug(nil, @"%@ inputViewValueChanged:%@ event:%@ date:%@ textField:%@", self, sender, event, dateItem.dateValue, textField);
+	} else {
+		NSAssert1(NO, @"Unknown model:%@", model);
+	}
 }
 
 - (void)model:(CItem*)model valueDidChangeFrom:(id)oldValue to:(id)newValue

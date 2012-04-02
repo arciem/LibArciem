@@ -17,18 +17,10 @@
  *******************************************************************************/
 
 #import <UIKit/UIKit.h>
-
-@class CImageView;
-
-@protocol CImageViewLayoutDelegate<NSObject>
-
-@optional
-- (void)viewLayoutSubviews:(UIView*)view;
-
-@end
+#import "CView.h"
 
 @interface CImageView : UIImageView
 
-@property(assign, nonatomic) id<CImageViewLayoutDelegate> layoutDelegate;
+@property(assign, nonatomic) id<CViewLayoutDelegate> layoutDelegate;
 
 @end

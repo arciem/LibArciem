@@ -35,6 +35,7 @@
 @synthesize keyboardAdjustmentType = keyboardAdjustmentType_;
 @dynamic tapResignsFirstResponder;
 @synthesize tapToDismissKeyboardManager = tapToDismissKeyboardManager_;
+@synthesize layoutDelegate = layoutDelegate_;
 @synthesize observingKeyboard;
 
 #pragma mark - Lifecycle
@@ -67,7 +68,16 @@
 - (void)dealloc
 {
 	self.debugColor = nil;
+	self.layoutDelegate = nil;
 	self.keyboardAdjustmentType = kViewKeyboardAdjustmentTypeNone;
+}
+
+- (void)layoutSubviews
+{
+	[super layoutSubviews];
+	if([self.layoutDelegate respondsToSelector:@selector(viewLayoutSubviews:)]) {
+		[self.layoutDelegate viewLayoutSubviews:self];
+	}
 }
 
 #pragma mark - Drawing

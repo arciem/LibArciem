@@ -40,10 +40,8 @@ id<NSObject> ClassAlloc(NSString* className);
 
 - (void)setPropertiesToNil;
 
-#if 0
 - (void)setAssociatedObject:(id)obj forKey:(NSString*)key;
 - (id)associatedObjectForKey:(NSString*)key;
-#endif
 
 @end
 

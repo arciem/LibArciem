@@ -16,29 +16,10 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#ifndef ARCIEM_CONFIG_HPP
+#define ARCIEM_CONFIG_HPP
 
-typedef enum {
-	kViewKeyboardAdjustmentTypeNone = 0,
-	kViewKeyboardAdjustmentTypeShrink
-} CViewKeyboardAdjustmentType;
+#define ARCIEM_HAS_GETTIMEOFDAY 1
+#define ARCIEM_HAS_NANOSLEEP 1
 
-@protocol CViewLayoutDelegate;
-
-@interface CView : UIView<UIGestureRecognizerDelegate>
-
-@property (strong, nonatomic) UIColor* debugColor;
-@property (nonatomic) CViewKeyboardAdjustmentType keyboardAdjustmentType;
-@property (nonatomic) BOOL tapResignsFirstResponder;
-@property (assign, nonatomic) id<CViewLayoutDelegate> layoutDelegate;
-
-- (void)setup;
-
-@end
-
-@protocol CViewLayoutDelegate<NSObject>
-
-@optional
-- (void)viewLayoutSubviews:(UIView*)view;
-
-@end
+#endif // ARCIEM_CONFIG_HPP

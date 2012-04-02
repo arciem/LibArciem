@@ -111,7 +111,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 
 - (BOOL)isEmpty
 {
-	return NO;
+	return self.choicesCount == 0;
 }
 
 - (NSError*)validate
@@ -276,7 +276,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 			NSArray* newRowItems = [item tableRowItems];
 			for(CTableRowItem* rowItem in newRowItems) {
 				rowItem.indentationLevel = 1;
-				CLogDebug(nil, @"%@ created", rowItem);
+//				CLogDebug(nil, @"%@ created", rowItem);
 			}
 			[rowItems addObjectsFromArray:newRowItems];
 		}

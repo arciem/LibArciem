@@ -37,10 +37,6 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 @synthesize validCharacterSet = validCharacterSet_;
 @synthesize invalidCharacterSet = invalidCharacterSet_;
 @synthesize validRegularExpression = validRegularExpression_;
-@dynamic stringValue;
-@dynamic currentLength;
-@dynamic remainingLength;
-@dynamic fieldCharacterWidth;
 
 #pragma mark - Lifecycle
 
@@ -269,16 +265,16 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	return [self string:string matchesRegularExpression:self.validRegularExpression];
 }
 
-#pragma mark - @property fieldCharacterWidth
+#pragma mark - @property fieldWidthCharacters
 
-- (NSUInteger)fieldCharacterWidth
+- (NSUInteger)fieldWidthCharacters
 {
-	return [[self.dict objectForKey:@"fieldCharacterWidth"] unsignedIntegerValue];
+	return [[self.dict objectForKey:@"fieldWidthCharacters"] unsignedIntegerValue];
 }
 
-- (void)setFieldCharacterWidth:(NSUInteger)width
+- (void)setFieldWidthCharacters:(NSUInteger)width
 {
-	[self.dict setObject:[NSNumber numberWithUnsignedInteger:width] forKey:@"fieldCharacterWidth"];
+	[self.dict setObject:[NSNumber numberWithUnsignedInteger:width] forKey:@"fieldWidthCharacters"];
 }
 
 #pragma mark - Editing
