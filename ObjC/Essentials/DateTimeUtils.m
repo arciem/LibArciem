@@ -312,6 +312,63 @@ static NSDateFormatter *ascTimeDateFormatter = nil;
   return ascTimeDateFormatter;
 }
 
++ (NSDateComponents*)componentsForISO8601Interval:(NSString*)str
+{
+	NSDateComponents* comps = nil;
+	
+	// ^P(?=\w*\d)(?:(\d+)Y|Y)?(?:(\d+)M|M)?(?:(\d+)D|D)?(?:T(?:(\d+)H|H)?(?:(\d+)M|M)?(?:((?:\d+)(?:\.\d{1,2})?)?S|S)?)?$
+	// P1Y2M3DT4H5M6.7S
+	
+	NSError* error = nil;
+	static NSRegularExpression* regex = nil;
+	if(regex == nil) {
+		regex = [NSRegularExpression regularExpressionWithPattern:@"^P(?=\\w*\\d)(?:(\\d+)Y|Y)?(?:(\\d+)M|M)?(?:(\\d+)D|D)?(?:T(?:(\\d+)H|H)?(?:(\\d+)M|M)?(?:((?:\\d+)(?:\\.\\d{1,2})?)?S|S)?)?$" options:0 error:&error];	
+	}
+	NSAssert1(error == nil, @"Error:%@", error);
+	NSTextCheckingResult* match = [regex firstMatchInString:str options:0 range:NSMakeRange(0, str.length)];
+	
+	if(match != nil) {
+		comps = [[NSDateComponents alloc] init];
+		for(NSUInteger rangeIndex = 1; rangeIndex < match.numberOfRanges; rangeIndex++) {
+			NSRange range = [match rangeAtIndex:rangeIndex];
+			if(range.location != NSNotFound) {
+				NSString* captureString = [str substringWithRange:range];
+				
+				switch (rangeIndex) {
+					case 1: {
+						NSInteger year = [captureString integerValue];
+						comps.year = year;
+					} break;
+					case 2: {
+						NSInteger month = [captureString integerValue];
+						comps.month = month;
+					} break;
+					case 3: {
+						NSInteger day = [captureString integerValue];
+						comps.day = day;
+					} break;
+					case 4: {
+						NSInteger hour = [captureString integerValue];
+						comps.hour = hour;
+					} break;
+					case 5: {
+						NSInteger minute = [captureString integerValue];
+						comps.minute = minute;
+					} break;
+					case 6: {
+						NSInteger second = (NSInteger)roundf([captureString floatValue]);
+						comps.second = second;
+					} break;
+					default:
+						break;
+				}
+			}
+		}
+	}
+	
+	return comps;
+}
+
 @end
 
 @implementation NSDateFormatter (DateTimeUtils)

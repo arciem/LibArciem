@@ -16,11 +16,18 @@
  
  *******************************************************************************/
 
-#import "CTableRowItem.h"
-#import "CDividerItem.h"
+#import "CTableSpacerItem.h"
 
-@interface CTableDividerItem : CTableRowItem
+@implementation CTableSpacerItem
 
-+ (CTableDividerItem*)itemWithKey:(NSString*)key title:(NSString*)title dividerItem:(CDividerItem*)dividerItem;
++ (CTableSpacerItem*)itemWithKey:(NSString*)key title:(NSString*)title spacerItem:(CSpacerItem*)spacerItem
+{
+	return [[self alloc] initWithKey:key title:title model:spacerItem];
+}
+
+- (NSString*)defaultCellType
+{
+	return @"CSpacerTableViewCell";
+}
 
 @end

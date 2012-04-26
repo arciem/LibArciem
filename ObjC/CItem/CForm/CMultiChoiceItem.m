@@ -22,7 +22,7 @@
 #import "ObjectUtils.h"
 #import "CTableMultiChoiceItem.h"
 #import "CTableBooleanItem.h"
-#import "CDividerItem.h"
+#import "CSpacerItem.h"
 #import "ErrorUtils.h"
 
 NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
@@ -198,7 +198,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 		CItem* item = nil;
 		
 		if([str isEqualToString:@"-"]) {
-			item = [CDividerItem dividerItem];
+			item = [CSpacerItem spacerItem];
 		} else {
 			NSArray* comps = [str componentsSeparatedByString:@"/"];
 			NSString* key = [comps objectAtIndex:0];

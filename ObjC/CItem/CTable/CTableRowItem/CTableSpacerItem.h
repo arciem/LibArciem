@@ -16,19 +16,11 @@
  
  *******************************************************************************/
 
-#import "CDividerTableViewCell.h"
+#import "CTableRowItem.h"
+#import "CSpacerItem.h"
 
-@implementation CDividerTableViewCell
+@interface CTableSpacerItem : CTableRowItem
 
-- (CGSize)sizeThatFits:(CGSize)size
-{
-	size.height = 20;
-	return size;
-}
-
-- (NSUInteger)validationViewsNeeded
-{
-	return 0;
-}
++ (CTableSpacerItem*)itemWithKey:(NSString*)key title:(NSString*)title spacerItem:(CSpacerItem*)spacerItem;
 
 @end

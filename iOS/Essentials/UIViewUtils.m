@@ -539,6 +539,40 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	[self.superview exchangeSubviewAtIndex:self.indexInSubviews withSubviewAtIndex:swapView.indexInSubviews];
 }
 
+- (UIView*)addBevelViewAtY:(CGFloat)y top:(BOOL)top
+{
+	NSString* imageName = top ? @"BevelTop" : @"BevelBottom";
+	UIImage* bevelImage = [UIImage imageNamed:imageName];
+	UIImageView* bevelView = [[UIImageView alloc] initWithImage:bevelImage];
+	bevelView.contentStretch = CGRectMake(0.5, 0.5, 0, 0);
+	UIViewAutoresizing autoresizing = UIViewAutoresizingFlexibleWidth;
+	if(top) {
+		autoresizing |= UIViewAutoresizingFlexibleBottomMargin;
+	} else {
+		autoresizing |= UIViewAutoresizingFlexibleTopMargin;
+	}
+	bevelView.autoresizingMask = autoresizing;
+	bevelView.contentMode = UIViewContentModeScaleToFill;
+	CGRect bevelFrame = CGRectMake(self.boundsLeft, y, self.boundsWidth, bevelImage.size.height);
+	if(!top) {
+		bevelFrame.origin.y -= bevelImage.size.height;
+	}
+	bevelView.frame = bevelFrame;
+	[self addSubview:bevelView];
+	return bevelView;
+}
+
+- (UIView*)addTopBevelView
+{
+	return [self addBevelViewAtY:self.boundsTop top:YES];
+}
+
+- (UIView*)addBottomBevelView
+{
+	return [self addBevelViewAtY:self.boundsBottom top:NO];
+}
+
+
 - (CFrame*)cframe NS_RETURNS_RETAINED
 {
 	return [CFrame frameWithView:self];

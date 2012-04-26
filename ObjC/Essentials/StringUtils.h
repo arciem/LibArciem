@@ -85,6 +85,7 @@ NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* 
 + (NSString*)stringWithCharacter:(unichar)aCharacter;
 + (NSString*)horizontalEllipsisString; // '...'
 + (NSString*)stringWithUUID;
++ (NSString*)stringWithBase64UUIDURLSafe:(BOOL)URLSafe;
 + (NSString*)stringWithASCIIData:(NSData*)data;
 + (NSString*)stringWithData:(NSData*)data encoding:(NSStringEncoding)encoding;
 + (NSString*)stringWithCRLF;
@@ -92,6 +93,10 @@ NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* 
 
 - (NSData*)dataUsingASCIIEncoding;
 - (NSData*)dataUsingUTF8Encoding;
+
+- (NSString*)stringUsingBase64Encoding;
+- (NSString*)stringUsingBase64EncodingURLSafe:(BOOL)URLSafe;
++ (NSString*)stringByBase64EncodingData:(NSData*)data URLSafe:(BOOL)URLSafe;
 
 - (NSArray*)tokenize;
 - (BOOL)matchesAllTokens:(NSArray*)tokens caseInsensitive:(BOOL)caseInsensitive;

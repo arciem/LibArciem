@@ -16,20 +16,19 @@
  
  *******************************************************************************/
 
-#import "CDividerItem.h"
-#import "CTableDividerItem.h"
+#import "CSpacerTableViewCell.h"
 
-@implementation CDividerItem
+@implementation CSpacerTableViewCell
 
-+ (CDividerItem*)dividerItem
+- (CGSize)sizeThatFits:(CGSize)size
 {
-	return [[self alloc] init];
+	size.height = 20;
+	return size;
 }
 
-- (NSArray*)tableRowItems
+- (NSUInteger)validationViewsNeeded
 {
-	CTableDividerItem* item = [CTableDividerItem itemWithKey:self.key title:self.title dividerItem:self];
-	return [NSArray arrayWithObject:item];
+	return 0;
 }
 
 @end

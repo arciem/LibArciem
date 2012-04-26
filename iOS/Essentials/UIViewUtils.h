@@ -49,6 +49,10 @@ extern NSString* const sTapInBackgroundNotification;
 - (void)addSubview:(UIView *)view animated:(BOOL)animated;
 - (void)removeFromSuperviewAnimated:(BOOL)animated;
 
+- (UIView*)addTopBevelView;
+- (UIView*)addBottomBevelView;
+- (UIView*)addBevelViewAtY:(CGFloat)y top:(BOOL)top;
+
 @property(readonly, nonatomic) NSUInteger indexInSubviews;
 
 - (void)bringToFront;

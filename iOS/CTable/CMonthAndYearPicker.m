@@ -291,7 +291,9 @@
 			month = [self monthForMonthRow:row];
 			year = [self yearForYearRow:[pickerView selectedRowInComponent:1]];
 
-			label.text = [self.dateFormatter.standaloneMonthSymbols objectAtIndex:row];
+			NSString* monthString = [self.dateFormatter.standaloneMonthSymbols objectAtIndex:row];
+			
+			label.text = [NSString stringWithFormat:@"%@ %02d", monthString, month];
 			label.textAlignment = UITextAlignmentRight;
 			
 			highlighted = month == self.currentMonth;

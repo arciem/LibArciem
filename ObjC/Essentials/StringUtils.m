@@ -319,6 +319,22 @@ string ToStd(NSString* s)
 	return string;
 }
 
++ (NSString*)stringWithBase64UUIDURLSafe:(BOOL)URLSafe
+{
+	NSString* result = nil;
+
+	CFUUIDRef uuidObj = CFUUIDCreate(nil);
+
+	CFUUIDBytes uuidBytes = CFUUIDGetUUIDBytes(uuidObj);
+	NSData* data = [NSData dataWithBytes:&uuidBytes length:sizeof(CFUUIDBytes)];
+	result = [NSString stringByBase64EncodingData:data URLSafe:URLSafe];
+	result = [result substringToIndex:22]; // remove the "==" padding at the end
+
+	CFRelease(uuidObj);
+
+	return result;
+}
+
 + (NSString*)stringWithASCIIData:(NSData*)data
 {
 	return [self stringWithData:data encoding:NSASCIIStringEncoding];
@@ -412,7 +428,7 @@ string ToStd(NSString* s)
 
 - (NSString*)lastCharacters:(NSInteger)count
 {
-	return [self substringFromIndex:[self length] - count];
+	return [self substringFromIndex:self.length - count];
 }
 
 - (NSString*)lastCharacter
@@ -454,13 +470,67 @@ string ToStd(NSString* s)
 
 - (NSArray*)allCharacters
 {
-	NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:[self length]];
-	for (int i=0; i < [self length]; i++) {
+	NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:self.length];
+	for (int i=0; i < self.length; i++) {
 		NSString *ichar  = [NSString stringWithFormat:@"%c", [self characterAtIndex:i]];
 		[characters addObject:ichar];
 	}
 	
 	return [characters copy];
+}
+
++ (NSString*)stringByBase64EncodingData:(NSData*)data URLSafe:(BOOL)URLSafe
+{
+	static unsigned char *alphabetStandard = (unsigned char *)"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+	static unsigned char *alphabetURLSafe = (unsigned char *)"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+	
+	unsigned char* alphabet = URLSafe ? alphabetURLSafe : alphabetStandard;
+	
+	int encodedLength = (4 * ((data.length / 3) + (1 - (3 - (data.length % 3)) / 3))) + 1;  
+	unsigned char *outputBuffer = (unsigned char *)malloc(encodedLength);
+	unsigned char *inputBuffer = (unsigned char *)data.bytes;
+	
+	NSInteger i;
+	NSInteger j = 0;
+	int remain;
+	
+	for(i = 0; i < data.length; i += 3) {  
+		remain = data.length - i;  
+		
+		outputBuffer[j++] = alphabet[(inputBuffer[i] & 0xFC) >> 2];  
+		outputBuffer[j++] = alphabet[((inputBuffer[i] & 0x03) << 4) |   
+									 ((remain > 1) ? ((inputBuffer[i + 1] & 0xF0) >> 4): 0)];  
+		
+		if(remain > 1)  
+			outputBuffer[j++] = alphabet[((inputBuffer[i + 1] & 0x0F) << 2)  
+										 | ((remain > 2) ? ((inputBuffer[i + 2] & 0xC0) >> 6) : 0)];  
+		else   
+			outputBuffer[j++] = '=';  
+		
+		if(remain > 2)  
+			outputBuffer[j++] = alphabet[inputBuffer[i + 2] & 0x3F];  
+		else  
+			outputBuffer[j++] = '=';              
+	}  
+	
+	outputBuffer[j] = 0;  
+	
+	NSString* result = [NSString stringWithCString:(const char*)outputBuffer encoding:NSASCIIStringEncoding];
+	free(outputBuffer);
+	
+	return result;
+}
+
+- (NSString*)stringUsingBase64EncodingURLSafe:(BOOL)URLSafe
+{
+	NSData* data = [self dataUsingEncoding:NSUTF8StringEncoding];
+	NSString* result = [NSString stringByBase64EncodingData:data URLSafe:URLSafe];
+    return result;  
+}
+
+- (NSString*)stringUsingBase64Encoding
+{
+	return [self stringUsingBase64EncodingURLSafe:NO];
 }
 
 @end

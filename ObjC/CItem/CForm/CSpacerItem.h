@@ -18,8 +18,8 @@
 
 #import "CItem.h"
 
-@interface CDividerItem : CItem
+@interface CSpacerItem : CItem
 
-+ (CDividerItem*)dividerItem;
++ (CSpacerItem*)spacerItem;
 
 @end

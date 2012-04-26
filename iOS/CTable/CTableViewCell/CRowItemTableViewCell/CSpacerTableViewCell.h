@@ -16,18 +16,8 @@
  
  *******************************************************************************/
 
-#import "CTableDividerItem.h"
+#import "CRowItemTableViewCell.h"
 
-@implementation CTableDividerItem
-
-+ (CTableDividerItem*)itemWithKey:(NSString*)key title:(NSString*)title dividerItem:(CDividerItem*)dividerItem
-{
-	return [[self alloc] initWithKey:key title:title model:dividerItem];
-}
-
-- (NSString*)defaultCellType
-{
-	return @"CDividerTableViewCell";
-}
+@interface CSpacerTableViewCell : CRowItemTableViewCell
 
 @end
