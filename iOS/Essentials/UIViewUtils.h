@@ -98,7 +98,7 @@ extern NSString* const sTapInBackgroundNotification;
 
 @interface CFrame : NSObject
 
-@property(weak, readonly, nonatomic) UIView* view;
+@property(assign, readonly, nonatomic) UIView* view;
 @property(nonatomic) CGRect frame;
 
 @property(nonatomic) CGPoint origin;

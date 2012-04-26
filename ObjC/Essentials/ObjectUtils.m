@@ -63,7 +63,7 @@ void Switch(id key, NSDictionary* dict)
 		if(bl == NULL) {
 			bl = [dict objectForKey:[NSNull null]];
 		}
-		CLogDebug(nil, @"Switch key:%@ block:%@", key, bl);
+//		CLogDebug(nil, @"Switch key:%@ block:%@", key, bl);
 		if(bl != NULL) {
 			bl();
 		}
