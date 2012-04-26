@@ -16,10 +16,8 @@
  
  *******************************************************************************/
 
-#import "CItem.h"
+#import "CRowItemTableViewCell.h"
 
-@interface CDividerItem : CItem
-
-+ (CDividerItem*)dividerItem;
+@interface CSpacerTableViewCell : CRowItemTableViewCell
 
 @end

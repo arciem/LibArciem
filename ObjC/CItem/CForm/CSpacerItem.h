@@ -16,11 +16,10 @@
  
  *******************************************************************************/
 
-#import "CTableRowItem.h"
-#import "CDividerItem.h"
+#import "CItem.h"
 
-@interface CTableDividerItem : CTableRowItem
+@interface CSpacerItem : CItem
 
-+ (CTableDividerItem*)itemWithKey:(NSString*)key title:(NSString*)title dividerItem:(CDividerItem*)dividerItem;
++ (CSpacerItem*)spacerItem;
 
 @end

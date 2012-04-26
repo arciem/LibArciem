@@ -16,8 +16,18 @@
  
  *******************************************************************************/
 
-#import "CRowItemTableViewCell.h"
+#import "CTableSpacerItem.h"
 
-@interface CDividerTableViewCell : CRowItemTableViewCell
+@implementation CTableSpacerItem
+
++ (CTableSpacerItem*)itemWithKey:(NSString*)key title:(NSString*)title spacerItem:(CSpacerItem*)spacerItem
+{
+	return [[self alloc] initWithKey:key title:title model:spacerItem];
+}
+
+- (NSString*)defaultCellType
+{
+	return @"CSpacerTableViewCell";
+}
 
 @end

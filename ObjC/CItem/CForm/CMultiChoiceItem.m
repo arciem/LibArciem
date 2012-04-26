@@ -22,7 +22,7 @@
 #import "ObjectUtils.h"
 #import "CTableMultiChoiceItem.h"
 #import "CTableBooleanItem.h"
-#import "CDividerItem.h"
+#import "CSpacerItem.h"
 #import "ErrorUtils.h"
 
 NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
@@ -111,7 +111,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 
 - (BOOL)isEmpty
 {
-	return NO;
+	return self.choicesCount == 0;
 }
 
 - (NSError*)validate
@@ -198,7 +198,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 		CItem* item = nil;
 		
 		if([str isEqualToString:@"-"]) {
-			item = [CDividerItem dividerItem];
+			item = [CSpacerItem spacerItem];
 		} else {
 			NSArray* comps = [str componentsSeparatedByString:@"/"];
 			NSString* key = [comps objectAtIndex:0];
@@ -276,7 +276,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 			NSArray* newRowItems = [item tableRowItems];
 			for(CTableRowItem* rowItem in newRowItems) {
 				rowItem.indentationLevel = 1;
-				CLogDebug(nil, @"%@ created", rowItem);
+//				CLogDebug(nil, @"%@ created", rowItem);
 			}
 			[rowItems addObjectsFromArray:newRowItems];
 		}

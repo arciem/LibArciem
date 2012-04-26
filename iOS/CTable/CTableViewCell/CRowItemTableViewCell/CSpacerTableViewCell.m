@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2012 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,29 +16,19 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#import "CSpacerTableViewCell.h"
 
-typedef enum {
-	kViewKeyboardAdjustmentTypeNone = 0,
-	kViewKeyboardAdjustmentTypeShrink
-} CViewKeyboardAdjustmentType;
+@implementation CSpacerTableViewCell
 
-@protocol CViewLayoutDelegate;
+- (CGSize)sizeThatFits:(CGSize)size
+{
+	size.height = 20;
+	return size;
+}
 
-@interface CView : UIView<UIGestureRecognizerDelegate>
-
-@property (strong, nonatomic) UIColor* debugColor;
-@property (nonatomic) CViewKeyboardAdjustmentType keyboardAdjustmentType;
-@property (nonatomic) BOOL tapResignsFirstResponder;
-@property (assign, nonatomic) id<CViewLayoutDelegate> layoutDelegate;
-
-- (void)setup;
-
-@end
-
-@protocol CViewLayoutDelegate<NSObject>
-
-@optional
-- (void)viewLayoutSubviews:(UIView*)view;
+- (NSUInteger)validationViewsNeeded
+{
+	return 0;
+}
 
 @end

@@ -16,19 +16,19 @@
  
  *******************************************************************************/
 
-#import "CDividerItem.h"
-#import "CTableDividerItem.h"
+#import "CSpacerItem.h"
+#import "CTableSpacerItem.h"
 
-@implementation CDividerItem
+@implementation CSpacerItem
 
-+ (CDividerItem*)dividerItem
++ (CSpacerItem*)spacerItem
 {
 	return [[self alloc] init];
 }
 
 - (NSArray*)tableRowItems
 {
-	CTableDividerItem* item = [CTableDividerItem itemWithKey:self.key title:self.title dividerItem:self];
+	CTableSpacerItem* item = [CTableSpacerItem itemWithKey:self.key title:self.title spacerItem:self];
 	return [NSArray arrayWithObject:item];
 }
 

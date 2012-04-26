@@ -199,39 +199,15 @@ id<NSObject> ClassAlloc(NSString* className)
     free(properties);
 }
 
-#if 0
-static NSMutableSet* sAssociationKeys = nil;
-
 - (void)setAssociatedObject:(id)obj forKey:(NSString*)key
 {
-	if(key != nil) {
-		if(sAssociationKeys == nil) {
-			sAssociationKeys = [[NSMutableSet alloc] init];
-		}
-		
-		NSString* internalKey = [sAssociationKeys member:key];
-		if(internalKey == nil) {
-			internalKey = [[key copy] autorelease];
-		}
-		
-		objc_setAssociatedObject(self, internalKey, obj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	}
+	objc_setAssociatedObject(self, (__bridge void*)key, obj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (id)associatedObjectForKey:(NSString*)key
 {
-	id obj = nil;
-	
-	if(sAssociationKeys != nil) {
-		NSString* internalKey = [sAssociationKeys member:key];
-		if(internalKey != nil) {
-			obj = objc_getAssociatedObject(self, internalKey);
-		}
-	}
-	
-	return obj;
+	return objc_getAssociatedObject(self, (__bridge void*)key);
 }
-#endif
 
 @end
 

@@ -16,19 +16,15 @@
  
  *******************************************************************************/
 
-#import "CDividerTableViewCell.h"
+#import <UIKit/UIKit.h>
 
-@implementation CDividerTableViewCell
+@interface CMonthAndYearPicker : UIControl
 
-- (CGSize)sizeThatFits:(CGSize)size
-{
-	size.height = 20;
-	return size;
-}
+@property (strong, nonatomic) NSDate* date;
+@property (strong, nonatomic) NSDate* minimumDate;
+@property (strong, nonatomic) NSDate* maximumDate;
 
-- (NSUInteger)validationViewsNeeded
-{
-	return 0;
-}
+- (id)init;
+- (void)setDate:(NSDate *)date animated:(BOOL)animated;
 
 @end

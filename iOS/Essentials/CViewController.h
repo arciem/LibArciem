@@ -30,7 +30,7 @@ typedef NSUInteger CViewControllerState;
 extern NSString* const InterfaceDidChangeOrientationNotification;
 extern NSString* const InterfaceWillChangeOrientationNotification;
 
-@interface CViewController : UIViewController<CImageViewLayoutDelegate>
+@interface CViewController : UIViewController<CViewLayoutDelegate>
 
 @property(nonatomic, getter = isInterfaceLocked) BOOL interfaceLocked;
 @property(nonatomic) CViewControllerState state;

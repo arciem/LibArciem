@@ -177,7 +177,7 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	return should;
 }
 
-#pragma mark - CImageViewLayoutDelegate
+#pragma mark - CViewLayoutDelegate
 
 - (void)viewLayoutSubviews:(UIView*)view
 {
