@@ -56,20 +56,6 @@ BOOL IsEmpty(id a)
 	return [Denull(a) count] == 0;
 }
 
-void Switch(id key, NSDictionary* dict)
-{
-	@autoreleasepool {
-		void (^bl)(void) = [dict objectForKey:key];
-		if(bl == NULL) {
-			bl = [dict objectForKey:[NSNull null]];
-		}
-		CLogDebug(nil, @"Switch key:%@ block:%@", key, bl);
-		if(bl != NULL) {
-			bl();
-		}
-	}
-}
-
 id<NSObject> ClassAlloc(NSString* className)
 {
 	id instance = nil;
@@ -222,6 +208,21 @@ id<NSObject> ClassAlloc(NSString* className)
 		id value = va_arg(args, id);
         [keys addObject:key];
 		[values addObject:value];		
+    }
+    va_end(args);
+    
+    return [self dictionaryWithObjects:values forKeys:keys];
+}
+
++ (id)dictionaryWithKeysAndCopiedObjects:(id)firstKey, ... {
+	va_list args;
+    va_start(args, firstKey);
+	NSMutableArray* keys = [NSMutableArray array];
+	NSMutableArray* values = [NSMutableArray array];
+    for (id key = firstKey; key != nil; key = va_arg(args, id)) {
+		id value = va_arg(args, id);
+        [keys addObject:key];
+		[values addObject:[value copy]];		
     }
     va_end(args);
     
