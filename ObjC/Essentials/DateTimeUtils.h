@@ -54,6 +54,7 @@ NSTimeInterval TimeIntervalFromDaysHoursMinutesSeconds(int days, int hours, int 
 + (NSDate *)parseRFC822:(NSString *)dateString;
 + (NSDate *)parseHTTP:(NSString *)dateString;
 + (NSDateComponents*)componentsForISO8601Interval:(NSString*)str;
++ (NSTimeInterval)durationForISO8601Interval:(NSString*)str;
 
 - (NSString *)formatRFC822;
 - (NSString *)formatHTTP;
