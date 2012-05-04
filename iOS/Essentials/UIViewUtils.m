@@ -572,7 +572,6 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	return [self addBevelViewAtY:self.boundsBottom top:NO];
 }
 
-
 - (CFrame*)cframe NS_RETURNS_RETAINED
 {
 	return [CFrame frameWithView:self];
