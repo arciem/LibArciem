@@ -59,3 +59,10 @@ id<NSObject> ClassAlloc(NSString* className);
 - (void)overrideWithValuesFromDictionary:(NSDictionary*)dict;
 
 @end
+
+@interface NSArray (ObjectUtils)
+
+- (NSArray*)arrayByRemovingObjectAtIndex:(NSUInteger)index;
+- (NSArray*)arrayByReplacingObjectAtIndex:(NSUInteger)index withObject:(id)object;
+
+@end

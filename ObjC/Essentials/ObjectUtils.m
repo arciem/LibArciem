@@ -262,3 +262,21 @@ id<NSObject> ClassAlloc(NSString* className)
 }
 
 @end
+
+@implementation NSArray (ObjectUtils)
+
+- (NSArray*)arrayByRemovingObjectAtIndex:(NSUInteger)index
+{
+	NSMutableArray* a = [self mutableCopy];
+	[a removeObjectAtIndex:index];
+	return [a copy];
+}
+
+- (NSArray*)arrayByReplacingObjectAtIndex:(NSUInteger)index withObject:(id)object
+{
+	NSMutableArray* a = [self mutableCopy];
+	[a replaceObjectAtIndex:index withObject:object];
+	return [a copy];
+}
+
+@end

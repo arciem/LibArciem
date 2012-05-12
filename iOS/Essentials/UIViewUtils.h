@@ -21,6 +21,9 @@
 
 extern NSString* const sTapInBackgroundNotification;
 
+// See http://clang.llvm.org/docs/AutomaticReferenceCounting.html#optimization.precise
+#define CFRAME __attribute__((objc_precise_lifetime)) CFrame*
+
 @class CFrame;
 
 @interface UIView (UIViewUtils)

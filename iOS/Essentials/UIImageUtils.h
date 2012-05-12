@@ -31,6 +31,7 @@
 + (UIImage*)etchedButtonImageWithSize:(CGSize)size scale:(CGFloat)scale tintColor:(UIColor*)tintColor cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;
 + (UIImage*)etchedButtonWithBackgroundImage:(UIImage*)backgroundImage cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;
 + (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor shadowColor:(UIColor*)shadowColor shadowOffset:(CGSize)shadowOffset shadowBlur:(CGFloat)shadowBlur;
++ (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor;
 + (UIImage*)navigationBarImageWithBackgroundPatternImage:patternImage glossAlpha:(CGFloat)glossAlpha;
 + (UIImage*)navigationBarImageWithBackgroundPatternImage:patternImage;
 + (UIImage*)toolbarImageWithBackgroundPatternImage:patternImage toolbarPosition:(UIToolbarPosition)position glossAlpha:(CGFloat)glossAlpha;

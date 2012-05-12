@@ -67,6 +67,12 @@
 {
     NSMutableArray *newCGColors = nil;
 	
+	// If we're passed an array with one color, the gradient layer will be clear. So in that case we double it so the gradient will be a single solid color.
+	if(newColors.count == 1) {
+		id c = [newColors objectAtIndex:0];
+		newColors = [NSArray arrayWithObjects:c, c, nil];
+	}
+	
     if (newColors != nil) {
         newCGColors = [NSMutableArray arrayWithCapacity:[newColors count]];
         for (id color in newColors) {
