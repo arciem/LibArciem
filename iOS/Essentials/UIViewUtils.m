@@ -600,9 +600,9 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	if(self = [super init]) {
 		view_ = view;
 		frame_ = view_.frame;
+		CLogTrace(@"C_FRAME", @"%@ initWithView:%@", self, view_);
 	}
 	
-	CLogTrace(@"C_FRAME", @"%@ initWithView:%@", self, view_);
 	
 	return self;
 }
