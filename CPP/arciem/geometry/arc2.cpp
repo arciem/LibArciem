@@ -206,8 +206,8 @@ area arc2::frame() const
 {
 	area a = area(mCenter).union_no_empty(start()).union_no_empty(end());
 	
-	delta2 start = delta2::from_polar(mRadius, start_angle());
-	delta2 end = delta2::from_polar(mRadius, end_angle());
+//	delta2 start = delta2::from_polar(mRadius, start_angle());
+//	delta2 end = delta2::from_polar(mRadius, end_angle());
 	
 	if(includes(0.0)) {
 		a = a.union_no_empty(mCenter + delta2(mRadius, 0.0));
