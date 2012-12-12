@@ -57,7 +57,8 @@
 
 - (BOOL)didSelect
 {
-	BOOL shouldDeselect = [super didSelect];
+    [super didSelect];
+	BOOL shouldDeselect = YES;
 
 	if([self.superitem isKindOfClass:[CMultiChoiceItem class]]) {
 		CMultiChoiceItem* parent = (CMultiChoiceItem*)self.superitem;
@@ -65,8 +66,6 @@
 	} else {
 		self.booleanValue = !self.booleanValue;
 	}
-
-	shouldDeselect = YES;
 
 	return shouldDeselect;
 }
