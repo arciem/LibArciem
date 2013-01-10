@@ -79,20 +79,24 @@ const NSUInteger kOKButtonIndex = 1;
 	}
 }
 
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion
+- (void)showCancelAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion
 {
 	[self showAlertWithTitle:title message:message buttonTitles:nil completion:completion];
 }
 
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message
+- (void)showCancelAlertWithTitle:(NSString*)title message:(NSString*)message
 {
-	[self showAlertWithTitle:title message:message completion:nil];
+	[self showCancelAlertWithTitle:title message:message completion:nil];
 }
 
 - (void)showConfirmAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion
 {
-	NSArray* titles = [NSArray arrayWithObjects:IString(@"Cancel"), IString(@"OK"), nil];
-	[self showAlertWithTitle:title message:message buttonTitles:titles completion:completion];
+	[self showAlertWithTitle:title message:message buttonTitles:@[IString(@"Cancel"), IString(@"OK")] completion:completion];
+}
+
+- (void)showOKAlertWithTitle:(NSString*)title message:(NSString*)message
+{
+    [self showAlertWithTitle:title message:message buttonTitles:@[IString(@"OK")] completion:nil];
 }
 
 //
