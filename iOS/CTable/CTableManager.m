@@ -274,7 +274,7 @@
 
 	NSUInteger enteringSectionIndex = [self indexOfSectionForKey:newSectionKey];
 	
-	NSAssert2(enteringSectionIndex == leavingSectionIndex, @"Need adjacent sections in model. entering:%@ leaving:%@", enteringSectionIndex, leavingSectionIndex);
+	NSAssert2(enteringSectionIndex == leavingSectionIndex, @"Need adjacent sections in model. entering:%d leaving:%d", enteringSectionIndex, leavingSectionIndex);
 	NSIndexSet* sectionIndexes = [NSIndexSet indexSetWithIndex:enteringSectionIndex];
 	[self.tableView reloadSections:sectionIndexes withRowAnimation:UITableViewRowAnimationAutomatic];
 }

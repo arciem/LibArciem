@@ -234,7 +234,7 @@
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
 {
-	CGFloat result;
+	CGFloat result = 0.0;
 	
 	switch (component) {
 		case 0:
@@ -283,8 +283,8 @@
 	}
 
 	BOOL highlighted = NO;
-	NSInteger month;
-	NSInteger year;
+	NSInteger month = 0;
+	NSInteger year = 0;
 	
 	switch (component) {
 		case 0: {
