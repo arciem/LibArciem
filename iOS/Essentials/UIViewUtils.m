@@ -572,7 +572,6 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	return [self addBevelViewAtY:self.boundsBottom top:NO];
 }
 
-
 - (CFrame*)cframe NS_RETURNS_RETAINED
 {
 	return [CFrame frameWithView:self];
@@ -601,9 +600,9 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	if(self = [super init]) {
 		view_ = view;
 		frame_ = view_.frame;
+		CLogTrace(@"C_FRAME", @"%@ initWithView:%@", self, view_);
 	}
 	
-	CLogTrace(@"C_FRAME", @"%@ initWithView:%@", self, view_);
 	
 	return self;
 }

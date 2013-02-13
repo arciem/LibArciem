@@ -369,6 +369,16 @@ static NSDateFormatter *ascTimeDateFormatter = nil;
 	return comps;
 }
 
++ (NSTimeInterval)durationForISO8601Interval:(NSString*)str
+{
+	NSDateComponents* comps = [self componentsForISO8601Interval:str];
+	NSDate* referenceDate = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
+	NSCalendar* gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDate* offsetDate = [gregorian dateByAddingComponents:comps toDate:referenceDate options:0];
+	NSTimeInterval duration = [offsetDate timeIntervalSinceDate:referenceDate];
+	return duration;
+}
+
 @end
 
 @implementation NSDateFormatter (DateTimeUtils)

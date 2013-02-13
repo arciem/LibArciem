@@ -308,6 +308,11 @@
 	return flatShapeImage;
 }
 
++ (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor
+{
+	return [self imageWithShapeImage:shapeImage tintColor:tintColor shadowColor:nil shadowOffset:CGSizeMake(0, 0) shadowBlur:0];
+}
+
 + (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor shadowColor:(UIColor*)shadowColor shadowOffset:(CGSize)shadowOffset shadowBlur:(CGFloat)shadowBlur
 {
 	UIImage* resultImage = nil;
@@ -336,19 +341,23 @@
 	UIImage* tintedImage = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
 
-	// Create the main context we'll be painting into
-	UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
-	context = UIGraphicsGetCurrentContext();
-	CGContextTranslateCTM(context, 0.0, bounds.size.height);
-	CGContextScaleCTM(context, 1.0, -1.0);
+	if(shadowColor == nil) {
+		resultImage = tintedImage;
+	} else {
+		// Create the main context we'll be painting into
+		UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
+		context = UIGraphicsGetCurrentContext();
+		CGContextTranslateCTM(context, 0.0, bounds.size.height);
+		CGContextScaleCTM(context, 1.0, -1.0);
 
-	// Paint the tinted shape with a shadow
-	CGContextSetShadowWithColor(context, shadowOffset, shadowBlur, shadowColor.CGColor);
-	CGContextDrawImage(context, bounds, tintedImage.CGImage);
+		// Paint the tinted shape with a shadow
+		CGContextSetShadowWithColor(context, shadowOffset, shadowBlur, shadowColor.CGColor);
+		CGContextDrawImage(context, bounds, tintedImage.CGImage);
 
-	// Retrieve the shadowed, tinted image
-	resultImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+		// Retrieve the shadowed, tinted image
+		resultImage = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+	}
 
 	// Clean up
 	CGImageRelease(shapeStencil);

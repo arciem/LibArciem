@@ -26,8 +26,9 @@ extern const NSUInteger kOKButtonIndex;
 + (CAlertManager*)sharedInstance;
 
 - (void)showAlertWithTitle:(NSString*)title message:(NSString*)message buttonTitles:(NSArray*)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion;
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion;
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message;
+- (void)showCancelAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion;
+- (void)showCancelAlertWithTitle:(NSString*)title message:(NSString*)message;
 - (void)showConfirmAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion;
+- (void)showOKAlertWithTitle:(NSString*)title message:(NSString*)message;
 
 @end
