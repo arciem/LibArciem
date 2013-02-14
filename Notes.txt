@@ -1,0 +1,4 @@
+The following instructions were helpful in making this framework:
+    https://github.com/jverkoey/iOS-Framework
+    http://stackoverflow.com/questions/13571080/cant-change-target-membership-visibility-in-xcode-4-5
+    http://www.amateurinmotion.com/articles/2009/02/08/creating-a-static-library-for-iphone.html
