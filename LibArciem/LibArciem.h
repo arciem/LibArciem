@@ -37,9 +37,11 @@
 #include "volume.hpp"
 #include "wedge2.hpp"
 
+using namespace std;
+
 #ifdef __OBJC__
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface LibArciem : NSObject
 
