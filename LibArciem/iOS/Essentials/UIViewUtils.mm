@@ -620,6 +620,11 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	CLogTrace(@"C_FRAME", @"%@ dealloc:%@", self, view_);
 }
 
+- (NSString*)description
+{
+    return [NSString stringWithFormat:@"<%@: %p %@>", [self class], self, NSStringFromCGRect(frame_)];
+}
+
 - (CGPoint)origin
 {
 	return frame_.origin;
