@@ -34,6 +34,8 @@ id<NSObject> ClassAlloc(NSString* className);
 - (NSString*)formatBoolValueForKey:(NSString*)key compact:(BOOL)compact;
 - (NSString*)formatBoolValueForKey:(NSString*)key compact:(BOOL)compact hidingIf:(BOOL)hideValue;
 - (NSString*)formatObjectWithValues:(NSArray*)values;
+- (NSString*)formatNumberForKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero;
+- (NSString*)formatCountForKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero;
 
 - (void)setPropertiesToNil;
 

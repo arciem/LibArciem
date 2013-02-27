@@ -141,6 +141,27 @@ id<NSObject> ClassAlloc(NSString* className)
 	return [self formatKey:key value:value compact:compact];
 }
 
+- (NSString*)formatNumber:(NSNumber*)number forKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero
+{
+    NSString* result = nil;
+    if(!hideIfZero || [number floatValue] != 0.0f) {
+        result = [self formatKey:key value:number compact:NO];
+    }
+    return result;
+}
+
+- (NSString*)formatNumberForKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero
+{
+    NSNumber* number = (NSNumber*)[self valueForKey:key];
+    return [self formatNumber:number forKey:key hidingIfZero:hideIfZero];
+}
+
+- (NSString*)formatCountForKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero
+{
+    NSArray* array = (NSArray*)[self valueForKey:key];
+    return [self formatNumber:[NSNumber numberWithUnsignedInteger:array.count] forKey:key hidingIfZero:hideIfZero];
+}
+
 - (NSString*)formatBoolValueForKey:(NSString*)key compact:(BOOL)compact hidingIf:(BOOL)hideValue
 {
 	NSString* result = @"";
