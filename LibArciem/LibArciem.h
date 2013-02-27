@@ -73,6 +73,9 @@ using namespace std;
 #import "StringUtils.h"
 #import "ThreadUtils.h"
 
+// CItem/CForm
+#import "CForm.h"
+
 // iOS
 #import "CBeveledBackgroundView.h"
 #import "CNetworkActivity.h"

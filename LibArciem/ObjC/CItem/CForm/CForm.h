@@ -17,6 +17,19 @@
  *******************************************************************************/
 
 #import "CItem.h"
+#import "CBooleanItem.h"
+#import "CCreditCardItem.h"
+#import "CDateItem.h"
+#import "CEmailItem.h"
+#import "CMultiChoiceItem.h"
+#import "CMultiTextItem.h"
+#import "CNoteItem.h"
+#import "CPasswordItem.h"
+#import "CPhoneItem.h"
+#import "CRepeatingItem.h"
+#import "CSpacerItem.h"
+#import "CStringItem.h"
+#import "CSubmitItem.h"
 
 @interface CForm : NSObject
 
