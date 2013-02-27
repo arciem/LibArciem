@@ -91,6 +91,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		NSString* className = [NSString stringWithFormat:@"C%@%@Item", firstChar, remainingChars];
 		self = (CItem*)ClassAlloc(className);
 		NSAssert1(self != nil, @"Attempt to instantiate undefined class:%@", className);
+		CLogTrace(@"C_ITEM", @"%@ alloc", self);
 	}
 	[mutableDict removeObjectForKey:@"type"];
 
@@ -104,8 +105,10 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		
 		NSArray* subdicts = [dict_ objectForKey:@"subitems"];
 		subitems__ = [NSMutableArray array];
-		for(NSDictionary* subdict in subdicts) {
-			[self addSubitem:[CItem itemWithDictionary:subdict]];
+		for(NSDictionary *subdict in subdicts) {
+            CItem *subitem = [CItem itemWithDictionary:subdict];
+			[self addSubitem:subitem];
+            CLogTrace(@"C_ITEM", @"%@ added as subitem of %@", subitem, self);
 		}
 		[dict_ removeObjectForKey:@"subitems"];
 		[self setup];
@@ -311,6 +314,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 			[self formatValueForKey:@"currentRevision" compact:compact],
 			[self formatValueForKey:@"lastValidatedRevision" compact:compact],
 			[self formatValueForKey:@"error" compact:compact],
+            [self formatCountForKey:@"subitems" hidingIfZero:YES],
 			[self formatValueForKey:@"subitemErrors" compact:compact],
 			[self formatBoolValueForKey:@"validatesAutomatically" compact:compact hidingIf:NO],
 			[self formatBoolValueForKey:@"isDisabled" compact:compact hidingIf:NO],
