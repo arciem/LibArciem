@@ -389,6 +389,14 @@
 	return color;
 }
 
++ (UIColor*)randomColor
+{
+    CGColorRef c = CreateRandomColor();
+    UIColor* result = [UIColor colorWithCGColor:c];
+    CGColorRelease(c);
+    return result;
+}
+
 - (UIColor*)tintColorVariantForButtonHighlighted:(BOOL)highlighted
 {
 	UIColor* result = nil;
