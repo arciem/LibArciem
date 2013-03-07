@@ -37,9 +37,13 @@
 + (UIImage*)toolbarImageWithBackgroundPatternImage:patternImage toolbarPosition:(UIToolbarPosition)position glossAlpha:(CGFloat)glossAlpha;
 + (UIImage*)toolbarImageWithBackgroundPatternImage:patternImage toolbarPosition:(UIToolbarPosition)position;
 
++ (CGContextRef)beginImageContextWithSize:(CGSize)size opaque:(BOOL)opaque scale:(CGFloat)scale flipped:(BOOL)flipped;
++ (UIImage*)endImageContext;
+
 - (UIImage*)reflectedImageWithHeight:(NSUInteger)height;
 
 - (UIImage*)imageByColorizing:(UIColor*)theColor;
+- (UIImage *)imageByMaskingWithImage:(UIImage*)shapeImage;
 
 - (UIImage*)imageByScalingToSize:(CGSize)size;
 

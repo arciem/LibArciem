@@ -607,10 +607,27 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	return self;
 }
 
+- (id)initWithRect:(CGRect)rect
+{
+	if(self = [super init]) {
+		frame_ = rect;
+		CLogTrace(@"C_FRAME", @"%@ initWithRect:%@", self, NSStringFromCGRect(rect));
+	}
+	
+	
+	return self;
+}
+
 + (CFrame*)frameWithView:(UIView*)view NS_RETURNS_RETAINED
 {
 	return [[self alloc] initWithView:view];
 }
+
++ (CFrame*)frameWithRect:(CGRect)rect NS_RETURNS_RETAINED
+{
+    return [[self alloc] initWithRect:rect];
+}
+
 
 - (void)dealloc
 {

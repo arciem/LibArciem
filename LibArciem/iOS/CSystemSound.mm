@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2013 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,13 +16,34 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#import "CSystemSound.h"
+#import <AudioToolbox/AudioToolbox.h>
 
+@interface CSystemSound () {
+    SystemSoundID soundID;
+}
 
-@interface UILabel (UILabelUtils)
+@end
 
-- (void)adjustFontSizeToFit:(CGFloat)largeFontSize;
+@implementation CSystemSound
 
-+ (CGSize)maxSizeOfStrings:(NSArray*)strings withFont:(UIFont*)font forWidth:(CGFloat)width lineBreakMode:(UILineBreakMode)lineBreakMode;
+- (id)initWithFileURL:(NSURL*)url
+{
+    if(self = [super init]) {
+        OSStatus err = AudioServicesCreateSystemSoundID((__bridge CFURLRef)url, &soundID);
+        NSAssert2(err == 0, @"Error creating audio object: %ld %@", err, url);
+    }
+    return self;
+}
+
+- (void)play
+{
+    AudioServicesPlaySystemSound(soundID);
+}
+
+- (void)dealloc
+{
+    AudioServicesDisposeSystemSoundID(soundID);
+}
 
 @end

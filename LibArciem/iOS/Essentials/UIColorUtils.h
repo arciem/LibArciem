@@ -22,7 +22,8 @@
 @interface UIColor(UIColorUtils)
 
 + (UIColor*)colorWithDenormalizedHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
-+ (UIColor*)colorWithRGBValue:(NSUInteger)rgbValue; //rrggbb eg. 0x3c001b
++ (UIColor*)colorWithRGBValue:(NSUInteger)rgbValue;     // rrggbb eg. 0x3c001b
++ (UIColor*)colorWithRGBAValue:(NSUInteger)rgbaValue;   // rrggbbaa eg. 0x3c001bff
 + (UIColor*)colorWithString:(NSString*)str; // @"0.5 0.7 0.3 1.0" or @"0.5 0.7 0.3"
 
 + (UIColor*)randomColor;

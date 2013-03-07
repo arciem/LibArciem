@@ -16,11 +16,14 @@
  
  *******************************************************************************/
 
-#include <algorithm>
-#import "random.hpp"
-#import "math_utils.hpp"
 #import "CGUtils.h"
+#include <algorithm>
+#include <cmath>
+#import "random.hpp"
+#import "geometry.hpp"
+#import "math_utils.hpp"
 #import "Geom.h"
+#import "gl_utils.hpp"
 
 using namespace arciem;
 
@@ -332,7 +335,7 @@ CGGradientRef GradientCreateWith4Colors(CGColorRef color1, CGColorRef color2, CG
 CGGradientRef GradientCreateGloss(CGColorRef color1, CGColorRef color2, CGColorRef color3, CGColorRef color4, CGColorSpaceRef colorSpace)
 {
 	const void* colorValues[] = { color1, color2, color3, color4 };
-	CGFloat locations[] = { 0.0, 0.49, 0.51, 1.0 };
+	CGFloat locations[] = { 0.0, 0.499, 0.501, 1.0 };
 	CFArrayRef colors = CFArrayCreate(NULL, colorValues, 4, NULL);
 	CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, colors, locations);
 	CFRelease(colors);
@@ -351,6 +354,81 @@ CGGradientRef GradientCreateShield()
 	CGColorRelease(innerColor);
 	return gradient;
 }
+
+CGGradientRef GradientCreateEaseOut(CGColorRef color1, CGColorRef color2, CGColorSpaceRef colorSpace, NSUInteger steps)
+{
+    CGColorRef *colorValues = new CGColorRef[steps];
+    for(NSUInteger step = 0; step < steps; step++) {
+        CGFloat t = arciem::normalize((CGFloat)step, 0.0f, (CGFloat)steps - 1);
+        CGFloat phi = std::powf(arciem::ease_out(t), 0.5);
+        //        CLogDebug(nil, @"step:%d t:%f phi:%f", step, t, phi);
+        colorValues[step] = CreateColorByInterpolatingColors(color1, color2, phi);
+    }
+    
+    CFArrayRef colors = CFArrayCreate(NULL, (const void**)colorValues, steps, NULL);
+    CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, colors, NULL);
+    CFRelease(colors);
+    
+    for(NSUInteger step = 0; step < steps; step++) {
+        CGColorRelease(colorValues[step]);
+    }
+    delete[] colorValues;
+    
+    return gradient;
+}
+
+CGGradientRef GradientCreateSine(CGColorRef color1, CGColorRef color2, CGColorSpaceRef colorSpace, NSUInteger steps, CGFloat exponent)
+{
+    CGColorRef *colorValues = new CGColorRef[steps];
+    for(NSUInteger step = 0; step < steps; step++) {
+        CGFloat t = arciem::normalize((CGFloat)step, 0.0f, (CGFloat)steps - 1);
+        CGFloat phi = std::powf(std::fabsf(std::sinf(t * M_PI)), exponent);
+//        CLogDebug(nil, @"step:%d t:%f phi:%f", step, t, phi);
+        colorValues[step] = CreateColorByInterpolatingColors(color1, color2, phi);
+    }
+
+    CFArrayRef colors = CFArrayCreate(NULL, (const void**)colorValues, steps, NULL);
+    CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, colors, NULL);
+    CFRelease(colors);
+
+    for(NSUInteger step = 0; step < steps; step++) {
+        CGColorRelease(colorValues[step]);
+    }
+    delete[] colorValues;
+    
+    return gradient;
+}
+
+CGGradientRef GradientCreateRainbow(CGFloat hueOffset, CGFloat saturation, CGFloat value, CGFloat alpha)
+{
+    NSUInteger kSteps = 8;
+    CGColorRef *colorValues = new CGColorRef[kSteps];
+    for(NSUInteger step = 0; step < kSteps; step++) {
+        CGFloat t = arciem::normalize((CGFloat)step, 0.0f, (CGFloat)kSteps - 1);
+        CGFloat hue = fmodf(t + hueOffset, 1.0);
+        if(hue < 0.0) hue += 1.0;
+        arciem::color_hsb hsb(hue, saturation, value, alpha);
+        arciem::color c(hsb);
+        CGFloat components[4];
+        components[0] = c.r;
+        components[1] = c.g;
+        components[2] = c.b;
+        components[3] = c.a;
+        colorValues[step] = CGColorCreate(SharedColorSpaceDeviceRGB(), components);
+    }
+    
+    CFArrayRef colors = CFArrayCreate(NULL, (const void**)colorValues, kSteps, NULL);
+    CGGradientRef gradient = CGGradientCreateWithColors(SharedColorSpaceDeviceRGB(), colors, NULL);
+    CFRelease(colors);
+    
+    for(NSUInteger step = 0; step < kSteps; step++) {
+        CGColorRelease(colorValues[step]);
+    }
+    delete[] colorValues;
+    
+    return gradient;
+}
+
 
 void ContextFillShieldGradient(CGContextRef context, CGRect rect)
 {
@@ -375,17 +453,29 @@ void ContextFillRectGradient(CGContextRef context, CGRect rect, CGGradientRef gr
 	CGContextRestoreGState(context);
 }
 
-void ContextFillRectGradientVertical(CGContextRef context, CGRect rect, CGGradientRef gradient)
+void ContextFillRectGradientVertical(CGContextRef context, CGRect rect, CGGradientRef gradient, BOOL reverse)
 {
-	CGPoint point1 = CGPointMake(0, CGRectGetMinY(rect));
-	CGPoint point2 = CGPointMake(0, CGRectGetMaxY(rect));
+    CGPoint point1, point2;
+    if(reverse) {
+        point1 = CGPointMake(0, CGRectGetMaxY(rect));
+        point2 = CGPointMake(0, CGRectGetMinY(rect));
+    } else {
+        point1 = CGPointMake(0, CGRectGetMinY(rect));
+        point2 = CGPointMake(0, CGRectGetMaxY(rect));
+    }
 	ContextFillRectGradient(context, rect, gradient, point1, point2);
 }
 
-void ContextFillRectGradientHorizontal(CGContextRef context, CGRect rect, CGGradientRef gradient)
+void ContextFillRectGradientHorizontal(CGContextRef context, CGRect rect, CGGradientRef gradient, BOOL reverse)
 {
-	CGPoint point1 = CGPointMake(CGRectGetMinX(rect), 0);
-	CGPoint point2 = CGPointMake(CGRectGetMaxX(rect), 0);
+    CGPoint point1, point2;
+    if(reverse) {
+        point1 = CGPointMake(CGRectGetMaxX(rect), 0);
+        point2 = CGPointMake(CGRectGetMinX(rect), 0);
+    } else {
+        point1 = CGPointMake(CGRectGetMinX(rect), 0);
+        point2 = CGPointMake(CGRectGetMaxX(rect), 0);
+    }
 	ContextFillRectGradient(context, rect, gradient, point1, point2);
 }
 
@@ -560,19 +650,31 @@ void ContextFillPathGradient(CGContextRef context, CGPathRef path, CGGradientRef
 	CGContextRestoreGState(context);
 }
 
-void ContextFillPathGradientVertical(CGContextRef context, CGPathRef path, CGGradientRef gradient)
+void ContextFillPathGradientVertical(CGContextRef context, CGPathRef path, CGGradientRef gradient, BOOL reverse)
 {
 	CGRect rect = CGPathGetBoundingBox(path);
-	CGPoint point1 = CGPointMake(0, CGRectGetMinY(rect));
-	CGPoint point2 = CGPointMake(0, CGRectGetMaxY(rect));
+    CGPoint point1, point2;
+    if(reverse) {
+        point1 = CGPointMake(0, CGRectGetMaxY(rect));
+        point2 = CGPointMake(0, CGRectGetMinY(rect));
+    } else {
+        point1 = CGPointMake(0, CGRectGetMinY(rect));
+        point2 = CGPointMake(0, CGRectGetMaxY(rect));
+    }
 	ContextFillPathGradient(context, path, gradient, point1, point2);
 }
 
-void ContextFillPathGradientHorizontal(CGContextRef context, CGPathRef path, CGGradientRef gradient)
+void ContextFillPathGradientHorizontal(CGContextRef context, CGPathRef path, CGGradientRef gradient, BOOL reverse)
 {
 	CGRect rect = CGPathGetBoundingBox(path);
-	CGPoint point1 = CGPointMake(CGRectGetMinX(rect), 0);
-	CGPoint point2 = CGPointMake(CGRectGetMaxX(rect), 0);
+    CGPoint point1, point2;
+    if(reverse) {
+        point1 = CGPointMake(CGRectGetMaxX(rect), 0);
+        point2 = CGPointMake(CGRectGetMinX(rect), 0);
+    } else {
+        point1 = CGPointMake(CGRectGetMinX(rect), 0);
+        point2 = CGPointMake(CGRectGetMaxX(rect), 0);
+    }
 	ContextFillPathGradient(context, path, gradient, point1, point2);
 }
 
@@ -728,10 +830,20 @@ CGColorRef CreateColorByInterpolatingColors(CGColorRef color1, CGColorRef color2
 		newc[0] = arciem::denormalize(fraction, c1[0], c2[0]);
 		newc[1] = arciem::denormalize(fraction, c1[1], c2[1]);
 		newc[2] = arciem::denormalize(fraction, c1[2], c2[2]);
-		newc[3] = c1[3];
+		newc[3] = arciem::denormalize(fraction, c1[3], c2[3]);
 
 		newColor = CGColorCreate(SharedColorSpaceDeviceRGB(), newc);
+	} else if(CGColorGetNumberOfComponents(color1) == 2 && CGColorGetNumberOfComponents(color2) == 2) {
+		const CGFloat* c1 = CGColorGetComponents(color1);
+		const CGFloat* c2 = CGColorGetComponents(color2);
+		
+		CGFloat newc[2];
+		newc[0] = arciem::denormalize(fraction, c1[0], c2[0]);
+		newc[1] = arciem::denormalize(fraction, c1[1], c2[1]);
+        
+		newColor = CGColorCreate(SharedColorSpaceDeviceGray(), newc);
 	}
+
 	
 	return newColor;
 }
@@ -741,4 +853,10 @@ void ContextDrawSavingState(CGContextRef context, void (^drawing)(void))
 	CGContextSaveGState(context);
 	drawing();
 	CGContextRestoreGState(context);
+}
+
+CGFloat RoundUpToEvenValue(CGFloat v)
+{
+    v += (NSInteger)ceilf(v) % 2;
+    return v;
 }

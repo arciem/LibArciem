@@ -17,7 +17,8 @@
  *******************************************************************************/
 
 #import "UILabelUtils.h"
-
+#import "Geom.h"
+#import <algorithm>
 
 @implementation UILabel (UILabelUtils)
 
@@ -39,6 +40,19 @@
 		}
 	}
 	self.font = font;
+}
+
++ (CGSize)maxSizeOfStrings:(NSArray*)strings withFont:(UIFont*)font forWidth:(CGFloat)width lineBreakMode:(UILineBreakMode)lineBreakMode
+{
+    __block CGSize maxSize = CGSizeZero;
+    
+    [strings enumerateObjectsUsingBlock:^(NSString* string, NSUInteger idx, BOOL *stop) {
+        CGSize size = [string sizeWithFont:font forWidth:width lineBreakMode:lineBreakMode];
+        maxSize.width = std::max(maxSize.width, size.width);
+        maxSize.height = std::max(maxSize.height, size.height);
+    }];
+
+    return maxSize;
 }
 
 @end

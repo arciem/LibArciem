@@ -23,6 +23,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		032AEEF016DE66DA0024D14E /* CSystemSound.h in Headers */ = {isa = PBXBuildFile; fileRef = 032AEEEE16DE66D90024D14E /* CSystemSound.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		032AEEF116DE66DA0024D14E /* CSystemSound.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032AEEEF16DE66D90024D14E /* CSystemSound.mm */; };
+		032AEEF316DE67940024D14E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032AEEF216DE67940024D14E /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		039DC11316CB300D00B52A7F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC11216CB300D00B52A7F /* Foundation.framework */; };
 		039DC12116CB32B000B52A7F /* LibArciem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC11716CB300D00B52A7F /* LibArciem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC13E16CB398A00B52A7F /* CLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12416CB398A00B52A7F /* CLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -315,6 +318,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		032AEEEE16DE66D90024D14E /* CSystemSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSystemSound.h; sourceTree = "<group>"; };
+		032AEEEF16DE66D90024D14E /* CSystemSound.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSystemSound.mm; sourceTree = "<group>"; };
+		032AEEF216DE67940024D14E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		039DC10F16CB300D00B52A7F /* libArciem.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libArciem.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		039DC11216CB300D00B52A7F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		039DC11616CB300D00B52A7F /* LibArciem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "LibArciem-Prefix.pch"; path = "LibArciem/LibArciem-Prefix.pch"; sourceTree = "<group>"; };
@@ -601,6 +607,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				032AEEF316DE67940024D14E /* AudioToolbox.framework in Frameworks */,
 				039DC26616CB518B00B52A7F /* UIKit.framework in Frameworks */,
 				039DC11316CB300D00B52A7F /* Foundation.framework in Frameworks */,
 				039DC3A416CCAA4900B52A7F /* CoreFoundation.framework in Frameworks */,
@@ -620,6 +627,7 @@
 		039DC10616CB300D00B52A7F = {
 			isa = PBXGroup;
 			children = (
+				032AEEF216DE67940024D14E /* AudioToolbox.framework */,
 				039DC12216CB335400B52A7F /* Notes.txt */,
 				039DC11716CB300D00B52A7F /* LibArciem.h */,
 				039DC35B16CC9AA600B52A7F /* LibArciem.mm */,
@@ -915,6 +923,8 @@
 				039DC39216CCA43F00B52A7F /* UILabelUtils.mm */,
 				039DC39316CCA44000B52A7F /* WhiteLabel.h */,
 				039DC39416CCA44000B52A7F /* WhiteLabel.mm */,
+				032AEEEE16DE66D90024D14E /* CSystemSound.h */,
+				032AEEEF16DE66D90024D14E /* CSystemSound.mm */,
 				039DC26B16CB662100B52A7F /* Essentials */,
 				039DC2B116CB678A00B52A7F /* CNotifier */,
 				039DC2C216CB689800B52A7F /* CTable */,
@@ -1249,6 +1259,7 @@
 				039DC38F16CCA43000B52A7F /* CTabBar.h in Headers */,
 				039DC39516CCA44000B52A7F /* UILabelUtils.h in Headers */,
 				039DC39716CCA44000B52A7F /* WhiteLabel.h in Headers */,
+				032AEEF016DE66DA0024D14E /* CSystemSound.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1496,6 +1507,7 @@
 				039DC39016CCA43000B52A7F /* CTabBar.mm in Sources */,
 				039DC39616CCA44000B52A7F /* UILabelUtils.mm in Sources */,
 				039DC39816CCA44000B52A7F /* WhiteLabel.mm in Sources */,
+				032AEEF116DE66DA0024D14E /* CSystemSound.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1684,6 +1696,7 @@
 				039DC33B16CC88A800B52A7F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		039DC34D16CC988100B52A7F /* Build configuration list for PBXNativeTarget "LibArciemResources" */ = {
 			isa = XCConfigurationList;
@@ -1692,6 +1705,7 @@
 				039DC34F16CC988100B52A7F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

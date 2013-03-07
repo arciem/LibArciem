@@ -44,17 +44,20 @@ CGGradientRef GradientCreateWith3Colors(CGColorRef color1, CGColorRef color2, CG
 CGGradientRef GradientCreateWith4Colors(CGColorRef color1, CGColorRef color2, CGColorRef color3, CGColorRef color4, CGColorSpaceRef colorSpace);
 CGGradientRef GradientCreateGloss(CGColorRef color1, CGColorRef color2, CGColorRef color3, CGColorRef color4, CGColorSpaceRef colorSpace);
 CGGradientRef GradientCreateShield();
+CGGradientRef GradientCreateSine(CGColorRef color1, CGColorRef color2, CGColorSpaceRef colorSpace, NSUInteger steps, CGFloat exponent = 0.5);
+CGGradientRef GradientCreateRainbow(CGFloat hueOffset, CGFloat saturation, CGFloat value, CGFloat alpha);
+CGGradientRef GradientCreateEaseOut(CGColorRef color1, CGColorRef color2, CGColorSpaceRef colorSpace, NSUInteger steps);
 
 void ContextFillShieldGradient(CGContextRef context, CGRect rect);
 void ContextFillRectGradient(CGContextRef context, CGRect rect, CGGradientRef gradient, CGPoint point1, CGPoint point2);
-void ContextFillRectGradientVertical(CGContextRef context, CGRect rect, CGGradientRef gradient);
-void ContextFillRectGradientHorizontal(CGContextRef context, CGRect rect, CGGradientRef gradient);
+void ContextFillRectGradientVertical(CGContextRef context, CGRect rect, CGGradientRef gradient, BOOL reverse = NO);
+void ContextFillRectGradientHorizontal(CGContextRef context, CGRect rect, CGGradientRef gradient, BOOL reverse = NO);
 
 void ContextFillRectColor(CGContextRef context, CGRect rect, CGColorRef color);
 void ContextFillPathColor(CGContextRef context, CGPathRef path, CGColorRef color);
 void ContextFillPathGradient(CGContextRef context, CGPathRef path, CGGradientRef gradient, CGPoint point1, CGPoint point2);
-void ContextFillPathGradientVertical(CGContextRef context, CGPathRef path, CGGradientRef gradient);
-void ContextFillPathGradientHorizontal(CGContextRef context, CGPathRef path, CGGradientRef gradient);
+void ContextFillPathGradientVertical(CGContextRef context, CGPathRef path, CGGradientRef gradient, BOOL reverse = NO);
+void ContextFillPathGradientHorizontal(CGContextRef context, CGPathRef path, CGGradientRef gradient, BOOL reverse = NO);
 
 CGImageRef CreateImageWithMaskAndColor(CGImageRef mask, CGColorRef color);
 
@@ -82,3 +85,5 @@ public:
 };
 
 void ContextDrawSavingState(CGContextRef context, void (^drawing)(void));
+
+CGFloat RoundUpToEvenValue(CGFloat v);

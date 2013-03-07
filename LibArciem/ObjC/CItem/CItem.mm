@@ -129,6 +129,20 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	return self;
 }
 
++ (CItem*)itemForResourceName:(NSString*)resourceName withExtension:(NSString*)extension
+{
+	NSURL* url = [[NSBundle mainBundle] URLForResource:resourceName withExtension:extension];
+	NSData* data = [NSData dataWithContentsOfURL:url];
+	NSString* json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	CItem* item = [CItem itemWithJSONRepresentation:json];
+	return item;
+}
+
++ (CItem*)itemForResourceName:(NSString*)resourceName
+{
+	return [self itemForResourceName:resourceName withExtension:@"json"];
+}
+
 - (id)init
 {
 	if(self = [self initWithDictionary:nil]) {

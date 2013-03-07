@@ -130,6 +130,7 @@ extern NSString* const sTapInBackgroundNotification;
 @property(nonatomic) CGFloat flexibleRight;
 
 + (CFrame*)frameWithView:(UIView*)view NS_RETURNS_RETAINED;
++ (CFrame*)frameWithRect:(CGRect)rect NS_RETURNS_RETAINED;
 
 - (void)sizeToFit;
 

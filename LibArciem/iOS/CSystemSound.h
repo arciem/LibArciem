@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2013 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,13 +16,11 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
+@interface CSystemSound : NSObject
 
-@interface UILabel (UILabelUtils)
-
-- (void)adjustFontSizeToFit:(CGFloat)largeFontSize;
-
-+ (CGSize)maxSizeOfStrings:(NSArray*)strings withFont:(UIFont*)font forWidth:(CGFloat)width lineBreakMode:(UILineBreakMode)lineBreakMode;
+- (id)initWithFileURL:(NSURL*)url;
+- (void)play;
 
 @end

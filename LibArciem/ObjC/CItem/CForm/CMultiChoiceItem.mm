@@ -256,10 +256,12 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 {
 	CBooleanItem* result = nil;
 	
-	NSUInteger index = self.selectedSubitemIndexes.firstIndex;
-	if(index != NSNotFound) {
-		result = [self.subitems objectAtIndex:index];
-	}
+    if(self.selectedSubitemIndexes != nil) {
+        NSUInteger index = self.selectedSubitemIndexes.firstIndex;
+        if(index != NSNotFound) {
+            result = [self.subitems objectAtIndex:index];
+        }
+    }
 	
 	return result;
 }

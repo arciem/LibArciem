@@ -17,7 +17,7 @@
  *******************************************************************************/
 
 #import "Geom.h"
-
+#import "math_utils.hpp"
 
 @implementation Geom
 
@@ -390,6 +390,33 @@
 + (CGFloat)degreesWithRadians:(CGFloat)r
 {
 	return r / M_PI * 180.0;
+}
+
++ (CGFloat)binarySearchBetweenMinValue:(CGFloat)minValue maxValue:(CGFloat)maxValue epsilon:(CGFloat)epsilon test:(NSComparisonResult(^)(CGFloat value))test
+{
+    CGFloat value;
+    
+    BOOL done = NO;
+    do {
+        value = arciem::denormalize(0.5f, minValue, maxValue);
+        NSComparisonResult result = test(value);
+        switch (result) {
+            case NSOrderedAscending:
+                minValue = value;
+                break;
+            case NSOrderedDescending:
+                maxValue = value;
+                break;
+            case NSOrderedSame:
+                minValue = maxValue = value;
+                break;
+        }
+        if(fabs(maxValue - minValue) <= epsilon) {
+            break;
+        }
+    } while(!done);
+    
+    return value;
 }
 
 @end

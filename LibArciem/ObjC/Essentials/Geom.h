@@ -85,4 +85,6 @@
 + (CGFloat)radiansWithDegrees:(CGFloat)d;
 + (CGFloat)degreesWithRadians:(CGFloat)r;
 
++ (CGFloat)binarySearchBetweenMinValue:(CGFloat)minValue maxValue:(CGFloat)maxValue epsilon:(CGFloat)epsilon test:(NSComparisonResult(^)(CGFloat value))test;
+
 @end

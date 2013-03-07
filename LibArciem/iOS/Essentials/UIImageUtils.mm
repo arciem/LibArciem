@@ -162,6 +162,26 @@
 	return image;
 }
 
+- (UIImage *)imageByMaskingWithImage:(UIImage*)shapeImage
+{
+    UIImage* image = nil;
+    
+    CGRect bounds = CGRectZero;
+    bounds.size = shapeImage.size;
+
+    UIImage* flatShapeImage = [shapeImage flattenShapeImage];
+
+	CGImageRef shapeStencil = CGImageMaskCreate(CGImageGetWidth(flatShapeImage.CGImage), CGImageGetHeight(flatShapeImage.CGImage), CGImageGetBitsPerComponent(flatShapeImage.CGImage), CGImageGetBitsPerPixel(flatShapeImage.CGImage), CGImageGetBytesPerRow(flatShapeImage.CGImage), CGImageGetDataProvider(flatShapeImage.CGImage), NULL, false);
+
+    CGContextRef context = [UIImage beginImageContextWithSize:shapeImage.size opaque:NO scale:shapeImage.scale flipped:YES];
+    CGContextClipToMask(context, bounds, shapeStencil);
+    CGContextDrawImage(context, bounds, self.CGImage);
+    CGImageRelease(shapeStencil);
+	image = [UIImage endImageContext];
+
+    return image;
+}
+
 - (UIImage *)imageByColorizing:(UIColor *)theColor
 {
     UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
@@ -649,6 +669,24 @@
 + (UIImage*)toolbarImageWithBackgroundPatternImage:(UIImage*)patternImage toolbarPosition:(UIToolbarPosition)position
 {
 	return [self toolbarImageWithBackgroundPatternImage:patternImage toolbarPosition:position glossAlpha:0.4];
+}
+
++ (CGContextRef)beginImageContextWithSize:(CGSize)size opaque:(BOOL)opaque scale:(CGFloat)scale flipped:(BOOL)flipped
+{
+    UIGraphicsBeginImageContextWithOptions(size, opaque, scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    if(flipped) {
+        CGContextTranslateCTM(context, 0.0, size.height);
+        CGContextScaleCTM(context, 1.0, -1.0);
+    }
+    return context;
+}
+
++ (UIImage*)endImageContext
+{
+    UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
 }
 
 @end
