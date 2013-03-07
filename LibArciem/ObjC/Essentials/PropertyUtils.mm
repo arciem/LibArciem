@@ -52,7 +52,7 @@ BOOL IsPropertyAWritableObject(objc_property_t property)
 
 Class PropertyStaticType(objc_property_t property) {
     const char *attrs = property_getAttributes(property);
-	NSString *attrString = [NSString stringWithUTF8String:attrs];
+	NSString *attrString = @(attrs);
 	
 	//First " char
 	NSRange r = [attrString rangeOfString:@"\""];

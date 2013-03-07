@@ -29,7 +29,7 @@
 - (NSArray*)tableRowItems
 {
 	CTableSpacerItem* item = [CTableSpacerItem itemWithKey:self.key title:self.title spacerItem:self];
-	return [NSArray arrayWithObject:item];
+	return @[item];
 }
 
 @end

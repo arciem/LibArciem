@@ -184,7 +184,7 @@ BOOL CompleteString(NSString* partial, NSArray* completions, NSString** complete
     BOOL found = NO;
     
     for(NSUInteger i = 0; i < [completions count]; ++i) {
-        NSString* completion = [completions objectAtIndex:i];
+        NSString* completion = completions[i];
         NSRange existingRange = [completion rangeOfString:partial options:NSCaseInsensitiveSearch
             range:NSMakeRange(0, [completion length])];
         if(existingRange.location == 0 && existingRange.length > 0) {
@@ -265,7 +265,7 @@ NSString* BulletStringForString(NSString* string)
 
 NSString* ToCocoa(string const& s)
 {
-	return [NSString stringWithUTF8String:s.c_str()];
+	return @(s.c_str());
 }
 
 NSString* ToCocoa(string const* s, NSString* default_s)
@@ -399,7 +399,7 @@ string ToStd(NSString* s)
 	NSUInteger tokenCount = [tokens count];
 	NSUInteger searchOptions = caseInsensitive ? NSCaseInsensitiveSearch : 0;
 	for(NSUInteger i = 0; i < tokenCount; ++i) {
-		NSString* token = [tokens objectAtIndex:i];
+		NSString* token = tokens[i];
 		if([self rangeOfString:token options:searchOptions].location == NSNotFound) {
 			result = NO;
 			break;
@@ -416,7 +416,7 @@ string ToStd(NSString* s)
 	NSUInteger tokenCount = [tokens count];
 	NSUInteger searchOptions = caseInsensitive ? NSCaseInsensitiveSearch : 0;
 	for(NSUInteger i = 0; i < tokenCount; ++i) {
-		NSString* token = [tokens objectAtIndex:i];
+		NSString* token = tokens[i];
 		if([self rangeOfString:token options:searchOptions].location != NSNotFound) {
 			result = YES;
 			break;
@@ -515,7 +515,7 @@ string ToStd(NSString* s)
 	
 	outputBuffer[j] = 0;  
 	
-	NSString* result = [NSString stringWithCString:(const char*)outputBuffer encoding:NSASCIIStringEncoding];
+	NSString* result = @((const char*)outputBuffer);
 	free(outputBuffer);
 	
 	return result;
@@ -800,9 +800,9 @@ NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* 
 	NSMutableDictionary* dict = [NSMutableDictionary dictionaryWithCapacity:records.count];
 	for(NSString* record in records) {
 		NSArray* components = [record componentsSeparatedByString:keyValueSeparator];
-		NSString* key = [components objectAtIndex:0];
-		NSString* value = [components objectAtIndex:1];
-		[dict setObject:value forKey:key];
+		NSString* key = components[0];
+		NSString* value = components[1];
+		dict[key] = value;
 	}
 	return [dict copy];
 }

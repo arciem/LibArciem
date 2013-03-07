@@ -84,7 +84,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		mutableDict = [dict mutableCopy];
 	}
 	
-	NSString* type = [mutableDict objectForKey:@"type"];
+	NSString* type = mutableDict[@"type"];
 	if(!IsEmptyString(type)) {
 		NSString* firstChar = [[type substringToIndex:1] uppercaseString];
 		NSString* remainingChars = [type substringFromIndex:1];
@@ -98,12 +98,12 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	if(self = [super init]) {
 		dict_ = mutableDict;
 		[self incrementCurrentRevision];
-		isRequired_ = [[dict_ objectForKey:@"required"] boolValue];
-		isDisabled_ = [[dict_ objectForKey:@"disabled"] boolValue];
-		isHidden_ = [[dict_ objectForKey:@"hidden"] boolValue];
-		validatesAutomatically_ = [[dict_ objectForKey:@"validatesAutomatically"] boolValue];
+		isRequired_ = [dict_[@"required"] boolValue];
+		isDisabled_ = [dict_[@"disabled"] boolValue];
+		isHidden_ = [dict_[@"hidden"] boolValue];
+		validatesAutomatically_ = [dict_[@"validatesAutomatically"] boolValue];
 		
-		NSArray* subdicts = [dict_ objectForKey:@"subitems"];
+		NSArray* subdicts = dict_[@"subitems"];
 		subitems__ = [NSMutableArray array];
 		for(NSDictionary *subdict in subdicts) {
             CItem *subitem = [CItem itemWithDictionary:subdict];
@@ -201,11 +201,9 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 + (CItem*)itemWithTitle:(NSString*)title key:(NSString*)key value:(id)value
 {
-	return [self itemWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:
-											  title, @"title",
-											  key, @"key",
-											  value, @"value",
-											  nil]];
+	return [self itemWithDictionary:@{@"title": title,
+											  @"key": key,
+											  @"value": value}];
 }
 
 #pragma mark - Activation
@@ -291,7 +289,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 	NSUInteger rowIndex = [self indexOfSubitemForKey:key];
 	if(rowIndex != NSNotFound) {
-		result = [self.subitems objectAtIndex:rowIndex];
+		result = (self.subitems)[rowIndex];
 	}
 	
 	return result;
@@ -320,8 +318,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (NSArray*)descriptionStringsCompact:(BOOL)compact
 {
-	return [NSArray arrayWithObjects:
-			[self formatValueForKey:@"title" compact:compact],
+	return @[[self formatValueForKey:@"title" compact:compact],
 			[self formatValueForKey:@"key" compact:compact],
 			[self formatValueForKey:@"value" compact:compact],
 			[self formatBoolValueForKey:@"isRequired" compact:compact hidingIf:NO],
@@ -331,8 +328,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
             [self formatCountForKey:@"subitems" hidingIfZero:YES],
 			[self formatValueForKey:@"subitemErrors" compact:compact],
 			[self formatBoolValueForKey:@"validatesAutomatically" compact:compact hidingIf:NO],
-			[self formatBoolValueForKey:@"isDisabled" compact:compact hidingIf:NO],
-			nil];
+			[self formatBoolValueForKey:@"isDisabled" compact:compact hidingIf:NO]];
 }
 
 - (NSString*)descriptionCompact:(BOOL)compact
@@ -367,7 +363,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	NSString* newPrefix = item.isNew ? @"NEW" : @"   ";
 	NSString* reqPrefix = item.isRequired ? @"REQ" : @"   ";
 	
-	NSArray* prefixes = [NSArray arrayWithObjects:activePrefix, statePrefix, newPrefix, reqPrefix, nil];
+	NSArray* prefixes = @[activePrefix, statePrefix, newPrefix, reqPrefix];
 	NSString* prefix = [NSString stringWithComponents:prefixes separator:@" "];
 	CLogPrint(@"%@%@%3d %@", prefix, indent, level, [item descriptionCompact:YES]);
 	if(item.subitems.count > 0) {
@@ -443,12 +439,12 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (CItem*)objectInSubitems_AtIndex:(NSUInteger)index
 {
-	return (CItem*)[subitems__ objectAtIndex:index];
+	return (CItem*)subitems__[index];
 }
 
 - (void)insertObject:(CItem *)item inSubitems_AtIndex:(NSUInteger)index
 {
-	[self insertSubitems_:[NSArray arrayWithObject:item] atIndexes:[NSIndexSet indexSetWithIndex:index]];
+	[self insertSubitems_:@[item] atIndexes:[NSIndexSet indexSetWithIndex:index]];
 }
 
 - (void)insertSubitems_:(NSArray *)array atIndexes:(NSIndexSet *)indexes
@@ -474,7 +470,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 {
 	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:@"subitems"];
 	[indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		CItem* item = [subitems__ objectAtIndex:idx];
+		CItem* item = subitems__[idx];
 		if(self.isActive) {
 			[item deactivateAll];
 		}
@@ -533,24 +529,24 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (NSMutableArray*)dependentKeyPaths
 {
-	return [self.dict objectForKey:@"dependentKeyPaths"];
+	return (self.dict)[@"dependentKeyPaths"];
 }
 
 - (void)setDependentKeyPaths:(NSMutableArray *)dependentKeyPaths
 {
-	[self.dict setObject:[dependentKeyPaths mutableCopy] forKey:@"dependentKeyPaths"];
+	(self.dict)[@"dependentKeyPaths"] = [dependentKeyPaths mutableCopy];
 }
 
 #pragma mark - @property mustEqualKeyPath
 
 - (NSString*)mustEqualKeyPath
 {
-	return [self.dict objectForKey:@"mustEqualKeyPath"];
+	return (self.dict)[@"mustEqualKeyPath"];
 }
 
 - (void)setMustEqualKeyPath:(NSString *)keyPath
 {
-	[self.dict setObject:keyPath forKey:@"mustEqualKeyPath"];
+	(self.dict)[@"mustEqualKeyPath"] = keyPath;
 }
 
 #pragma mark - @property needsValidation
@@ -739,24 +735,24 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (NSString*)title
 {
-	return Denull([self.dict objectForKey:@"title"]);
+	return Denull((self.dict)[@"title"]);
 }
 
 - (void)setTitle:(NSString *)title
 {
-	[self.dict setObject:Ennull(title) forKey:@"title"];
+	(self.dict)[@"title"] = Ennull(title);
 }
 
 #pragma mark - @property key
 
 - (NSString*)key
 {
-	return Denull([self.dict objectForKey:@"key"]);
+	return Denull((self.dict)[@"key"]);
 }
 
 - (void)setKey:(NSString *)key
 {
-	[self.dict setObject:Ennull(key) forKey:@"key"];
+	(self.dict)[@"key"] = Ennull(key);
 }
 
 #pragma mark - @property value
@@ -778,7 +774,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (id)value
 {
-	id value = [self denullValue:[self.dict objectForKey:@"value"]];
+	id value = [self denullValue:(self.dict)[@"value"]];
 	if(value == nil) {
 		value = self.defaultValue;
 	}
@@ -788,10 +784,10 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 - (void)setValue:(id)newValue
 {
 	newValue = [self ennullValue:newValue];
-	id oldValue = [self ennullValue:[self.dict objectForKey:@"value"]];
+	id oldValue = [self ennullValue:(self.dict)[@"value"]];
 	if(!Same(oldValue, newValue)) {
 		[self willChangeValueForKey:@"value"];
-		[self.dict setObject:newValue forKey:@"value"];
+		(self.dict)[@"value"] = newValue;
 		[self didChangeValueForKey:@"value"];
 	}
 }
@@ -805,20 +801,20 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (id)defaultValue
 {
-	return [self denullValue:[self.dict objectForKey:@"defaultValue"]];
+	return [self denullValue:(self.dict)[@"defaultValue"]];
 }
 
 - (void)setDefaultValue:(id)newDefaultValue
 {
 	newDefaultValue = [self ennullValue:newDefaultValue];
-	id oldDefaultValue = [self ennullValue:[self.dict objectForKey:@"defaultValue"]];
+	id oldDefaultValue = [self ennullValue:(self.dict)[@"defaultValue"]];
 	if(!Same(oldDefaultValue, newDefaultValue)) {
-		id oldValue = [self denullValue:[self.dict objectForKey:@"value"]];
+		id oldValue = [self denullValue:(self.dict)[@"value"]];
 		[self willChangeValueForKey:@"defaultValue"];
 		if(oldValue != nil) {
 			[self willChangeValueForKey:@"value"];
 		}
-		[self.dict setObject:newDefaultValue forKey:@"defaultValue"];
+		(self.dict)[@"defaultValue"] = newDefaultValue;
 		if(oldValue != nil) {
 			[self didChangeValueForKey:@"value"];
 		}
@@ -1023,11 +1019,11 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	NSMutableDictionary* outDict = [NSMutableDictionary dictionary];
 	
 	for(NSString* key in self.dict) {
-		id obj = [self.dict objectForKey:key];
+		id obj = (self.dict)[key];
 		if([obj respondsToSelector:@selector(jsonRepresentation)]) {
 			obj = [obj jsonRepresentation];
 		}
-		[outDict setObject:obj forKey:key];
+		outDict[key] = obj;
 	}
 	NSError* error = nil;
 	NSData* outData = [NSJSONSerialization dataWithJSONObject:outDict options:0 error:&error];

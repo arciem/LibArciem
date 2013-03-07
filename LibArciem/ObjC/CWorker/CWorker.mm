@@ -76,7 +76,7 @@ static NSUInteger sNextSequenceNumber = 0;
 		self.callbackThread = [NSThread currentThread];
 		
 		[self addObserver:self forKeyPath:@"titleItems" options:0 context:NULL];
-		self.titleItems = [NSMutableArray arrayWithObject:[NSNumber numberWithUnsignedInt:self.sequenceNumber]];
+		self.titleItems = [NSMutableArray arrayWithObject:@(self.sequenceNumber)];
 	}
 	
 	return self;
@@ -112,7 +112,7 @@ static NSUInteger sNextSequenceNumber = 0;
 
 - (id)objectInTitleItems_AtIndex:(NSUInteger)index
 {
-	return [titleItems__ objectAtIndex:index];
+	return titleItems__[index];
 }
 
 - (void)insertObject:(id)object inTitleItems_AtIndex:(NSUInteger)index
@@ -152,11 +152,9 @@ static NSUInteger sNextSequenceNumber = 0;
 - (NSString*)description
 {
 	@synchronized(self) {
-		return [self formatObjectWithValues:[NSArray arrayWithObjects:
-											 [self formatValueForKey:@"title" compact:NO],
+		return [self formatObjectWithValues:@[[self formatValueForKey:@"title" compact:NO],
 											 [self formatValueForKey:@"sequenceNumber" compact:NO],
-											 [self formatValueForKey:@"tryCount" compact:NO],
-											 nil]];
+											 [self formatValueForKey:@"tryCount" compact:NO]]];
 	}
 }
 
@@ -358,7 +356,7 @@ static NSUInteger sNextSequenceNumber = 0;
 	@synchronized(self) {
 		NSMutableArray* dependentSeqNums = [NSMutableArray array];
 		for(CWorker* predecessorWorker in self.mutableDependencies) {
-			[dependentSeqNums addObject:[NSNumber numberWithInt:predecessorWorker.sequenceNumber]];
+			[dependentSeqNums addObject:@(predecessorWorker.sequenceNumber)];
 		}
 
 		[dependentSeqNums sortUsingSelector:@selector(compare:)];

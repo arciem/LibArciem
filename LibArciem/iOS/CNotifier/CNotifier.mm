@@ -64,9 +64,7 @@
 - (NSString*)description
 {
 	@synchronized(self) {
-		return [self formatObjectWithValues:[NSArray arrayWithObjects:
-											 [self formatValueForKey:@"name" compact:NO],
-											 nil]];
+		return [self formatObjectWithValues:@[[self formatValueForKey:@"name" compact:NO]]];
 	}
 }
 
@@ -97,18 +95,18 @@
 	@synchronized(self) {
 		if([self.subscriptions containsObject:object]) {
 			if([keyPath isEqualToString:@"items"]) {
-				NSUInteger changeKind = [[change objectForKey:NSKeyValueChangeKindKey] unsignedIntegerValue];
+				NSUInteger changeKind = [change[NSKeyValueChangeKindKey] unsignedIntegerValue];
 				switch(changeKind) {
 					case NSKeyValueChangeSetting: {
-						NSSet* newItems = [change objectForKey:NSKeyValueChangeNewKey];
+						NSSet* newItems = change[NSKeyValueChangeNewKey];
 						[self addItems:newItems withExpiry:NO];
 					} break;
 					case NSKeyValueChangeInsertion: {
-						NSSet* newItems = [change objectForKey:NSKeyValueChangeNewKey];
+						NSSet* newItems = change[NSKeyValueChangeNewKey];
 						[self addItems:newItems withExpiry:NO];
 					} break;
 					case NSKeyValueChangeRemoval: {
-						NSSet* oldItems = [change objectForKey:NSKeyValueChangeOldKey];
+						NSSet* oldItems = change[NSKeyValueChangeOldKey];
 						[self removeItems:oldItems];
 					} break;
 					default: {
@@ -237,7 +235,7 @@
 			} else {
 				if(items.count > 0) {
 					NSUInteger index = arciem::random_range(0, items.count);
-					CNotifierItem* item = [items objectAtIndex:index];
+					CNotifierItem* item = items[index];
 					CLogTrace(@"C_NOTIFIER", @"Remove: %@", item.message);
 					[notifier removeItem:item];
 					[items removeObject:item];

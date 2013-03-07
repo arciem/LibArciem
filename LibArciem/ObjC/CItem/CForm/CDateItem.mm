@@ -130,12 +130,12 @@ static NSCalendar* sCalendar = nil;
 
 - (NSDate*)minDate
 {
-	return [self.dict objectForKey:@"minDate"];
+	return (self.dict)[@"minDate"];
 }
 
 - (void)setMinDate:(NSDate *)minDate
 {
-	[self.dict setObject:minDate forKey:@"minDate"];
+	(self.dict)[@"minDate"] = minDate;
 }
 
 #pragma mark - @property maxDate
@@ -147,12 +147,12 @@ static NSCalendar* sCalendar = nil;
 
 - (NSDate*)maxDate
 {
-	return [self.dict objectForKey:@"maxDate"];
+	return (self.dict)[@"maxDate"];
 }
 
 - (void)setMaxDate:(NSDate *)maxDate
 {
-	[self.dict setObject:maxDate forKey:@"maxDate"];
+	(self.dict)[@"maxDate"] = maxDate;
 }
 
 #pragma mark - Validation
@@ -194,24 +194,24 @@ static NSCalendar* sCalendar = nil;
 
 - (NSUInteger)fieldWidthCharacters
 {
-	return [[self.dict objectForKey:@"fieldWidthCharacters"] unsignedIntegerValue];
+	return [(self.dict)[@"fieldWidthCharacters"] unsignedIntegerValue];
 }
 
 - (void)setFieldWidthCharacters:(NSUInteger)width
 {
-	[self.dict setObject:[NSNumber numberWithUnsignedInteger:width] forKey:@"fieldWidthCharacters"];
+	(self.dict)[@"fieldWidthCharacters"] = @(width);
 }
 
 #pragma mark - @property datePickerMode
 
 - (NSString*)datePickerMode
 {
-	return [self.dict objectForKey:@"datePickerMode"];
+	return (self.dict)[@"datePickerMode"];
 }
 
 - (void)setDatePickerMode:(NSString *)datePickerMode
 {
-	[self.dict setObject:datePickerMode forKey:@"datePickerMode"];
+	(self.dict)[@"datePickerMode"] = datePickerMode;
 }
 
 #pragma mark - @property formattedDateValue

@@ -243,10 +243,10 @@
 + (UIColor*)colorWithString:(NSString*)str
 {
 	NSArray* comps = [str componentsSeparatedByString:@" "];
-	CGFloat red = [[comps objectAtIndex:0] floatValue];
-	CGFloat green = [[comps objectAtIndex:1] floatValue];
-	CGFloat blue = [[comps objectAtIndex:2] floatValue];
-	CGFloat alpha = (comps.count == 4) ? [[comps objectAtIndex:3] floatValue] : 1.0;
+	CGFloat red = [comps[0] floatValue];
+	CGFloat green = [comps[1] floatValue];
+	CGFloat blue = [comps[2] floatValue];
+	CGFloat alpha = (comps.count == 4) ? [comps[3] floatValue] : 1.0;
 	return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 

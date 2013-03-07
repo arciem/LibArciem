@@ -55,9 +55,9 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 	NSSortDescriptor* priorityDescendingDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"priority" ascending:NO];
 	NSSortDescriptor* dateDescendingDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
-	self.sortDescriptors = [NSArray arrayWithObjects:priorityDescendingDescriptor, dateDescendingDescriptor, nil];
+	self.sortDescriptors = @[priorityDescendingDescriptor, dateDescendingDescriptor];
 
-	self.items = [NSArray array];
+	self.items = @[];
 
 	self.rowCapacity = 1;
 	self.rowHeight = self.height;
@@ -76,9 +76,7 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 - (NSString*)description
 {
-	return [self formatObjectWithValues:[NSArray arrayWithObjects:
-										 [self formatValueForKey:@"notifier" compact:NO],
-										 nil]];
+	return [self formatObjectWithValues:@[[self formatValueForKey:@"notifier" compact:NO]]];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfNotifier
@@ -102,14 +100,14 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 - (void)disarmUpdateItems
 {
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateItemsAnimated:) object:[NSNumber numberWithBool:YES]];
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateItemsAnimated:) object:@YES];
 }
 
 - (void)armUpdateItems
 {
 	CLogTrace(@"C_NOTIFIER_BAR", @"%@ armUpdateItems", self);
 	[self disarmUpdateItems];
-	[self performSelector:@selector(updateItemsAnimated:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.5 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+	[self performSelector:@selector(updateItemsAnimated:) withObject:@YES afterDelay:0.5 inModes:@[NSRunLoopCommonModes]];
 }
 
 - (void)updateItemsAnimated:(BOOL)animated
@@ -218,9 +216,9 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 	
 	if(object == self) {
 		if([keyPath isEqualToString:@"notifier"]) {
-			CNotifier* oldNotifier = Denull([change objectForKey:NSKeyValueChangeOldKey]);
+			CNotifier* oldNotifier = Denull(change[NSKeyValueChangeOldKey]);
 			[oldNotifier removeObserver:self forKeyPath:@"items"];
-			CNotifier* newNotifier = Denull([change objectForKey:NSKeyValueChangeNewKey]);
+			CNotifier* newNotifier = Denull(change[NSKeyValueChangeNewKey]);
 			[newNotifier addObserver:self forKeyPath:@"items" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial) context:NULL];
 			CLogTrace(@"C_NOTIFIER_BAR", @"%@ notifierChanged", self);
 		}
@@ -229,7 +227,7 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 			CLogTrace(@"C_NOTIFIER_BAR", @"%@ itemsChanged", self);
 			[NSThread performBlockOnMainThread:^ {
 				NSNotification* notification = [NSNotification notificationWithName:kNeedsUpdateItemsNotification object:self];
-				[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+				[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:@[NSRunLoopCommonModes]];
 				CLogTrace(@"C_NOTIFIER_BAR", @"%@ posted notification:%@ runloopmode:%@", self, notification, [[NSRunLoop currentRunLoop] currentMode]);
 			}];
 		}

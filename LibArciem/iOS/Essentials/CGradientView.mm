@@ -28,7 +28,7 @@
 	UIColor* color2 = [UIColor colorWithWhite:1.0 alpha:1.0];
 	UIColor* color3 = [UIColor colorWithWhite:0.7 alpha:1.0];
 
-	self.colors = [NSArray arrayWithObjects:color1, color2, color3, nil];
+	self.colors = @[color1, color2, color3];
 }
 
 // Make the view's layer a CAGradientLayer instance
@@ -69,8 +69,8 @@
 	
 	// If we're passed an array with one color, the gradient layer will be clear. So in that case we double it so the gradient will be a single solid color.
 	if(newColors.count == 1) {
-		id c = [newColors objectAtIndex:0];
-		newColors = [NSArray arrayWithObjects:c, c, nil];
+		id c = newColors[0];
+		newColors = @[c, c];
 	}
 	
     if (newColors != nil) {

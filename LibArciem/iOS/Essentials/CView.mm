@@ -136,7 +136,7 @@
 // The returned rectangle is in the receiver's superview's coordinate system to faciliate the adjustment of the receiver's frame within that same system.
 - (CGRect)endKeyboardRectangleFromNotification:(NSNotification*)notification
 {
-	CGRect keyboardScreenFrame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+	CGRect keyboardScreenFrame = [(notification.userInfo)[UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	CGRect keyboardSuperviewFrame = [self.superview convertRect:keyboardScreenFrame fromView:nil];		
 	return keyboardSuperviewFrame;
 }
@@ -152,8 +152,8 @@
 		}
 		CLogTrace(@"C_VIEW", @"%@ keyboardWillMove endKeyboardRectangle:%@ newMaxY:%f", self, NSStringFromCGRect(endKeyboardRectangle), newMaxY);
 
-		CGFloat duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
-		UIViewAnimationCurve curve = (UIViewAnimationCurve)[[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] intValue];
+		CGFloat duration = [(notification.userInfo)[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+		UIViewAnimationCurve curve = (UIViewAnimationCurve)[(notification.userInfo)[UIKeyboardAnimationCurveUserInfoKey] intValue];
 		UIViewAnimationOptions options = 0;
 		switch(curve) {
 			case UIViewAnimationCurveEaseInOut:

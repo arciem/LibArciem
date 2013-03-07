@@ -84,7 +84,7 @@
 
 - (CSetupServerItem*)defaultServer
 {
-	return [self.testingServers objectAtIndex:0];
+	return (self.testingServers)[0];
 }
 
 - (NSMutableArray*)devServers
@@ -116,7 +116,7 @@
 
 - (id)objectInDevServers_AtIndex:(NSUInteger)index
 {
-	NSString* json = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"devServers2"] objectAtIndex:index];
+	NSString* json = [[NSUserDefaults standardUserDefaults] arrayForKey:@"devServers2"][index];
 	return [[CSetupServerItem alloc] initWithJSONRepresentation:json];
 }
 
@@ -142,14 +142,14 @@
 		self.form = [CForm formForResourceName:@"SetupConfig"];
 //		[self.form.rootItem printHierarchy];
 		
-		NSMutableDictionary* defaults = [NSDictionary dictionaryWithObjectsAndKeys:
-								  [NSKeyedArchiver archivedDataWithRootObject:self.defaultServer.baseURL], @"baseURL",
-								  [NSArray array], @"devServers2",
-								  nil];
+		NSMutableDictionary* defaults = [@{
+            @"baseURL": [NSKeyedArchiver archivedDataWithRootObject:self.defaultServer.baseURL],
+			@"devServers2": @[]
+        } mutableCopy];
 		for(CItem* optionItem in self.options) {
 			id defaultValue = optionItem.defaultValue;
 			if(defaultValue != nil) {
-				[defaults setObject:defaultValue forKey:optionItem.key];
+				defaults[optionItem.key] = defaultValue;
 			}
 		}
 		[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
@@ -214,7 +214,7 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-	NSArray* addCellIndexPathsBeforeChange = [NSArray arrayWithObject:[self addCellIndexPath]];
+	NSArray* addCellIndexPathsBeforeChange = @[[self addCellIndexPath]];
 
 	[super setEditing:editing animated:animated];
 
@@ -231,7 +231,7 @@
 		[self.navigationItem setLeftBarButtonItem:self.startButtonItem animated:animated];
 		[self.tableView beginUpdates];
 		[self.tableView insertSections:sectionsRemovedDuringEditing withRowAnimation:UITableViewRowAnimationAutomatic];
-		NSArray* indexPaths = [NSArray arrayWithObject:[self addCellIndexPath]];
+		NSArray* indexPaths = @[[self addCellIndexPath]];
 		[self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
 		[self.tableView endUpdates];
 		[self syncEditButtonAnimated:animated];
@@ -300,11 +300,11 @@
 {
 	NSString* sectionTitle = nil;
 	
-	static NSArray* sectionTitles = [NSArray arrayWithObjects:@"Testing Servers", @"Development Servers", @"Options", nil];
+	static NSArray* sectionTitles = @[@"Testing Servers", @"Development Servers", @"Options"];
 	if(self.editing) {
-		sectionTitle = [sectionTitles objectAtIndex:1];
+		sectionTitle = sectionTitles[1];
 	} else {
-		sectionTitle = [sectionTitles objectAtIndex:section];
+		sectionTitle = sectionTitles[section];
 	}
 	
 	return sectionTitle;
@@ -388,9 +388,9 @@
 	CSetupServerItem* server = nil;
 	
 	if([self isTestingServerIndexPath:indexPath]) {
-		server = [self.testingServers objectAtIndex:indexPath.row];
+		server = (self.testingServers)[indexPath.row];
 	} else if([self isDevServerIndexPath:indexPath]) {
-		server = [self.devServers objectAtIndex:indexPath.row];
+		server = (self.devServers)[indexPath.row];
 	}
 	
 	return server;
@@ -410,7 +410,7 @@
 		cell.textLabel.text = @"Add a Server...";
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else if(indexPath.section == self.optionsSectionIndex) {
-		CItem* option = [self.options objectAtIndex:indexPath.row];
+		CItem* option = (self.options)[indexPath.row];
 		if([option isKindOfClass:[CBooleanItem class]]) {
 			static NSString* sIdentifier = @"BoolOptionCell";
 			CSetupBoolOptionTableViewCell* optionCell = [tableView dequeueReusableCellWithIdentifier:sIdentifier];
@@ -432,10 +432,10 @@
 		}
 		
 		if([self isTestingServerIndexPath:indexPath]) {
-			CSetupServerItem* server = [self.testingServers objectAtIndex:indexPath.row];
+			CSetupServerItem* server = (self.testingServers)[indexPath.row];
 			setupCell.server = server;
 		} else if([self isDevServerIndexPath:indexPath]) {
-			CSetupServerItem* server = [self.devServers objectAtIndex:indexPath.row];
+			CSetupServerItem* server = (self.devServers)[indexPath.row];
 			setupCell.server = server;
 		}
 		
@@ -460,20 +460,20 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-	CSetupServerItem* movedServer = [self.devServers objectAtIndex:fromIndexPath.row];
+	CSetupServerItem* movedServer = (self.devServers)[fromIndexPath.row];
 	[self.devServers removeObjectAtIndex:fromIndexPath.row];
 	[self.devServers insertObject:movedServer atIndex:toIndexPath.row];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	CSetupServerItem* deletedServer = [self.devServers objectAtIndex:indexPath.row];
+	CSetupServerItem* deletedServer = (self.devServers)[indexPath.row];
 	[self.devServers removeObjectAtIndex:indexPath.row];
 	if([self.baseURL isEqual:deletedServer.baseURL]) {
 		self.baseURL = self.defaultServer.baseURL;
 		[self syncCheckmarksForAllVisibleCells];
 	}
-	[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+	[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - Table view delegate
@@ -488,7 +488,7 @@
 	if(indexPath == nil) {
 		viewController.addingNewServer = YES;
 	} else {
-		viewController.server = [self.devServers objectAtIndex:indexPath.row];
+		viewController.server = (self.devServers)[indexPath.row];
 	}
 
 	CSetupNavigationController* navController = [[CSetupNavigationController alloc] initWithRootViewController:viewController];
@@ -516,10 +516,10 @@
 			[self presentServerEditorForIndexPath:nil];
 		} else {
 			if([self isTestingServerIndexPath:indexPath]) {
-				CSetupServerItem* server = [self.testingServers objectAtIndex:indexPath.row];
+				CSetupServerItem* server = (self.testingServers)[indexPath.row];
 				self.baseURL = server.baseURL;
 			} else if([self isDevServerIndexPath:indexPath]) {
-				CSetupServerItem* server = [self.devServers objectAtIndex:indexPath.row];
+				CSetupServerItem* server = (self.devServers)[indexPath.row];
 				self.baseURL = server.baseURL;
 			}
 			
@@ -549,7 +549,7 @@
 		if(self.editingIndexPath == nil) {
 			NSIndexPath* newIndexPath = [NSIndexPath indexPathForRow:self.devServers.count inSection:1];
 			[self.devServers addObject:viewController.server];
-			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+			[self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 			[self syncEditButtonAnimated:YES];
 		} else {
 			CSetupServerItem* editedServer = [self serverForIndexPath:self.editingIndexPath];
@@ -557,8 +557,8 @@
 				self.baseURL = viewController.server.baseURL;
 				[self syncCheckmarksForAllVisibleCells];
 			}
-			[self.devServers replaceObjectAtIndex:self.editingIndexPath.row withObject:viewController.server];
-			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:self.editingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+			(self.devServers)[self.editingIndexPath.row] = viewController.server;
+			[self.tableView reloadRowsAtIndexPaths:@[self.editingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 		}
 	}
 }

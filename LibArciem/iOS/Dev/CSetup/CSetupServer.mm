@@ -52,8 +52,8 @@
 - (id)initWithPropertyListRepresentation:(id)propertyList
 {
 	if(self = [self init]) {
-		self.name = [propertyList objectForKey:@"name"];
-		self.baseURL = [NSKeyedUnarchiver unarchiveObjectWithData:[propertyList objectForKey:@"baseURLData"]];
+		self.name = propertyList[@"name"];
+		self.baseURL = [NSKeyedUnarchiver unarchiveObjectWithData:propertyList[@"baseURLData"]];
 	}
 	
 	return self;
@@ -74,10 +74,8 @@
 
 - (id)propertyListRepresentation
 {
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-			self.name, @"name",
-			[NSKeyedArchiver archivedDataWithRootObject:self.baseURL], @"baseURLData",
-			nil];
+	return @{@"name": self.name,
+			@"baseURLData": [NSKeyedArchiver archivedDataWithRootObject:self.baseURL]};
 }
 
 @end

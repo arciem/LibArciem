@@ -44,12 +44,12 @@
 
 - (NSMutableDictionary*)textLabel
 {
-	return [self.dict objectForKey:@"textLabel"];
+	return (self.dict)[@"textLabel"];
 }
 					   
 - (void)setTextLabel:(NSMutableDictionary *)textLabel
 {
-	[self.dict setObject:[textLabel mutableCopy] forKey:@"textLabel"];
+	(self.dict)[@"textLabel"] = [textLabel mutableCopy];
 }
 
 + (CTableItem*)item

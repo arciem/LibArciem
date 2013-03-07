@@ -178,10 +178,8 @@
 
 - (NSString*)description
 {
-	return [self formatObjectWithValues:[NSArray arrayWithObjects:
-										 [self formatValueForKey:@"keyPath" compact:YES],
-										 [self formatValueForKey:@"objects" compact:YES],
-										 nil]];
+	return [self formatObjectWithValues:@[[self formatValueForKey:@"keyPath" compact:YES],
+										 [self formatValueForKey:@"objects" compact:YES]]];
 }
 
 - (void)dealloc
@@ -212,13 +210,13 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	NSKeyValueChange kind = [[change objectForKey:NSKeyValueChangeKindKey] unsignedIntegerValue];
-	id oldValue = [change objectForKey:NSKeyValueChangeOldKey];
-	id newValue = [change objectForKey:NSKeyValueChangeNewKey];
-	NSIndexSet* indexes = [change objectForKey:NSKeyValueChangeIndexesKey];
+	NSKeyValueChange kind = [change[NSKeyValueChangeKindKey] unsignedIntegerValue];
+	id oldValue = change[NSKeyValueChangeOldKey];
+	id newValue = change[NSKeyValueChangeNewKey];
+	NSIndexSet* indexes = change[NSKeyValueChangeIndexesKey];
 	CLogTrace(@"C_OBSERVER", @"%@ change new:%@ old:%@ kind:%d indexes:%@", self, newValue, oldValue, kind, indexes);
 	if(!Same(newValue, oldValue)) {
-		if([[change objectForKey:NSKeyValueChangeNotificationIsPriorKey] boolValue]) {
+		if([change[NSKeyValueChangeNotificationIsPriorKey] boolValue]) {
 			if(self.prior != NULL) {
 				// newValue will always be nil
 				self.prior(object, newValue, oldValue, kind, indexes);

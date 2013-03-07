@@ -22,12 +22,12 @@
 
 - (NSURL*)baseURL
 {
-	return [NSURL URLWithString:[self.dict objectForKey:@"baseURL"]];
+	return [NSURL URLWithString:(self.dict)[@"baseURL"]];
 }
 
 - (void)setBaseURL:(NSURL *)baseURL
 {
-	[self.dict setObject:baseURL.absoluteString forKey:@"baseURL"];
+	(self.dict)[@"baseURL"] = baseURL.absoluteString;
 }
 
 @end

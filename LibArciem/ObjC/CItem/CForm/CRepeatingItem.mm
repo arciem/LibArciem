@@ -46,12 +46,12 @@
 
 - (NSDictionary*)templateDict
 {
-	return [self.dict objectForKey:@"template"];
+	return (self.dict)[@"template"];
 }
 
 - (void)setTemplateDict:(NSDictionary *)templateDict
 {
-	[self.dict setObject:templateDict forKey:@"template"];
+	(self.dict)[@"template"] = templateDict;
 }
 
 - (CItem*)addSubitemFromTemplate
@@ -63,42 +63,42 @@
 
 - (NSUInteger)minValidRepeats
 {
-	return [[self.dict objectForKey:@"minValidRepeats"] unsignedIntegerValue];
+	return [(self.dict)[@"minValidRepeats"] unsignedIntegerValue];
 }
 
 - (void)setMinValidRepeats:(NSUInteger)minValidRepeats
 {
-	[self.dict setObject:[NSNumber numberWithUnsignedInteger:minValidRepeats] forKey:@"minValidRepeats"];
+	(self.dict)[@"minValidRepeats"] = @(minValidRepeats);
 }
 
 - (NSUInteger)maxValidRepeats
 {
-	return [[self.dict objectForKey:@"maxValidRepeats"] unsignedIntegerValue];
+	return [(self.dict)[@"maxValidRepeats"] unsignedIntegerValue];
 }
 
 - (void)setMaxValidRepeats:(NSUInteger)maxValidRepeats
 {
-	[self.dict setObject:[NSNumber numberWithUnsignedInteger:maxValidRepeats] forKey:@"maxValidRepeats"];
+	(self.dict)[@"maxValidRepeats"] = @(maxValidRepeats);
 }
 
 - (NSUInteger)startRepeats
 {
-	return [[self.dict objectForKey:@"startRepeats"] unsignedIntegerValue];
+	return [(self.dict)[@"startRepeats"] unsignedIntegerValue];
 }
 
 - (void)setStartRepeats:(NSUInteger)startRepeats
 {
-	[self.dict setObject:[NSNumber numberWithUnsignedInteger:startRepeats] forKey:@"startRepeats"];
+	(self.dict)[@"startRepeats"] = @(startRepeats);
 }
 
 - (NSString*)addAnotherPrompt
 {
-	return [self.dict objectForKey:@"addAnotherPrompt"];
+	return (self.dict)[@"addAnotherPrompt"];
 }
 
 - (void)setAddAnotherPrompt:(NSString *)addAnotherPrompt
 {
-	[self.dict setObject:[addAnotherPrompt copy] forKey:@"addAnotherPrompt"]; 
+	(self.dict)[@"addAnotherPrompt"] = [addAnotherPrompt copy]; 
 }
 
 - (void)activate
@@ -118,7 +118,7 @@
 				for(CItem* item in newModels) {
 					NSArray* newRowItems = [item tableRowItems];
 					NSAssert(newRowItems.count == 1, @"Only one item per row supported.");
-					CTableRowItem* newRowItem = [newRowItems objectAtIndex:0];
+					CTableRowItem* newRowItem = newRowItems[0];
 					newRowItem.isDeletable = YES;
 					newRowItem.isReorderable = YES;
 					

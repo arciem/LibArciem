@@ -59,7 +59,7 @@
 {
 	NSArray* models = nil;
 	if(model != nil) {
-		models = [NSArray arrayWithObject:model];
+		models = @[model];
 	}
 	if(self = [self initWithKey:key title:title models:models]) {
 	}
@@ -91,7 +91,7 @@
 
 - (NSString*)cellType
 {
-	NSString* result = [self.dict objectForKey:@"cellType"];
+	NSString* result = (self.dict)[@"cellType"];
 	
 	if(result == nil) {
 		return self.defaultCellType;
@@ -102,7 +102,7 @@
 
 - (void)setCellType:(NSString *)cellType
 {
-	[self.dict setObject:cellType forKey:@"cellType"];
+	(self.dict)[@"cellType"] = cellType;
 }
 
 - (NSArray*)models
@@ -119,7 +119,7 @@
 	CItem* result = nil;
 	
 	if(self.nonretainedModels.count > 0) {
-		result = [[self.nonretainedModels objectAtIndex:0] nonretainedObjectValue];
+		result = [(self.nonretainedModels)[0] nonretainedObjectValue];
 	}
 	
 	return result;
@@ -129,12 +129,12 @@
 
 - (NSMutableDictionary*)textLabel
 {
-	return [self.dict objectForKey:@"textLabel"];
+	return (self.dict)[@"textLabel"];
 }
 
 - (void)setTextLabel:(NSMutableDictionary *)textLabel
 {
-	[self.dict setObject:[textLabel mutableCopy] forKey:@"textLabel"];
+	(self.dict)[@"textLabel"] = [textLabel mutableCopy];
 }
 
 - (NSString*)defaultCellType
@@ -161,12 +161,12 @@
 
 - (NSInteger)indentationLevel
 {
-	return [[self.dict objectForKey:@"indentationLevel"] integerValue];
+	return [(self.dict)[@"indentationLevel"] integerValue];
 }
 
 - (void)setIndentationLevel:(NSInteger)indentationLevel
 {
-	[self.dict setObject:[NSNumber numberWithInteger:indentationLevel] forKey:@"indentationLevel"];
+	(self.dict)[@"indentationLevel"] = @(indentationLevel);
 }
 
 @end

@@ -212,11 +212,9 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 			if([self.successStatusCodes containsIndex:statusCode]) {
 				[self operationSucceeded];
 			} else {
-				NSDictionary* userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-										  [NSHTTPURLResponse localizedStringForStatusCode:statusCode], NSLocalizedDescriptionKey,
-										  self.request.URL, CRestErrorFailingURLErrorKey,
-										  self, CRestErrorWorkerErrorKey,
-										  nil];
+				NSDictionary* userInfo = @{NSLocalizedDescriptionKey: [NSHTTPURLResponse localizedStringForStatusCode:statusCode],
+										  CRestErrorFailingURLErrorKey: self.request.URL,
+										  CRestErrorWorkerErrorKey: self};
 				NSError* error = [NSError errorWithDomain:CRestErrorDomain code:statusCode userInfo:userInfo];
 				[self operationFailedWithError:error];
 			}

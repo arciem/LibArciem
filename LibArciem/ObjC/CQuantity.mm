@@ -316,12 +316,12 @@ NSString* const kDimensionPackaging = @"kDimensionPackaging";
 {
 	CDimension* dimension = nil;
 	
-	CDimension* existingDimension = [self.dimensionsDict objectForKey:identifier];
+	CDimension* existingDimension = (self.dimensionsDict)[identifier];
 	if(existingDimension != nil) {
 		[NSException raise:@"Duplicate dimension identifier" format:@"Dimension identifier %@ already exists.", existingDimension.identifier];
 	} else {
 		dimension = [CDimension dimensionWithIdentifier:identifier name:name];
-		[self.dimensionsDict setObject:dimension forKey:identifier];
+		(self.dimensionsDict)[identifier] = dimension;
 	}
 	
 	return dimension;
@@ -329,19 +329,19 @@ NSString* const kDimensionPackaging = @"kDimensionPackaging";
 
 - (CDimension*)dimensionForIdentifier:(NSString*)identifier
 {
-	return [self.dimensionsDict objectForKey:identifier];
+	return (self.dimensionsDict)[identifier];
 }
 
 - (CUnit*)addUnitWithSymbol:(NSString*)symbol name:(NSString*)name dimension:(CDimension*)dimension
 {
 	CUnit* unit = nil;
 	
-	CUnit* existingUnit = [self.unitsDict objectForKey:symbol];
+	CUnit* existingUnit = (self.unitsDict)[symbol];
 	if(existingUnit != nil) {
 		[NSException raise:@"Duplicate unit symbol" format:@"Symbol %@ already exists.", existingUnit.symbol];
 	} else {
 		unit = [CUnit unitWithSymbol:symbol name:name dimension:dimension];
-		[self.unitsDict setObject:unit forKey:symbol];
+		(self.unitsDict)[symbol] = unit;
 	}
 
 	return unit;
@@ -349,7 +349,7 @@ NSString* const kDimensionPackaging = @"kDimensionPackaging";
 
 - (CUnit*)unitForSymbol:(NSString*)symbol
 {
-	return [self.unitsDict objectForKey:symbol];
+	return (self.unitsDict)[symbol];
 }
 
 @end

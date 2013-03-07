@@ -32,14 +32,14 @@
 
 - (NSString*)action
 {
-	return [self.dict objectForKey:@"action"];
+	return (self.dict)[@"action"];
 }
 
 - (void)setAction:(NSString *)action
 {
 	if(!Same(action_, action)) {
 		[self willChangeValueForKey:@"action"];
-		[self.dict setObject:action forKey:@"action"];
+		(self.dict)[@"action"] = action;
 		[self didChangeValueForKey:@"action"];
 	}
 }

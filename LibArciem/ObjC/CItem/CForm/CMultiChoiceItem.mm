@@ -85,7 +85,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 
 - (void)setMinValidChoices:(NSUInteger)minValidChoices
 {
-	[self.dict setObject:[NSNumber numberWithUnsignedInt:minValidChoices] forKey:@"minValidChoices"];
+	(self.dict)[@"minValidChoices"] = @(minValidChoices);
 }
 
 - (NSUInteger)maxValidChoices
@@ -95,7 +95,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 
 - (void)setMaxValidChoices:(NSUInteger)maxValidChoices
 {
-	[self.dict setObject:[NSNumber numberWithUnsignedInt:maxValidChoices] forKey:@"maxValidChoices"];
+	(self.dict)[@"maxValidChoices"] = @(maxValidChoices);
 }
 
 
@@ -180,12 +180,12 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 
 - (NSArray*)choices
 {
-	return [self.dict objectForKey:@"choices"];
+	return (self.dict)[@"choices"];
 }
 
 - (void)setChoices:(NSArray *)choices
 {
-	[self.dict setObject:choices forKey:@"choices"];
+	(self.dict)[@"choices"] = choices;
 	[self setupChoices];
 }
 
@@ -201,8 +201,8 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 			item = [CSpacerItem spacerItem];
 		} else {
 			NSArray* comps = [str componentsSeparatedByString:@"/"];
-			NSString* key = [comps objectAtIndex:0];
-			NSString* title = [comps objectAtIndex:1];
+			NSString* key = comps[0];
+			NSString* title = comps[1];
 			BOOL value = NO;
 			if([key characterAtIndex:0] == [@"*" characterAtIndex:0]) {
 				value = YES;
@@ -259,7 +259,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
     if(self.selectedSubitemIndexes != nil) {
         NSUInteger index = self.selectedSubitemIndexes.firstIndex;
         if(index != NSNotFound) {
-            result = [self.subitems objectAtIndex:index];
+            result = (self.subitems)[index];
         }
     }
 	

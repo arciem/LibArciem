@@ -73,10 +73,8 @@
 	
 	
 	self.gradientLayer.frame = gradientFrame;
-	self.gradientLayer.colors = [NSArray arrayWithObjects:
-								 (__bridge id)[UIColor colorWithWhite:0.9 alpha:1.0].CGColor,
-								 (__bridge id)[UIColor colorWithWhite:0.8 alpha:1.0].CGColor,
-								 nil];
+	self.gradientLayer.colors = @[(__bridge id)[UIColor colorWithWhite:0.9 alpha:1.0].CGColor,
+								 (__bridge id)[UIColor colorWithWhite:0.8 alpha:1.0].CGColor];
 	
 	
 	self.bottomEdgeLayer.frame = bottomEdgeFrame;

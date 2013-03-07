@@ -115,7 +115,7 @@ const NSUInteger kOKButtonIndex = 1;
 	@synchronized(self) {
 		NSUInteger index = [self.alerts indexOfObject:alertView];
 		if(index != NSNotFound) {
-			completion = [self.completionBlocks objectAtIndex:index];
+			completion = (self.completionBlocks)[index];
 			if(completion != nil) {
 				[self.alerts removeObjectAtIndex:index];
 				[self.completionBlocks removeObjectAtIndex:index];

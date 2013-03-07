@@ -89,12 +89,12 @@ static NSDictionary* sCardTypeRegularExpressions;
 
 - (NSArray*)validCardTypes
 {
-	return [self.dict objectForKey:@"validCardTypes"];
+	return (self.dict)[@"validCardTypes"];
 }
 
 - (void)setValidCardTypes:(NSArray *)validCardTypes
 {
-	[self.dict setObject:validCardTypes forKey:@"validCardTypes"];
+	(self.dict)[@"validCardTypes"] = validCardTypes;
 }
 
 + (BOOL)automaticallyNotifiesObserversOfCardType
@@ -118,15 +118,13 @@ static NSDictionary* sCardTypeRegularExpressions;
 
 - (NSDictionary*)cardTypeRegularExpressions{
 	if(sCardTypeRegularExpressions == nil) {
-		sCardTypeRegularExpressions = [NSDictionary dictionaryWithObjectsAndKeys:
-									   kAnyRegularExpression, CCreditCardTypeUnknown,
-									   kVisaRegularExpression, CCreditCardTypeVisa,
-									   kMastercardRegularExpression, CCreditCardTypeMastercard,
-									   kAmexRegularExpression, CCreditCardTypeAmex,
-									   kDinersClubRegularExpression, CCreditCardTypeDinersClub,
-									   kDiscoverRegularExpression, CCreditCardTypeDiscover,
-									   kJCBRegularExpression, CCreditCardTypeJCB,
-									   nil];
+		sCardTypeRegularExpressions = @{CCreditCardTypeUnknown: kAnyRegularExpression,
+									   CCreditCardTypeVisa: kVisaRegularExpression,
+									   CCreditCardTypeMastercard: kMastercardRegularExpression,
+									   CCreditCardTypeAmex: kAmexRegularExpression,
+									   CCreditCardTypeDinersClub: kDinersClubRegularExpression,
+									   CCreditCardTypeDiscover: kDiscoverRegularExpression,
+									   CCreditCardTypeJCB: kJCBRegularExpression};
 	}
 	return sCardTypeRegularExpressions;
 }
@@ -145,7 +143,7 @@ static NSDictionary* sCardTypeRegularExpressions;
 		} else {
 			__block NSString* resultCardType = nil;
 			[self.validCardTypes enumerateObjectsUsingBlock:^(NSString* cardType, NSUInteger idx, BOOL *stop) {
-				NSString* regex = [self.cardTypeRegularExpressions objectForKey:cardType];
+				NSString* regex = (self.cardTypeRegularExpressions)[cardType];
 				NSAssert1(regex != nil, @"No regular expression for card type:%@", cardType);
 				if([self string:str matchesRegularExpression:regex]) {
 					if(self.validCardTypes.count == 0 || [self.validCardTypes containsObject:cardType]) {
@@ -181,7 +179,7 @@ static NSDictionary* sCardTypeRegularExpressions;
 	
 	for (NSInteger i = string.length - 1; i >= 0; i--) {
 		
-		NSInteger digit = [(NSString *)[stringAsChars objectAtIndex:i] intValue];
+		NSInteger digit = [(NSString *)stringAsChars[i] intValue];
 		
 		if (isOdd) 
 			oddSum += digit;
@@ -199,7 +197,7 @@ static NSDictionary* sCardTypeRegularExpressions;
 - (NSArray*)tableRowItems
 {
 	CTableCreditCardItem* rowItem = [CTableCreditCardItem itemWithKey:self.key title:self.title creditCardItem:self];
-	return [NSArray arrayWithObject:rowItem];
+	return @[rowItem];
 }
 
 @end

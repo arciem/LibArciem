@@ -78,7 +78,7 @@
 	}
 	
 	CItem* model = rowItem.model;
-	self.modelValueObserver.objects = [NSArray arrayWithObject:model];
+	self.modelValueObserver.objects = @[model];
 }
 
 - (void)syncToModelValue:(id)value

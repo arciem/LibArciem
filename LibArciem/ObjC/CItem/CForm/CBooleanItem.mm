@@ -36,13 +36,11 @@
 
 + (CBooleanItem*)booleanItemWithTitle:(NSString*)title key:(NSString*)key boolValue:(BOOL)boolValue
 {
-	NSNumber* value = [NSNumber numberWithBool:boolValue];
-	return [[self alloc] initWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:
-											 title, @"title",
-											 key, @"key",
-											 value, @"value",
-											 @"boolean", @"type",
-											 nil]];
+	NSNumber* value = @(boolValue);
+	return [[self alloc] initWithDictionary:@{@"title": title,
+											 @"key": key,
+											 @"value": value,
+											 @"type": @"boolean"}];
 }
 
 - (BOOL)booleanValue
@@ -52,7 +50,7 @@
 
 - (void)setBooleanValue:(BOOL)boolValue
 {
-	self.value = [NSNumber numberWithBool:boolValue];
+	self.value = @(boolValue);
 }
 
 - (BOOL)didSelect
@@ -73,7 +71,7 @@
 - (NSArray*)tableRowItems
 {
 	CTableBooleanItem* item = [CTableBooleanItem itemWithKey:self.key title:self.title booleanItem:self];
-	return [NSArray arrayWithObject:item];
+	return @[item];
 }
 
 @end

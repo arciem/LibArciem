@@ -62,9 +62,9 @@
 	id<NSObject> item = nil;
 	
 	if(path.row < self.rows.count) {
-		NSMutableArray* rowItems = [self.rows objectAtIndex:path.row];
+		NSMutableArray* rowItems = (self.rows)[path.row];
 		if(path.column < rowItems.count) {
-			item = [rowItems objectAtIndex:path.column];
+			item = rowItems[path.column];
 			if(item == [NSNull null]) {
 				item = nil;
 			}
@@ -80,7 +80,7 @@
 		[self.rows addObject:[NSMutableArray array]];
 	}
 	
-	NSMutableArray* rowItems = [self.rows objectAtIndex:path.row];
+	NSMutableArray* rowItems = (self.rows)[path.row];
 	
 	while(path.column >= rowItems.count) {
 		[rowItems addObject:[NSNull null]];
@@ -93,7 +93,7 @@
 		obj = [NSNull null];
 	}
 	
-	[rowItems replaceObjectAtIndex:path.column withObject:obj];
+	rowItems[path.column] = obj;
 }
 
 - (void)removeObjectAtIndexPath:(NSIndexPath*)path
@@ -114,11 +114,11 @@
 	self.columnCount = 0;
 	
 	for(NSInteger rowIndex = rowCount - 1; rowIndex >= 0; rowIndex--) {
-		NSMutableArray* rowItems = [self.rows objectAtIndex:rowIndex];
+		NSMutableArray* rowItems = (self.rows)[rowIndex];
 
 		NSInteger columnCount = rowItems.count;
 		for(NSInteger columnIndex = columnCount - 1; columnIndex >= 0; columnIndex--) {
-			if([rowItems objectAtIndex:columnIndex] == nullObj) {
+			if(rowItems[columnIndex] == nullObj) {
 				[rowItems removeLastObject];
 			} else {
 				break;

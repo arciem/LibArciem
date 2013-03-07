@@ -35,12 +35,10 @@
 		UIImage* patternImage = [UIColor diagonalRight:YES patternImageWithColor1:color1 color2:color2 size:CGSizeMake(64, 64) scale:0.0];
 		UIImage* image = [UIImage navigationBarImageWithBackgroundPatternImage:patternImage];
 	
-		self.navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-												  [UIFont boldSystemFontOfSize:0.0], UITextAttributeFont,
-												  [UIColor blackColor], UITextAttributeTextColor,
-												  [UIColor whiteColor], UITextAttributeTextShadowColor,
-												  [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset,
-												  nil];
+		self.navigationBar.titleTextAttributes = @{UITextAttributeFont: [UIFont boldSystemFontOfSize:0.0],
+												  UITextAttributeTextColor: [UIColor blackColor],
+												  UITextAttributeTextShadowColor: [UIColor whiteColor],
+												  UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetMake(0, 1)]};
 		[self.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
 	}
 }

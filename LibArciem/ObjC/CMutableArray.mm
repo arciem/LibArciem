@@ -56,7 +56,7 @@
 
 - (id)objectAtIndex:(NSUInteger)index
 {
-	return [self.objects objectAtIndex:index];
+	return (self.objects)[index];
 }
 
 #pragma mark - Primitive NSMutableArray overrides
@@ -70,7 +70,7 @@
 
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)index
 {
-	NSArray* objects = [NSArray arrayWithObject:anObject];
+	NSArray* objects = @[anObject];
 	NSIndexSet* indexes = [NSIndexSet indexSetWithIndex:index];
 	[self insertObjects:objects atIndexes:indexes];
 }
@@ -107,7 +107,7 @@
 
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject
 {
-	NSArray* objects = [NSArray arrayWithObject:anObject];
+	NSArray* objects = @[anObject];
 	NSIndexSet* indexes = [NSIndexSet indexSetWithIndex:index];
 	[self replaceObjectsAtIndexes:indexes withObjects:objects];
 }

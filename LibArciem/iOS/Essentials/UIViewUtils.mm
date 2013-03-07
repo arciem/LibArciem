@@ -485,8 +485,8 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 		CGFloat spacePerGap = space / gapCount;
 		
 		for(NSUInteger i = 0; i < views.count - 2; i++) {
-			UIView* view = [views objectAtIndex:i];
-			UIView* nextView = [views objectAtIndex:i + 1];
+			UIView* view = views[i];
+			UIView* nextView = views[i + 1];
 			nextView.top = roundf(view.bottom + spacePerGap);
 		}
 	}
@@ -531,7 +531,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (BOOL)isAtBack
 {
-	return ([self.superview.subviews objectAtIndex:0] == self);
+	return ((self.superview.subviews)[0] == self);
 }
 
 - (void)swapDepthsWithView:(UIView*)swapView

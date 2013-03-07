@@ -71,13 +71,11 @@
 
 - (NSString*)description
 {
-	return [self formatObjectWithValues:[NSArray arrayWithObjects:
-										 [self formatValueForKey:@"message" compact:NO],
+	return [self formatObjectWithValues:@[[self formatValueForKey:@"message" compact:NO],
 										 [self formatValueForKey:@"priority" compact:NO],
 										 [self formatValueForKey:@"date" compact:NO],
 										 [self formatValueForKey:@"duration" compact:NO],
-										 [self formatValueForKey:@"tapHandler" compact:NO],
-										 nil]];
+										 [self formatValueForKey:@"tapHandler" compact:NO]]];
 }
 
 @end

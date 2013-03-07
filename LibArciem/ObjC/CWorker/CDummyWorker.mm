@@ -68,7 +68,7 @@
 		NSArray* workers = [workerManager.workers allObjects];
 		if(workers.count > 0) {
 			NSInteger index = arciem::random_range(0, workers.count);
-			worker = [workers objectAtIndex:index];
+			worker = workers[index];
 		}
 	}
 	return worker;

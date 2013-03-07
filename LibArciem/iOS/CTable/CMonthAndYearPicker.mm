@@ -215,7 +215,7 @@
 	
 	switch (component) {
 		case 0:
-			result = [self.dateFormatter.standaloneMonthSymbols objectAtIndex:row];
+			result = (self.dateFormatter.standaloneMonthSymbols)[row];
 			break;
 		case 1:
 			result = [NSString stringWithFormat:@"%d", self.minimumYear + row];
@@ -291,7 +291,7 @@
 			month = [self monthForMonthRow:row];
 			year = [self yearForYearRow:[pickerView selectedRowInComponent:1]];
 
-			NSString* monthString = [self.dateFormatter.standaloneMonthSymbols objectAtIndex:row];
+			NSString* monthString = (self.dateFormatter.standaloneMonthSymbols)[row];
 			
 			label.text = [NSString stringWithFormat:@"%@ %02d", monthString, month];
 			label.textAlignment = NSTextAlignmentRight;

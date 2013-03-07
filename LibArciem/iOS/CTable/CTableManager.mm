@@ -114,7 +114,7 @@
 	
 	NSUInteger sectionIndex = [self indexOfSectionForKey:key];
 	if(sectionIndex != NSNotFound) {
-		result = [self.sections objectAtIndex:sectionIndex];
+		result = (self.sections)[sectionIndex];
 	}
 	
 	return result;
@@ -141,10 +141,10 @@
 	NSIndexPath* result = nil;
 	
 	NSArray* comps = [keyPath componentsSeparatedByString:@"."];
-	NSString* sectionKey = [comps objectAtIndex:0];
+	NSString* sectionKey = comps[0];
 	NSUInteger sectionIndex = [self indexOfSectionForKey:sectionKey];
 	if(sectionIndex != NSNotFound) {
-		NSString* rowKey = [comps objectAtIndex:1];
+		NSString* rowKey = comps[1];
 		NSUInteger rowIndex = [self indexOfRowForKey:rowKey inSection:sectionIndex];
 		if(rowIndex != NSNotFound) {
 			result = [NSIndexPath indexPathForRow:rowIndex inSection:sectionIndex];
@@ -173,7 +173,7 @@
 		CTableRowItem* row = [self rowAtIndexPath:indexPath];
 		if(row.isDisabled != disabled) {
 			row.isDisabled = disabled;
-			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:animation];
+			[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:animation];
 		}
 	}
 }
@@ -251,13 +251,13 @@
 		NSIndexPath* indexPath = [self indexPathForRow:rowItem];
 		if(indexPath != nil) {
 			[self invalidateRowAtIndexPath:indexPath];
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:animation];
+			[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:animation];
 		}
 	} else {
 		NSIndexPath* indexPath = [self indexPathForShowingHiddenRow:rowItem];
 		if(indexPath != nil) {
 			[self invalidateRowsForSection:indexPath.section];
-			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:animation];
+			[self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:animation];
 		}
 	}
 }
@@ -302,36 +302,36 @@
 
 - (CTableSectionItem*)sectionForIndex:(NSUInteger)sectionIndex
 {
-	return [self.sections objectAtIndex:sectionIndex];
+	return (self.sections)[sectionIndex];
 }
 
 - (NSMutableArray*)rowsForSection:(NSUInteger)sectionIndex
 {
-	NSNumber* sectionIndexNumber = [NSNumber numberWithUnsignedInteger:sectionIndex];
+	NSNumber* sectionIndexNumber = @(sectionIndex);
 	NSMutableDictionary* dict = self.visibleRowsBySection;
 	if(dict == nil) {
 		dict = [NSMutableDictionary dictionary];
 		self.visibleRowsBySection = dict;
 	}
-	NSMutableArray* rows = [dict objectForKey:sectionIndexNumber];
+	NSMutableArray* rows = dict[sectionIndexNumber];
 	if(rows == nil) {
 		CTableSectionItem* section = [self sectionForIndex:sectionIndex];
 		rows = [section.visibleSubitems mutableCopy];
-		[dict setObject:rows forKey:sectionIndexNumber];
+		dict[sectionIndexNumber] = rows;
 	}
 	return rows;
 }
 
 - (void)invalidateRowsForSection:(NSUInteger)sectionIndex
 {
-	NSNumber* sectionIndexNumber = [NSNumber numberWithUnsignedInteger:sectionIndex];
+	NSNumber* sectionIndexNumber = @(sectionIndex);
 	[self.visibleRowsBySection removeObjectForKey:sectionIndexNumber];
 }
 
 - (void)invalidateRowAtIndexPath:(NSIndexPath*)indexPath
 {
-	NSNumber* sectionIndexNumber = [NSNumber numberWithUnsignedInteger:indexPath.section];
-	NSMutableArray* rows = [self.visibleRowsBySection objectForKey:sectionIndexNumber];
+	NSNumber* sectionIndexNumber = @((NSUInteger)indexPath.section);
+	NSMutableArray* rows = (self.visibleRowsBySection)[sectionIndexNumber];
 	if(rows != nil) {
 		[rows removeObjectAtIndex:indexPath.row];
 	}
@@ -340,7 +340,7 @@
 - (CTableRowItem*)rowAtIndexPath:(NSIndexPath*)indexPath
 {
 	NSArray* rows = [self rowsForSection:indexPath.section];
-	return [rows objectAtIndex:indexPath.row];
+	return rows[indexPath.row];
 }
 
 - (CSlowCall*)scrollToRowSlowCall
@@ -388,7 +388,7 @@
 	CRowItemTableViewCell* cell = nil;
 	
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
-	cell = [rowItem.dict objectForKey:@"cell"];
+	cell = (rowItem.dict)[@"cell"];
 	
 	return cell;
 }
@@ -396,7 +396,7 @@
 - (void)setCachedCell:(CRowItemTableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
 {
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
-	[rowItem.dict setObject:cell forKey:@"cell"]; 
+	(rowItem.dict)[@"cell"] = cell; 
 }
 
 - (void)invalidateAllCachedCells
@@ -491,7 +491,7 @@
 	NSInteger moveOffset = destinationIndexPath.row - sourceIndexPath.row;
 
 	NSMutableArray* sourceRows = [self rowsForSection:sourceIndexPath.section];
-	CTableRowItem* rowItem = [sourceRows objectAtIndex:sourceIndexPath.row];
+	CTableRowItem* rowItem = sourceRows[sourceIndexPath.row];
 	CTableSectionItem* sectionItem = (CTableSectionItem*)rowItem.superitem;
 	NSUInteger rowIndex = [sectionItem.subitems indexOfObject:rowItem];
 	NSUInteger rowDestinationIndex = rowIndex + moveOffset;

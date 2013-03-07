@@ -140,8 +140,8 @@ NSString* DeviceIPAddress()
 		temp_addr = interfaces;
 		while(temp_addr != NULL) {
 			if(temp_addr->ifa_addr->sa_family == AF_INET) {
-				NSString* interfaceName = [NSString stringWithUTF8String:temp_addr->ifa_name];
-				NSString* address = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr)];
+				NSString* interfaceName = @(temp_addr->ifa_name);
+				NSString* address = @(inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr));
 				CLogDebug(nil, @"interface:%@ address:%@", interfaceName, address);
 				if([interfaceName isEqualToString:@"en0"]) {
 					// Interface is en0 which is the wifi connection on the iPhone

@@ -66,7 +66,7 @@
 		field.delegate = self;
 	}
 	
-	return [self.textFields objectAtIndex:index];
+	return (self.textFields)[index];
 }
 
 - (void)setTextField:(UITextField *)textField atIndex:(NSUInteger)index
@@ -75,7 +75,7 @@
 	if(oldTextField != textField) {
 		oldTextField.delegate = nil;
 		[oldTextField removeFromSuperview];
-		[self.textFields replaceObjectAtIndex:index withObject:textField];
+		(self.textFields)[index] = textField;
 		[self.contentView addSubview:textField];
 		textField.delegate = self;
 		[self setNeedsLayout];
@@ -138,7 +138,7 @@
 		CFrame* textFieldFrame = textField.cframe;
 		textFieldFrame.frame = fieldRect;
 		
-		CStringItem* model = [self.models objectAtIndex:idx];
+		CStringItem* model = (self.models)[idx];
 		NSUInteger fieldWidthCharacters = model.fieldWidthCharacters;
 		if(fieldWidthCharacters > 0) {
 			CGFloat characterWidthPoints = [@"0" sizeWithFont:self.font].width;
@@ -148,7 +148,7 @@
 			}
 		}
 		
-		CFieldValidationView* validationView = [validationViews objectAtIndex:idx];
+		CFieldValidationView* validationView = validationViews[idx];
 		CFrame* validationViewFrame = validationView.cframe;
 		validationViewFrame.centerY = textFieldFrame.centerY;
 		if(count == 2 && idx == self.textFields.count - 1) {
@@ -253,7 +253,7 @@
 	[self setNumberOfTextFieldsTo:self.models.count];
 
 	[self.textFields enumerateObjectsUsingBlock:^(UITextField* textField, NSUInteger index, BOOL *stop) {
-		CItem* model = [self.models objectAtIndex:index];
+		CItem* model = (self.models)[index];
 
 		textField.placeholder = model.title;
 
@@ -269,7 +269,7 @@
 			textField.inputView = control;
 			textField.clearButtonMode = UITextFieldViewModeNever;
 			[control addTarget:self action:@selector(inputViewValueChanged:event:) forControlEvents:UIControlEventValueChanged];
-			[control setAssociatedObject:[NSNumber numberWithUnsignedInt:index] forKey:@"index"];
+			[control setAssociatedObject:@(index) forKey:@"index"];
 		}
 	}];
 }
@@ -278,7 +278,7 @@
 {
 	NSUInteger index = [[sender associatedObjectForKey:@"index"] unsignedIntValue];
 	UITextField* textField = [self textFieldAtIndex:index];
-	CItem* model = [self.models objectAtIndex:index];
+	CItem* model = (self.models)[index];
 	if([model isKindOfClass:[CDateItem class]]) {
 		CDateItem* dateItem = (CDateItem*)model;
 		if([sender isKindOfClass:[UIDatePicker class]]) {
@@ -324,7 +324,7 @@
 	
 	NSUInteger index = [self indexOfTextField:textField];
 	if(index != NSNotFound) {
-		result = [self.models objectAtIndex:index];
+		result = (self.models)[index];
 	}
 	
 	return result;

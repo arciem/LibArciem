@@ -26,7 +26,7 @@
 - (NSArray*)tableRowItems
 {
 	CTableNoteItem* rowItem = [CTableNoteItem itemWithKey:self.key title:self.title item:self];
-	return [NSArray arrayWithObject:rowItem];
+	return @[rowItem];
 }
 
 @end

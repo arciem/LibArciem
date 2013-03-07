@@ -159,7 +159,7 @@ id<NSObject> ClassAlloc(NSString* className)
 - (NSString*)formatCountForKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero
 {
     NSArray* array = (NSArray*)[self valueForKey:key];
-    return [self formatNumber:[NSNumber numberWithUnsignedInteger:array.count] forKey:key hidingIfZero:hideIfZero];
+    return [self formatNumber:@(array.count) forKey:key hidingIfZero:hideIfZero];
 }
 
 - (NSString*)formatBoolValueForKey:(NSString*)key compact:(BOOL)compact hidingIf:(BOOL)hideValue
@@ -182,7 +182,7 @@ id<NSObject> ClassAlloc(NSString* className)
 	NSString* o = [NSString stringWithFormat:@"%@:%p", [self class], self];
 	NSString* a = nil;
 	if(values.count > 0) {
-		NSArray* v = [[NSArray arrayWithObject:o] arrayByAddingObjectsFromArray:values];
+		NSArray* v = [@[o] arrayByAddingObjectsFromArray:values];
 		a = StringByJoiningNonemptyStringsWithString(v, @"; ");
 	} else {
 		a = o;
@@ -199,7 +199,7 @@ id<NSObject> ClassAlloc(NSString* className)
         objc_property_t raw_property = properties[i];
         const char *propName = property_getName(raw_property);
         if(propName && IsPropertyAWritableObject(raw_property)) {
-            NSString *propertyName = [NSString stringWithUTF8String:propName];
+            NSString *propertyName = @(propName);
 			[self setValue:nil forKey:propertyName];
         }
     }
@@ -252,7 +252,7 @@ id<NSObject> ClassAlloc(NSString* className)
 
 - (id)valueForKey:(NSString*)key defaultValue:(id)defaultValue
 {
-	id result = [self objectForKey:key];
+	id result = self[key];
 	if(result == nil) {
 		result = defaultValue;
 	}
@@ -261,7 +261,7 @@ id<NSObject> ClassAlloc(NSString* className)
 
 - (NSUInteger)unsignedIntegerValueForKey:(NSString*)key defaultValue:(NSUInteger)defaultValue
 {
-	return [[self valueForKey:key defaultValue:[NSNumber numberWithUnsignedInt:defaultValue]] unsignedIntegerValue];
+	return [[self valueForKey:key defaultValue:@(defaultValue)] unsignedIntegerValue];
 }
 
 - (NSString*)stringValueForKey:(NSString*)key defaultValue:(NSString*)defaultValue
@@ -276,8 +276,8 @@ id<NSObject> ClassAlloc(NSString* className)
 - (void)overrideWithValuesFromDictionary:(NSDictionary*)dict
 {
 	for(id key in dict) {
-		if([self objectForKey:key] == nil) {
-			[self setObject:[[dict objectForKey:key] copy] forKey:key];
+		if(self[key] == nil) {
+			self[key] = [dict[key] copy];
 		}
 	}
 }
@@ -296,7 +296,7 @@ id<NSObject> ClassAlloc(NSString* className)
 - (NSArray*)arrayByReplacingObjectAtIndex:(NSUInteger)index withObject:(id)object
 {
 	NSMutableArray* a = [self mutableCopy];
-	[a replaceObjectAtIndex:index withObject:object];
+	a[index] = object;
 	return [a copy];
 }
 

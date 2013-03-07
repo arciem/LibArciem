@@ -72,20 +72,20 @@
 - (NSArray*)tableRowItems
 {
 	CTableButtonItem* rowItem = [CTableButtonItem itemWithKey:self.key title:self.title item:self];
-	return [NSArray arrayWithObject:rowItem];
+	return @[rowItem];
 }
 
 #pragma mark - @property isEditing
 
 - (BOOL)isEditing
 {
-	return [[self.dict objectForKey:@"isEditing"] boolValue];
+	return [(self.dict)[@"isEditing"] boolValue];
 }
 
 - (void)setEditing:(BOOL)isEditing
 {
 	[self willChangeValueForKey:@"isEditing"];
-	[self.dict setObject:[NSNumber numberWithBool:isEditing] forKey:@"isEditing"];
+	(self.dict)[@"isEditing"] = @(isEditing);
 	[self didChangeValueForKey:@"isEditing"];
 }
 

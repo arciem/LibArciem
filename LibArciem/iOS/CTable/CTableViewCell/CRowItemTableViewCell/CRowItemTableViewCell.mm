@@ -104,7 +104,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 		[self setNeedsLayout];
 	}
 	
-	return [self.mutableValidationViews objectAtIndex:index];
+	return (self.mutableValidationViews)[index];
 }
 
 - (CFieldValidationView*)validationView
@@ -117,7 +117,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	CFieldValidationView* oldValidationView = [self validationViewAtIndex:index];
 	if(validationView != oldValidationView) {
 		[oldValidationView removeFromSuperview];
-		[self.mutableValidationViews replaceObjectAtIndex:index withObject:validationView];
+		(self.mutableValidationViews)[index] = validationView;
 		[self.contentView addSubview:validationView];
 		[self setNeedsLayout];
 	}
@@ -197,7 +197,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 {
 	[self setNumberOfValidationViewsTo:self.validationViewsNeeded];
 	[self.validationViews enumerateObjectsUsingBlock:^(CFieldValidationView* view, NSUInteger idx, BOOL *stop) {
-		CItem* model = [self.models objectAtIndex:idx];
+		CItem* model = (self.models)[idx];
 		view.item = model;
 	}];
 }
@@ -257,9 +257,9 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 					  nil];
 	}
 	for(NSString* key in attributes) {
-		void (^caseBlock)(UILabel*, id) = [switchDict objectForKey:key];
+		void (^caseBlock)(UILabel*, id) = switchDict[key];
 		NSAssert1(caseBlock != NULL, @"No case found for key '%@'", key);
-		id value = [attributes objectForKey:key];
+		id value = attributes[key];
 		caseBlock(label, value);
 	}
 }

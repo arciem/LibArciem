@@ -23,7 +23,7 @@
 
 - (id)initWithDomain:(NSString *)domain code:(NSInteger)code localizedDescription:(NSString*)localizedDescription
 {
-	NSDictionary* userInfo = [NSDictionary dictionaryWithObject:localizedDescription forKey:NSLocalizedDescriptionKey];
+	NSDictionary* userInfo = @{NSLocalizedDescriptionKey: localizedDescription};
 
 	return [self initWithDomain:domain code:code userInfo:userInfo];
 }

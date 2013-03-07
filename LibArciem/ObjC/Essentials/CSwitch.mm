@@ -34,7 +34,7 @@
 		self.dict = [NSMutableDictionary dictionary];
 		for (id key = firstKey; key != nil; key = va_arg(args, id)) {
 			id block = [va_arg(args, id) copy];
-			[self.dict setObject:block forKey:key];
+			(self.dict)[key] = block;
 		}
 	}
 	
@@ -67,9 +67,9 @@
 {
 	id result = nil;
 	
-	id (^bl)(id) = [self.dict objectForKey:key];
+	id (^bl)(id) = (self.dict)[key];
 	if(bl == NULL) {
-		bl = [self.dict objectForKey:[NSNull null]];
+		bl = (self.dict)[[NSNull null]];
 	}
 	if(bl != NULL) {
 		result = bl(arg);

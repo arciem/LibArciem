@@ -73,7 +73,7 @@
 //			[view sizeToFit];
 			[self.contentView addSubview:view];
 			[self.cardTypeViews addObject:view];
-			[self.cardTypeViewsByType setObject:view forKey:cardType];
+			(self.cardTypeViewsByType)[cardType] = view;
 		}
 	}
 	
@@ -114,7 +114,7 @@
 		CGFloat x = (self.contentView.width - totalWidth) / 2;
 		CGFloat bottomY = self.textField.top - 8;
 		for(NSString* cardType in self.creditCardItem.validCardTypes) {
-			UIView* view = [self.cardTypeViewsByType objectForKey:cardType];
+			UIView* view = (self.cardTypeViewsByType)[cardType];
 			CFrame* viewFrame = view.cframe;
 			
 			viewFrame.top = bottomY - viewFrame.size.height;

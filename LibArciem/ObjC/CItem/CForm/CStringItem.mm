@@ -44,14 +44,14 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 {
 	[super setup];
 
-	NSNumber* maxLengthNumber = [self.dict objectForKey:@"maxLength"];
+	NSNumber* maxLengthNumber = (self.dict)[@"maxLength"];
 	if(maxLengthNumber == nil) {
 		maxLength_ = 100;
 	} else {
 		maxLength_ = [maxLengthNumber unsignedIntValue];
 	}
 	
-	minLength_ = [[self.dict objectForKey:@"minLength"] unsignedIntValue];
+	minLength_ = [(self.dict)[@"minLength"] unsignedIntValue];
 	
 	[self syncToValidCharacters];
 }
@@ -68,11 +68,9 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 + (CItem*)stringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue
 {
-	return [self stringItemWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:
-											 title, @"title",
-											 key, @"key",
-											 stringValue, @"value",
-											 nil]];
+	return [self stringItemWithDictionary:@{@"title": title,
+											 @"key": key,
+											 @"value": stringValue}];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -91,10 +89,8 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 - (NSArray*)descriptionStringsCompact:(BOOL)compact
 {
-	NSArray* comps = [NSArray arrayWithObjects:
-					  [self formatValueForKey:@"minLength" compact:compact],
-					  [self formatValueForKey:@"maxLength" compact:compact],
-					  nil];
+	NSArray* comps = @[[self formatValueForKey:@"minLength" compact:compact],
+					  [self formatValueForKey:@"maxLength" compact:compact]];
 	return [[super descriptionStringsCompact:compact] arrayByAddingObjectsFromArray:comps];
 }
 
@@ -169,48 +165,48 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 - (NSString*)autocapitalizationType
 {
-	return [self.dict objectForKey:@"autocapitalizationType"];
+	return (self.dict)[@"autocapitalizationType"];
 }
 
 - (void)setAutocapitalizationType:(NSString *)autocapitalizationType
 {
-	[self.dict setObject:autocapitalizationType forKey:@"autocapitalizationType"];
+	(self.dict)[@"autocapitalizationType"] = autocapitalizationType;
 }
 
 #pragma mark - @property keyboardType
 
 - (NSString*)keyboardType
 {
-	return [self.dict objectForKey:@"keyboardType"];
+	return (self.dict)[@"keyboardType"];
 }
 
 - (void)setKeyboardType:(NSString *)keyboardType
 {
-	[self.dict setObject:keyboardType forKey:@"keyboardType"];
+	(self.dict)[@"keyboardType"] = keyboardType;
 }
 
 #pragma mark - @property secureTextEntry
 
 - (BOOL)secureTextEntry
 {
-	return [[self.dict objectForKey:@"secureTextEntry"] boolValue];
+	return [(self.dict)[@"secureTextEntry"] boolValue];
 }
 
 - (void)setSecureTextEntry:(BOOL)secureTextEntry
 {
-	[self.dict setObject:[NSNumber numberWithBool:secureTextEntry] forKey:@"secureTextEntry"];
+	(self.dict)[@"secureTextEntry"] = @(secureTextEntry);
 }
 
 #pragma mark - @property validCharacters
 
 - (NSString*)validCharacters
 {
-	return [self.dict objectForKey:@"validCharacters"];
+	return (self.dict)[@"validCharacters"];
 }
 
 - (void)setValidCharacters:(NSString *)validCharacters
 {
-	[self.dict setObject:validCharacters forKey:@"validCharacters"];
+	(self.dict)[@"validCharacters"] = validCharacters;
 	[self syncToValidCharacters];
 }
 
@@ -269,12 +265,12 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 - (NSUInteger)fieldWidthCharacters
 {
-	return [[self.dict objectForKey:@"fieldWidthCharacters"] unsignedIntegerValue];
+	return [(self.dict)[@"fieldWidthCharacters"] unsignedIntegerValue];
 }
 
 - (void)setFieldWidthCharacters:(NSUInteger)width
 {
-	[self.dict setObject:[NSNumber numberWithUnsignedInteger:width] forKey:@"fieldWidthCharacters"];
+	(self.dict)[@"fieldWidthCharacters"] = @(width);
 }
 
 #pragma mark - Editing
@@ -363,7 +359,7 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 - (NSArray*)tableRowItems
 {
 	CTableTextFieldItem* rowItem = [CTableTextFieldItem itemWithKey:self.key title:self.title stringItem:self];
-	return [NSArray arrayWithObject:rowItem];
+	return @[rowItem];
 }
 
 @end
