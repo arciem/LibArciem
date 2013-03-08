@@ -20,6 +20,7 @@
 #define ARCIEM_MATH_UTILS_HPP
 
 #include <stddef.h>
+#include <cmath>
 
 namespace arciem {
 

@@ -85,6 +85,7 @@ using namespace std;
 #import "UILabelUtils.h"
 #import "WhiteLabel.h"
 #import "CSystemSound.h"
+#import "CMiniPickerView.h"
 
 // Essentials
 #import "CActivityShieldView.h"

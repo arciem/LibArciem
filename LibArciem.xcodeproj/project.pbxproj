@@ -298,6 +298,16 @@
 		039DC39716CCA44000B52A7F /* WhiteLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC39316CCA44000B52A7F /* WhiteLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC39816CCA44000B52A7F /* WhiteLabel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC39416CCA44000B52A7F /* WhiteLabel.mm */; };
 		039DC3A416CCAA4900B52A7F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC34416CC987E00B52A7F /* CoreFoundation.framework */; };
+		03F9446216E9735D00F9FEF3 /* CMiniPickerBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445616E9735D00F9FEF3 /* CMiniPickerBackgroundView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03F9446316E9735D00F9FEF3 /* CMiniPickerBackgroundView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F9445716E9735D00F9FEF3 /* CMiniPickerBackgroundView.mm */; };
+		03F9446416E9735D00F9FEF3 /* CMiniPickerFrameView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445816E9735D00F9FEF3 /* CMiniPickerFrameView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03F9446516E9735D00F9FEF3 /* CMiniPickerFrameView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F9445916E9735D00F9FEF3 /* CMiniPickerFrameView.mm */; };
+		03F9446616E9735D00F9FEF3 /* CMiniPickerOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445A16E9735D00F9FEF3 /* CMiniPickerOverlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03F9446716E9735D00F9FEF3 /* CMiniPickerOverlayView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F9445B16E9735D00F9FEF3 /* CMiniPickerOverlayView.mm */; };
+		03F9446816E9735D00F9FEF3 /* CMiniPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445D16E9735D00F9FEF3 /* CMiniPickerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03F9446916E9735D00F9FEF3 /* CMiniPickerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F9445E16E9735D00F9FEF3 /* CMiniPickerView.mm */; };
+		03F9446A16E9735D00F9FEF3 /* CMiniPickerViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445F16E9735D00F9FEF3 /* CMiniPickerViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03F9446B16E9735D00F9FEF3 /* CMiniPickerViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F9446016E9735D00F9FEF3 /* CMiniPickerViewCell.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -600,6 +610,18 @@
 		039DC39216CCA43F00B52A7F /* UILabelUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UILabelUtils.mm; sourceTree = "<group>"; };
 		039DC39316CCA44000B52A7F /* WhiteLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhiteLabel.h; sourceTree = "<group>"; };
 		039DC39416CCA44000B52A7F /* WhiteLabel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WhiteLabel.mm; sourceTree = "<group>"; };
+		03F9445616E9735D00F9FEF3 /* CMiniPickerBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiniPickerBackgroundView.h; sourceTree = "<group>"; };
+		03F9445716E9735D00F9FEF3 /* CMiniPickerBackgroundView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMiniPickerBackgroundView.mm; sourceTree = "<group>"; };
+		03F9445816E9735D00F9FEF3 /* CMiniPickerFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiniPickerFrameView.h; sourceTree = "<group>"; };
+		03F9445916E9735D00F9FEF3 /* CMiniPickerFrameView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMiniPickerFrameView.mm; sourceTree = "<group>"; };
+		03F9445A16E9735D00F9FEF3 /* CMiniPickerOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiniPickerOverlayView.h; sourceTree = "<group>"; };
+		03F9445B16E9735D00F9FEF3 /* CMiniPickerOverlayView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMiniPickerOverlayView.mm; sourceTree = "<group>"; };
+		03F9445C16E9735D00F9FEF3 /* CMiniPickerTest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CMiniPickerTest.json; sourceTree = "<group>"; };
+		03F9445D16E9735D00F9FEF3 /* CMiniPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiniPickerView.h; sourceTree = "<group>"; };
+		03F9445E16E9735D00F9FEF3 /* CMiniPickerView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMiniPickerView.mm; sourceTree = "<group>"; };
+		03F9445F16E9735D00F9FEF3 /* CMiniPickerViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiniPickerViewCell.h; sourceTree = "<group>"; };
+		03F9446016E9735D00F9FEF3 /* CMiniPickerViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMiniPickerViewCell.mm; sourceTree = "<group>"; };
+		03F9446116E9735D00F9FEF3 /* DetentClick.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DetentClick.caf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -925,6 +947,7 @@
 				039DC39416CCA44000B52A7F /* WhiteLabel.mm */,
 				032AEEEE16DE66D90024D14E /* CSystemSound.h */,
 				032AEEEF16DE66D90024D14E /* CSystemSound.mm */,
+				03F9445516E9735D00F9FEF3 /* CMiniPicker */,
 				039DC26B16CB662100B52A7F /* Essentials */,
 				039DC2B116CB678A00B52A7F /* CNotifier */,
 				039DC2C216CB689800B52A7F /* CTable */,
@@ -1117,6 +1140,25 @@
 			path = ../LibArciem/iOS/artwork/images;
 			sourceTree = "<group>";
 		};
+		03F9445516E9735D00F9FEF3 /* CMiniPicker */ = {
+			isa = PBXGroup;
+			children = (
+				03F9445616E9735D00F9FEF3 /* CMiniPickerBackgroundView.h */,
+				03F9445716E9735D00F9FEF3 /* CMiniPickerBackgroundView.mm */,
+				03F9445816E9735D00F9FEF3 /* CMiniPickerFrameView.h */,
+				03F9445916E9735D00F9FEF3 /* CMiniPickerFrameView.mm */,
+				03F9445A16E9735D00F9FEF3 /* CMiniPickerOverlayView.h */,
+				03F9445B16E9735D00F9FEF3 /* CMiniPickerOverlayView.mm */,
+				03F9445C16E9735D00F9FEF3 /* CMiniPickerTest.json */,
+				03F9445D16E9735D00F9FEF3 /* CMiniPickerView.h */,
+				03F9445E16E9735D00F9FEF3 /* CMiniPickerView.mm */,
+				03F9445F16E9735D00F9FEF3 /* CMiniPickerViewCell.h */,
+				03F9446016E9735D00F9FEF3 /* CMiniPickerViewCell.mm */,
+				03F9446116E9735D00F9FEF3 /* DetentClick.caf */,
+			);
+			path = CMiniPicker;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1260,6 +1302,11 @@
 				039DC39516CCA44000B52A7F /* UILabelUtils.h in Headers */,
 				039DC39716CCA44000B52A7F /* WhiteLabel.h in Headers */,
 				032AEEF016DE66DA0024D14E /* CSystemSound.h in Headers */,
+				03F9446216E9735D00F9FEF3 /* CMiniPickerBackgroundView.h in Headers */,
+				03F9446416E9735D00F9FEF3 /* CMiniPickerFrameView.h in Headers */,
+				03F9446616E9735D00F9FEF3 /* CMiniPickerOverlayView.h in Headers */,
+				03F9446816E9735D00F9FEF3 /* CMiniPickerView.h in Headers */,
+				03F9446A16E9735D00F9FEF3 /* CMiniPickerViewCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1508,6 +1555,11 @@
 				039DC39616CCA44000B52A7F /* UILabelUtils.mm in Sources */,
 				039DC39816CCA44000B52A7F /* WhiteLabel.mm in Sources */,
 				032AEEF116DE66DA0024D14E /* CSystemSound.mm in Sources */,
+				03F9446316E9735D00F9FEF3 /* CMiniPickerBackgroundView.mm in Sources */,
+				03F9446516E9735D00F9FEF3 /* CMiniPickerFrameView.mm in Sources */,
+				03F9446716E9735D00F9FEF3 /* CMiniPickerOverlayView.mm in Sources */,
+				03F9446916E9735D00F9FEF3 /* CMiniPickerView.mm in Sources */,
+				03F9446B16E9735D00F9FEF3 /* CMiniPickerViewCell.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
