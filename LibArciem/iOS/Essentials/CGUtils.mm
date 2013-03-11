@@ -24,6 +24,7 @@
 #import "math_utils.hpp"
 #import "Geom.h"
 #import "gl_utils.hpp"
+#import <UIKit/UIKit.h>
 
 using namespace arciem;
 
@@ -859,4 +860,102 @@ CGFloat RoundUpToEvenValue(CGFloat v)
 {
     v += (NSInteger)ceilf(v) % 2;
     return v;
+}
+
+static NSString* const kPathMoveToPoint = @"moveToPoint";
+static NSString* const kPathAddLine = @"addLine";
+static NSString* const kPathAddQuadCurve = @"addQuadCurve";
+static NSString* const kPathAddCurve = @"addCurve";
+static NSString* const kPathCloseSubpath = @"closeSubpath";
+
+static void MyCGPathApplierFunc(void *info, const CGPathElement *element)
+{
+    NSMutableArray* elements = (__bridge NSMutableArray*)info;
+    switch(element->type) {
+        case kCGPathElementMoveToPoint: // contains 1 point
+            [elements addObject:[NSValue valueWithCGPoint:element->points[0]]];
+            [elements addObject:kPathMoveToPoint];
+            break;
+            
+        case kCGPathElementAddLineToPoint: // contains 1 point
+            [elements addObject:[NSValue valueWithCGPoint:element->points[0]]];
+            [elements addObject:kPathAddLine];
+            break;
+            
+        case kCGPathElementAddQuadCurveToPoint: // contains 2 points
+            [elements addObject:[NSValue valueWithCGPoint:element->points[0]]];
+            [elements addObject:[NSValue valueWithCGPoint:element->points[1]]];
+            [elements addObject:kPathAddQuadCurve];
+            break;
+            
+        case kCGPathElementAddCurveToPoint: // contains 3 points
+            [elements addObject:[NSValue valueWithCGPoint:element->points[0]]];
+            [elements addObject:[NSValue valueWithCGPoint:element->points[1]]];
+            [elements addObject:[NSValue valueWithCGPoint:element->points[2]]];
+            [elements addObject:kPathAddCurve];
+            break;
+            
+        case kCGPathElementCloseSubpath: // contains no point
+            [elements addObject:kPathCloseSubpath];
+            break;
+    }
+}
+
+CGPathRef CreatePathReversed(CGPathRef path)
+{
+    CGPathRef reversedPath = nil;
+    
+    NSMutableArray* elements = [NSMutableArray new];
+    CGPathApply(path, (__bridge void*)elements, MyCGPathApplierFunc);
+    
+    NSMutableArray* reversedElements = [NSMutableArray new];
+    [reversedElements addObject:kPathMoveToPoint];
+    __block id holder = nil;
+    [elements enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if(![obj isKindOfClass:[NSString class]]) {
+            [reversedElements addObject:obj];
+        }
+        if(holder != nil) {
+            [reversedElements addObject:holder];
+            holder = nil;
+        }
+        if([obj isKindOfClass:[NSString class]]) {
+            holder = obj;
+        }
+    }];
+    
+    // remove moveToPoint at end
+    [reversedElements removeLastObject];
+    
+    CGMutablePathRef mutableReversedPath = CGPathCreateMutable();
+
+    NSUInteger index = 0;
+    while(index < reversedElements.count) {
+        id element = reversedElements[index++];
+        if([element isKindOfClass:[NSString class]]) {
+            NSString* s = (NSString*)element;
+            if([s isEqualToString:kPathMoveToPoint]) {
+                CGPoint p = [(NSValue*)reversedElements[index++] CGPointValue];
+                CGPathMoveToPoint(mutableReversedPath, NULL, p.x, p.y);
+            } else if([s isEqualToString:kPathAddLine]) {
+                CGPoint p = [(NSValue*)reversedElements[index++] CGPointValue];
+                CGPathAddLineToPoint(mutableReversedPath, NULL, p.x, p.y);
+            } else if([s isEqualToString:kPathAddQuadCurve]) {
+                CGPoint p1 = [(NSValue*)reversedElements[index++] CGPointValue];
+                CGPoint p2 = [(NSValue*)reversedElements[index++] CGPointValue];
+                CGPathAddQuadCurveToPoint(mutableReversedPath, NULL, p1.x, p1.y, p2.x, p2.y);
+            } else if([s isEqualToString:kPathAddCurve]) {
+                CGPoint p1 = [(NSValue*)reversedElements[index++] CGPointValue];
+                CGPoint p2 = [(NSValue*)reversedElements[index++] CGPointValue];
+                CGPoint p3 = [(NSValue*)reversedElements[index++] CGPointValue];
+                CGPathAddCurveToPoint(mutableReversedPath, NULL, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+            } else if([s isEqualToString:kPathCloseSubpath]) {
+                NSCAssert(NO, @"Only single subpath supported right now.");
+            }
+        }
+    }
+    
+    reversedPath = CGPathCreateCopy(mutableReversedPath);
+    CGPathRelease(mutableReversedPath);
+    return reversedPath;
 }

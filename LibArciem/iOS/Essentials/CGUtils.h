@@ -87,3 +87,4 @@ public:
 void ContextDrawSavingState(CGContextRef context, void (^drawing)(void));
 
 CGFloat RoundUpToEvenValue(CGFloat v);
+CGPathRef CreatePathReversed(CGPathRef path);

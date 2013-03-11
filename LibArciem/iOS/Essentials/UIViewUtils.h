@@ -135,3 +135,10 @@ extern NSString* const sTapInBackgroundNotification;
 - (void)sizeToFit;
 
 @end
+
+@interface UIBezierPath (UIViewUtils)
+
+// Useful for pre-iOS 6.0. Under iOS 6.0 or later, uses -bezierPathByReversingPath. Under iOS 5.0, uses its own reversal algorithm, under which multiple subpaths are not currently supported.
+- (UIBezierPath*)pathByReversingPath;
+
+@end

@@ -805,3 +805,21 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 }
 
 @end
+
+@implementation UIBezierPath (UIViewUtils)
+
+- (UIBezierPath*)pathByReversingPath
+{
+    UIBezierPath* reversedPath = nil;
+    if([self respondsToSelector:@selector(bezierPathByReversingPath)]) {
+        reversedPath = [self bezierPathByReversingPath];
+    } else {
+        CGPathRef reversedCGPath = CreatePathReversed(self.CGPath);
+        reversedPath = [UIBezierPath bezierPathWithCGPath:reversedCGPath];
+        CGPathRelease(reversedCGPath);
+    }
+
+    return reversedPath;
+}
+
+@end

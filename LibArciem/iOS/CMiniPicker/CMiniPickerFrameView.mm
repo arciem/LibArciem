@@ -18,6 +18,7 @@
 
 #import "CMiniPickerFrameView.h"
 #import "UIColorUtils.h"
+#import "UIViewUtils.h"
 
 static const CGFloat kTopBevelHeight = 2.0;
 static const CGFloat kFrameWidth = 8.0;
@@ -67,7 +68,7 @@ static const CGFloat kFrameWidth = 8.0;
     UIGraphicsPushContext(context);
     
     CGRect boundsRect = self.bounds;
-
+    
     CGRect bevelRect;
     CGRectDivide(boundsRect, &bevelRect, &boundsRect, kTopBevelHeight, CGRectMinYEdge);
     ContextFillRectGradientVertical(context, bevelRect, self.bevelGradientRef);
@@ -77,16 +78,18 @@ static const CGFloat kFrameWidth = 8.0;
     CGRect innerRect2 = CGRectInset(innerRect1, -1, -1);
     UIBezierPath* innerBoundsPath2 = [UIBezierPath bezierPathWithRoundedRect:innerRect2 cornerRadius:5.0];
     
-    UIBezierPath* maskPath = [UIBezierPath bezierPath];
+    UIBezierPath* maskPath;
+    
+    maskPath = [UIBezierPath bezierPath];
     [maskPath appendPath:boundsPath];
-    [maskPath appendPath:[innerBoundsPath2 bezierPathByReversingPath]];
+    [maskPath appendPath:[innerBoundsPath2 pathByReversingPath]];
     ContextFillPathGradientVertical(context, maskPath.CGPath, self.frameGradientRef);
     
     maskPath = [UIBezierPath bezierPath];
     [maskPath appendPath:innerBoundsPath2];
-    [maskPath appendPath:[innerBoundsPath1 bezierPathByReversingPath]];
+    [maskPath appendPath:[innerBoundsPath1 pathByReversingPath]];
     ContextFillPathGradientVertical(context, maskPath.CGPath, self.frameGradientRef, YES);
-
+    
     UIGraphicsPopContext();
 }
 
