@@ -25,19 +25,16 @@ static CSetup* sSetup = nil;
 @interface CSetup () <CSetupMainViewControllerDelegate>
 
 @property (weak, nonatomic) UIWindow* window;
-@property (copy, nonatomic) void(^completion)(void);
+@property (copy, nonatomic) void(^completion)(BOOL);
 
-- (id)initWithWindow:(UIWindow*)window completion:(void (^)(void))completion;
+- (id)initWithWindow:(UIWindow*)window completion:(void (^)(BOOL serverChanged))completion;
 - (void)start;
 
 @end
 
 @implementation CSetup
 
-@synthesize window = window_;
-@synthesize completion = completion_;
-
-+ (void)setupWithWindow:(UIWindow*)window completion:(void (^)(void))completion
++ (void)setupWithWindow:(UIWindow*)window completion:(void (^)(BOOL serverChanged))completion
 {
 	NSAssert(sSetup == nil, @"Setup already in progress.");
 	
@@ -45,7 +42,7 @@ static CSetup* sSetup = nil;
 	[sSetup start];
 }
 
-- (id)initWithWindow:(UIWindow*)window completion:(void (^)(void))completion
+- (id)initWithWindow:(UIWindow*)window completion:(void (^)(BOOL serverChanged))completion
 {
 	if(self = [super init]) {
 		self.window = window;
@@ -69,7 +66,7 @@ static CSetup* sSetup = nil;
 - (void)setupMainViewController:(CSetupMainViewController*)viewController didFinishChangingServer:(BOOL)serverChanged
 {
 	if(self.completion != NULL) {
-		self.completion();
+		self.completion(serverChanged);
 		sSetup = nil;
 	}
 }

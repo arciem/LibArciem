@@ -20,6 +20,6 @@
 
 @interface CSetup : NSObject
 
-+ (void)setupWithWindow:(UIWindow*)window completion:(void (^)(void))completion;
++ (void)setupWithWindow:(UIWindow*)window completion:(void (^)(BOOL serverChanged))completion;
 
 @end

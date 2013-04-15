@@ -290,7 +290,8 @@
 	if(self.isEditing) {
 		sections = 1;
 	} else {
-		sections = 3;
+		sections = 2;
+        if(self.options.count > 0) sections++;
 	}
 	
 	return sections;
@@ -300,7 +301,9 @@
 {
 	NSString* sectionTitle = nil;
 	
-	static NSArray* sectionTitles = @[@"Testing Servers", @"Development Servers", @"Options"];
+	static NSArray* sectionTitles = @[@"Testing Servers", @"Development Servers"];
+    if(self.options.count > 0) sectionTitles = [sectionTitles arrayByAddingObject:@"Options"];
+
 	if(self.editing) {
 		sectionTitle = sectionTitles[1];
 	} else {

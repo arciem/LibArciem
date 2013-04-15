@@ -106,4 +106,9 @@ using namespace std;
 #import "UIImageUtils.h"
 #import "UIViewUtils.h"
 
+// Dev
+#import "CDebugOverlayView.h"
+    // CSetup
+#import "CSetup.h"
+
 #endif // __OBJC__
