@@ -231,7 +231,7 @@ static NSUInteger sNextSequenceNumber = 0;
 		++self.tryCount;
 		__weak CWorker* worker_ = self;
 		self.operation = [NSBlockOperation blockOperationWithBlock:^{
-			CLogTrace(@"C_WORKER", @"%@ entered NSBlockOperation", worker_);
+			CLogTrace(@"C_WORKER", @"%@ entered NSBlockOperation currentRunLoop:0x%08x", worker_, [NSRunLoop currentRunLoop]);
 			worker_.isActive = YES;
 			[worker_ operationDidBegin];
 			[worker_ performDelay:worker_.startDelay];

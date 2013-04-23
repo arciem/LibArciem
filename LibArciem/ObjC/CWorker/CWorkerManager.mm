@@ -98,6 +98,7 @@
 		if(operation != nil) {
 			[self.queue addOperation:operation];
 		}
+        CLogTrace(@"C_WORKER_MANAGER", @"started:%@ operation:%@", worker, operation);
 	}
 }
 
@@ -189,6 +190,7 @@
 
 		[self.workers addObject:worker];
 		worker.isExecuting = YES;
+        CLogTrace(@"C_WORKER_MANAGER", @"added:%@", worker);
 		
 		[self startReadyWorkers];
 	}

@@ -23,6 +23,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		03258714171CA8F800AE084E /* CNetworkController.h in Headers */ = {isa = PBXBuildFile; fileRef = 03258712171CA8F700AE084E /* CNetworkController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03258715171CA8F800AE084E /* CNetworkController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03258713171CA8F800AE084E /* CNetworkController.mm */; };
 		032AEEF016DE66DA0024D14E /* CSystemSound.h in Headers */ = {isa = PBXBuildFile; fileRef = 032AEEEE16DE66D90024D14E /* CSystemSound.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		032AEEF116DE66DA0024D14E /* CSystemSound.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032AEEEF16DE66D90024D14E /* CSystemSound.mm */; };
 		032AEEF316DE67940024D14E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032AEEF216DE67940024D14E /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -328,6 +330,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03258712171CA8F700AE084E /* CNetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNetworkController.h; sourceTree = "<group>"; };
+		03258713171CA8F800AE084E /* CNetworkController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNetworkController.mm; sourceTree = "<group>"; };
 		032AEEEE16DE66D90024D14E /* CSystemSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSystemSound.h; sourceTree = "<group>"; };
 		032AEEEF16DE66D90024D14E /* CSystemSound.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSystemSound.mm; sourceTree = "<group>"; };
 		032AEEF216DE67940024D14E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -935,6 +939,8 @@
 				039DC26816CB65EC00B52A7F /* CBeveledBackgroundView.mm */,
 				039DC26116CB516400B52A7F /* CNetworkActivity.h */,
 				039DC26216CB516400B52A7F /* CNetworkActivity.mm */,
+				03258712171CA8F700AE084E /* CNetworkController.h */,
+				03258713171CA8F800AE084E /* CNetworkController.mm */,
 				039DC24D16CB4CCE00B52A7F /* CRestWorker.h */,
 				039DC24E16CB4CCE00B52A7F /* CRestWorker.mm */,
 				039DC38516CCA43000B52A7F /* CReachability.h */,
@@ -1307,6 +1313,7 @@
 				03F9446616E9735D00F9FEF3 /* CMiniPickerOverlayView.h in Headers */,
 				03F9446816E9735D00F9FEF3 /* CMiniPickerView.h in Headers */,
 				03F9446A16E9735D00F9FEF3 /* CMiniPickerViewCell.h in Headers */,
+				03258714171CA8F800AE084E /* CNetworkController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1560,6 +1567,7 @@
 				03F9446716E9735D00F9FEF3 /* CMiniPickerOverlayView.mm in Sources */,
 				03F9446916E9735D00F9FEF3 /* CMiniPickerView.mm in Sources */,
 				03F9446B16E9735D00F9FEF3 /* CMiniPickerViewCell.mm in Sources */,
+				03258715171CA8F800AE084E /* CNetworkController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

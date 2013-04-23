@@ -79,7 +79,9 @@ using namespace std;
 // iOS
 #import "CBeveledBackgroundView.h"
 #import "CNetworkActivity.h"
+#import "CNetworkController.h"
 #import "CRestWorker.h"
+#import "CWorkerManager.h"
 #import "CReachability.h"
 #import "CTabBar.h"
 #import "UILabelUtils.h"

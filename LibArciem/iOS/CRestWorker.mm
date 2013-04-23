@@ -32,22 +32,12 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 @property (strong, readwrite, nonatomic) NSURLResponse* response;
 @property (strong, nonatomic) NSMutableData* mutableData;
 @property (strong, nonatomic) CNetworkActivity* activity;
+@property (weak, nonatomic) NSThread* workerThread;
+@property (nonatomic) BOOL workerWaitLoopStopped;
 
 @end
 
 @implementation CRestWorker
-
-@synthesize request = request_;
-@synthesize response = response_;
-@synthesize connection = connection_;
-@synthesize mutableData = mutableData_;
-@synthesize successStatusCodes = successStatusCodes_;
-@synthesize showsNetworkActivityIndicator = showsNetworkActivityIndicator_;
-@synthesize activity = activity_;
-@dynamic data;
-@dynamic httpResponse;
-@dynamic dataAsString;
-@dynamic dataAsJSON;
 
 + (void)initialize
 {
@@ -85,7 +75,7 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 {
 	id json = [NSJSONSerialization JSONObjectWithData:self.mutableData options:0 error:error];
 	if(json == nil) {
-		CLogError(nil, @"%@ Parsing JSON: %@", self, error);
+		CLogError(nil, @"%@ Parsing JSON: %@", self, *error);
 	}
 	return json;
 }
@@ -129,23 +119,52 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 
 - (void)performOperationWork
 {
-	CLogTrace(@"C_REST_WORKER", @"%@ starting NSURLConnection", self);
+	CLogTrace(@"C_REST_WORKER", @"%@ starting NSURLConnection: %@", self, self.request);
 	
+    self.workerThread = [NSThread currentThread];
+    
+    NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
 	if(self.isOffline) {
 		CLogTrace(@"C_REST_WORKER", @"%@ failing because offline", self);
-		self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
+        self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
 		[self connection:self.connection didFailWithError:[NSError errorWithDomain:CRestErrorDomain code:CRestOfflineError userInfo:nil]];
 	} else {
-		self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:YES];
+		CLogTrace(@"C_REST_WORKER", @"%@ scheduling in runloop:0x%08x", self, runLoop);
+        self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:YES];
 	}
 	
 	// Here we don't want to block the thread as the NSURLConnection will call our delegate methods on the same thread we're on.
 	// So run the run loop until it is out of sources, at which point the callbacks will all be done.
-	CLogTrace(@"C_REST_WORKER", @"%@ entering runloop", self);
-	while(!self.isCancelled && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) {
-		CLogTrace(@"C_REST_WORKER", @"%@ ran runloop", self);
-	}
-	CLogTrace(@"C_REST_WORKER", @"%@ runloop exited", self);
+    CLogTrace(@"C_REST_WORKER", @"%@ entering worker wait loop", self);
+    while(YES) {
+        if(self.isCancelled) {
+            CLogTrace(@"C_REST_WORKER", @"%@ aborting aborting worker wait loop due to cancel", self);
+            break;
+        }
+        
+        CLogTrace(@"C_REST_WORKER", @"%@ running runloop:0x%08x", self, runLoop);
+        BOOL hadSources = [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+//        BOOL hadSources = [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+        CLogTrace(@"C_REST_WORKER", @"%@ ran runloop:0x%08x hadSources:%d", self, runLoop, hadSources);
+        if(!hadSources) {
+            CLogTrace(@"C_REST_WORKER", @"%@ aborting worker wait loop due to no sources", self);
+            break;
+        } else if(self.workerWaitLoopStopped) {
+            CLogTrace(@"C_REST_WORKER", @"%@ aborting worker wait loop due to workerWaitLoopStopped flag", self);
+            break;
+        }
+    }
+	CLogTrace(@"C_REST_WORKER", @"%@ worker wait loop exited", self);
+}
+
+- (void)stopWorkerWaitLoop_
+{
+    self.workerWaitLoopStopped = YES;
+}
+
+- (void)stopWorkerWaitLoop
+{
+    [self performSelector:@selector(stopWorkerWaitLoop_) onThread:self.workerThread withObject:nil waitUntilDone:NO];
 }
 
 - (NSOperation*)createOperationForTry
@@ -186,6 +205,7 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 	@synchronized(self) {
 		self.connection = nil;
 		[self operationFailedWithError:error];
+        [self stopWorkerWaitLoop];
 	}
 }
 
@@ -221,6 +241,7 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 		} else {
 			[self operationSucceeded];
 		}
+        [self stopWorkerWaitLoop];
 	}
 }
 
