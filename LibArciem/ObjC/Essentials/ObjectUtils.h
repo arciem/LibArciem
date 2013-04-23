@@ -50,6 +50,7 @@ id<NSObject> ClassAlloc(NSString* className);
 + (id)dictionaryWithKeysAndObjects:(id)firstKey, ... NS_REQUIRES_NIL_TERMINATION;
 + (id)dictionaryWithKeysAndCopiedObjects:(id)firstKey, ... NS_REQUIRES_NIL_TERMINATION;
 
+- (NSDictionary*)dictionaryBySettingObject:(id)anObject forKey:(id<NSCopying>)key;
 - (id)valueForKey:(NSString*)key defaultValue:(id)defaultValue;
 - (NSUInteger)unsignedIntegerValueForKey:(NSString*)key defaultValue:(NSUInteger)defaultValue;
 - (NSString*)stringValueForKey:(NSString*)key defaultValue:(NSString*)defaultValue;

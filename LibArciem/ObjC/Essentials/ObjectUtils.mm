@@ -250,6 +250,13 @@ id<NSObject> ClassAlloc(NSString* className)
     return [self dictionaryWithObjects:values forKeys:keys];
 }
 
+- (NSDictionary*)dictionaryBySettingObject:(id)anObject forKey:(id<NSCopying>)key
+{
+    NSMutableDictionary* d = [self mutableCopy];
+    d[key] = anObject;
+    return [d copy];
+}
+
 - (id)valueForKey:(NSString*)key defaultValue:(id)defaultValue
 {
 	id result = self[key];
