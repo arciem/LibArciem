@@ -25,7 +25,7 @@
 @property (readonly, nonatomic) BOOL isReachable;
 @property (nonatomic, setter = setOffline:) BOOL isOffline;
 
-+ (CNetworkController*)sharedInstance;
++ (CNetworkController*)sharedNetworkController;
 
 - (void)startWithHostName:(NSString*)hostName networkReachabilityNotifierItem:(CNotifierItem*)networkReachabilityNotifierItem hostReachabilityNotifierItem:(CNotifierItem*)hostReachabilityNotifierItem networkReachableNotifierItem:(CNotifierItem*)networkReachableNotifierItem offlineNotifierItem:(CNotifierItem*)offlineNotifierItem;
 

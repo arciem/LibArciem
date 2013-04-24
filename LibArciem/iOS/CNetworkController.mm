@@ -19,8 +19,6 @@
 #import "CNetworkController.h"
 #import "CReachability.h"
 
-static CNetworkController* sSharedInstance = nil;
-
 @interface CNetworkController ()
 
 @property (copy, readwrite, nonatomic) NSString* hostName;
@@ -50,12 +48,14 @@ static CNetworkController* sSharedInstance = nil;
 @synthesize isReachable = isReachable_;
 @dynamic isOffline;
 
-+ (CNetworkController*)sharedInstance
++ (CNetworkController*)sharedNetworkController
 {
-	if(sSharedInstance == nil) {
-		sSharedInstance = [[self alloc] init];
-	}
-	return sSharedInstance;
+    static CNetworkController* instance = nil;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        instance = [CNetworkController new];
+    });
+    return instance;
 }
 
 - (id)init
