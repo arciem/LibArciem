@@ -23,7 +23,7 @@ extern const NSUInteger kOKButtonIndex;
 
 @interface CAlertManager : NSObject
 
-+ (CAlertManager*)sharedInstance;
++ (CAlertManager*)sharedAlertManager;
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showAlertWithTitle:(NSString*)title message:(NSString*)message buttonTitles:(NSArray*)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion;

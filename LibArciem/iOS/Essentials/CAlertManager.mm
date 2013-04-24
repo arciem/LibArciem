@@ -20,8 +20,6 @@
 #import "I18nUtils.h"
 #import "InvocationUtils.h"
 
-static CAlertManager* sAlertManager = nil;
-
 const NSUInteger kCancelButtonIndex = 0;
 const NSUInteger kOKButtonIndex = 1;
 
@@ -47,13 +45,14 @@ const NSUInteger kOKButtonIndex = 1;
 	return self;
 }
 
-+ (CAlertManager*)sharedInstance
++ (CAlertManager*)sharedAlertManager
 {
-	if(sAlertManager == nil) {
-		sAlertManager = [[CAlertManager alloc] init];
-	}
-	
-	return sAlertManager;
+    static CAlertManager* instance = nil;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        instance = [CAlertManager new];
+    });
+    return instance;
 }
 
 - (void)showAlertWithTitle:(NSString*)title message:(NSString*)message buttonTitles:(NSArray*)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion
