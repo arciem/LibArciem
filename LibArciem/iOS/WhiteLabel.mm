@@ -21,8 +21,6 @@
 
 #import <UIKit/UIKit.h>
 
-static WhiteLabel* sSharedInstance = nil;
-
 @interface WhiteLabel ()
 
 @property (nonatomic, readonly) NSCache* cache;
@@ -35,13 +33,14 @@ static WhiteLabel* sSharedInstance = nil;
 @synthesize cache = _cache;
 @synthesize whiteLabelDict = _whiteLabelDict;
 
-+ (WhiteLabel*)sharedInstance
++ (WhiteLabel*)sharedWhiteLabel
 {
-    if(sSharedInstance == nil) {
-        sSharedInstance = [WhiteLabel new];
-    }
-    
-    return sSharedInstance;
+    static WhiteLabel* instance = nil;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        instance = [WhiteLabel new];
+    });
+    return instance;
 }
 
 - (id)init
@@ -175,12 +174,12 @@ static WhiteLabel* sSharedInstance = nil;
 
 + (NSString*)replaceTemplates:(NSString*)str
 {
-    return [[self sharedInstance] stringByReplacingTemplatesInString:str];
+    return [[self sharedWhiteLabel] stringByReplacingTemplatesInString:str];
 }
 
 + (id)resourceForKey:(NSString*)key
 {
-    return [[self sharedInstance] resourceForKey:key];
+    return [[self sharedWhiteLabel] resourceForKey:key];
 }
 
 @end

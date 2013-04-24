@@ -20,7 +20,7 @@
 
 @interface WhiteLabel : NSObject
 
-+ (WhiteLabel*)sharedInstance;
++ (WhiteLabel*)sharedWhiteLabel;
 + (NSString*)replaceTemplates:(NSString*)str;
 + (id)resourceForKey:(NSString*)key;
 
