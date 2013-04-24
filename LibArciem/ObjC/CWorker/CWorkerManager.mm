@@ -36,6 +36,16 @@
 //	CLogSetTagActive(@"C_WORKER_MANAGER", YES);
 }
 
++ (CWorkerManager*)sharedWorkerManager
+{
+    static CWorkerManager *instance = nil;
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        instance = [CWorkerManager new];
+    });
+    return instance;
+}
+
 - (id)init
 {
 	if(self = [super init]) {
