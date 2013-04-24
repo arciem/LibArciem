@@ -88,6 +88,7 @@ using namespace std;
 #import "WhiteLabel.h"
 #import "CSystemSound.h"
 #import "CMiniPickerView.h"
+#import "CKeychainUtils.h"
 
 // Essentials
 #import "CActivityShieldView.h"
@@ -101,6 +102,7 @@ using namespace std;
 #import "CView.h"
 #import "CViewController.h"
 #import "CWindow.h"
+#import "AppUtils.h"
 #import "DeviceUtils.h"
 #import "NibUtils.h"
 #import "TextUtils.h"

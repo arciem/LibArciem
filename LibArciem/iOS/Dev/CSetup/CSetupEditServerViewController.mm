@@ -85,7 +85,7 @@
 
 	if(!IsEmptyString(message)) {
 		valid = NO;
-		[[CAlertManager sharedInstance] showAlertWithTitle:nil message:message];
+		[[CAlertManager sharedAlertManager] showAlertWithTitle:nil message:message];
 	}
 	
 	return valid;
