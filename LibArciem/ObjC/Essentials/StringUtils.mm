@@ -287,7 +287,7 @@ string ToStd(NSString* s)
 }
 #endif
 
-@implementation NSString (CUString)
+@implementation NSString (CStringAdditions)
 
 // From OmniFoundation
 + (NSString *)stringWithCharacter:(unichar)aCharacter;
@@ -468,6 +468,65 @@ string ToStd(NSString* s)
 	return s;
 }
 
+- (NSString*)stringByReplacingTemplatesWithReplacements:(NSDictionary*)replacementsDict
+{
+    NSMutableString* mutableStr = [self mutableCopy];
+    
+    NSError* error = nil;
+    NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"\\{(.*?)\\}" options:0 error:&error];
+    NSInteger offset = 0;
+    for(NSTextCheckingResult* result in [regex matchesInString:self options:0 range:NSMakeRange(0, self.length)]) {
+        NSRange resultRange = result.range;
+        resultRange.location += offset;
+        NSString* match = [regex replacementStringForResult:result inString:mutableStr offset:offset template:@"$1"];
+        NSString* replacement = replacementsDict[match];
+        [mutableStr replaceCharactersInRange:resultRange withString:replacement];
+        offset = offset + replacement.length - resultRange.length;
+    }
+    
+    return [NSString stringWithString:mutableStr];
+}
+
+- (NSArray*)capturesFromMatchesOfRegularExpression:(NSRegularExpression*)regex stopAfterFirstMatch:(BOOL)stopAfterFirstMatch stopAfterFirstCapture:(BOOL)stopAfterFirstCapture
+{
+    __block NSMutableArray* capturesArray = nil;
+    
+    [regex enumerateMatchesInString:self options:0 range:NSMakeRange(0, self.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+        
+        if(capturesArray == nil) capturesArray = [NSMutableArray new];
+        
+        for(NSUInteger captureIndex = 0; captureIndex < regex.numberOfCaptureGroups; captureIndex++) {
+            NSRange captureRange = [result rangeAtIndex:(captureIndex + 1)];
+            NSString* captureStr = @"";
+            if(captureRange.location != NSNotFound) {
+                captureStr = [self substringWithRange:captureRange];
+            }
+            [capturesArray addObject:captureStr];
+            if(stopAfterFirstCapture) break;
+        }
+        
+        if(stopAfterFirstMatch) *stop = YES;
+    }];
+    
+    return [capturesArray copy];
+}
+
+- (NSArray*)allCapturesFromAllMatchesOfRegularExpression:(NSRegularExpression*)regex
+{
+    return [self capturesFromMatchesOfRegularExpression:regex stopAfterFirstMatch:NO stopAfterFirstCapture:NO];
+}
+
+- (NSArray*)allCapturesFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex
+{
+    return [self capturesFromMatchesOfRegularExpression:regex stopAfterFirstMatch:YES stopAfterFirstCapture:NO];
+}
+
+- (NSString*)firstCaptureFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex
+{
+    return [self capturesFromMatchesOfRegularExpression:regex stopAfterFirstMatch:YES stopAfterFirstCapture:YES][0];
+}
+
+
 - (NSArray*)allCharacters
 {
 	NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:self.length];
@@ -531,6 +590,15 @@ string ToStd(NSString* s)
 - (NSString*)stringUsingBase64Encoding
 {
 	return [self stringUsingBase64EncodingURLSafe:NO];
+}
+
+@end
+
+@implementation NSRegularExpression (CRegularExpressionAdditions)
+
++ (NSRegularExpression*)regularExpressionWithPattern:(NSString *)pattern
+{
+    return [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:nil];
 }
 
 @end

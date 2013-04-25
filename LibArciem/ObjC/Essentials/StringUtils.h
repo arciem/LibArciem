@@ -80,7 +80,7 @@ NSString* StringByRemovingWhitespaceAndNewLines(NSString* string);
 NSString* StringWithURLEscapedParamaters(NSDictionary* params);
 NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* recordSeparator, NSString* keyValueSeparator);
 
-@interface NSString (CUString)
+@interface NSString (CStringAdditions)
 
 + (NSString*)stringWithCharacter:(unichar)aCharacter;
 + (NSString*)horizontalEllipsisString; // '...'
@@ -108,8 +108,18 @@ NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* 
 
 - (NSString*)stringByAddingPercentEscapes;
 - (NSString*)stringByReplacingPercentEscapes;
+- (NSString*)stringByReplacingTemplatesWithReplacements:(NSDictionary*)replacementsDict;
 
 - (NSArray*)allCharacters;
+- (NSArray*)allCapturesFromAllMatchesOfRegularExpression:(NSRegularExpression*)regex;
+- (NSArray*)allCapturesFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex;
+- (NSString*)firstCaptureFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex;
+
+@end
+
+@interface NSRegularExpression (CRegularExpressionAdditions)
+
++ (NSRegularExpression*)regularExpressionWithPattern:(NSString *)pattern;
 
 @end
 

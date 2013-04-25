@@ -20,6 +20,7 @@
 
 @interface UIApplication (AppUtils)
 
+@property(readonly, nonatomic) NSString* displayName;
 @property(readonly, nonatomic) NSString* versionAndBuildString;
 
 @end
