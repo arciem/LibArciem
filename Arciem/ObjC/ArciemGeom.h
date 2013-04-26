@@ -1,6 +1,6 @@
 //
-//  LibArciem.h
-//  LibArciem
+//  Arciem.h
+//  Arciem
 //
 //  Created by Robert McNally on 2/12/13.
 //  Copyright (c) 2013 Arciem LLC. All rights reserved.

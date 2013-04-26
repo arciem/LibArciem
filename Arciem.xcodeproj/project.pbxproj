@@ -33,7 +33,7 @@
 		033A75FE172754ED0045933D /* CKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 033A75FC172754ED0045933D /* CKeychainUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		033A75FF172754ED0045933D /* CKeychainUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033A75FD172754ED0045933D /* CKeychainUtils.mm */; };
 		039DC11316CB300D00B52A7F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC11216CB300D00B52A7F /* Foundation.framework */; };
-		039DC12116CB32B000B52A7F /* LibArciem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC11716CB300D00B52A7F /* LibArciem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC12116CB32B000B52A7F /* Arciem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC11716CB300D00B52A7F /* Arciem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC13E16CB398A00B52A7F /* CLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12416CB398A00B52A7F /* CLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC13F16CB398A00B52A7F /* CLog.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC12516CB398A00B52A7F /* CLog.mm */; };
 		039DC14016CB398A00B52A7F /* CObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12616CB398A00B52A7F /* CObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -294,7 +294,7 @@
 		039DC35816CC9A1900B52A7F /* FaveStarOff@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039DC35416CC9A1900B52A7F /* FaveStarOff@2x.png */; };
 		039DC35916CC9A1900B52A7F /* FaveStarOn.png in Resources */ = {isa = PBXBuildFile; fileRef = 039DC35516CC9A1900B52A7F /* FaveStarOn.png */; };
 		039DC35A16CC9A1900B52A7F /* FaveStarOn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 039DC35616CC9A1900B52A7F /* FaveStarOn@2x.png */; };
-		039DC35C16CC9AA800B52A7F /* LibArciem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC35B16CC9AA600B52A7F /* LibArciem.mm */; };
+		039DC35C16CC9AA800B52A7F /* Arciem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC35B16CC9AA600B52A7F /* Arciem.mm */; };
 		039DC38B16CCA43000B52A7F /* CReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC38516CCA43000B52A7F /* CReachability.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC38C16CCA43000B52A7F /* CReachability.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC38616CCA43000B52A7F /* CReachability.mm */; };
 		039DC38F16CCA43000B52A7F /* CTabBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC38916CCA43000B52A7F /* CTabBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -345,8 +345,8 @@
 		033A75FD172754ED0045933D /* CKeychainUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CKeychainUtils.mm; sourceTree = "<group>"; };
 		039DC10F16CB300D00B52A7F /* libArciem.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libArciem.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		039DC11216CB300D00B52A7F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		039DC11616CB300D00B52A7F /* LibArciem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "LibArciem-Prefix.pch"; path = "LibArciem/LibArciem-Prefix.pch"; sourceTree = "<group>"; };
-		039DC11716CB300D00B52A7F /* LibArciem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LibArciem.h; path = LibArciem/LibArciem.h; sourceTree = "<group>"; };
+		039DC11616CB300D00B52A7F /* Arciem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Arciem-Prefix.pch"; path = "Arciem/Arciem-Prefix.pch"; sourceTree = "<group>"; };
+		039DC11716CB300D00B52A7F /* Arciem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Arciem.h; path = Arciem/Arciem.h; sourceTree = "<group>"; };
 		039DC12216CB335400B52A7F /* Notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Notes.txt; sourceTree = "<group>"; };
 		039DC12416CB398A00B52A7F /* CLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLog.h; sourceTree = "<group>"; };
 		039DC12516CB398A00B52A7F /* CLog.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CLog.mm; sourceTree = "<group>"; };
@@ -498,8 +498,8 @@
 		039DC25016CB4CCE00B52A7F /* CWorker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CWorker.mm; sourceTree = "<group>"; };
 		039DC25116CB4CCE00B52A7F /* CWorkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWorkerManager.h; sourceTree = "<group>"; };
 		039DC25216CB4CCE00B52A7F /* CWorkerManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CWorkerManager.mm; sourceTree = "<group>"; };
-		039DC25C16CB4FAF00B52A7F /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ISO8601DateFormatter.h; path = "iso-8601-parser-unparser/ISO8601DateFormatter.h"; sourceTree = "<group>"; };
-		039DC25D16CB4FAF00B52A7F /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ISO8601DateFormatter.m; path = "iso-8601-parser-unparser/ISO8601DateFormatter.m"; sourceTree = "<group>"; };
+		039DC25C16CB4FAF00B52A7F /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
+		039DC25D16CB4FAF00B52A7F /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
 		039DC26116CB516400B52A7F /* CNetworkActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNetworkActivity.h; sourceTree = "<group>"; };
 		039DC26216CB516400B52A7F /* CNetworkActivity.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNetworkActivity.mm; sourceTree = "<group>"; };
 		039DC26516CB518A00B52A7F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -604,16 +604,16 @@
 		039DC31C16CB693700B52A7F /* CSetupTableViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSetupTableViewController.mm; sourceTree = "<group>"; };
 		039DC31D16CB693700B52A7F /* CSetupTextFieldTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSetupTextFieldTableViewCell.h; sourceTree = "<group>"; };
 		039DC31E16CB693700B52A7F /* CSetupTextFieldTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSetupTextFieldTableViewCell.mm; sourceTree = "<group>"; };
-		039DC34316CC987E00B52A7F /* LibArciem.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibArciem.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		039DC34316CC987E00B52A7F /* Arciem.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Arciem.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		039DC34416CC987E00B52A7F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		039DC34816CC988100B52A7F /* LibArciemResources-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LibArciemResources-Info.plist"; sourceTree = "<group>"; };
+		039DC34816CC988100B52A7F /* ArciemResources-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ArciemResources-Info.plist"; sourceTree = "<group>"; };
 		039DC34A16CC988100B52A7F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		039DC34C16CC988100B52A7F /* LibArciemResources-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LibArciemResources-Prefix.pch"; sourceTree = "<group>"; };
 		039DC35316CC9A1900B52A7F /* FaveStarOff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FaveStarOff.png; sourceTree = "<group>"; };
 		039DC35416CC9A1900B52A7F /* FaveStarOff@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FaveStarOff@2x.png"; sourceTree = "<group>"; };
 		039DC35516CC9A1900B52A7F /* FaveStarOn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FaveStarOn.png; sourceTree = "<group>"; };
 		039DC35616CC9A1900B52A7F /* FaveStarOn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FaveStarOn@2x.png"; sourceTree = "<group>"; };
-		039DC35B16CC9AA600B52A7F /* LibArciem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LibArciem.mm; path = LibArciem/LibArciem.mm; sourceTree = "<group>"; };
+		039DC35B16CC9AA600B52A7F /* Arciem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Arciem.mm; path = Arciem/Arciem.mm; sourceTree = "<group>"; };
 		039DC38516CCA43000B52A7F /* CReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CReachability.h; sourceTree = "<group>"; };
 		039DC38616CCA43000B52A7F /* CReachability.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CReachability.mm; sourceTree = "<group>"; };
 		039DC38916CCA43000B52A7F /* CTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTabBar.h; sourceTree = "<group>"; };
@@ -661,16 +661,16 @@
 		039DC10616CB300D00B52A7F = {
 			isa = PBXGroup;
 			children = (
-				032AEEF216DE67940024D14E /* AudioToolbox.framework */,
+				039DC11716CB300D00B52A7F /* Arciem.h */,
+				039DC35B16CC9AA600B52A7F /* Arciem.mm */,
+				039DC11616CB300D00B52A7F /* Arciem-Prefix.pch */,
 				039DC12216CB335400B52A7F /* Notes.txt */,
-				039DC11716CB300D00B52A7F /* LibArciem.h */,
-				039DC35B16CC9AA600B52A7F /* LibArciem.mm */,
-				039DC11616CB300D00B52A7F /* LibArciem-Prefix.pch */,
 				039DC15916CB3DF700B52A7F /* CPP */,
-				039DC26016CB50AD00B52A7F /* iOS */,
-				039DC15816CB3DB000B52A7F /* ObjC */,
-				039DC34616CC987E00B52A7F /* LibArciemResources */,
 				039DC11116CB300D00B52A7F /* Frameworks */,
+				039DC26016CB50AD00B52A7F /* iOS */,
+				039DC34616CC987E00B52A7F /* ArciemResources */,
+				039DC25B16CB4F8B00B52A7F /* iso-8601-parser-unparser */,
+				039DC15816CB3DB000B52A7F /* ObjC */,
 				039DC11016CB300D00B52A7F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -679,7 +679,7 @@
 			isa = PBXGroup;
 			children = (
 				039DC10F16CB300D00B52A7F /* libArciem.a */,
-				039DC34316CC987E00B52A7F /* LibArciem.bundle */,
+				039DC34316CC987E00B52A7F /* Arciem.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -687,6 +687,7 @@
 		039DC11116CB300D00B52A7F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				032AEEF216DE67940024D14E /* AudioToolbox.framework */,
 				039DC11216CB300D00B52A7F /* Foundation.framework */,
 				039DC26516CB518A00B52A7F /* UIKit.framework */,
 				039DC34416CC987E00B52A7F /* CoreFoundation.framework */,
@@ -733,7 +734,6 @@
 				039DC12316CB398A00B52A7F /* Essentials */,
 				039DC1D216CB4C4300B52A7F /* CItem */,
 				039DC24A16CB4CCD00B52A7F /* CWorker */,
-				039DC25B16CB4F8B00B52A7F /* iso-8601-parser-unparser */,
 				039DC1BC16CB4B1100B52A7F /* ArciemGeom.h */,
 				039DC1BD16CB4B1100B52A7F /* CMatrix.h */,
 				039DC1BE16CB4B1200B52A7F /* CMatrix.mm */,
@@ -747,7 +747,7 @@
 				039DC1C616CB4B1600B52A7F /* NSIndexPathUtils.mm */,
 			);
 			name = ObjC;
-			path = LibArciem/ObjC;
+			path = Arciem/ObjC;
 			sourceTree = "<group>";
 		};
 		039DC15916CB3DF700B52A7F /* CPP */ = {
@@ -763,7 +763,7 @@
 				039DC15B16CB3DF700B52A7F /* arciem */,
 			);
 			name = CPP;
-			path = LibArciem/CPP;
+			path = Arciem/CPP;
 			sourceTree = "<group>";
 		};
 		039DC15B16CB3DF700B52A7F /* arciem */ = {
@@ -937,7 +937,7 @@
 				039DC25C16CB4FAF00B52A7F /* ISO8601DateFormatter.h */,
 				039DC25D16CB4FAF00B52A7F /* ISO8601DateFormatter.m */,
 			);
-			name = "iso-8601-parser-unparser";
+			path = "iso-8601-parser-unparser";
 			sourceTree = "<group>";
 		};
 		039DC26016CB50AD00B52A7F /* iOS */ = {
@@ -970,7 +970,7 @@
 				039DC30516CB693500B52A7F /* Dev */,
 			);
 			name = iOS;
-			path = LibArciem/iOS;
+			path = Arciem/iOS;
 			sourceTree = "<group>";
 		};
 		039DC26B16CB662100B52A7F /* Essentials */ = {
@@ -1094,9 +1094,8 @@
 				039DC30716CB693700B52A7F /* CDebugOverlayView.mm */,
 				039DC30816CB693700B52A7F /* CSetup */,
 			);
-			name = Dev;
-			path = LibArciem/iOS/Dev;
-			sourceTree = SOURCE_ROOT;
+			path = Dev;
+			sourceTree = "<group>";
 		};
 		039DC30816CB693700B52A7F /* CSetup */ = {
 			isa = PBXGroup;
@@ -1127,19 +1126,19 @@
 			path = CSetup;
 			sourceTree = "<group>";
 		};
-		039DC34616CC987E00B52A7F /* LibArciemResources */ = {
+		039DC34616CC987E00B52A7F /* ArciemResources */ = {
 			isa = PBXGroup;
 			children = (
 				039DC35216CC99FB00B52A7F /* Images */,
 				039DC34716CC988100B52A7F /* Supporting Files */,
 			);
-			path = LibArciemResources;
+			path = ArciemResources;
 			sourceTree = "<group>";
 		};
 		039DC34716CC988100B52A7F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				039DC34816CC988100B52A7F /* LibArciemResources-Info.plist */,
+				039DC34816CC988100B52A7F /* ArciemResources-Info.plist */,
 				039DC34916CC988100B52A7F /* InfoPlist.strings */,
 				039DC34C16CC988100B52A7F /* LibArciemResources-Prefix.pch */,
 			);
@@ -1155,7 +1154,7 @@
 				039DC35616CC9A1900B52A7F /* FaveStarOn@2x.png */,
 			);
 			name = Images;
-			path = ../LibArciem/iOS/artwork/images;
+			path = ../Arciem/iOS/artwork/images;
 			sourceTree = "<group>";
 		};
 		03F9445516E9735D00F9FEF3 /* CMiniPicker */ = {
@@ -1203,7 +1202,7 @@
 				039DC1B416CB3DF700B52A7F /* volume.hpp in Headers */,
 				039DC1B616CB3DF700B52A7F /* wedge2.hpp in Headers */,
 				039DC1BB16CB3DF700B52A7F /* stringstreams.hpp in Headers */,
-				039DC12116CB32B000B52A7F /* LibArciem.h in Headers */,
+				039DC12116CB32B000B52A7F /* Arciem.h in Headers */,
 				039DC13E16CB398A00B52A7F /* CLog.h in Headers */,
 				039DC14016CB398A00B52A7F /* CObserver.h in Headers */,
 				039DC14216CB398A00B52A7F /* CSwitch.h in Headers */,
@@ -1334,9 +1333,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		039DC10E16CB300D00B52A7F /* LibArciem */ = {
+		039DC10E16CB300D00B52A7F /* Arciem */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 039DC11D16CB300D00B52A7F /* Build configuration list for PBXNativeTarget "LibArciem" */;
+			buildConfigurationList = 039DC11D16CB300D00B52A7F /* Build configuration list for PBXNativeTarget "Arciem" */;
 			buildPhases = (
 				039DC10B16CB300D00B52A7F /* Sources */,
 				039DC10C16CB300D00B52A7F /* Frameworks */,
@@ -1347,14 +1346,14 @@
 			);
 			dependencies = (
 			);
-			name = LibArciem;
+			name = Arciem;
 			productName = LibArciem;
 			productReference = 039DC10F16CB300D00B52A7F /* libArciem.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		039DC34216CC987E00B52A7F /* LibArciemResources */ = {
+		039DC34216CC987E00B52A7F /* ArciemResources */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 039DC34D16CC988100B52A7F /* Build configuration list for PBXNativeTarget "LibArciemResources" */;
+			buildConfigurationList = 039DC34D16CC988100B52A7F /* Build configuration list for PBXNativeTarget "ArciemResources" */;
 			buildPhases = (
 				039DC33F16CC987E00B52A7F /* Sources */,
 				039DC34016CC987E00B52A7F /* Frameworks */,
@@ -1364,9 +1363,9 @@
 			);
 			dependencies = (
 			);
-			name = LibArciemResources;
+			name = ArciemResources;
 			productName = LibArciemResources;
-			productReference = 039DC34316CC987E00B52A7F /* LibArciem.bundle */;
+			productReference = 039DC34316CC987E00B52A7F /* Arciem.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -1378,7 +1377,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Arciem LLC";
 			};
-			buildConfigurationList = 039DC10A16CB300D00B52A7F /* Build configuration list for PBXProject "LibArciem" */;
+			buildConfigurationList = 039DC10A16CB300D00B52A7F /* Build configuration list for PBXProject "Arciem" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1390,9 +1389,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				039DC10E16CB300D00B52A7F /* LibArciem */,
+				039DC10E16CB300D00B52A7F /* Arciem */,
 				039DC33816CC88A800B52A7F /* Framework */,
-				039DC34216CC987E00B52A7F /* LibArciemResources */,
+				039DC34216CC987E00B52A7F /* ArciemResources */,
 			);
 		};
 /* End PBXProject section */
@@ -1424,7 +1423,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${TARGET_NAME}.framework/Versions/A/Headers\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${TARGET_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${TARGET_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${TARGET_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${TARGET_NAME}.framework/${PRODUCT_NAME}\"\n";
+			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n";
 		};
 		039DC33E16CC88E600B52A7F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1437,7 +1436,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nset +u\n# Avoid recursively calling this script.\nif [[ $SF_MASTER_SCRIPT_RUNNING ]]\nthen\n    exit 0\nfi\nset -u\nexport SF_MASTER_SCRIPT_RUNNING=1\n\n#SF_TARGET_NAME=${PROJECT_NAME}\nSF_TARGET_NAME=Arciem\nSF_EXECUTABLE_PATH=\"lib${SF_TARGET_NAME}.a\"\n#SF_WRAPPER_NAME=\"${SF_TARGET_NAME}.framework\"\nSF_WRAPPER_NAME=\"${PROJECT_NAME}.framework\"\n\n# The following conditionals come from\n# https://github.com/kstenerud/iOS-Universal-Framework\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\n    SF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find platform name from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\n    SF_SDK_VERSION=${BASH_REMATCH[1]}\nelse\n    echo \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\n    exit 1\nfi\n\nif [[ \"$SF_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\n    SF_OTHER_PLATFORM=iphonesimulator\nelse\n    SF_OTHER_PLATFORM=iphoneos\nfi\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$SF_SDK_PLATFORM$ ]]\nthen\n    SF_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${SF_OTHER_PLATFORM}\"\nelse\n    echo \"Could not find platform name from build products directory: $BUILT_PRODUCTS_DIR\"\n    exit 1\nfi\n\n# Build the other platform.\nxcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${SF_OTHER_PLATFORM}${SF_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" OBJROOT=\"${OBJROOT}\" BUILD_ROOT=\"${BUILD_ROOT}\" SYMROOT=\"${SYMROOT}\" $ACTION\n\n# Smash the two static libraries into one fat binary and store it in the .framework\nlipo -create \"${BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" -output \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n\n# Copy the binary to the other architecture folder to have a complete framework in both.\ncp -a \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n";
+			shellScript = "set -e\nset +u\n# Avoid recursively calling this script.\nif [[ $SF_MASTER_SCRIPT_RUNNING ]]\nthen\nexit 0\nfi\nset -u\nexport SF_MASTER_SCRIPT_RUNNING=1\n\nSF_TARGET_NAME=${PROJECT_NAME}\nSF_EXECUTABLE_PATH=\"lib${SF_TARGET_NAME}.a\"\nSF_WRAPPER_NAME=\"${SF_TARGET_NAME}.framework\"\n\n# The following conditionals come from\n# https://github.com/kstenerud/iOS-Universal-Framework\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\nSF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\nSF_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SF_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\nSF_OTHER_PLATFORM=iphonesimulator\nelse\nSF_OTHER_PLATFORM=iphoneos\nfi\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$SF_SDK_PLATFORM$ ]]\nthen\nSF_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${SF_OTHER_PLATFORM}\"\nelse\necho \"Could not find platform name from build products directory: $BUILT_PRODUCTS_DIR\"\nexit 1\nfi\n\n# Build the other platform.\nxcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${SF_OTHER_PLATFORM}${SF_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" OBJROOT=\"${OBJROOT}\" BUILD_ROOT=\"${BUILD_ROOT}\" SYMROOT=\"${SYMROOT}\" $ACTION\n\n# Smash the two static libraries into one fat binary and store it in the .framework\nlipo -create \"${BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" -output \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n\n# Copy the binary to the other architecture folder to have a complete framework in both.\ncp -a \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1570,7 +1569,7 @@
 				039DC33216CB693700B52A7F /* CSetupServerTableViewCell.mm in Sources */,
 				039DC33416CB693700B52A7F /* CSetupTableViewController.mm in Sources */,
 				039DC33616CB693700B52A7F /* CSetupTextFieldTableViewCell.mm in Sources */,
-				039DC35C16CC9AA800B52A7F /* LibArciem.mm in Sources */,
+				039DC35C16CC9AA800B52A7F /* Arciem.mm in Sources */,
 				039DC38C16CCA43000B52A7F /* CReachability.mm in Sources */,
 				039DC39016CCA43000B52A7F /* CTabBar.mm in Sources */,
 				039DC39616CCA44000B52A7F /* UILabelUtils.mm in Sources */,
@@ -1599,12 +1598,12 @@
 /* Begin PBXTargetDependency section */
 		039DC33D16CC88B600B52A7F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 039DC10E16CB300D00B52A7F /* LibArciem */;
+			target = 039DC10E16CB300D00B52A7F /* Arciem */;
 			targetProxy = 039DC33C16CC88B600B52A7F /* PBXContainerItemProxy */;
 		};
 		039DC35116CC994D00B52A7F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 039DC34216CC987E00B52A7F /* LibArciemResources */;
+			target = 039DC34216CC987E00B52A7F /* ArciemResources */;
 			targetProxy = 039DC35016CC994D00B52A7F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1626,7 +1625,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = armv7;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -1649,7 +1648,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PUBLIC_HEADERS_FOLDER_PATH = Headers/LibArciem;
+				PUBLIC_HEADERS_FOLDER_PATH = Headers/Arciem;
 				SDKROOT = iphoneos;
 				STRIP_STYLE = "non-global";
 			};
@@ -1660,7 +1659,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = armv7;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -1675,7 +1674,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				PUBLIC_HEADERS_FOLDER_PATH = Headers/LibArciem;
+				PUBLIC_HEADERS_FOLDER_PATH = Headers/Arciem;
 				SDKROOT = iphoneos;
 				STRIP_STYLE = "non-global";
 				VALIDATE_PRODUCT = YES;
@@ -1687,7 +1686,7 @@
 			buildSettings = {
 				DSTROOT = /tmp/LibArciem.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LibArciem/LibArciem-Prefix.pch";
+				GCC_PREFIX_HEADER = "Arciem/Arciem-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Arciem;
 				SKIP_INSTALL = YES;
@@ -1699,7 +1698,7 @@
 			buildSettings = {
 				DSTROOT = /tmp/LibArciem.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "LibArciem/LibArciem-Prefix.pch";
+				GCC_PREFIX_HEADER = "Arciem/Arciem-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Arciem;
 				SKIP_INSTALL = YES;
@@ -1723,10 +1722,10 @@
 		039DC34E16CC988100B52A7F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = "LibArciemResources/LibArciemResources-Info.plist";
+				INFOPLIST_FILE = "ArciemResources/ArciemResources-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_NAME = "${PROJECT_NAME}";
+				PRODUCT_NAME = Arciem;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -1736,10 +1735,10 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				INFOPLIST_FILE = "LibArciemResources/LibArciemResources-Info.plist";
+				INFOPLIST_FILE = "ArciemResources/ArciemResources-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				PRODUCT_NAME = "${PROJECT_NAME}";
+				PRODUCT_NAME = Arciem;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -1747,7 +1746,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		039DC10A16CB300D00B52A7F /* Build configuration list for PBXProject "LibArciem" */ = {
+		039DC10A16CB300D00B52A7F /* Build configuration list for PBXProject "Arciem" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				039DC11B16CB300D00B52A7F /* Debug */,
@@ -1756,7 +1755,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		039DC11D16CB300D00B52A7F /* Build configuration list for PBXNativeTarget "LibArciem" */ = {
+		039DC11D16CB300D00B52A7F /* Build configuration list for PBXNativeTarget "Arciem" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				039DC11E16CB300D00B52A7F /* Debug */,
@@ -1774,7 +1773,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		039DC34D16CC988100B52A7F /* Build configuration list for PBXNativeTarget "LibArciemResources" */ = {
+		039DC34D16CC988100B52A7F /* Build configuration list for PBXNativeTarget "ArciemResources" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				039DC34E16CC988100B52A7F /* Debug */,

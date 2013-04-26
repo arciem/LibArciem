@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "039DC33816CC88A800B52A7F"
-               BuildableName = "Framework"
-               BlueprintName = "Framework"
+               BlueprintIdentifier = "039DC10E16CB300D00B52A7F"
+               BuildableName = "libArciem.a"
+               BlueprintName = "Arciem"
                ReferencedContainer = "container:Arciem.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

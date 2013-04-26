@@ -1,6 +1,6 @@
 //
 //  CKeychainUtils.mm
-//  LibArciem
+//  Arciem
 //
 //  Based on:
 //

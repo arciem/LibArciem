@@ -1,14 +1,14 @@
 //
-//  LibArciem.h
-//  LibArciem
+//  Arciem.h
+//  Arciem
 //
 //  Created by Robert McNally on 2/12/13.
 //  Copyright (c) 2013 Arciem LLC. All rights reserved.
 //
 
-#import "LibArciem.h"
+#import "Arciem.h"
 
-@implementation LibArciem
+@implementation Arciem
 
 + (NSBundle*)frameworkBundle
 {
@@ -16,7 +16,7 @@
     static dispatch_once_t predicate;
     dispatch_once(&predicate, ^{
         NSString* mainBundlePath = [[NSBundle mainBundle] resourcePath];
-        NSString* frameworkBundlePath = [mainBundlePath stringByAppendingPathComponent:@"LibArciem.bundle"];
+        NSString* frameworkBundlePath = [mainBundlePath stringByAppendingPathComponent:@"Arciem.bundle"];
         frameworkBundle = [NSBundle bundleWithPath:frameworkBundlePath];
     });
     return frameworkBundle;
