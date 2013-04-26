@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		039DC33816CC88A800B52A7F /* Framework */ = {
+		039DC33816CC88A800B52A7F /* ArciemFramework */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 039DC33916CC88A800B52A7F /* Build configuration list for PBXAggregateTarget "Framework" */;
+			buildConfigurationList = 039DC33916CC88A800B52A7F /* Build configuration list for PBXAggregateTarget "ArciemFramework" */;
 			buildPhases = (
 				039DC33E16CC88E600B52A7F /* ShellScript */,
 			);
@@ -17,7 +17,7 @@
 				039DC33D16CC88B600B52A7F /* PBXTargetDependency */,
 				039DC35116CC994D00B52A7F /* PBXTargetDependency */,
 			);
-			name = Framework;
+			name = ArciemFramework;
 			productName = Framework;
 		};
 /* End PBXAggregateTarget section */
@@ -1390,7 +1390,7 @@
 			projectRoot = "";
 			targets = (
 				039DC10E16CB300D00B52A7F /* Arciem */,
-				039DC33816CC88A800B52A7F /* Framework */,
+				039DC33816CC88A800B52A7F /* ArciemFramework */,
 				039DC34216CC987E00B52A7F /* ArciemResources */,
 			);
 		};
@@ -1764,7 +1764,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		039DC33916CC88A800B52A7F /* Build configuration list for PBXAggregateTarget "Framework" */ = {
+		039DC33916CC88A800B52A7F /* Build configuration list for PBXAggregateTarget "ArciemFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				039DC33A16CC88A800B52A7F /* Debug */,

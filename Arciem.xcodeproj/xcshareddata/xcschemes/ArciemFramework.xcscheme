@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "039DC33816CC88A800B52A7F"
                BuildableName = "Framework"
-               BlueprintName = "Framework"
+               BlueprintName = "ArciemFramework"
                ReferencedContainer = "container:Arciem.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
