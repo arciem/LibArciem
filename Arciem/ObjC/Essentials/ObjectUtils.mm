@@ -73,7 +73,7 @@ id<NSObject> ClassAlloc(NSString* className)
 {
 	NSString* result = @"";
 	NSUInteger kMaxCompactStringLength = 30;
-	
+    
 	if(value != nil) {
 		NSString* valueStr = nil;
 		if([value isKindOfClass:[NSString class]]) {
@@ -143,7 +143,7 @@ id<NSObject> ClassAlloc(NSString* className)
 
 - (NSString*)formatNumber:(NSNumber*)number forKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero
 {
-    NSString* result = nil;
+    NSString* result = @"";
     if(!hideIfZero || [number floatValue] != 0.0f) {
         result = [self formatKey:key value:number compact:NO];
     }
@@ -159,6 +159,7 @@ id<NSObject> ClassAlloc(NSString* className)
 - (NSString*)formatCountForKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero
 {
     NSArray* array = (NSArray*)[self valueForKey:key];
+    if(array == nil) array = @[];
     return [self formatNumber:@(array.count) forKey:key hidingIfZero:hideIfZero];
 }
 

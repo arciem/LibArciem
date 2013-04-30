@@ -75,7 +75,7 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 {
 	id json = [NSJSONSerialization JSONObjectWithData:self.mutableData options:0 error:error];
 	if(json == nil) {
-		CLogError(nil, @"%@ Parsing JSON: %@", self, *error);
+		CLogError(nil, @"%@ Parsing JSON:%@ dataAsString:\"%@\"", self, *error, self.dataAsString);
 	}
 	return json;
 }
