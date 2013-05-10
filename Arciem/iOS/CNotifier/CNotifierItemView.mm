@@ -16,13 +16,13 @@
  
  *******************************************************************************/
 
-#import "CNotifierView.h"
+#import "CNotifierItemView.h"
 #import "UIViewUtils.h"
 #import "UIColorUtils.h"
 #import "CGUtils.h"
 #import "UIImageUtils.h"
 
-@interface CNotifierView ()
+@interface CNotifierItemView ()
 
 @property (strong, nonatomic) UILabel* label;
 @property (strong, nonatomic) UIImageView* backgroundImageView;
@@ -31,7 +31,7 @@
 
 @end
 
-@implementation CNotifierView
+@implementation CNotifierItemView
 
 @synthesize item = item_;
 @synthesize label = label_;
@@ -48,7 +48,7 @@
 	self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.bounds];
 	self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.backgroundImageView.contentMode = UIViewContentModeScaleToFill;
-	self.backgroundImageView.alpha = 0.8;
+	self.backgroundImageView.alpha = 1.0;
 	[self addSubview:self.backgroundImageView];
 	
 	self.label = [[UILabel alloc] initWithFrame:self.bounds];
@@ -100,7 +100,7 @@
 	labelFrame.frame = self.bounds;
 	labelFrame.flexibleLeft = self.boundsLeft + 10;
 	labelFrame.flexibleRight = self.boundsRight - 10;
-	labelFrame.flexibleBottom -= 1;
+	labelFrame.top -= 1;
 
 	if(self.rightAccessoryView != nil) {
 		CFrame* rightAccessoryViewFrame = self.rightAccessoryView.cframe;

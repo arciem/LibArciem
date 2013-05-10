@@ -115,7 +115,7 @@
             if([scheme isEqualToString:@"hsbColor"]) {
                 obj = [self processHSBColor:body];
             } else if([scheme isEqualToString:@"rgbColor"]) {
-                obj = [self processHSBColor:body];
+                obj = [self processRGBColor:body];
             } else if([scheme isEqualToString:@"image"]) {
                 obj = [self processImage:body];
             } else {

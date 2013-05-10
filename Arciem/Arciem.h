@@ -88,7 +88,13 @@ using namespace std;
 #import "WhiteLabel.h"
 #import "CSystemSound.h"
 #import "CMiniPickerView.h"
+#import "CSidebarContainerViewController.h"
 #import "CKeychainUtils.h"
+#import "CNotifier.h"
+#import "CNotifierItem.h"
+#import "CNotifierBar.h"
+#import "CNotifierItemView.h"
+#import "CNotifierViewController.h"
 
 // Essentials
 #import "CActivityShieldView.h"

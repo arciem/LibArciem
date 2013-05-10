@@ -32,6 +32,10 @@
 		033A75F517274B8F0045933D /* AppUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033A75F317274B8F0045933D /* AppUtils.mm */; };
 		033A75FE172754ED0045933D /* CKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 033A75FC172754ED0045933D /* CKeychainUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		033A75FF172754ED0045933D /* CKeychainUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033A75FD172754ED0045933D /* CKeychainUtils.mm */; };
+		0370D7AF173761E0005165CA /* CNotifierViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370D7AD173761E0005165CA /* CNotifierViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0370D7B0173761E0005165CA /* CNotifierViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0370D7AE173761E0005165CA /* CNotifierViewController.mm */; };
+		0370D7B917381A5A005165CA /* CShadowView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370D7B717381A59005165CA /* CShadowView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0370D7BA17381A5A005165CA /* CShadowView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0370D7B817381A59005165CA /* CShadowView.mm */; };
 		039DC11316CB300D00B52A7F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC11216CB300D00B52A7F /* Foundation.framework */; };
 		039DC12116CB32B000B52A7F /* Arciem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC11716CB300D00B52A7F /* Arciem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC13E16CB398A00B52A7F /* CLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12416CB398A00B52A7F /* CLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -231,8 +235,8 @@
 		039DC2BD16CB678A00B52A7F /* CNotifierBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2B516CB678A00B52A7F /* CNotifierBar.mm */; };
 		039DC2BE16CB678A00B52A7F /* CNotifierItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2B616CB678A00B52A7F /* CNotifierItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC2BF16CB678A00B52A7F /* CNotifierItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2B716CB678A00B52A7F /* CNotifierItem.mm */; };
-		039DC2C016CB678A00B52A7F /* CNotifierView.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2B816CB678A00B52A7F /* CNotifierView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC2C116CB678A00B52A7F /* CNotifierView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2B916CB678A00B52A7F /* CNotifierView.mm */; };
+		039DC2C016CB678A00B52A7F /* CNotifierItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2B816CB678A00B52A7F /* CNotifierItemView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC2C116CB678A00B52A7F /* CNotifierItemView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2B916CB678A00B52A7F /* CNotifierItemView.mm */; };
 		039DC2E516CB689900B52A7F /* CFieldValidationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2C316CB689900B52A7F /* CFieldValidationView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC2E616CB689900B52A7F /* CFieldValidationView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2C416CB689900B52A7F /* CFieldValidationView.mm */; };
 		039DC2E716CB689900B52A7F /* CMonthAndYearPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2C516CB689900B52A7F /* CMonthAndYearPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -304,6 +308,8 @@
 		039DC39716CCA44000B52A7F /* WhiteLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC39316CCA44000B52A7F /* WhiteLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC39816CCA44000B52A7F /* WhiteLabel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC39416CCA44000B52A7F /* WhiteLabel.mm */; };
 		039DC3A416CCAA4900B52A7F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC34416CC987E00B52A7F /* CoreFoundation.framework */; };
+		03F263231734D99D0078F41D /* CSidebarContainerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F263211734D99D0078F41D /* CSidebarContainerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03F263241734D99D0078F41D /* CSidebarContainerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F263221734D99D0078F41D /* CSidebarContainerViewController.mm */; };
 		03F9446216E9735D00F9FEF3 /* CMiniPickerBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445616E9735D00F9FEF3 /* CMiniPickerBackgroundView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03F9446316E9735D00F9FEF3 /* CMiniPickerBackgroundView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F9445716E9735D00F9FEF3 /* CMiniPickerBackgroundView.mm */; };
 		03F9446416E9735D00F9FEF3 /* CMiniPickerFrameView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445816E9735D00F9FEF3 /* CMiniPickerFrameView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -343,6 +349,10 @@
 		033A75F317274B8F0045933D /* AppUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppUtils.mm; sourceTree = "<group>"; };
 		033A75FC172754ED0045933D /* CKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKeychainUtils.h; sourceTree = "<group>"; };
 		033A75FD172754ED0045933D /* CKeychainUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CKeychainUtils.mm; sourceTree = "<group>"; };
+		0370D7AD173761E0005165CA /* CNotifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNotifierViewController.h; sourceTree = "<group>"; };
+		0370D7AE173761E0005165CA /* CNotifierViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNotifierViewController.mm; sourceTree = "<group>"; };
+		0370D7B717381A59005165CA /* CShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShadowView.h; sourceTree = "<group>"; };
+		0370D7B817381A59005165CA /* CShadowView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CShadowView.mm; sourceTree = "<group>"; };
 		039DC10F16CB300D00B52A7F /* libArciem.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libArciem.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		039DC11216CB300D00B52A7F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		039DC11616CB300D00B52A7F /* Arciem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Arciem-Prefix.pch"; path = "Arciem/Arciem-Prefix.pch"; sourceTree = "<group>"; };
@@ -546,8 +556,8 @@
 		039DC2B516CB678A00B52A7F /* CNotifierBar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNotifierBar.mm; sourceTree = "<group>"; };
 		039DC2B616CB678A00B52A7F /* CNotifierItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNotifierItem.h; sourceTree = "<group>"; };
 		039DC2B716CB678A00B52A7F /* CNotifierItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNotifierItem.mm; sourceTree = "<group>"; };
-		039DC2B816CB678A00B52A7F /* CNotifierView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNotifierView.h; sourceTree = "<group>"; };
-		039DC2B916CB678A00B52A7F /* CNotifierView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNotifierView.mm; sourceTree = "<group>"; };
+		039DC2B816CB678A00B52A7F /* CNotifierItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNotifierItemView.h; sourceTree = "<group>"; };
+		039DC2B916CB678A00B52A7F /* CNotifierItemView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNotifierItemView.mm; sourceTree = "<group>"; };
 		039DC2C316CB689900B52A7F /* CFieldValidationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFieldValidationView.h; sourceTree = "<group>"; };
 		039DC2C416CB689900B52A7F /* CFieldValidationView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CFieldValidationView.mm; sourceTree = "<group>"; };
 		039DC2C516CB689900B52A7F /* CMonthAndYearPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMonthAndYearPicker.h; sourceTree = "<group>"; };
@@ -622,6 +632,8 @@
 		039DC39216CCA43F00B52A7F /* UILabelUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UILabelUtils.mm; sourceTree = "<group>"; };
 		039DC39316CCA44000B52A7F /* WhiteLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhiteLabel.h; sourceTree = "<group>"; };
 		039DC39416CCA44000B52A7F /* WhiteLabel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WhiteLabel.mm; sourceTree = "<group>"; };
+		03F263211734D99D0078F41D /* CSidebarContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSidebarContainerViewController.h; sourceTree = "<group>"; };
+		03F263221734D99D0078F41D /* CSidebarContainerViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSidebarContainerViewController.mm; sourceTree = "<group>"; };
 		03F9445616E9735D00F9FEF3 /* CMiniPickerBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiniPickerBackgroundView.h; sourceTree = "<group>"; };
 		03F9445716E9735D00F9FEF3 /* CMiniPickerBackgroundView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMiniPickerBackgroundView.mm; sourceTree = "<group>"; };
 		03F9445816E9735D00F9FEF3 /* CMiniPickerFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiniPickerFrameView.h; sourceTree = "<group>"; };
@@ -963,6 +975,10 @@
 				032AEEEF16DE66D90024D14E /* CSystemSound.mm */,
 				033A75FC172754ED0045933D /* CKeychainUtils.h */,
 				033A75FD172754ED0045933D /* CKeychainUtils.mm */,
+				03F263211734D99D0078F41D /* CSidebarContainerViewController.h */,
+				03F263221734D99D0078F41D /* CSidebarContainerViewController.mm */,
+				0370D7B717381A59005165CA /* CShadowView.h */,
+				0370D7B817381A59005165CA /* CShadowView.mm */,
 				03F9445516E9735D00F9FEF3 /* CMiniPicker */,
 				039DC26B16CB662100B52A7F /* Essentials */,
 				039DC2B116CB678A00B52A7F /* CNotifier */,
@@ -1022,12 +1038,14 @@
 			children = (
 				039DC2B216CB678A00B52A7F /* CNotifier.h */,
 				039DC2B316CB678A00B52A7F /* CNotifier.mm */,
-				039DC2B416CB678A00B52A7F /* CNotifierBar.h */,
-				039DC2B516CB678A00B52A7F /* CNotifierBar.mm */,
 				039DC2B616CB678A00B52A7F /* CNotifierItem.h */,
 				039DC2B716CB678A00B52A7F /* CNotifierItem.mm */,
-				039DC2B816CB678A00B52A7F /* CNotifierView.h */,
-				039DC2B916CB678A00B52A7F /* CNotifierView.mm */,
+				039DC2B816CB678A00B52A7F /* CNotifierItemView.h */,
+				039DC2B916CB678A00B52A7F /* CNotifierItemView.mm */,
+				039DC2B416CB678A00B52A7F /* CNotifierBar.h */,
+				039DC2B516CB678A00B52A7F /* CNotifierBar.mm */,
+				0370D7AD173761E0005165CA /* CNotifierViewController.h */,
+				0370D7AE173761E0005165CA /* CNotifierViewController.mm */,
 			);
 			path = CNotifier;
 			sourceTree = "<group>";
@@ -1285,7 +1303,7 @@
 				039DC2BA16CB678A00B52A7F /* CNotifier.h in Headers */,
 				039DC2BC16CB678A00B52A7F /* CNotifierBar.h in Headers */,
 				039DC2BE16CB678A00B52A7F /* CNotifierItem.h in Headers */,
-				039DC2C016CB678A00B52A7F /* CNotifierView.h in Headers */,
+				039DC2C016CB678A00B52A7F /* CNotifierItemView.h in Headers */,
 				039DC2E516CB689900B52A7F /* CFieldValidationView.h in Headers */,
 				039DC2E716CB689900B52A7F /* CMonthAndYearPicker.h in Headers */,
 				039DC2E916CB689900B52A7F /* CTableManager.h in Headers */,
@@ -1327,6 +1345,9 @@
 				03258714171CA8F800AE084E /* CNetworkController.h in Headers */,
 				033A75F417274B8F0045933D /* AppUtils.h in Headers */,
 				033A75FE172754ED0045933D /* CKeychainUtils.h in Headers */,
+				03F263231734D99D0078F41D /* CSidebarContainerViewController.h in Headers */,
+				0370D7AF173761E0005165CA /* CNotifierViewController.h in Headers */,
+				0370D7B917381A5A005165CA /* CShadowView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1540,7 +1561,7 @@
 				039DC2BB16CB678A00B52A7F /* CNotifier.mm in Sources */,
 				039DC2BD16CB678A00B52A7F /* CNotifierBar.mm in Sources */,
 				039DC2BF16CB678A00B52A7F /* CNotifierItem.mm in Sources */,
-				039DC2C116CB678A00B52A7F /* CNotifierView.mm in Sources */,
+				039DC2C116CB678A00B52A7F /* CNotifierItemView.mm in Sources */,
 				039DC2E616CB689900B52A7F /* CFieldValidationView.mm in Sources */,
 				039DC2E816CB689900B52A7F /* CMonthAndYearPicker.mm in Sources */,
 				039DC2EA16CB689900B52A7F /* CTableManager.mm in Sources */,
@@ -1583,6 +1604,9 @@
 				03258715171CA8F800AE084E /* CNetworkController.mm in Sources */,
 				033A75F517274B8F0045933D /* AppUtils.mm in Sources */,
 				033A75FF172754ED0045933D /* CKeychainUtils.mm in Sources */,
+				03F263241734D99D0078F41D /* CSidebarContainerViewController.mm in Sources */,
+				0370D7B0173761E0005165CA /* CNotifierViewController.mm in Sources */,
+				0370D7BA17381A5A005165CA /* CShadowView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

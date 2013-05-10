@@ -18,6 +18,18 @@
 
 #import "ThreadUtils.h"
 
+void dispatch_async_repeated(double intervalInSeconds, dispatch_queue_t queue, void(^work)(BOOL *stop))
+{
+    __block BOOL shouldStop = NO;
+    dispatch_time_t nextPopTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(intervalInSeconds * NSEC_PER_SEC));
+    dispatch_after(nextPopTime, queue, ^{
+        work(&shouldStop);
+        if(!shouldStop) {
+            dispatch_async_repeated(intervalInSeconds, queue, work);
+        }
+    });
+}
+
 @implementation NSThread (BlocksAdditions)
 
 - (void)performBlock:(void (^)(void))block
@@ -35,6 +47,16 @@
                      onThread:self
                    withObject:[block copy]
                 waitUntilDone:wait];
+}
+
+- (void)performBlock:(void (^)(BOOL* stop))block repeatInterval:(NSTimeInterval)repeatInterval;
+{
+    dispatch_async_repeated(repeatInterval, dispatch_get_current_queue(), block);
+}
+
++ (void)performBlockOnMainThread:(void (^)(BOOL* stop))block repeatInterval:(NSTimeInterval)repeatInterval
+{
+    dispatch_async_repeated(repeatInterval, dispatch_get_main_queue(), block);
 }
 
 + (void)ng_runBlock:(void (^)(void))block

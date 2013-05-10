@@ -21,6 +21,10 @@
 
 @interface CNavigationBar : UINavigationBar
 
+@property (strong, nonatomic) UIView* leftView;
+@property (strong, nonatomic) UIView* centerView;
+@property (strong, nonatomic) UIView* rightView;
+
 @property(nonatomic) BOOL ignoreSlopRegion;
 
 @end

@@ -17,10 +17,11 @@
  *******************************************************************************/
 
 #import "CNotifierBar.h"
-#import "CNotifierView.h"
+#import "CNotifierItemView.h"
 #import "UIViewUtils.h"
 #import "ThreadUtils.h"
 #import "ObjectUtils.h"
+#import "CLog.h"
 
 NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification";
 
@@ -28,18 +29,12 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 @property (strong, nonatomic) NSArray* items;
 @property (strong, nonatomic) NSArray* sortDescriptors;
-@property (nonatomic) CGFloat rowHeight;
-@property (nonatomic) NSUInteger rowCapacity;
 
 @end
 
 @implementation CNotifierBar
 
-@synthesize items = items_;
-@synthesize sortDescriptors = sortDescriptors_;
-@synthesize rowHeight = rowHeight_;
-@synthesize rowCapacity = rowCapacity_;
-@synthesize notifier = notifier_;
+@synthesize notifier = _notifier;
 
 + (void)initialize
 {
@@ -52,6 +47,7 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 	self.clipsToBounds = YES;
 //	self.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.25];
+    self.backgroundColor = [UIColor blackColor];
 
 	NSSortDescriptor* priorityDescendingDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"priority" ascending:NO];
 	NSSortDescriptor* dateDescendingDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
@@ -76,7 +72,10 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 - (NSString*)description
 {
-	return [self formatObjectWithValues:@[[self formatValueForKey:@"notifier" compact:NO]]];
+	return [self formatObjectWithValues:@[
+            [super description],
+            [self formatValueForKey:@"notifier" compact:NO]
+            ]];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfNotifier
@@ -86,14 +85,14 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 - (CNotifier*)notifier
 {
-	return notifier_;
+	return _notifier;
 }
 
 - (void)setNotifier:(CNotifier *)notifier
 {
-	if(notifier_ != notifier) {
+	if(_notifier != notifier) {
 		[self willChangeValueForKey:@"notifier"];
-		notifier_ = notifier;
+		_notifier = notifier;
 		[self didChangeValueForKey:@"notifier"];
 	}
 }
@@ -147,15 +146,19 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 	
 	self.userInteractionEnabled = countOfVisibleItemsWithTapHandlers > 0;
 	
-	NSArray* exitingViews = [self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest:^BOOL(CNotifierView* view, NSUInteger idx, BOOL *stop) {
+	NSArray* exitingViews = [self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest:^BOOL(CNotifierItemView* view, NSUInteger idx, BOOL *stop) {
 		return [hiddenItems containsObject:view.item];
 	}]];
+    
+    [exitingViews enumerateObjectsUsingBlock:^(CNotifierItemView* view, NSUInteger idx, BOOL *stop) {
+        [self sendSubviewToBack:view];
+    }];
 	
 	BOOL willSlideInFromTop = NO;
 	
 	NSMutableArray* enteringViews = [NSMutableArray array];
 	for(CNotifierItem* item in visibleItems) {
-		NSUInteger existingIndex = [self.subviews indexOfObjectPassingTest:^BOOL(CNotifierView* view, NSUInteger idx, BOOL *stop) {
+		NSUInteger existingIndex = [self.subviews indexOfObjectPassingTest:^BOOL(CNotifierItemView* view, NSUInteger idx, BOOL *stop) {
 			return view.item == item;
 		}];
 		if(existingIndex == NSNotFound) {
@@ -168,9 +171,9 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 				willSlideInFromTop = YES;
 			} else {
 				top = self.rowHeight * index;
-				alpha = 0.0;
+//				alpha = 0.0;
 			}
-			CNotifierView* view = [[CNotifierView alloc] initWithFrame:CGRectMake(0, top, self.width, self.rowHeight)];
+			CNotifierItemView* view = [[CNotifierItemView alloc] initWithFrame:CGRectMake(0, top, self.width, self.rowHeight)];
 			view.item = item;
 			view.alpha = alpha;
 			[view layoutIfNeeded];
@@ -181,14 +184,24 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 	NSTimeInterval duration = animated ? 0.5 : 0.0;
 	[UIView animateWithDuration:duration delay:0.0 options:UIViewAnimationOptionLayoutSubviews animations:^{
-		for(CNotifierView* view in self.subviews) {
+		for(CNotifierItemView* view in self.subviews) {
 			if([exitingViews containsObject:view]) {
 				NSUInteger index = [oldOrderedItems indexOfObject:view.item];
-				if(index == 0 && !willSlideInFromTop) {
-					view.cframe.top = -self.rowHeight;
-				} else {
-					view.alpha = 0.0;
-				}
+                if(index == 0) {
+                    if(willSlideInFromTop) {
+                        view.cframe.top += self.rowHeight;
+                        view.alpha = 0.0;
+                    } else {
+                        view.cframe.top = -self.rowHeight;
+                    }
+                } else {
+                    view.alpha = 0.0;
+                }
+//				if(index == 0 && !willSlideInFromTop) {
+//					view.cframe.top = -self.rowHeight;
+//				} else {
+////					view.alpha = 0.0;
+//				}
 			} else {
 				NSUInteger index = [newOrderedItems indexOfObject:view.item];
 				if(index != NSNotFound) {
@@ -198,11 +211,12 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 			}
 		}
 		
-		CFrame* myFrame = [CFrame frameWithView:self];
+		CFrame* myFrame = self.cframe;
 		myFrame.height = fminf(fmaxf(newItems.count, 0), self.rowCapacity) * self.rowHeight;
 
+        [self.delegate notifierBar:self willChangeFrame:myFrame.frame animated:animated];
 	} completion:^(BOOL finished) {
-		for(CNotifierView* view in exitingViews) {
+		for(CNotifierItemView* view in exitingViews) {
 			[view removeFromSuperview];
 		}
 	}];

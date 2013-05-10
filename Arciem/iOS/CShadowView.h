@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2013 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,10 +17,16 @@
  *******************************************************************************/
 
 #import "CView.h"
-#import "CNotifierItem.h"
 
-@interface CNotifierView : CView
+enum CShadowViewEdge {
+    CShadowViewEdgeTop,
+    CShadowViewEdgeBottom,
+    CShadowViewEdgeLeft,
+    CShadowViewEdgeRight
+};
 
-@property (strong, nonatomic) CNotifierItem* item;
+@interface CShadowView : CView
+
+@property (nonatomic) CShadowViewEdge edge;
 
 @end

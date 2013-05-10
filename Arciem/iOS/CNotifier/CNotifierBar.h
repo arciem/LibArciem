@@ -19,10 +19,24 @@
 #import "CView.h"
 #import "CNotifier.h"
 
+@protocol CNotifierBarDelegate;
+
 @interface CNotifierBar : CView
 
 @property (strong, nonatomic) CNotifier* notifier;
+@property (weak, nonatomic) id<CNotifierBarDelegate> delegate;
+@property (nonatomic) NSUInteger rowCapacity;
 
 - (void)updateItemsAnimated:(BOOL)animated;
+
+@property (nonatomic) CGFloat rowHeight;
+
+@end
+
+@protocol CNotifierBarDelegate <NSObject>
+
+@required
+// Called from within animation block.
+- (void)notifierBar:(CNotifierBar*)notifierBar willChangeFrame:(CGRect)newFrame animated:(BOOL)animated;
 
 @end

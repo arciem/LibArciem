@@ -18,19 +18,41 @@
 
 #import "CNavigationBar.h"
 #import "UIViewUtils.h"
+#import "CView.h"
 
 @interface CNavigationBar ()
 
 @property(nonatomic) CGPoint lastPointInsidePoint;
 @property(nonatomic) NSTimeInterval lastPointInsideTimestamp;
+@property (strong, readonly, nonatomic) CView *overlayView;
 
 @end
 
 @implementation CNavigationBar
 
-@synthesize ignoreSlopRegion = ignoreSlopRegion_;
-@synthesize lastPointInsidePoint = lastPointInsidePoint_;
-@synthesize lastPointInsideTimestamp = lastPointInsideTimestamp_;
+@synthesize overlayView = _overlayView;
+@synthesize leftView = _leftView;
+@synthesize centerView = _centerView;
+@synthesize rightView = _rightView;
+
+- (void)setup
+{
+    
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    if(self = [super initWithFrame:frame]) {
+        [self setup];
+    }
+    
+    return self;
+}
+
+- (void)awakeFromNib
+{
+    [self setup];
+}
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
 {
@@ -56,6 +78,89 @@
 	}
 
 	return result;
+}
+
+- (CView*)overlayView
+{
+    if(_overlayView == nil) {
+        _overlayView = [[CView alloc] initWithFrame:self.bounds];
+        _overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self addSubview:_overlayView];
+    }
+    
+    return _overlayView;
+}
+
+- (UIView*)leftView
+{
+    return _leftView;
+}
+
+- (void)setLeftView:(UIView *)leftView
+{
+    if(_leftView != leftView) {
+        if(_leftView != nil) {
+            [_leftView removeFromSuperview];
+        }
+        _leftView = leftView;
+        if(_leftView != nil) {
+            [_leftView sizeToFit];
+            _leftView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+            CView* overlayView = self.overlayView;
+            CFrame* frame = _leftView.cframe;
+            frame.centerY = overlayView.boundsCenterY;
+            frame.left = 6;
+            [overlayView addSubview:_leftView];
+        }
+    }
+}
+
+- (UIView*)centerView
+{
+    return _centerView;
+}
+
+- (void)setCenterView:(UIView *)centerView
+{
+    if(_centerView != centerView) {
+        if(_centerView != nil) {
+            [_centerView removeFromSuperview];
+        }
+        _centerView = centerView;
+        if(_centerView != nil) {
+            [_centerView sizeToFit];
+            _centerView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+            CView* overlayView = self.overlayView;
+            CFrame* frame = _centerView.cframe;
+            frame.centerY = overlayView.boundsCenterY;
+            frame.centerX = overlayView.boundsCenterX;
+            [overlayView addSubview:_centerView];
+        }
+    }
+}
+
+- (UIView*)rightView;
+{
+    return _rightView;
+}
+
+- (void)setRightView:(UIView *)rightView
+{
+    if(_rightView != rightView) {
+        if(_rightView != nil) {
+            [_rightView removeFromSuperview];
+        }
+        _rightView = rightView;
+        if(_rightView != nil) {
+            [_rightView sizeToFit];
+            _rightView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+            CView* overlayView = self.overlayView;
+            CFrame* frame = _rightView.cframe;
+            frame.centerY = overlayView.boundsCenterY;
+            frame.right = overlayView.boundsRight - 6;
+            [overlayView addSubview:_rightView];
+        }
+    }
 }
 
 @end

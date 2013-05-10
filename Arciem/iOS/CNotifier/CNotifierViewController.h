@@ -16,17 +16,16 @@
  
  *******************************************************************************/
 
-#import <Foundation/Foundation.h>
+#import "CViewController.h"
 
-@interface NSThread (BlocksAdditions)
+#import "CNotifier.h"
+#import "CNotifierItemView.h"
+#import "CNotifierBar.h"
 
-- (void)performBlock:(void (^)(void))block;
-- (void)performBlock:(void (^)(void))block waitUntilDone:(BOOL)wait;
-- (void)performBlock:(void (^)(BOOL* stop))block repeatInterval:(NSTimeInterval)repeatInterval;
-+ (void)performBlockInBackground:(void (^)(void))block;
-+ (void)performBlockOnMainThread:(void (^)(void))block;
-+ (void)performBlockOnMainThread:(void (^)(void))block afterDelay:(NSTimeInterval)delay;
-+ (void)performBlockOnMainThread:(void (^)(BOOL* stop))block repeatInterval:(NSTimeInterval)repeatInterval;
-+ (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2;
+@interface CNotifierViewController : CViewController
+
+@property (strong, nonatomic) UIViewController *bodyViewController;
+@property (strong, nonatomic) CNotifier *notifier;
+@property (nonatomic) NSUInteger rowCapacity;
 
 @end

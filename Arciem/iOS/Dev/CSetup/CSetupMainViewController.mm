@@ -219,7 +219,9 @@
 	[super setEditing:editing animated:animated];
 
 	NSMutableIndexSet* sectionsRemovedDuringEditing = [NSMutableIndexSet indexSetWithIndex:0];
-	[sectionsRemovedDuringEditing addIndex:2];
+    if(self.options.count > 0) {
+        [sectionsRemovedDuringEditing addIndex:2];
+    }
 
 	if(editing) {
 		[self.navigationItem setLeftBarButtonItem:nil animated:animated];
