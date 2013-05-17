@@ -211,10 +211,10 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	self.indentationLevel = rowItem.indentationLevel;
 
 	CTableItem* tableItem = (CTableItem*)rowItem.superitem.superitem;
-	[self applyAttributes:tableItem.textLabel toLabel:self.textLabel];
-	[self applyAttributes:rowItem.textLabel toLabel:self.textLabel];
+	[self applyAttributes:tableItem.textLabelAttributes toLabel:self.textLabel];
+	[self applyAttributes:rowItem.textLabelAttributes toLabel:self.textLabel];
 
-	self.textLabel.alpha = rowItem.isDisabled ? 0.4 : 1.0;
+	self.textLabel.alpha = rowItem.isDisabled ? 0.5 : 1.0;
 	
 	if(rowItem.isUnselectable) {
 		self.tapDismiss1 = [[CTapToDismissKeyboardManager alloc] initWithView:self];
@@ -237,24 +237,39 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 {
 	static NSDictionary* switchDict = nil;
 	if(switchDict == nil) {
-		switchDict = [NSDictionary dictionaryWithKeysAndObjects:
-					  @"adjustsFontSizeToFitWidth",
-					  ^(UILabel* lbl, id value) {
-						  lbl.adjustsFontSizeToFitWidth = [value boolValue];
-					  },
-					  @"minimumFontSize",
-					  ^(UILabel* lbl, id value) {
-						  lbl.minimumFontSize = [value floatValue]; 
-					  },
-					  @"fontSize",
-					  ^(UILabel* lbl, id value) {
-						  lbl.font = [UIFont fontWithName:lbl.font.fontName size:[value floatValue]];
-					  },
-					  @"textColor",
-					  ^(UILabel* lbl, id value) {
-						  lbl.textColor = [UIColor colorWithString:(NSString*)value];
-					  },
-					  nil];
+		switchDict = @{
+                 @"transparentBackground":
+                     ^(UILabel* lbl, id value) {
+                         if([value boolValue]) {
+                             lbl.opaque = NO;
+                             lbl.backgroundColor = [UIColor clearColor];
+                         }
+                     },
+                 @"darkBackground":
+                     ^(UILabel* lbl, id value) {
+                         if([value boolValue]) {
+                             lbl.textColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+                             lbl.shadowOffset = CGSizeMake(0, -1);
+                             lbl.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+                         }
+                     },
+                 @"adjustsFontSizeToFitWidth":
+                     ^(UILabel* lbl, id value) {
+                         lbl.adjustsFontSizeToFitWidth = [value boolValue];
+                     },
+                 @"minimumFontSize":
+                     ^(UILabel* lbl, id value) {
+                         lbl.minimumFontSize = [value floatValue];
+                     },
+                 @"fontSize":
+                     ^(UILabel* lbl, id value) {
+                         lbl.font = [UIFont fontWithName:lbl.font.fontName size:[value floatValue]];
+                     },
+                 @"textColor":
+                     ^(UILabel* lbl, id value) {
+                         lbl.textColor = [UIColor colorWithString:(NSString*)value];
+                     },
+                 };
 	}
 	for(NSString* key in attributes) {
 		void (^caseBlock)(UILabel*, id) = switchDict[key];

@@ -36,6 +36,9 @@
 		0370D7B0173761E0005165CA /* CNotifierViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0370D7AE173761E0005165CA /* CNotifierViewController.mm */; };
 		0370D7B917381A5A005165CA /* CShadowView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370D7B717381A59005165CA /* CShadowView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0370D7BA17381A5A005165CA /* CShadowView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0370D7B817381A59005165CA /* CShadowView.mm */; };
+		0374651C17421EB60007F56D /* CTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 0374651B17421EB60007F56D /* CTable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0374652B17449CA70007F56D /* CDisclosureIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0374652917449CA70007F56D /* CDisclosureIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0374652C17449CA70007F56D /* CDisclosureIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0374652A17449CA70007F56D /* CDisclosureIndicator.mm */; };
 		039DC11316CB300D00B52A7F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC11216CB300D00B52A7F /* Foundation.framework */; };
 		039DC12116CB32B000B52A7F /* Arciem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC11716CB300D00B52A7F /* Arciem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC13E16CB398A00B52A7F /* CLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12416CB398A00B52A7F /* CLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -353,6 +356,9 @@
 		0370D7AE173761E0005165CA /* CNotifierViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNotifierViewController.mm; sourceTree = "<group>"; };
 		0370D7B717381A59005165CA /* CShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShadowView.h; sourceTree = "<group>"; };
 		0370D7B817381A59005165CA /* CShadowView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CShadowView.mm; sourceTree = "<group>"; };
+		0374651B17421EB60007F56D /* CTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTable.h; sourceTree = "<group>"; };
+		0374652917449CA70007F56D /* CDisclosureIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDisclosureIndicator.h; sourceTree = "<group>"; };
+		0374652A17449CA70007F56D /* CDisclosureIndicator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDisclosureIndicator.mm; sourceTree = "<group>"; };
 		039DC10F16CB300D00B52A7F /* libArciem.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libArciem.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		039DC11216CB300D00B52A7F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		039DC11616CB300D00B52A7F /* Arciem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Arciem-Prefix.pch"; path = "Arciem/Arciem-Prefix.pch"; sourceTree = "<group>"; };
@@ -890,6 +896,7 @@
 		039DC1F216CB4C4400B52A7F /* CTable */ = {
 			isa = PBXGroup;
 			children = (
+				0374651B17421EB60007F56D /* CTable.h */,
 				039DC1F316CB4C4400B52A7F /* CTableItem.h */,
 				039DC1F416CB4C4400B52A7F /* CTableItem.mm */,
 				039DC1F516CB4C4400B52A7F /* CTableRowItem */,
@@ -979,6 +986,8 @@
 				03F263221734D99D0078F41D /* CSidebarContainerViewController.mm */,
 				0370D7B717381A59005165CA /* CShadowView.h */,
 				0370D7B817381A59005165CA /* CShadowView.mm */,
+				0374652917449CA70007F56D /* CDisclosureIndicator.h */,
+				0374652A17449CA70007F56D /* CDisclosureIndicator.mm */,
 				03F9445516E9735D00F9FEF3 /* CMiniPicker */,
 				039DC26B16CB662100B52A7F /* Essentials */,
 				039DC2B116CB678A00B52A7F /* CNotifier */,
@@ -1348,6 +1357,8 @@
 				03F263231734D99D0078F41D /* CSidebarContainerViewController.h in Headers */,
 				0370D7AF173761E0005165CA /* CNotifierViewController.h in Headers */,
 				0370D7B917381A5A005165CA /* CShadowView.h in Headers */,
+				0374651C17421EB60007F56D /* CTable.h in Headers */,
+				0374652B17449CA70007F56D /* CDisclosureIndicator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1607,6 +1618,7 @@
 				03F263241734D99D0078F41D /* CSidebarContainerViewController.mm in Sources */,
 				0370D7B0173761E0005165CA /* CNotifierViewController.mm in Sources */,
 				0370D7BA17381A5A005165CA /* CShadowView.mm in Sources */,
+				0374652C17449CA70007F56D /* CDisclosureIndicator.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,6 +20,21 @@
 #import "CTableItem.h"
 #import "CTableRowItem.h"
 #import "CTableSectionItem.h"
+#import "CFieldValidationView.h"
+#import "CMonthAndYearPicker.h"
+#import "CTableViewCell.h"
+#import "CActionItemTableViewCell.h"
+#import "CAddRepeatingItemTableViewCell.h"
+#import "CBooleanTableViewCell.h"
+#import "CButtonTableViewCell.h"
+#import "CCreditCardItemTableViewCell.h"
+#import "CMultiChoiceItemTableViewCell.h"
+#import "CNoteTableViewCell.h"
+#import "CRowItemTableViewCell.h"
+#import "CSpacerTableViewCell.h"
+#import "CSummaryTableViewCell.h"
+#import "CTextFieldItemTableViewCell.h"
+#import "CTitleTableViewCell.h"
 
 @protocol CTableManagerDelegate;
 
@@ -41,5 +56,6 @@
 
 @required
 - (void)tableManager:(CTableManager*)tableManager didSelectRow:(CTableRowItem*)rowItem atIndexPath:(NSIndexPath *)indexPath;
+- (void)tableManager:(CTableManager*)tableManager prepareCell:(CRowItemTableViewCell*)cell;
 
 @end

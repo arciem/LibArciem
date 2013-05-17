@@ -23,7 +23,7 @@
 
 @interface CTableItem : CItem
 
-@property (copy, nonatomic) NSMutableDictionary* textLabel;
+@property (copy, nonatomic) NSMutableDictionary* textLabelAttributes;
 @property (weak, nonatomic) id<CTableItemDelegate> delegate;
 
 + (CTableItem*)item;

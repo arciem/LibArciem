@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2013 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,21 +16,13 @@
  
  *******************************************************************************/
 
-#import "CItem.h"
+#import <UIKit/UIKit.h>
 
-@interface CTableRowItem : CItem
+@interface CDisclosureIndicator : UIControl
 
-@property (readonly, nonatomic) CItem* model;
-@property (readonly, nonatomic) NSArray* models;
-@property (strong, nonatomic) NSString* cellType;
-@property (copy, nonatomic) NSMutableDictionary* textLabelAttributes;
-@property (readonly, nonatomic) NSString* defaultCellType;
-@property (readonly, nonatomic) BOOL isUnselectable;
-@property (nonatomic) BOOL isDeletable;
-@property (nonatomic) BOOL isReorderable;
-@property (nonatomic) NSInteger indentationLevel;
++ (CDisclosureIndicator *)disclosureIndicatorWithColor:(UIColor*)color highlightColor:(UIColor*)highlightColor;
 
-- (id)initWithKey:(NSString*)key title:(NSString*)title models:(NSArray*)models;
-- (id)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model;
+@property (strong, nonatomic) UIColor* color;
+@property (strong, nonatomic) UIColor* highlightColor;
 
 @end

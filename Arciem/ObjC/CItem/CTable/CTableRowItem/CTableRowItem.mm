@@ -125,16 +125,16 @@
 	return result;
 }
 
-#pragma mark - @property textLabel
+#pragma mark - @property textLabelAttributes
 
-- (NSMutableDictionary*)textLabel
+- (NSMutableDictionary*)textLabelAttributes
 {
-	return (self.dict)[@"textLabel"];
+	return (self.dict)[@"textLabelAttributes"];
 }
 
-- (void)setTextLabel:(NSMutableDictionary *)textLabel
+- (void)setTextLabelAttributes:(NSMutableDictionary *)textLabelAttributes
 {
-	(self.dict)[@"textLabel"] = [textLabel mutableCopy];
+	(self.dict)[@"textLabelAttributes"] = [textLabelAttributes mutableCopy];
 }
 
 - (NSString*)defaultCellType

@@ -32,12 +32,8 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 
 @implementation CViewController
 
-@synthesize interfaceLocked = interfaceLocked_;
-@synthesize state = state_;
-@synthesize locksInterfaceDuringActivity = locksInterfaceDuringActivity_;
-@synthesize backButtonViewController = backButtonViewController_;
-@synthesize transitionForNextPush = transitionForNextPush_;
-@synthesize activityShieldView = activityShieldView_;
+@synthesize interfaceLocked = _interfaceLocked;
+@synthesize state = _state;
 
 #pragma mark - Lifecycle
 
@@ -122,15 +118,15 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 
 - (CViewControllerState)state
 {
-	return state_;
+	return _state;
 }
 
 - (void)setState:(CViewControllerState)newState
 {
-	CViewControllerState oldState = state_;
+	CViewControllerState oldState = _state;
 	
 	if(oldState != newState) {
-		state_ = newState;
+		_state = newState;
 		[self stateDidChangeFrom:oldState to:newState];
 		if(self.locksInterfaceDuringActivity) {
 			self.interfaceLocked = newState == CViewControllerStateActivity;
@@ -140,18 +136,22 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 
 - (BOOL)interfaceLocked
 {
-	return interfaceLocked_;
+	return _interfaceLocked;
 }
 
 - (void)interfaceLockDidChangeTo:(BOOL)locked
 {
-	// behavior provided by subclasses
+	if(self.locksInterfaceDuringActivity && self.state == CViewControllerStateActivity) {
+		self.activityShieldViewVisible = YES;
+	} else {
+        self.activityShieldViewVisible = NO;
+    }
 }
 
 - (void)setInterfaceLocked:(BOOL)locked
 {
-	if(interfaceLocked_ != locked) {
-		interfaceLocked_ = locked;
+	if(_interfaceLocked != locked) {
+		_interfaceLocked = locked;
 		if(self.locksInterfaceDuringActivity) {
 			self.activityShieldViewVisible = locked;
 		}

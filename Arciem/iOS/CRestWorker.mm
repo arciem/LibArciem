@@ -175,6 +175,17 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 	return [super createOperationForTry];
 }
 
+- (void)updateTitleForError
+{
+	if(self.error != nil) {
+		[self.titleItems addObject:[NSString stringWithFormat:@"=%d", self.error.code]];
+	} else if(self.httpResponse != nil) {
+		[self.titleItems addObject:[NSString stringWithFormat:@"=%d", self.httpResponse.statusCode]];
+	} else {
+		[self.titleItems addObject:@"=?"];
+	}
+}
+
 #pragma mark - NSURLConnectionDelegate
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -209,15 +220,10 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 	}
 }
 
-- (void)updateTitleForError
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
 {
-	if(self.error != nil) {
-		[self.titleItems addObject:[NSString stringWithFormat:@"=%d", self.error.code]];
-	} else if(self.httpResponse != nil) {
-		[self.titleItems addObject:[NSString stringWithFormat:@"=%d", self.httpResponse.statusCode]];
-	} else {
-		[self.titleItems addObject:@"=?"];
-	}
+    CLogTrace(@"C_REST_WORKER", @"%@ connection:%@ willSendRequest:%@ redirectResponse:%@ redirectResponseURL:%@", self, connection, request, redirectResponse, redirectResponse.URL);
+    return request;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection

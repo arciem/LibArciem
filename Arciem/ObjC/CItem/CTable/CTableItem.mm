@@ -31,7 +31,6 @@
 
 @synthesize subitemsObserver = subitemsObserver_;
 @synthesize delegate = delegate_;
-@dynamic textLabel;
 
 - (void)setup
 {
@@ -42,14 +41,14 @@
 	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
 }
 
-- (NSMutableDictionary*)textLabel
+- (NSMutableDictionary*)textLabelAttributes
 {
-	return (self.dict)[@"textLabel"];
+	return (self.dict)[@"textLabelAttributes"];
 }
 					   
-- (void)setTextLabel:(NSMutableDictionary *)textLabel
+- (void)setTextLabelAttributes:(NSMutableDictionary *)textLabelAttributes
 {
-	(self.dict)[@"textLabel"] = [textLabel mutableCopy];
+	(self.dict)[@"textLabelAttributes"] = [textLabelAttributes mutableCopy];
 }
 
 + (CTableItem*)item

@@ -19,13 +19,11 @@
 #import <UIKit/UIKit.h>
 #import "CImageView.h"
 
-enum
-{
-	CViewControllerStateValid,
-	CViewControllerStateInvalid,
-	CViewControllerStateActivity
+enum CViewControllerState {
+	CViewControllerStateValid = 0,
+	CViewControllerStateActivity = 1,
+	CViewControllerStateInvalid = 2
 };
-typedef NSUInteger CViewControllerState;
 
 extern NSString* const InterfaceDidChangeOrientationNotification;
 extern NSString* const InterfaceWillChangeOrientationNotification;
@@ -48,9 +46,11 @@ extern NSString* const InterfaceWillChangeOrientationNotification;
 // Called by CNavigationController when popViewControllerAnimated is called. Pop does not happen if shouldPopViewController returns NO. Default implementation returns YES.
 - (BOOL)shouldPopViewController;
 
-// behavior provided by subclasses
-- (void)stateDidChangeFrom:(CViewControllerState)oldState to:(CViewControllerState)newState;
+// May be overridden in subclasses
 - (void)interfaceLockDidChangeTo:(BOOL)locked;
+
+// Behavior provided by subclasses
+- (void)stateDidChangeFrom:(CViewControllerState)oldState to:(CViewControllerState)newState;
 - (void)viewLayoutSubviews:(UIView*)view;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;

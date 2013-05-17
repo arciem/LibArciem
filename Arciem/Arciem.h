@@ -76,6 +76,9 @@ using namespace std;
 // CItem/CForm
 #import "CForm.h"
 
+// CTable
+#import "CTableItem.h"
+
 // iOS
 #import "CBeveledBackgroundView.h"
 #import "CNetworkActivity.h"
@@ -95,6 +98,7 @@ using namespace std;
 #import "CNotifierBar.h"
 #import "CNotifierItemView.h"
 #import "CNotifierViewController.h"
+#import "CDisclosureIndicator.h"
 
 // Essentials
 #import "CActivityShieldView.h"
@@ -115,6 +119,9 @@ using namespace std;
 #import "UIColorUtils.h"
 #import "UIImageUtils.h"
 #import "UIViewUtils.h"
+
+// CTableManager
+#import "CTableManager.h"
 
 // Dev
 #import "CDebugOverlayView.h"

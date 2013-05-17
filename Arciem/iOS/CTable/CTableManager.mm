@@ -380,6 +380,7 @@
 	cell = (CRowItemTableViewCell*)ClassAlloc(cellType);
 	cell = [cell initWithReuseIdentifier:reuseIdentifier];
 	cell.delegate = self;
+    [self.delegate tableManager:self prepareCell:cell];
 	return cell;
 }
 

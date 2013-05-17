@@ -16,21 +16,17 @@
  
  *******************************************************************************/
 
-#import "CItem.h"
-
-@interface CTableRowItem : CItem
-
-@property (readonly, nonatomic) CItem* model;
-@property (readonly, nonatomic) NSArray* models;
-@property (strong, nonatomic) NSString* cellType;
-@property (copy, nonatomic) NSMutableDictionary* textLabelAttributes;
-@property (readonly, nonatomic) NSString* defaultCellType;
-@property (readonly, nonatomic) BOOL isUnselectable;
-@property (nonatomic) BOOL isDeletable;
-@property (nonatomic) BOOL isReorderable;
-@property (nonatomic) NSInteger indentationLevel;
-
-- (id)initWithKey:(NSString*)key title:(NSString*)title models:(NSArray*)models;
-- (id)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model;
-
-@end
+#import "CTableItem.h"
+#import "CTableSectionItem.h"
+#import "CTitleTableItem.h"
+#import "CTableRowItem.h"
+#import "CTableActionItem.h"
+#import "CTableAddRepeatingItem.h"
+#import "CTableBooleanItem.h"
+#import "CTableButtonItem.h"
+#import "CTableCreditCardItem.h"
+#import "CTableMultiChoiceItem.h"
+#import "CTableNoteItem.h"
+#import "CTableSpacerItem.h"
+#import "CTableSummaryItem.h"
+#import "CTableTextFieldItem.h"
