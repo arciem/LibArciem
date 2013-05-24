@@ -99,6 +99,13 @@ using namespace std;
 #import "CNotifierItemView.h"
 #import "CNotifierViewController.h"
 #import "CDisclosureIndicator.h"
+#import "CBadgeView.h"
+
+// MapKit
+#import "CDebugAnnotation.h"
+#import "CDebugAnnotationView.h"
+#import "CUserTrackingBarButtonItem.h"
+#import "MapKitUtils.h"
 
 // Essentials
 #import "CActivityShieldView.h"
@@ -119,6 +126,7 @@ using namespace std;
 #import "UIColorUtils.h"
 #import "UIImageUtils.h"
 #import "UIViewUtils.h"
+#import "UIViewControllerUtils.h"
 
 // CTableManager
 #import "CTableManager.h"

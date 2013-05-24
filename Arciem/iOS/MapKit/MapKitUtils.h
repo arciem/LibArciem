@@ -27,3 +27,4 @@
 
 CLLocationCoordinate2D CentroidOfCoordinates(NSArray* coordinateValues);
 NSString* NSStringFromMKMapRect(MKMapRect rect);
+BOOL IsValidCoordinate(CLLocationCoordinate2D coordinate);

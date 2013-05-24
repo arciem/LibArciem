@@ -41,7 +41,7 @@ static void* const kAnnotationCoordinateChangedContext = (void*)0x2;
 		self.label.backgroundColor = [UIColor clearColor];
 		self.label.font = [UIFont boldSystemFontOfSize:10.0];
 		self.label.textColor = [UIColor whiteColor];
-		self.label.textAlignment = UITextAlignmentRight;
+		self.label.textAlignment = NSTextAlignmentRight;
 		self.label.numberOfLines = 2;
 		self.label.text = @"Line 1\nLine 2";
 		[self.label sizeToFit];

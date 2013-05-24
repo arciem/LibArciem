@@ -230,4 +230,16 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	}
 }
 
+- (BOOL)disablesAutomaticKeyboardDismissal
+{
+	BOOL disables = [super disablesAutomaticKeyboardDismissal];
+	
+	NSNumber* num = self.overrideDisablesAutomaticKeyboardDismissal;
+	if(num != nil) {
+		disables = [num boolValue];
+	}
+	
+	return disables;
+}
+
 @end

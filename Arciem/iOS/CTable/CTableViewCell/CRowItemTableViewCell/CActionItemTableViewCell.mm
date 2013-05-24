@@ -28,6 +28,7 @@
 	[super syncToRowItem];
 
 	self.accessoryType = IsEmptyString(self.actionItem.action) ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
+//    self.accessoryView.hidden = self.rowItem.isDisabled;
 }
 
 - (CTableActionItem*)actionItem
@@ -38,6 +39,11 @@
 - (void)setActionItem:(CTableActionItem *)actionItem
 {
 	self.rowItem = actionItem;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.accessoryView.alpha = self.rowItem.isDisabled ? 0.5 : 1.0;
 }
 
 @end

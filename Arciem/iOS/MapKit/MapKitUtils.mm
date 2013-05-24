@@ -68,3 +68,7 @@ NSString* NSStringFromMKMapRect(MKMapRect rect)
 			[NSNumber numberWithDouble:rect.size.height]
 			];
 }
+
+BOOL IsValidCoordinate(CLLocationCoordinate2D coordinate) {
+    return fabs(coordinate.latitude) > 0.0 && fabs(coordinate.longitude) > 0.0;
+}

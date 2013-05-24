@@ -30,35 +30,15 @@ static NSUInteger sNextSequenceNumber = 0;
 @property (readwrite, nonatomic) NSUInteger tryCount;
 @property (weak, nonatomic) NSOperation* operation; // zeroing weak reference, operation is owned by the NSOperationQueue
 @property (strong, nonatomic) NSMutableSet* mutableDependencies;
-@property (strong, nonatomic) NSMutableArray* titleItems_;
+@property (strong, nonatomic) NSMutableArray* _titleItems;
 @property (strong, readwrite, nonatomic) NSString* title;
 
 @end
 
 @implementation CWorker
 
-@synthesize sequenceNumber = sequenceNumber_;
-@synthesize isExecuting = isExecuting_;
-@synthesize isReady = isReady_;
-@synthesize isActive = isActive_;
-@synthesize isFinished = isFinished_;
-@synthesize isCancelled = isCancelled_;
-@synthesize title = title_;
-@synthesize tryCount = tryCount_;
-@synthesize tryLimit = tryLimit_;
-@synthesize operation = operation_;
-@synthesize mutableDependencies = mutableDependencies_;
-@synthesize queuePriority = queuePriority_;
-@synthesize callbackThread = callbackThread_;
-@synthesize success = success_;
-@synthesize failure = failure_;
-@synthesize finally = finally_;
-@synthesize retryDelayInterval = retryDelayInterval_;
-@synthesize error = error_;
-@synthesize titleItems_ = titleItems__;
-@synthesize startDelay = startDelay_;
-@dynamic dependencies;
-@dynamic titleItems;
+@synthesize title = _title;
+@synthesize _titleItems = __titleItems;
 
 + (void)initialize
 {
@@ -97,45 +77,45 @@ static NSUInteger sNextSequenceNumber = 0;
 
 - (NSMutableArray*)titleItems
 {
-	return [self mutableArrayValueForKey:@"titleItems_"];
+	return [self mutableArrayValueForKey:@"_titleItems"];
 }
 
 - (void)setTitleItems:(NSMutableArray *)titleItems
 {
-	titleItems__ = [titleItems mutableCopy];
+	__titleItems = [titleItems mutableCopy];
 }
 
 - (NSUInteger)countOfTitleItems_
 {
-	return titleItems__.count;
+	return __titleItems.count;
 }
 
 - (id)objectInTitleItems_AtIndex:(NSUInteger)index
 {
-	return titleItems__[index];
+	return __titleItems[index];
 }
 
 - (void)insertObject:(id)object inTitleItems_AtIndex:(NSUInteger)index
 {
 	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
-	[titleItems__ insertObject:object atIndex:index];
+	[__titleItems insertObject:object atIndex:index];
 	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
 }
 
 - (void)removeObjectFromTitleItems_AtIndex:(NSUInteger)index
 {
 	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
-	[titleItems__ removeObjectAtIndex:index];
+	[__titleItems removeObjectAtIndex:index];
 	[self didChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
 }
 
 - (NSString*)title
 {
-	if(title_ == nil) {
-		title_ = StringByJoiningNonemptyDescriptionsWithString(self.titleItems_, @" ");
+	if(_title == nil) {
+		_title = StringByJoiningNonemptyDescriptionsWithString(self._titleItems, @" ");
 	}
 	
-	return title_;
+	return _title;
 }
 
 #pragma mark -
@@ -144,7 +124,7 @@ static NSUInteger sNextSequenceNumber = 0;
 {
 	if(object == self) {
 		if([keyPath isEqualToString:@"titleItems"]) {
-			title_ = nil;
+			_title = nil;
 		}
 	}
 }

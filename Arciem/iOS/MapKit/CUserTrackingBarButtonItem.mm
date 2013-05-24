@@ -34,12 +34,6 @@
 
 @implementation CUserTrackingBarButtonItem
 
-@synthesize mapView = mapView_;
-@synthesize button = button_;
-@synthesize noFollowImage = noFollowImage_;
-@synthesize followImage = followImage_;
-@synthesize followWithHeadingImage = followWithHeadingImage_;
-
 - (id)initWithMapView:(MKMapView*)mapView
 {
 	self.button = [UIButton buttonWithType:UIButtonTypeCustom];

@@ -311,6 +311,18 @@
 		039DC39716CCA44000B52A7F /* WhiteLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC39316CCA44000B52A7F /* WhiteLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC39816CCA44000B52A7F /* WhiteLabel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC39416CCA44000B52A7F /* WhiteLabel.mm */; };
 		039DC3A416CCAA4900B52A7F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC34416CC987E00B52A7F /* CoreFoundation.framework */; };
+		03AC9081174E680700781374 /* UIViewControllerUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC907F174E680700781374 /* UIViewControllerUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03AC9082174E680700781374 /* UIViewControllerUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9080174E680700781374 /* UIViewControllerUtils.mm */; };
+		03AC908C174EC5B800781374 /* CDebugAnnotation.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC9084174EC5B800781374 /* CDebugAnnotation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03AC908D174EC5B800781374 /* CDebugAnnotation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9085174EC5B800781374 /* CDebugAnnotation.mm */; };
+		03AC908E174EC5B800781374 /* CDebugAnnotationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC9086174EC5B800781374 /* CDebugAnnotationView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03AC908F174EC5B800781374 /* CDebugAnnotationView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9087174EC5B800781374 /* CDebugAnnotationView.mm */; };
+		03AC9090174EC5B800781374 /* CUserTrackingBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC9088174EC5B800781374 /* CUserTrackingBarButtonItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03AC9091174EC5B800781374 /* CUserTrackingBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */; };
+		03AC9092174EC5B800781374 /* MapKitUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC908A174EC5B800781374 /* MapKitUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03AC9093174EC5B800781374 /* MapKitUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC908B174EC5B800781374 /* MapKitUtils.mm */; };
+		03E3C840174ACBFF004E00EB /* CBadgeView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E3C83E174ACBFF004E00EB /* CBadgeView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03E3C841174ACBFF004E00EB /* CBadgeView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E3C83F174ACBFF004E00EB /* CBadgeView.mm */; };
 		03F263231734D99D0078F41D /* CSidebarContainerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F263211734D99D0078F41D /* CSidebarContainerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03F263241734D99D0078F41D /* CSidebarContainerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F263221734D99D0078F41D /* CSidebarContainerViewController.mm */; };
 		03F9446216E9735D00F9FEF3 /* CMiniPickerBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445616E9735D00F9FEF3 /* CMiniPickerBackgroundView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -638,6 +650,18 @@
 		039DC39216CCA43F00B52A7F /* UILabelUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UILabelUtils.mm; sourceTree = "<group>"; };
 		039DC39316CCA44000B52A7F /* WhiteLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhiteLabel.h; sourceTree = "<group>"; };
 		039DC39416CCA44000B52A7F /* WhiteLabel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WhiteLabel.mm; sourceTree = "<group>"; };
+		03AC907F174E680700781374 /* UIViewControllerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewControllerUtils.h; sourceTree = "<group>"; };
+		03AC9080174E680700781374 /* UIViewControllerUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UIViewControllerUtils.mm; sourceTree = "<group>"; };
+		03AC9084174EC5B800781374 /* CDebugAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDebugAnnotation.h; sourceTree = "<group>"; };
+		03AC9085174EC5B800781374 /* CDebugAnnotation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDebugAnnotation.mm; sourceTree = "<group>"; };
+		03AC9086174EC5B800781374 /* CDebugAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDebugAnnotationView.h; sourceTree = "<group>"; };
+		03AC9087174EC5B800781374 /* CDebugAnnotationView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDebugAnnotationView.mm; sourceTree = "<group>"; };
+		03AC9088174EC5B800781374 /* CUserTrackingBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUserTrackingBarButtonItem.h; sourceTree = "<group>"; };
+		03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUserTrackingBarButtonItem.mm; sourceTree = "<group>"; };
+		03AC908A174EC5B800781374 /* MapKitUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapKitUtils.h; sourceTree = "<group>"; };
+		03AC908B174EC5B800781374 /* MapKitUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MapKitUtils.mm; sourceTree = "<group>"; };
+		03E3C83E174ACBFF004E00EB /* CBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBadgeView.h; sourceTree = "<group>"; };
+		03E3C83F174ACBFF004E00EB /* CBadgeView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CBadgeView.mm; sourceTree = "<group>"; };
 		03F263211734D99D0078F41D /* CSidebarContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSidebarContainerViewController.h; sourceTree = "<group>"; };
 		03F263221734D99D0078F41D /* CSidebarContainerViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSidebarContainerViewController.mm; sourceTree = "<group>"; };
 		03F9445616E9735D00F9FEF3 /* CMiniPickerBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiniPickerBackgroundView.h; sourceTree = "<group>"; };
@@ -986,6 +1010,8 @@
 				03F263221734D99D0078F41D /* CSidebarContainerViewController.mm */,
 				0370D7B717381A59005165CA /* CShadowView.h */,
 				0370D7B817381A59005165CA /* CShadowView.mm */,
+				03E3C83E174ACBFF004E00EB /* CBadgeView.h */,
+				03E3C83F174ACBFF004E00EB /* CBadgeView.mm */,
 				0374652917449CA70007F56D /* CDisclosureIndicator.h */,
 				0374652A17449CA70007F56D /* CDisclosureIndicator.mm */,
 				03F9445516E9735D00F9FEF3 /* CMiniPicker */,
@@ -993,6 +1019,7 @@
 				039DC2B116CB678A00B52A7F /* CNotifier */,
 				039DC2C216CB689800B52A7F /* CTable */,
 				039DC30516CB693500B52A7F /* Dev */,
+				03AC9083174EC5B800781374 /* MapKit */,
 			);
 			name = iOS;
 			path = Arciem/iOS;
@@ -1038,6 +1065,8 @@
 				039DC28C16CB662100B52A7F /* UIImageUtils.mm */,
 				039DC28D16CB662100B52A7F /* UIViewUtils.h */,
 				039DC28E16CB662100B52A7F /* UIViewUtils.mm */,
+				03AC907F174E680700781374 /* UIViewControllerUtils.h */,
+				03AC9080174E680700781374 /* UIViewControllerUtils.mm */,
 			);
 			path = Essentials;
 			sourceTree = "<group>";
@@ -1182,6 +1211,21 @@
 			);
 			name = Images;
 			path = ../Arciem/iOS/artwork/images;
+			sourceTree = "<group>";
+		};
+		03AC9083174EC5B800781374 /* MapKit */ = {
+			isa = PBXGroup;
+			children = (
+				03AC9084174EC5B800781374 /* CDebugAnnotation.h */,
+				03AC9085174EC5B800781374 /* CDebugAnnotation.mm */,
+				03AC9086174EC5B800781374 /* CDebugAnnotationView.h */,
+				03AC9087174EC5B800781374 /* CDebugAnnotationView.mm */,
+				03AC9088174EC5B800781374 /* CUserTrackingBarButtonItem.h */,
+				03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */,
+				03AC908A174EC5B800781374 /* MapKitUtils.h */,
+				03AC908B174EC5B800781374 /* MapKitUtils.mm */,
+			);
+			path = MapKit;
 			sourceTree = "<group>";
 		};
 		03F9445516E9735D00F9FEF3 /* CMiniPicker */ = {
@@ -1359,6 +1403,12 @@
 				0370D7B917381A5A005165CA /* CShadowView.h in Headers */,
 				0374651C17421EB60007F56D /* CTable.h in Headers */,
 				0374652B17449CA70007F56D /* CDisclosureIndicator.h in Headers */,
+				03E3C840174ACBFF004E00EB /* CBadgeView.h in Headers */,
+				03AC9081174E680700781374 /* UIViewControllerUtils.h in Headers */,
+				03AC908C174EC5B800781374 /* CDebugAnnotation.h in Headers */,
+				03AC908E174EC5B800781374 /* CDebugAnnotationView.h in Headers */,
+				03AC9090174EC5B800781374 /* CUserTrackingBarButtonItem.h in Headers */,
+				03AC9092174EC5B800781374 /* MapKitUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1619,6 +1669,12 @@
 				0370D7B0173761E0005165CA /* CNotifierViewController.mm in Sources */,
 				0370D7BA17381A5A005165CA /* CShadowView.mm in Sources */,
 				0374652C17449CA70007F56D /* CDisclosureIndicator.mm in Sources */,
+				03E3C841174ACBFF004E00EB /* CBadgeView.mm in Sources */,
+				03AC9082174E680700781374 /* UIViewControllerUtils.mm in Sources */,
+				03AC908D174EC5B800781374 /* CDebugAnnotation.mm in Sources */,
+				03AC908F174EC5B800781374 /* CDebugAnnotationView.mm in Sources */,
+				03AC9091174EC5B800781374 /* CUserTrackingBarButtonItem.mm in Sources */,
+				03AC9093174EC5B800781374 /* MapKitUtils.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

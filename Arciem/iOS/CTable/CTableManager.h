@@ -49,6 +49,7 @@
 - (void)setRowForKeyPath:(NSString*)keyPath disabled:(BOOL)disabled withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)replaceSectionAtIndex:(NSUInteger)leavingSectionIndex withSectionWithKey:(NSString*)newSectionKey;
 - (NSIndexPath*)indexPathForModel:(CItem*)model;
+- (CTableSectionItem*)sectionForIndex:(NSUInteger)sectionIndex;
 
 @end
 

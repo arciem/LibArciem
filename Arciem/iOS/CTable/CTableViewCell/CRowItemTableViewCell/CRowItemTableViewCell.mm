@@ -34,6 +34,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 @property (strong, nonatomic) CTapToDismissKeyboardManager* tapDismiss2;
 @property (strong, nonatomic) CObserver* rowItemObserver;
 @property (strong, nonatomic) NSMutableArray* modelValueObservers;
+@property (strong, nonatomic) CObserver* rowItemDisabledObserver;
 
 @end
 
@@ -285,14 +286,17 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 		[self syncToRowItem];
 		self.modelValueObservers = [NSMutableArray array];
 		__weak CRowItemTableViewCell* self__ = self;
-		for(CItem* newModel in newRowItem.models) {
+        [newRowItem.models enumerateObjectsUsingBlock:^(CItem *newModel, NSUInteger idx, BOOL *stop) {
 			CObserver* modelValueObserver = [CObserver observerWithKeyPath:@"value" ofObject:newModel action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 				[self__ model:newModel valueDidChangeFrom:oldValue to:newValue];
 			} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 				[self__ model:newModel valueDidChangeFrom:oldValue to:newValue];
 			}];
-			[self.modelValueObservers addObject:modelValueObserver];
-		}
+			[self__.modelValueObservers addObject:modelValueObserver];
+        }];
+        self.rowItemDisabledObserver = [CObserver observerWithKeyPath:@"isDisabled" ofObject:newRowItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+            [self syncToRowItem];
+        }];
 	}
 }
 
