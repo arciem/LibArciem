@@ -19,12 +19,15 @@
 #import "CRestWorker.h"
 #import "ThreadUtils.h"
 #import "CNetworkActivity.h"
+#import "CLog.h"
 
 NSString* const CRestErrorDomain = @"CRestErrorDomain";
 
 NSString* const CRestErrorFailingURLErrorKey = @"CRestErrorFailingURLErrorKey";
 NSString* const CRestErrorWorkerErrorKey = @"CRestErrorWorkerErrorKey";
 NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
+
+NSString* const CRestJSONMIMEType = @"application/json";
 
 @interface CRestWorker ()
 
@@ -38,6 +41,9 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 @end
 
 @implementation CRestWorker
+
+@synthesize dataAsJSON = _dataAsJSON;
+@synthesize dataAsString = _dataAsString;
 
 + (void)initialize
 {
@@ -68,16 +74,25 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 
 - (NSString*)dataAsString
 {
-	return [[NSString alloc] initWithData:self.mutableData encoding:NSUTF8StringEncoding];
+    if(_dataAsString == nil) {
+        _dataAsString = [[NSString alloc] initWithData:self.mutableData encoding:NSUTF8StringEncoding];
+    }
+    return _dataAsString;
 }
 
 - (id)dataAsJSONWithError:(NSError**)error
 {
-	id json = [NSJSONSerialization JSONObjectWithData:self.mutableData options:0 error:error];
-	if(json == nil) {
-		CLogError(nil, @"%@ Parsing JSON:%@ dataAsString:\"%@\"", self, *error, self.dataAsString);
-	}
-	return json;
+    if(_dataAsJSON == nil) {
+        NSError *myError;
+        _dataAsJSON = [NSJSONSerialization JSONObjectWithData:self.mutableData options:0 error:&myError];
+        if(_dataAsJSON == nil) {
+            CLogError(nil, @"%@ Parsing JSON:%@ dataAsString:\"%@\"", self, myError, self.dataAsString);
+            if(error != nil) {
+                *error = myError;
+            }
+        }
+    }
+	return _dataAsJSON;
 }
 
 - (id)dataAsJSON
@@ -236,7 +251,16 @@ NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 		if(httpResponse != nil) {
 			NSInteger statusCode = httpResponse.statusCode;
 			if([self.successStatusCodes containsIndex:statusCode]) {
-				[self operationSucceeded];
+                NSError* parseError = nil;
+                if([self.expectedMIMEType isEqualToString:CRestJSONMIMEType]) {
+                    [self dataAsJSONWithError:&parseError];
+                }
+                
+                if(parseError == nil) {
+                    [self operationSucceeded];
+                } else {
+                    [self operationFailedWithError:parseError];
+                }
 			} else {
 				NSDictionary* userInfo = @{NSLocalizedDescriptionKey: [NSHTTPURLResponse localizedStringForStatusCode:statusCode],
 										  CRestErrorFailingURLErrorKey: self.request.URL,

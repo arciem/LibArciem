@@ -89,7 +89,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(animatedLayoutIfNeeded) name:@"needsAnimatedLayout" object:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncToWorkers) name:@"workerManagerViewNeedsSync" object:self];
-	NSKeyValueObservingOptions options = NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew;
+	NSKeyValueObservingOptions options = NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial;
 	[self.workerManager addObserver:self forKeyPath:@"workers" options:options context:nil];
 }
 
@@ -222,6 +222,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 	for(CWorker* worker in workers) {
 		[worker addObserver:self forKeyPath:@"isReady" options:0 context:(void*)0x123];
 		[worker addObserver:self forKeyPath:@"isActive" options:0 context:(void*)0x123];
+        CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"beginObservingWorkers:%@", workers);
 	}
 }
 
@@ -230,6 +231,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 	for(CWorker* worker in workers) {
 		[worker removeObserver:self forKeyPath:@"isReady" context:(void*)0x123];
 		[worker removeObserver:self forKeyPath:@"isActive" context:(void*)0x123];
+        CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"endObservingWorkers:%@", workers);
 	}
 }
 
@@ -372,6 +374,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 //			CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"workers change: %@", change);
 			NSKeyValueChange changeKind = [[change objectForKey:NSKeyValueChangeKindKey] intValue];
 			switch(changeKind) {
+                case NSKeyValueChangeSetting:
 				case NSKeyValueChangeInsertion: {
 					@synchronized(self) {
 						NSSet* addedWorkers = [change objectForKey:NSKeyValueChangeNewKey];
@@ -381,8 +384,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 						NSNotification* notification = [NSNotification notificationWithName:@"workerManagerViewNeedsSync" object:self];
 						[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:self.notificationRunLoopModes];
 					}];
-				}
-					break;
+				} break;
 				case NSKeyValueChangeRemoval: {
 					@synchronized(self) {
 						NSSet* removedWorkers = [change objectForKey:NSKeyValueChangeOldKey];
@@ -392,8 +394,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 						NSNotification* notification = [NSNotification notificationWithName:@"workerManagerViewNeedsSync" object:self];
 						[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:self.notificationRunLoopModes];
 					}];
-				}
-					break;
+				} break;
 			}
 		}
 	} else if(context == (void*)0x123) {

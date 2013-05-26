@@ -21,4 +21,9 @@
 
 @interface CActivityShieldView : CView
 
+- (id)initWithParentView:(UIView *)parentView;
+- (void)addToParent;
+- (void)addToParentDelayed;
+- (void)removeFromParent;
+
 @end

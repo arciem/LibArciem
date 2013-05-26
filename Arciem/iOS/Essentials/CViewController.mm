@@ -200,31 +200,15 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	return parentView;
 }
 
-- (void)addActivityShieldView
-{
-	if(self.activityShieldView != nil) {
-		UIView* parentView = [self activityShieldViewParentView];
-		[parentView addSubview:self.activityShieldView animated:YES];
-	}
-}
-
-- (void)addActivityShieldViewDelayed
-{
-	[self performSelector:@selector(addActivityShieldView) withObject:nil afterDelay:0.5];
-}
-
-- (void)setActivityShieldViewVisible:(BOOL)visible
-{
+- (void)setActivityShieldViewVisible:(BOOL)visible {
 	if(self.activityShieldViewVisible != visible) {
 		[self activityShieldViewParentView].userInteractionEnabled = !visible;
 		if(visible) {
 			UIView* parentView = [self activityShieldViewParentView];
-			self.activityShieldView = [[CActivityShieldView alloc] initWithFrame:parentView.bounds];
-			//			[self addActivityShieldView];
-			[self addActivityShieldViewDelayed];
-			
+			self.activityShieldView = [[CActivityShieldView alloc] initWithParentView:parentView] ;
+            [self.activityShieldView addToParentDelayed];
 		} else {
-			[self.activityShieldView removeFromSuperviewAnimated:YES];
+			[self.activityShieldView removeFromParent];
 			self.activityShieldView = nil;
 		}
 	}

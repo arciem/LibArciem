@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import "CSpacerTableViewCell.h"
+#import "UIViewUtils.h"
 
 @implementation CSpacerTableViewCell
 

@@ -18,6 +18,7 @@
 
 #import "CItem.h"
 #import "CTableSectionItem.h"
+#import "CTableSpacerItem.h"
 
 @protocol CTableItemDelegate;
 

@@ -83,29 +83,32 @@ static NSUInteger sNextSequenceNumber = 0;
 - (void)setTitleItems:(NSMutableArray *)titleItems
 {
 	__titleItems = [titleItems mutableCopy];
+    _title = nil;
 }
 
-- (NSUInteger)countOfTitleItems_
+- (NSUInteger)countOf_titleItems
 {
 	return __titleItems.count;
 }
 
-- (id)objectInTitleItems_AtIndex:(NSUInteger)index
+- (id)objectIn_titleItemsAtIndex:(NSUInteger)index
 {
 	return __titleItems[index];
 }
 
-- (void)insertObject:(id)object inTitleItems_AtIndex:(NSUInteger)index
+- (void)insertObject:(id)object in_titleItemsAtIndex:(NSUInteger)index
 {
 	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
 	[__titleItems insertObject:object atIndex:index];
+    _title = nil;
 	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
 }
 
-- (void)removeObjectFromTitleItems_AtIndex:(NSUInteger)index
+- (void)removeObjectFrom_titleItemsAtIndex:(NSUInteger)index
 {
 	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
 	[__titleItems removeObjectAtIndex:index];
+    _title = nil;
 	[self didChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:@"titleItems"];
 }
 

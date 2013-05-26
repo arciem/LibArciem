@@ -19,11 +19,30 @@
 #import "CActivityShieldView.h"
 #import "CGUtils.h"
 #import "Geom.h"
+#import "UIViewUtils.h"
+
+static NSString* const kClassLogTag = @"ACTIVITY_SHIELD_VIEW";
+
+@interface CActivityShieldView ()
+
+@property (weak, nonatomic) UIView *parentView;
+
+@end
 
 @implementation CActivityShieldView
 
-- (void)setup
-{
++ (void)initialize {
+//    CLogSetTagActive(kClassLogTag, YES);
+}
+
+- (id)initWithParentView:(UIView *)parentView {
+    if(self = [super initWithFrame:parentView.bounds]) {
+        self.parentView = parentView;
+    }
+    return self;
+}
+
+- (void)setup {
 	[super setup];
 	
 	self.contentMode = UIViewContentModeRedraw;
@@ -40,13 +59,7 @@
 //	self.debugColor = [UIColor whiteColor];
 }
 
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-}
-
-- (void)drawRect:(CGRect)rect
-{
+- (void)drawRect:(CGRect)rect {
 	[super drawRect:rect];
 
 	CGContextRef context = UIGraphicsGetCurrentContext();
@@ -66,5 +79,27 @@
 	CGContextRestoreGState(context);
 }
 
+- (void)addToParentDelayed {
+    @synchronized(self) {
+        CLogTrace(kClassLogTag, @"%@ addToParentDelayed", self);
+        [self performSelector:@selector(addToParent) withObject:nil afterDelay:0.5];
+    }
+}
+
+- (void)addToParent {
+    @synchronized(self) {
+        CLogTrace(kClassLogTag, @"%@ addToParent", self);
+        [self.parentView addSubview:self animated:YES];
+    }
+}
+
+- (void)removeFromParent {
+    @synchronized(self) {
+        CLogTrace(kClassLogTag, @"%@ removeFromParent", self);
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(addToParent) object:nil];
+//        [[NSRunLoop currentRunLoop] cancelPerformSelector:@selector(addToParent) target:self argument:nil];
+        [self removeFromSuperviewAnimated:YES];
+    }
+}
 
 @end

@@ -57,6 +57,8 @@ using namespace std;
 #import "CSlowCall.h"
 #import "NSIndexPathUtils.h"
 #import "ISO8601DateFormatter.h"
+#import "CWorker.h"
+#import "CWorkerManager.h"
 
 // Essentials
 #import "CLog.h"
@@ -84,7 +86,8 @@ using namespace std;
 #import "CNetworkActivity.h"
 #import "CNetworkController.h"
 #import "CRestWorker.h"
-#import "CWorkerManager.h"
+#import "CWorkerDebugView.h"
+#import "CWorkerManagerDebugView.h"
 #import "CReachability.h"
 #import "CTabBar.h"
 #import "UILabelUtils.h"

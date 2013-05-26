@@ -36,6 +36,8 @@ extern NSString* const CRestErrorDomain;
 extern NSString* const CRestErrorWorkerErrorKey;
 extern NSString* const CRestErrorFailingURLErrorKey;
 
+extern NSString* const CRestJSONMIMEType;
+
 enum {
 	CRestOfflineError = 2121,
 };
@@ -52,12 +54,14 @@ enum {
 
 @property (copy, nonatomic) NSIndexSet* successStatusCodes; // set of HTTP status codes that count as "success", default: {200}
 
+@property (strong, nonatomic) NSString* expectedMIMEType;
+
 // Outputs
 @property (readonly, strong, nonatomic) NSURLResponse* response;
 @property (readonly, nonatomic) NSHTTPURLResponse* httpResponse;
 @property (readonly, nonatomic) NSData* data;
 @property (readonly, nonatomic) NSString* dataAsString; // UTF-8
-@property (readonly, nonatomic) id dataAsJSON; // nil if parse error
+@property (strong, readonly, nonatomic) id dataAsJSON; // nil if parse error
 
 - (id)dataAsJSONWithError:(NSError**)error;
 
