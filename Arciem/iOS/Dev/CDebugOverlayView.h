@@ -21,6 +21,5 @@
 @interface CDebugOverlayView : CView
 
 @property (strong, nonatomic) UIView* contentView;
-@property (nonatomic) UIEdgeInsets contentEdgeInsets;
 
 @end

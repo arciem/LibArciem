@@ -86,8 +86,6 @@ using namespace std;
 #import "CNetworkActivity.h"
 #import "CNetworkController.h"
 #import "CRestWorker.h"
-#import "CWorkerDebugView.h"
-#import "CWorkerManagerDebugView.h"
 #import "CReachability.h"
 #import "CTabBar.h"
 #import "UILabelUtils.h"
@@ -136,6 +134,10 @@ using namespace std;
 
 // Dev
 #import "CDebugOverlayView.h"
+#import "CDebugMenuView.h"
+#import "CWorkerDebugView.h"
+#import "CWorkerManagerDebugView.h"
+
     // CSetup
 #import "CSetup.h"
 

@@ -36,6 +36,8 @@
 		0362A8F6174FF48C005AA5ED /* CWorkerDebugView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */; };
 		0362A8F7174FF48C005AA5ED /* CWorkerManagerDebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0362A8F8174FF48C005AA5ED /* CWorkerManagerDebugView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0362A8F4174FF48C005AA5ED /* CWorkerManagerDebugView.mm */; };
+		036DE93A1755E31200B6B345 /* CDebugMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE9381755E31200B6B345 /* CDebugMenuView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		036DE93B1755E31200B6B345 /* CDebugMenuView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 036DE9391755E31200B6B345 /* CDebugMenuView.mm */; };
 		0370D7AF173761E0005165CA /* CNotifierViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370D7AD173761E0005165CA /* CNotifierViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0370D7B0173761E0005165CA /* CNotifierViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0370D7AE173761E0005165CA /* CNotifierViewController.mm */; };
 		0370D7B917381A5A005165CA /* CShadowView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370D7B717381A59005165CA /* CShadowView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -372,6 +374,8 @@
 		0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CWorkerDebugView.mm; path = CWorker/CWorkerDebugView.mm; sourceTree = "<group>"; };
 		0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CWorkerManagerDebugView.h; path = CWorker/CWorkerManagerDebugView.h; sourceTree = "<group>"; };
 		0362A8F4174FF48C005AA5ED /* CWorkerManagerDebugView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CWorkerManagerDebugView.mm; path = CWorker/CWorkerManagerDebugView.mm; sourceTree = "<group>"; };
+		036DE9381755E31200B6B345 /* CDebugMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDebugMenuView.h; sourceTree = "<group>"; };
+		036DE9391755E31200B6B345 /* CDebugMenuView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDebugMenuView.mm; sourceTree = "<group>"; };
 		0370D7AD173761E0005165CA /* CNotifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNotifierViewController.h; sourceTree = "<group>"; };
 		0370D7AE173761E0005165CA /* CNotifierViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNotifierViewController.mm; sourceTree = "<group>"; };
 		0370D7B717381A59005165CA /* CShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShadowView.h; sourceTree = "<group>"; };
@@ -1026,6 +1030,8 @@
 				0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */,
 				0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */,
 				0362A8F4174FF48C005AA5ED /* CWorkerManagerDebugView.mm */,
+				036DE9381755E31200B6B345 /* CDebugMenuView.h */,
+				036DE9391755E31200B6B345 /* CDebugMenuView.mm */,
 				03F9445516E9735D00F9FEF3 /* CMiniPicker */,
 				039DC26B16CB662100B52A7F /* Essentials */,
 				039DC2B116CB678A00B52A7F /* CNotifier */,
@@ -1423,6 +1429,7 @@
 				03AC9092174EC5B800781374 /* MapKitUtils.h in Headers */,
 				0362A8F5174FF48C005AA5ED /* CWorkerDebugView.h in Headers */,
 				0362A8F7174FF48C005AA5ED /* CWorkerManagerDebugView.h in Headers */,
+				036DE93A1755E31200B6B345 /* CDebugMenuView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1691,6 +1698,7 @@
 				03AC9093174EC5B800781374 /* MapKitUtils.mm in Sources */,
 				0362A8F6174FF48C005AA5ED /* CWorkerDebugView.mm in Sources */,
 				0362A8F8174FF48C005AA5ED /* CWorkerManagerDebugView.mm in Sources */,
+				036DE93B1755E31200B6B345 /* CDebugMenuView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -33,7 +33,6 @@
 @synthesize contentView = contentView_;
 @synthesize orientation = orientation_;
 @synthesize lastSyncOrientation = lastSyncOrientation_;
-@synthesize contentEdgeInsets = contentEdgeInsets_;
 @synthesize justMovedToSuperview = justMovedToSuperview_;
 @synthesize stayOnTopTimer = stayOnTopTimer_;
 
@@ -74,36 +73,32 @@
 	CGRect contentBounds = bounds;
 	CGFloat contentCenterX = 0.0;
 	CGFloat contentCenterY = 0.0;
-	CGFloat hInsets = self.contentEdgeInsets.left + self.contentEdgeInsets.right;
-	CGFloat vInsets = self.contentEdgeInsets.top + self.contentEdgeInsets.bottom;
-	CGFloat hOffset = (self.contentEdgeInsets.left - self.contentEdgeInsets.right) / 2;
-	CGFloat vOffset = (self.contentEdgeInsets.top - self.contentEdgeInsets.bottom) / 2;
 	if(UIInterfaceOrientationIsPortrait(self.orientation)) {
-		contentBounds.size.width = bounds.size.width - hInsets;
-		contentBounds.size.height = bounds.size.height - vInsets;
-		contentCenterX = self.boundsCenterX + hOffset;
+		contentBounds.size.width = bounds.size.width;
+		contentBounds.size.height = bounds.size.height;
+		contentCenterX = self.boundsCenterX;
 	} else if(UIInterfaceOrientationIsLandscape(self.orientation)) {
-		contentBounds.size.width = bounds.size.height - hInsets;
-		contentBounds.size.height = bounds.size.width - vInsets;
-		contentCenterY = self.boundsCenterY - hOffset;
+		contentBounds.size.width = bounds.size.height;
+		contentBounds.size.height = bounds.size.width;
+		contentCenterY = self.boundsCenterY;
 	}
 
 	CGFloat rotationAngle = 0.0;
 	switch(self.orientation) {
 		case UIInterfaceOrientationPortrait:
-			contentCenterY = self.boundsCenterY + vOffset;
+			contentCenterY = self.boundsCenterY;
 			rotationAngle = 0.0;
 			break;
 		case UIInterfaceOrientationPortraitUpsideDown:
-			contentCenterY = self.boundsCenterY - vOffset;
+			contentCenterY = self.boundsCenterY;
 			rotationAngle = M_PI;
 			break;
 		case UIInterfaceOrientationLandscapeRight:
-			contentCenterX = self.boundsCenterX - vOffset;
+			contentCenterX = self.boundsCenterX;
 			rotationAngle = M_PI/2;
 			break;
 		case UIInterfaceOrientationLandscapeLeft:
-			contentCenterX = self.boundsCenterX + vOffset;
+			contentCenterX = self.boundsCenterX;
 			rotationAngle = -M_PI/2;
 			break;
 		default:
@@ -153,17 +148,6 @@
 - (void)setOrientation:(UIInterfaceOrientation)orientation
 {
 	[self setOrientation:orientation animated:NO];
-}
-
-- (UIEdgeInsets)contentEdgeInsets
-{
-	return contentEdgeInsets_;
-}
-
-- (void)setContentEdgeInsets:(UIEdgeInsets)contentEdgeInsets
-{
-	contentEdgeInsets_ = contentEdgeInsets;
-	[self syncContentViewFrameAnimated:NO];
 }
 
 - (void)stayOnTop
