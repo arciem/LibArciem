@@ -327,6 +327,8 @@
 		03AC9091174EC5B800781374 /* CUserTrackingBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */; };
 		03AC9092174EC5B800781374 /* MapKitUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC908A174EC5B800781374 /* MapKitUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03AC9093174EC5B800781374 /* MapKitUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC908B174EC5B800781374 /* MapKitUtils.mm */; };
+		03D6585917601085002B9023 /* URLRequestUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D6585717601085002B9023 /* URLRequestUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03D6585A17601085002B9023 /* URLRequestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03D6585817601085002B9023 /* URLRequestUtils.mm */; };
 		03E3C840174ACBFF004E00EB /* CBadgeView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E3C83E174ACBFF004E00EB /* CBadgeView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03E3C841174ACBFF004E00EB /* CBadgeView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E3C83F174ACBFF004E00EB /* CBadgeView.mm */; };
 		03F263231734D99D0078F41D /* CSidebarContainerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F263211734D99D0078F41D /* CSidebarContainerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -672,6 +674,8 @@
 		03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUserTrackingBarButtonItem.mm; sourceTree = "<group>"; };
 		03AC908A174EC5B800781374 /* MapKitUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapKitUtils.h; sourceTree = "<group>"; };
 		03AC908B174EC5B800781374 /* MapKitUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MapKitUtils.mm; sourceTree = "<group>"; };
+		03D6585717601085002B9023 /* URLRequestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = URLRequestUtils.h; path = Arciem/ObjC/URLRequestUtils.h; sourceTree = SOURCE_ROOT; };
+		03D6585817601085002B9023 /* URLRequestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = URLRequestUtils.mm; path = Arciem/ObjC/URLRequestUtils.mm; sourceTree = SOURCE_ROOT; };
 		03E3C83E174ACBFF004E00EB /* CBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBadgeView.h; sourceTree = "<group>"; };
 		03E3C83F174ACBFF004E00EB /* CBadgeView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CBadgeView.mm; sourceTree = "<group>"; };
 		03F263211734D99D0078F41D /* CSidebarContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSidebarContainerViewController.h; sourceTree = "<group>"; };
@@ -778,6 +782,8 @@
 				039DC13B16CB398A00B52A7F /* StringUtils.mm */,
 				039DC13C16CB398A00B52A7F /* ThreadUtils.h */,
 				039DC13D16CB398A00B52A7F /* ThreadUtils.mm */,
+				03D6585717601085002B9023 /* URLRequestUtils.h */,
+				03D6585817601085002B9023 /* URLRequestUtils.mm */,
 			);
 			path = Essentials;
 			sourceTree = "<group>";
@@ -1430,6 +1436,7 @@
 				0362A8F5174FF48C005AA5ED /* CWorkerDebugView.h in Headers */,
 				0362A8F7174FF48C005AA5ED /* CWorkerManagerDebugView.h in Headers */,
 				036DE93A1755E31200B6B345 /* CDebugMenuView.h in Headers */,
+				03D6585917601085002B9023 /* URLRequestUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1699,6 +1706,7 @@
 				0362A8F6174FF48C005AA5ED /* CWorkerDebugView.mm in Sources */,
 				0362A8F8174FF48C005AA5ED /* CWorkerManagerDebugView.mm in Sources */,
 				036DE93B1755E31200B6B345 /* CDebugMenuView.mm in Sources */,
+				03D6585A17601085002B9023 /* URLRequestUtils.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

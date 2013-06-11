@@ -23,7 +23,7 @@ extern NSString* const CStringItemErrorDomain;
 enum {
 	CStringItemErrorTooShort = 1000,
 	CStringItemErrorTooLong,
-	CStrubgItemErrorWrongLength,
+	CStringItemErrorWrongLength,
 	CStringItemErrorInvalidCharacters,
 	CStringItemErrorSyntaxError
 };

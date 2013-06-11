@@ -59,6 +59,7 @@ using namespace std;
 #import "ISO8601DateFormatter.h"
 #import "CWorker.h"
 #import "CWorkerManager.h"
+#import "URLRequestUtils.h"
 
 // Essentials
 #import "CLog.h"

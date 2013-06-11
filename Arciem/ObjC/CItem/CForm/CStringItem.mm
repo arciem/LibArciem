@@ -319,7 +319,7 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 			if(error == nil) {
 				if(self.minLength > 0 && self.minLength == self.maxLength && self.currentLength != self.minLength) {
 					NSString* message = @"%@ must be exactly %@ long.";
-					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStrubgItemErrorWrongLength localizedFormat:message, self.title, [self formatCharacterCount:self.minLength]];
+					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorWrongLength localizedFormat:message, self.title, [self formatCharacterCount:self.minLength]];
 				}
 			}
 			

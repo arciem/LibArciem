@@ -85,6 +85,8 @@ static NSDictionary* sCardTypeRegularExpressions;
 	[super setup];
 	self.validCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789 -"];
 	self.keyboardType = @"numberPad";
+    self.minLength = 13;
+    self.maxLength = 16;
 }
 
 - (NSArray*)validCardTypes
@@ -138,8 +140,8 @@ static NSDictionary* sCardTypeRegularExpressions;
 		NSCharacterSet* nonDigits = [[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet];
 		str = StripCharactersInSet(str, nonDigits);
 
-		if(![self luhnCheckString:str]) {
-			error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorTooLong localizedFormat:@"Invalid card number."];
+        if(![self luhnCheckString:str]) {
+			error = [NSError errorWithDomain:CCreditCardItemErrorDomain code:CCreditCardItemErrorBadCheckDigit localizedFormat:@"Invalid card number. Please check to make sure it was entered correctly."];
 		} else {
 			__block NSString* resultCardType = nil;
 			[self.validCardTypes enumerateObjectsUsingBlock:^(NSString* cardType, NSUInteger idx, BOOL *stop) {

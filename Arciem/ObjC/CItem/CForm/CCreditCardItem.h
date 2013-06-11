@@ -30,6 +30,7 @@ extern NSString* const CCreditCardItemErrorDomain;
 
 enum {
 	CCreditCardItemErrorBadCheckDigit = 5000,
+    CCreditCardItemErrorBadLength,
 	CCreditCardItemErrorUnknownType
 };
 
