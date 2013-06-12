@@ -72,3 +72,28 @@ NSString* NSStringFromMKMapRect(MKMapRect rect)
 BOOL IsValidCoordinate(CLLocationCoordinate2D coordinate) {
     return fabs(coordinate.latitude) > 0.0 && fabs(coordinate.longitude) > 0.0;
 }
+
+BOOL IsValidLocation(CLLocation *newLocation, CLLocation *oldLocation, NSDate *locationManagerStartDate) {
+    // filter out nil locations
+    if(newLocation == nil) return NO;
+    if(oldLocation == nil) return NO;
+    
+    if(!IsValidCoordinate(newLocation.coordinate)) return NO;
+    if(!IsValidCoordinate(oldLocation.coordinate)) return NO;
+    
+    // filter out points by invalid accuracy
+    if(newLocation.horizontalAccuracy < 0.0) return NO;
+    
+    // filter out points that are out of order
+    NSTimeInterval secondsSinceLastPoint = [newLocation.timestamp timeIntervalSinceDate:oldLocation.timestamp];
+    if(secondsSinceLastPoint < 0.0) return NO;
+    
+    // filter out points created before the manager was initialized
+    NSTimeInterval secondsSinceManagerStarted = [newLocation.timestamp
+                                                 timeIntervalSinceDate:locationManagerStartDate];
+    if(secondsSinceManagerStarted < 0.0) return NO;
+
+    if([newLocation distanceFromLocation:oldLocation] < 0.0) { return NO; }
+    
+    return YES;
+}
