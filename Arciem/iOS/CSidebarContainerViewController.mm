@@ -35,12 +35,8 @@ static const CGFloat kShadowWidth = 15.0;
 @interface CSidebarContainerViewController ()
 
 @property (nonatomic) CGFloat sidebarWidth;
-@property (strong, readwrite, nonatomic) UISwipeGestureRecognizer* centerSwipeRightRecognizer;
-@property (strong, readwrite, nonatomic) UISwipeGestureRecognizer* centerSwipeLeftRecognizer;
-@property (strong, readwrite, nonatomic) UISwipeGestureRecognizer* leftSwipeLeftRecognizer;
-@property (strong, readwrite, nonatomic) UISwipeGestureRecognizer* rightSwipeRightRecognizer;
 @property (nonatomic) CGFloat swipeSensitiveWidth;
-@property (strong, nonatomic) CView* shieldView;
+@property (strong, readonly, nonatomic) CView* shieldView;
 @property (strong, nonatomic) CShadowView* leftShadowView;
 @property (strong, nonatomic) CShadowView* rightShadowView;
 
@@ -53,6 +49,11 @@ static const CGFloat kShadowWidth = 15.0;
 @synthesize rightViewController = _rightViewController;
 @synthesize leftViewVisible = _leftViewVisible;
 @synthesize rightViewVisible = _rightViewVisible;
+@synthesize centerSwipeRightRecognizer = _centerSwipeRightRecognizer;
+@synthesize centerSwipeLeftRecognizer = _centerSwipeLeftRecognizer;
+@synthesize rightSwipeRightRecognizer = _rightSwipeRightRecognizer;
+@synthesize leftSwipeLeftRecognizer = _leftSwipeLeftRecognizer;
+@synthesize shieldView = _shieldView;
 
 - (void)setup
 {
@@ -62,33 +63,87 @@ static const CGFloat kShadowWidth = 15.0;
 	self.sidebarWidth = 320 - 52;
 }
 
+- (UISwipeGestureRecognizer *)centerSwipeRightRecognizer {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _centerSwipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(centerSwipeRightGesture:)];
+        _centerSwipeRightRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        _centerSwipeRightRecognizer.delaysTouchesBegan = YES;
+        _centerSwipeRightRecognizer.delegate = self;
+    });
+    return _centerSwipeRightRecognizer;
+}
+
+- (UISwipeGestureRecognizer *)centerSwipeLeftRecognizer {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _centerSwipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(centerSwipeLeftGesture:)];
+        _centerSwipeLeftRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+        _centerSwipeLeftRecognizer.delaysTouchesBegan = YES;
+        _centerSwipeLeftRecognizer.delegate = self;
+    });
+    return _centerSwipeLeftRecognizer;
+}
+
+#if 0
+- (UISwipeGestureRecognizer *)centerSwipeRightClosedRecognizer {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _centerSwipeRightClosedRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(rightSwipeRightGesture:)];
+        _centerSwipeRightClosedRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        _centerSwipeRightClosedRecognizer.delaysTouchesBegan = YES;
+        _centerSwipeRightClosedRecognizer.delegate = self;
+    });
+    return _centerSwipeRightClosedRecognizer;
+}
+
+- (UISwipeGestureRecognizer *)centerSwipeLeftClosedRecognizer {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _centerSwipeLeftClosedRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(leftSwipeLeftGesture:)];
+        _centerSwipeLeftClosedRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+        _centerSwipeLeftClosedRecognizer.delaysTouchesBegan = YES;
+        _centerSwipeLeftClosedRecognizer.delegate = self;
+    });
+    return _centerSwipeLeftClosedRecognizer;
+}
+#endif
+
+- (UISwipeGestureRecognizer *)rightSwipeRightRecognizer {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _rightSwipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(rightSwipeRightGesture:)];
+        _rightSwipeRightRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    });
+    return _rightSwipeRightRecognizer;
+}
+
+- (UISwipeGestureRecognizer *)leftSwipeLeftRecognizer {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _leftSwipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(leftSwipeLeftGesture:)];
+        _leftSwipeLeftRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    });
+    return _leftSwipeLeftRecognizer;
+}
+
+- (CView *)shieldView {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _shieldView = [CView new];
+        _shieldView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+        _shieldView.opaque = NO;
+        _shieldView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _shieldView.alpha = 0.0;
+        [self.view addSubview:_shieldView];
+    });
+    return _shieldView;
+}
+
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
 	self.view.backgroundColor = [UIColor blueColor];
-    
-	self.centerSwipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(centerSwipeRightGesture:)];
-	self.centerSwipeRightRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-	self.centerSwipeRightRecognizer.delaysTouchesBegan = YES;
-	self.centerSwipeRightRecognizer.delegate = self;
-	
-	self.centerSwipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(centerSwipeLeftGesture:)];
-	self.centerSwipeLeftRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-	self.centerSwipeLeftRecognizer.delaysTouchesBegan = YES;
-	self.centerSwipeLeftRecognizer.delegate = self;
-    
-	self.rightSwipeRightRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(rightSwipeRightGesture:)];
-	self.rightSwipeRightRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-    
-	self.leftSwipeLeftRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(leftSwipeLeftGesture:)];
-	self.leftSwipeLeftRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-
-	self.shieldView = [CView new];
-	self.shieldView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-	self.shieldView.opaque = NO;
-	self.shieldView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.shieldView.alpha = 0.0;
-	[self.view addSubview:self.shieldView];
     
     self.leftShadowView = [CShadowView new];
     self.leftShadowView.edge = CShadowViewEdgeLeft;
@@ -101,13 +156,16 @@ static const CGFloat kShadowWidth = 15.0;
 
 - (void)unload
 {
-	self.centerSwipeRightRecognizer = nil;
-	self.centerSwipeLeftRecognizer = nil;
-	self.rightSwipeRightRecognizer = nil;
-	self.leftSwipeLeftRecognizer = nil;
+	_centerSwipeRightRecognizer = nil;
+	_centerSwipeLeftRecognizer = nil;
+	_rightSwipeRightRecognizer = nil;
+	_leftSwipeLeftRecognizer = nil;
+    _shieldView = nil;
 	self.centerViewController = nil;
 	self.leftViewController = nil;
 	self.rightViewController = nil;
+    self.leftShadowView = nil;
+    self.rightShadowView = nil;
 	[super unload];
 }
 
@@ -219,6 +277,20 @@ static const CGFloat kShadowWidth = 15.0;
 	return NO;
 }
 
+- (void)updateShieldViewForSidebarVisibility:(BOOL)sidebarVisible {
+    if(IsPhone()) {
+        if(sidebarVisible) {
+            self.shieldView.alpha = 1.0;
+            [self.shieldView addGestureRecognizer:self.centerSwipeRightRecognizer];
+            [self.shieldView addGestureRecognizer:self.centerSwipeLeftRecognizer];
+        } else {
+            self.shieldView.alpha = 0.0;
+            [self.shieldView removeGestureRecognizer:self.centerSwipeRightRecognizer];
+            [self.shieldView removeGestureRecognizer:self.centerSwipeLeftRecognizer];
+        }
+    }
+}
+
 - (void)setLeftViewVisible:(BOOL)leftViewVisible
 {
 	if(_leftViewVisible != leftViewVisible) {
@@ -248,7 +320,7 @@ static const CGFloat kShadowWidth = 15.0;
 		}
 		self.centerViewController.view.frame = frame;
         [self updateAncillaryViewsWithCenterViewFrame:frame];
-        self.shieldView.alpha = IsPhone() && _leftViewVisible ? 1.0 : 0.0;
+        [self updateShieldViewForSidebarVisibility:_leftViewVisible];
 		[self didChangeValueForKey:@"leftViewVisible"];
 	}
 }
@@ -291,7 +363,7 @@ static const CGFloat kShadowWidth = 15.0;
 		}
 		self.centerViewController.view.frame = frame;
         [self updateAncillaryViewsWithCenterViewFrame:frame];
-        self.shieldView.alpha = IsPhone() && _rightViewVisible ? 1.0 : 0.0;
+        [self updateShieldViewForSidebarVisibility:_rightViewVisible];
 		[self didChangeValueForKey:@"rightViewVisible"];
 	}
 }
@@ -334,7 +406,11 @@ static const CGFloat kShadowWidth = 15.0;
 
 - (CGFloat)swipeSensitiveWidth
 {
-	return fmaxf(self.centerViewController.view.boundsWidth * kSwipeSensitiveWidthFraction, kSwipeSensitiveMinWidth);
+    if(IsPhone()) {
+        return self.centerViewController.view.boundsWidth / 2;
+    } else {
+        return fmaxf(self.centerViewController.view.boundsWidth * kSwipeSensitiveWidthFraction, kSwipeSensitiveMinWidth);
+    }
 }
 
 - (void)centerSwipeRightGesture:(UISwipeGestureRecognizer*)recognizer
