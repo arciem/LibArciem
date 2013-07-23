@@ -27,18 +27,13 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 
 @interface CWorkerDebugView ()
 
-//@property (strong, readwrite, nonatomic) CWorker* worker;
 @property (strong, nonatomic) UILabel* label;
 
 @end
 
 @implementation CWorkerDebugView
 
-@synthesize worker = worker_;
-@synthesize label = label_;
-@synthesize row = row_;
-@dynamic fontSize;
-@dynamic minimumFontSize;
+@synthesize worker = _worker;
 
 + (void)initialize
 {
@@ -129,6 +124,18 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 				textColor = [UIColor blackColor];
 			}
 		}
+        
+        NSDictionary *userInfo = self.worker.userInfo;
+        if(userInfo != nil) {
+            UIColor *color = userInfo[@"backgroundColor"];
+            if(color != nil) {
+                backgroundColor = color;
+            }
+            color = userInfo[@"textColor"];
+            if(color != nil) {
+                textColor = color;
+            }
+        }
 		
 		self.label.textColor = textColor;
 		self.layer.backgroundColor = backgroundColor.CGColor;
@@ -174,15 +181,15 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 
 - (CWorker*)worker
 {
-	return worker_;
+	return _worker;
 }
 
 - (void)setWorker:(CWorker *)worker
 {
-	if(worker_ != worker) {
+	if(_worker != worker) {
 		[self endObserving];
-		worker_ = worker;
-		if(worker_ != nil) {
+		_worker = worker;
+		if(_worker != nil) {
 			[self beginObserving];
 		}
 	}

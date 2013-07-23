@@ -238,12 +238,23 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 - (void)addWorkers:(NSSet*)addedWorkers
 {
 	CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"addWorkers:%@", addedWorkers);
-
-	[self beginObservingWorkers:addedWorkers];
-
+    
+    NSSet *addedVisibleWorkers =
+    [addedWorkers objectsPassingTest:
+     ^BOOL(CWorker *worker, BOOL *stop) {
+         BOOL visible = YES;
+         id value = worker.userInfo[@"hidden"];
+         if(value != nil) {
+             visible = ![value boolValue];
+         }
+         return visible;
+     }];
+    
+	[self beginObservingWorkers:addedVisibleWorkers];
+    
 	NSMutableArray* addedViews = [NSMutableArray array];
 	
-	for(CWorker* worker in addedWorkers) {
+	for(CWorker* worker in addedVisibleWorkers) {
 		CGRect frame = CGRectMake(0, 0, (self.boundsWidth / 2) - 5, kCWorkerDebugViewHeight);
 		CWorkerDebugView* view = [[CWorkerDebugView alloc] initWithFrame:frame worker:worker];
 		view.alpha = 0.0;
@@ -253,8 +264,8 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 		[self addSubview:view];
 		[addedViews addObject:view];
 	}
-
-	if(addedWorkers.count > 0) {
+    
+	if(addedVisibleWorkers.count > 0) {
 		[self updateQueuedWorkerViewsRows];
 		for(CWorkerDebugView* view in addedViews) {
 			view.cframe.top = [self topForView:view];
@@ -266,11 +277,22 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 - (void)removeWorkers:(NSSet*)removedWorkers
 {
 	CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"removeWorkers:%@", removedWorkers);
+    
+    NSSet *removedVisibleWorkers =
+    [removedWorkers objectsPassingTest:
+     ^BOOL(CWorker *worker, BOOL *stop) {
+         BOOL visible = YES;
+         id value = worker.userInfo[@"hidden"];
+         if(value != nil) {
+             visible = ![value boolValue];
+         }
+         return visible;
+     }];
 
-	[self endObservingWorkers:removedWorkers];
+	[self endObservingWorkers:removedVisibleWorkers];
 
 	NSIndexSet* removedViewIndexes = [self.queuedWorkerViews indexesOfObjectsPassingTest:^BOOL(CWorkerDebugView* view, NSUInteger idx, BOOL *stop) {
-		return [removedWorkers containsObject:view.worker];
+		return [removedVisibleWorkers containsObject:view.worker];
 	}];
 	NSArray* removedViews = [self.queuedWorkerViews objectsAtIndexes:removedViewIndexes];
 

@@ -59,6 +59,8 @@
 @property (copy, nonatomic) void (^failure)(CWorker*, NSError*);
 @property (copy, nonatomic) void (^finally)(CWorker*);
 
+@property (strong, nonatomic) NSDictionary *userInfo;
+
 // May be called from subclasses for debugging purposes
 - (void)performDelay:(NSTimeInterval)delay;
 
