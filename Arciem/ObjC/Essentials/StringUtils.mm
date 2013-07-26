@@ -1,4 +1,4 @@
-/*******************************************************************************
+    /*******************************************************************************
  
  Copyright 2011 Arciem LLC
  
@@ -491,6 +491,7 @@ string ToStd(NSString* s)
 {
     __block NSMutableArray* capturesArray = nil;
     
+    NSAssert1(regex.numberOfCaptureGroups > 0, @"Regular expression %@ must contain at least one capture group.", regex.pattern);
     [regex enumerateMatchesInString:self options:0 range:NSMakeRange(0, self.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
         
         if(capturesArray == nil) capturesArray = [NSMutableArray new];
@@ -523,7 +524,13 @@ string ToStd(NSString* s)
 
 - (NSString*)firstCaptureFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex
 {
-    return [self capturesFromMatchesOfRegularExpression:regex stopAfterFirstMatch:YES stopAfterFirstCapture:YES][0];
+    NSArray* captures = [self capturesFromMatchesOfRegularExpression:regex stopAfterFirstMatch:YES stopAfterFirstCapture:YES];
+    return captures.count > 0 ? captures[0] : nil;
+}
+
+- (BOOL)matchesRegularExpression:(NSRegularExpression *)regex {
+    NSRange r = [regex rangeOfFirstMatchInString:self options:0 range:NSMakeRange(0, self.length)];
+    return r.location != NSNotFound;
 }
 
 

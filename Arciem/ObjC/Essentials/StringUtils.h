@@ -110,10 +110,11 @@ NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* 
 - (NSString*)stringByReplacingPercentEscapes;
 - (NSString*)stringByReplacingTemplatesWithReplacements:(NSDictionary*)replacementsDict;
 
-- (NSArray*)allCharacters;
-- (NSArray*)allCapturesFromAllMatchesOfRegularExpression:(NSRegularExpression*)regex;
-- (NSArray*)allCapturesFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex;
-- (NSString*)firstCaptureFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex;
+- (NSArray *)allCharacters;
+- (NSArray *)allCapturesFromAllMatchesOfRegularExpression:(NSRegularExpression *)regex;
+- (NSArray *)allCapturesFromFirstMatchOfRegularExpression:(NSRegularExpression *)regex;
+- (NSString *)firstCaptureFromFirstMatchOfRegularExpression:(NSRegularExpression *)regex;
+- (BOOL)matchesRegularExpression:(NSRegularExpression *)regex;
 
 @end
 
