@@ -24,11 +24,11 @@
 
 @interface CMiniPickerOverlayView ()
 
-@property (nonatomic) CGGradientRef glossGradient;
-@property (nonatomic) CGColorRef bevelColor1;
-@property (nonatomic) CGColorRef bevelColor2;
-@property (nonatomic) CGGradientRef shadowGradient;
-@property (nonatomic) CGGradientRef shadeGradientRef;
+@property (readonly, nonatomic) CGGradientRef glossGradient;
+@property (readonly, nonatomic) CGColorRef bevelColor1;
+@property (readonly, nonatomic) CGColorRef bevelColor2;
+@property (readonly, nonatomic) CGGradientRef shadowGradient;
+@property (readonly, nonatomic) CGGradientRef shadeGradientRef;
 
 @end
 
@@ -79,34 +79,34 @@
     self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.contentMode = UIViewContentModeRedraw;
     
-    self.glossGradient = GradientCreateGloss([UIColor colorWithWhite:1.0 alpha:0.8].CGColor,
+    _glossGradient = GradientCreateGloss([UIColor colorWithWhite:1.0 alpha:0.8].CGColor,
                                              [UIColor colorWithWhite:1.0 alpha:0.2].CGColor,
                                              [UIColor colorWithWhite:1.0 alpha:0.0].CGColor,
                                              [UIColor colorWithWhite:1.0 alpha:0.0].CGColor,
                                              SharedColorSpaceDeviceGray());
     
-    self.shadowGradient = GradientCreateEaseOut([UIColor colorWithWhite:0.0 alpha:0.6].CGColor,
+    _shadowGradient = GradientCreateEaseOut([UIColor colorWithWhite:0.0 alpha:0.6].CGColor,
                                                     [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
                                                     SharedColorSpaceDeviceGray(), 20);
 
-    self.shadeGradientRef = [self createShadeGradient];
+    _shadeGradientRef = [self createShadeGradient];
 //    self.shadeGradientRef = GradientCreateSine(
 //                                               [UIColor colorWithWhite:0.0 alpha:0.9].CGColor,
 //                                               [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
 //                                               SharedColorSpaceDeviceGray(),
 //                                               30, 0.5);
     
-    self.bevelColor1 = CGColorRetain([UIColor colorWithRGBValue:0x7a8696].CGColor);
-    self.bevelColor2 = CGColorRetain([UIColor colorWithRGBValue:0xecedf2].CGColor);
+    _bevelColor1 = CGColorRetain([UIColor colorWithRGBValue:0x7a8696].CGColor);
+    _bevelColor2 = CGColorRetain([UIColor colorWithRGBValue:0xecedf2].CGColor);
 }
 
 - (void)dealloc
 {
-    CGColorRelease(self.bevelColor1);
-    CGColorRelease(self.bevelColor2);
-    CGGradientRelease(self.glossGradient);
-    CGGradientRelease(self.shadowGradient);
-    CGGradientRelease(self.shadeGradientRef);
+    CGColorRelease(_bevelColor1);
+    CGColorRelease(_bevelColor2);
+    CGGradientRelease(_glossGradient);
+    CGGradientRelease(_shadowGradient);
+    CGGradientRelease(_shadeGradientRef);
 }
 
 - (CGRect)overlayRect

@@ -26,8 +26,8 @@ static const CGFloat kFrameWidth = 8.0;
 @interface CMiniPickerFrameView ()
 
 @property (readwrite, nonatomic) UIEdgeInsets margins;
-@property (nonatomic) CGGradientRef bevelGradientRef;
-@property (nonatomic) CGGradientRef frameGradientRef;
+@property (readonly, nonatomic) CGGradientRef bevelGradientRef;
+@property (readonly, nonatomic) CGGradientRef frameGradientRef;
 
 @end
 
@@ -42,11 +42,11 @@ static const CGFloat kFrameWidth = 8.0;
 //    self.debugColor = [UIColor blueColor];
     self.margins = UIEdgeInsetsMake(kTopBevelHeight + kFrameWidth, kFrameWidth, kFrameWidth, kFrameWidth);
     
-    self.bevelGradientRef = GradientCreateWith2Colors(
+    _bevelGradientRef = GradientCreateWith2Colors(
                                                       [UIColor colorWithRGBValue:0x313944].CGColor,
                                                       [UIColor colorWithRGBValue:0xd7d7da].CGColor, SharedColorSpaceDeviceRGB());
 
-    self.frameGradientRef = GradientCreateGloss(
+    _frameGradientRef = GradientCreateGloss(
                                                 [UIColor colorWithRGBValue:0xa2a3aa].CGColor,
                                                 [UIColor colorWithRGBValue:0x484a55].CGColor,
                                                 [UIColor colorWithRGBValue:0x3a3c4f].CGColor,
@@ -56,8 +56,8 @@ static const CGFloat kFrameWidth = 8.0;
 
 - (void)dealloc
 {
-    CGGradientRelease(self.frameGradientRef);
-    CGGradientRelease(self.bevelGradientRef);
+    CGGradientRelease(_frameGradientRef);
+    CGGradientRelease(_bevelGradientRef);
 }
 
 - (void)drawRect:(CGRect)rect

@@ -24,19 +24,11 @@
 @property (copy, readwrite, nonatomic) NSString* message;
 @property (readwrite, nonatomic) NSInteger priority;
 @property (strong, readwrite, nonatomic) NSDate* date;
+@property (nonatomic) NSInteger visibleCount;
 
 @end
 
 @implementation CNotifierItem
-
-@synthesize priority = priority_;
-@synthesize message = message_;
-@synthesize date = date_;
-@synthesize tintColor = tintColor_;
-@synthesize whiteText = whiteText_;
-@synthesize font = font_;
-@synthesize duration = duration_;
-@synthesize tapHandler = tapHandler_;
 
 + (void)initialize
 {
@@ -71,11 +63,49 @@
 
 - (NSString*)description
 {
-	return [self formatObjectWithValues:@[[self formatValueForKey:@"message" compact:NO],
-										 [self formatValueForKey:@"priority" compact:NO],
-										 [self formatValueForKey:@"date" compact:NO],
-										 [self formatValueForKey:@"duration" compact:NO],
-										 [self formatValueForKey:@"tapHandler" compact:NO]]];
+	return [self formatObjectWithValues:
+            @[ [self formatValueForKey:@"message" compact:NO],
+            [self formatValueForKey:@"priority" compact:NO],
+            [self formatValueForKey:@"date" compact:NO],
+            [self formatValueForKey:@"duration" compact:NO],
+            [self formatValueForKey:@"tapHandler" compact:NO],
+            [self formatBoolValueForKey:@"visible" compact:NO],
+            ] ];
+}
+
++ (BOOL)automaticallyNotifiesObserversOfVisible {
+    return NO;
+}
+
+- (BOOL)visible {
+    @synchronized(self) {
+        return self.visibleCount > 0;
+    }
+}
+
+- (void)incrementVisible {
+    @synchronized(self) {
+        if(self.visibleCount == 0) {
+            [self willChangeValueForKey:@"visible"];
+        }
+        self.visibleCount++;
+        if(self.visibleCount == 1) {
+            [self didChangeValueForKey:@"visible"];
+        }
+    }
+}
+
+- (void)decrementVisible {
+    @synchronized(self) {
+        NSAssert1(self.visibleCount > 0, @"Attempt to decrementVisible below zero for %@", self);
+        if(self.visibleCount == 1) {
+            [self willChangeValueForKey:@"visible"];
+        }
+        self.visibleCount--;
+        if(self.visibleCount == 0) {
+            [self didChangeValueForKey:@"visible"];
+        }
+    }
 }
 
 @end

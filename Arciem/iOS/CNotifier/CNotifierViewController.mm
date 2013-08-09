@@ -44,7 +44,7 @@ static const CGFloat kNotifierBarHeight = 30.0;
     self.notifierBar = [[CNotifierBar alloc] initWithFrame:CGRectMake(0, 0, self.view.width, kNotifierBarHeight)];
     self.notifierBar.rowCapacity = self.rowCapacity;
     self.notifierBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
-    self.notifierBar.debugColor = [UIColor redColor];
+//    self.notifierBar.debugColor = [UIColor redColor];
     [self.view addSubview:self.notifierBar];
     self.notifierBar.delegate = self;
     self.notifierBar.notifier = self.notifier;

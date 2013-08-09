@@ -32,13 +32,6 @@
 
 @implementation CObserver
 
-@synthesize keyPath = keyPath_;
-@synthesize mutableObjects = mutableObjects_;
-@synthesize action = action_;
-@synthesize initial = initial_;
-@synthesize prior = prior_;
-@synthesize options = options_;
-
 + (void)initialize
 {
 //	CLogSetTagActive(@"C_OBSERVER", YES);

@@ -164,14 +164,13 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 		if(existingIndex == NSNotFound) {
 			NSUInteger index = [newOrderedItems indexOfObject:item];
 			CGFloat top;
-			CGFloat alpha;
+			CGFloat alpha = 0.0;
 			if(index == 0) {
 				top = -self.rowHeight;
 				alpha = 1.0;
 				willSlideInFromTop = YES;
 			} else {
 				top = self.rowHeight * index;
-//				alpha = 0.0;
 			}
 			CNotifierItemView* view = [[CNotifierItemView alloc] initWithFrame:CGRectMake(0, top, self.width, self.rowHeight)];
 			view.item = item;

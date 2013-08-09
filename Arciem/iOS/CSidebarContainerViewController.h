@@ -19,9 +19,15 @@
 #import "CViewController.h"
 
 // These notifications are posted from within an animation block.
-extern NSString* const SidebarContainerViewControllerWillShrinkCenterViewController;
-extern NSString* const SidebarContainerViewControllerWillObscureCenterViewController;
-extern NSString* const SidebarContainerViewControllerWillRevealCenterViewController;
+extern NSString *const SidebarContainerViewControllerWillShrinkCenterViewController;
+extern NSString *const SidebarContainerViewControllerWillObscureCenterViewController;
+extern NSString *const SidebarContainerViewControllerWillRevealCenterViewController;
+
+// These notifications are posted before animation starts.
+extern NSString *const SidebarContainerViewControllerWillSwipeOpenLeftViewController;
+extern NSString *const SidebarContainerViewControllerWillSwipeClosedLeftViewController;
+extern NSString *const SidebarContainerViewControllerWillSwipeOpenRightViewController;
+extern NSString *const SidebarContainerViewControllerWillSwipeClosedRightViewController;
 
 @interface CSidebarContainerViewController : CViewController<UIGestureRecognizerDelegate>
 

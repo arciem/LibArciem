@@ -1500,8 +1500,8 @@
 			projectRoot = "";
 			targets = (
 				039DC10E16CB300D00B52A7F /* Arciem */,
-				039DC33816CC88A800B52A7F /* ArciemFramework */,
 				039DC34216CC987E00B52A7F /* ArciemResources */,
+				039DC33816CC88A800B52A7F /* ArciemFramework */,
 			);
 		};
 /* End PBXProject section */

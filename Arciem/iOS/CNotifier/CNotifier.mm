@@ -126,21 +126,20 @@
 - (void)addItems:(NSSet*)items withExpiry:(BOOL)expire
 {
 	@synchronized(self) {
-		NSSet* newItems = [items objectsPassingTest:^BOOL(id obj, BOOL *stop) {
-			return ![self.items containsObject:obj];
+		NSSet* newItems = [items objectsPassingTest:^BOOL(CNotifierItem *item, BOOL *stop) {
+			return ![self.items containsObject:item];
 		}];
 		if(newItems.count > 0) {
 			CLogTrace(@"C_NOTIFIER", @"%@ adding: %@", self, newItems);
 			[self willChangeValueForKey:@"items" withSetMutation:NSKeyValueUnionSetMutation usingObjects:newItems];
 			[self.internalItems unionSet:newItems];
 			[self didChangeValueForKey:@"items" withSetMutation:NSKeyValueUnionSetMutation usingObjects:newItems];
-			if(expire) {
-				for(CNotifierItem* item in newItems) {
-					if(item.duration > 0.0) {
-						[self performSelector:@selector(removeItem:) withObject:item afterDelay:item.duration];
-					}
-				}
-			}
+            [newItems enumerateObjectsUsingBlock:^(CNotifierItem *item, BOOL *stop) {
+                [item incrementVisible];
+                if(expire && item.duration > 0.0) {
+                    [self performSelector:@selector(removeItem:) withObject:item afterDelay:item.duration];
+                }
+            }];
 		}
 	}
 }
@@ -160,16 +159,17 @@
 - (void)removeItems:(NSSet*)items
 {
 	@synchronized(self) {
-		NSSet* oldItems = [items objectsPassingTest:^BOOL(id obj, BOOL *stop) {
-			return [self.items containsObject:obj];
+		NSSet* oldItems = [items objectsPassingTest:^BOOL(CNotifierItem *item, BOOL *stop) {
+			return [self.items containsObject:item];
 		}];
 		if(oldItems.count > 0) {
 			CLogTrace(@"C_NOTIFIER", @"%@ removing: %@", self, oldItems);
-			for(CNotifierItem* item in oldItems) {
+            [oldItems enumerateObjectsUsingBlock:^(CNotifierItem *item, BOOL *stop) {
 				if(item.duration > 0.0) {
 					[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(removeItem:) object:item];
 				}
-			}
+                [item decrementVisible];
+            }];
 			[self willChangeValueForKey:@"items" withSetMutation:NSKeyValueMinusSetMutation usingObjects:oldItems];
 			[self.internalItems minusSet:oldItems];
 			[self didChangeValueForKey:@"items" withSetMutation:NSKeyValueMinusSetMutation usingObjects:oldItems];

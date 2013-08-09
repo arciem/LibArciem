@@ -23,9 +23,14 @@
 #import "Geom.h"
 #import "CShadowView.h"
 
-NSString* const SidebarContainerViewControllerWillShrinkCenterViewController = @"SidebarContainerViewControllerWillShrinkCenterViewController";
-NSString* const SidebarContainerViewControllerWillObscureCenterViewController = @"SidebarContainerViewControllerWillObscureCenterViewController";
-NSString* const SidebarContainerViewControllerWillRevealCenterViewController = @"SidebarContainerViewControllerWillRevealCenterViewController";
+NSString *const SidebarContainerViewControllerWillShrinkCenterViewController = @"SidebarContainerViewControllerWillShrinkCenterViewController";
+NSString *const SidebarContainerViewControllerWillObscureCenterViewController = @"SidebarContainerViewControllerWillObscureCenterViewController";
+NSString *const SidebarContainerViewControllerWillRevealCenterViewController = @"SidebarContainerViewControllerWillRevealCenterViewController";
+
+NSString *const SidebarContainerViewControllerWillSwipeOpenLeftViewController = @"SidebarContainerViewControllerWillSwipeOpenLeftViewController";
+NSString *const SidebarContainerViewControllerWillSwipeClosedLeftViewController = @"SidebarContainerViewControllerWillSwipeClosedLeftViewController";
+NSString *const SidebarContainerViewControllerWillSwipeOpenRightViewController = @"SidebarContainerViewControllerWillSwipeOpenRightViewController";
+NSString *const SidebarContainerViewControllerWillSwipeClosedRightViewController = @"SidebarContainerViewControllerWillSwipeClosedRightViewController";
 
 static const NSUInteger kRevealAnimationOptions = UIViewAnimationOptionLayoutSubviews;
 static const CGFloat kSwipeSensitiveWidthFraction = 0.05;
@@ -84,30 +89,6 @@ static const CGFloat kShadowWidth = 15.0;
     });
     return _centerSwipeLeftRecognizer;
 }
-
-#if 0
-- (UISwipeGestureRecognizer *)centerSwipeRightClosedRecognizer {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _centerSwipeRightClosedRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(rightSwipeRightGesture:)];
-        _centerSwipeRightClosedRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-        _centerSwipeRightClosedRecognizer.delaysTouchesBegan = YES;
-        _centerSwipeRightClosedRecognizer.delegate = self;
-    });
-    return _centerSwipeRightClosedRecognizer;
-}
-
-- (UISwipeGestureRecognizer *)centerSwipeLeftClosedRecognizer {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _centerSwipeLeftClosedRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(leftSwipeLeftGesture:)];
-        _centerSwipeLeftClosedRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-        _centerSwipeLeftClosedRecognizer.delaysTouchesBegan = YES;
-        _centerSwipeLeftClosedRecognizer.delegate = self;
-    });
-    return _centerSwipeLeftClosedRecognizer;
-}
-#endif
 
 - (UISwipeGestureRecognizer *)rightSwipeRightRecognizer {
     static dispatch_once_t onceToken;
@@ -417,8 +398,10 @@ static const CGFloat kShadowWidth = 15.0;
 {
 	CGPoint loc = [recognizer locationInView:self.centerViewController.view];
 	if(loc.x < self.centerViewController.view.boundsLeft + self.swipeSensitiveWidth) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SidebarContainerViewControllerWillSwipeOpenLeftViewController object:self];
 		[self setLeftViewVisible:YES animated:YES];
 	} else if (loc.x > self.centerViewController.view.boundsRight - self.swipeSensitiveWidth) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SidebarContainerViewControllerWillSwipeClosedRightViewController object:self];
 		[self setRightViewVisible:NO animated:YES];
 	}
 }
@@ -427,19 +410,23 @@ static const CGFloat kShadowWidth = 15.0;
 {
 	CGPoint loc = [recognizer locationInView:self.centerViewController.view];
 	if(loc.x < self.centerViewController.view.boundsLeft + self.swipeSensitiveWidth) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SidebarContainerViewControllerWillSwipeClosedLeftViewController object:self];
 		[self setLeftViewVisible:NO animated:YES];
 	} else if (loc.x > self.centerViewController.view.boundsRight - self.swipeSensitiveWidth) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:SidebarContainerViewControllerWillSwipeOpenRightViewController object:self];
 		[self setRightViewVisible:YES animated:YES];
 	}
 }
 
 - (void)rightSwipeRightGesture:(UISwipeGestureRecognizer*)recognizer
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarContainerViewControllerWillSwipeClosedRightViewController object:self];
 	[self setRightViewVisible:NO animated:YES];
 }
 
 - (void)leftSwipeLeftGesture:(UISwipeGestureRecognizer*)recognizer
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarContainerViewControllerWillSwipeClosedLeftViewController object:self];
 	[self setLeftViewVisible:NO animated:YES];
 }
 

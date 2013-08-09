@@ -294,7 +294,7 @@ static __strong CSystemSound* sDetentSound = nil;
     CGFloat clampedTargetOffset = arciem::clamp(targetOffset, minOffset, maxOffset);
     
     CGFloat viewTopOffset = 0.0, viewBottomOffset = 0.0;
-    NSUInteger selectedIndex = NSNotFound;
+//    NSUInteger selectedIndex = NSNotFound;
     for(NSUInteger index = 0; index < self.contentViews.count; index++) {
         UIView *view = self.contentViews[index];
         if(index == 0) {
@@ -302,7 +302,7 @@ static __strong CSystemSound* sDetentSound = nil;
         }
         viewBottomOffset = viewTopOffset + view.height;
         if(clampedTargetOffset >= viewTopOffset && clampedTargetOffset < viewBottomOffset) {
-            selectedIndex = index;
+//            selectedIndex = index;
             targetContentOffset->y = arciem::denormalize(0.5f, viewTopOffset, viewBottomOffset);
             break;
         }

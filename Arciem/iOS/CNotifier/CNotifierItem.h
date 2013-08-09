@@ -31,5 +31,9 @@
 @property (strong, nonatomic) UIFont* font;
 @property (nonatomic) NSTimeInterval duration;
 @property (copy, nonatomic) void (^tapHandler)(void);
+@property (readonly, nonatomic) BOOL visible; // KVC-compliant
+
+- (void)incrementVisible;
+- (void)decrementVisible;
 
 @end
