@@ -258,9 +258,13 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
                      ^(UILabel* lbl, id value) {
                          lbl.adjustsFontSizeToFitWidth = [value boolValue];
                      },
+                 @"minimumScaleFactor":
+                     ^(UILabel* lbl, id value) {
+                         lbl.minimumScaleFactor = [value floatValue];
+                     },
                  @"minimumFontSize":
                      ^(UILabel* lbl, id value) {
-                         lbl.minimumFontSize = [value floatValue];
+                         NSAssert(NO, @"minimumFontSize is deprecated.");
                      },
                  @"fontSize":
                      ^(UILabel* lbl, id value) {

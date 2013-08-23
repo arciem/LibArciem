@@ -240,12 +240,6 @@
 	}
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-	self.startButtonItem = nil;
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -275,12 +269,6 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - UITableViewDataSource
@@ -498,7 +486,7 @@
 
 	CSetupNavigationController* navController = [[CSetupNavigationController alloc] initWithRootViewController:viewController];
 	navController.modalPresentationStyle = UIModalPresentationFormSheet;
-	[self.navigationController presentModalViewController:navController animated:YES];
+    [self.navigationController presentViewController:navController animated:YES completion:NULL];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath

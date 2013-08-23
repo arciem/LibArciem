@@ -135,21 +135,6 @@ static const CGFloat kShadowWidth = 15.0;
     [self.view addSubview:self.rightShadowView];
 }
 
-- (void)unload
-{
-	_centerSwipeRightRecognizer = nil;
-	_centerSwipeLeftRecognizer = nil;
-	_rightSwipeRightRecognizer = nil;
-	_leftSwipeLeftRecognizer = nil;
-    _shieldView = nil;
-	self.centerViewController = nil;
-	self.leftViewController = nil;
-	self.rightViewController = nil;
-    self.leftShadowView = nil;
-    self.rightShadowView = nil;
-	[super unload];
-}
-
 - (UIViewController*)centerViewController
 {
 	return _centerViewController;

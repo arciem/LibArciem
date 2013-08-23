@@ -38,9 +38,6 @@ extern NSString* const InterfaceWillChangeOrientationNotification;
 @property(nonatomic) BOOL activityShieldViewVisible;
 @property (strong, nonatomic) NSNumber* overrideDisablesAutomaticKeyboardDismissal;
 
-// Called during -viewDidUnload and -dealloc. Subclasses should release any references held to objects that would have been connected when loading the controller's Nib or constructing it's views. Be sure to call super's implementation.
-- (void)unload;
-
 // Called during -initWithNibName:bundle: and -awakeFromNib. Subclasses should do any one-time initialization here. Be sure to call super's implementation.
 - (void)setup;
 

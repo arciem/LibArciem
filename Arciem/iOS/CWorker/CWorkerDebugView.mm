@@ -23,7 +23,7 @@
 #import "UIColorUtils.h"
 
 const CGFloat kCWorkerDebugViewFontSize = 14;
-const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
+const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 
 @interface CWorkerDebugView ()
 
@@ -84,7 +84,7 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 	self.fontSize = kCWorkerDebugViewFontSize;
 	self.label.textAlignment = NSTextAlignmentCenter;
 	self.label.adjustsFontSizeToFitWidth = YES;
-	self.label.minimumFontSize = kCWorkerDebugViewMinimumFontSize;
+	self.label.minimumScaleFactor = kCWorkerDebugViewMinimumScaleFactor;
 	self.label.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 	[self addSubview:self.label];
 }
@@ -211,14 +211,14 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 	self.label.font = [UIFont boldSystemFontOfSize:fontSize];
 }
 
-- (CGFloat)minimumFontSize
+- (CGFloat)minimumScaleFactor
 {
-	return self.label.minimumFontSize;
+	return self.label.minimumScaleFactor;
 }
 
-- (void)setMinimumFontSize:(CGFloat)minimumFontSize
+- (void)setMinimumScaleFactor:(CGFloat)minimumScaleFactor
 {
-	self.label.minimumFontSize = minimumFontSize;
+	self.label.minimumScaleFactor = minimumScaleFactor;
 }
 
 @end

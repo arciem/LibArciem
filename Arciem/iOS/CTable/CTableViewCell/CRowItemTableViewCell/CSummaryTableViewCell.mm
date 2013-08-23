@@ -38,7 +38,7 @@
 	
 	self.textLabel.font = self.font;
 	self.textLabel.adjustsFontSizeToFitWidth = YES;
-	self.textLabel.minimumFontSize = self.fontSize * 0.6;
+	self.textLabel.minimumScaleFactor = 0.6;
 	self.textLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 
 	self.modelValueObserver = [CObserver observerWithKeyPath:@"value" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {

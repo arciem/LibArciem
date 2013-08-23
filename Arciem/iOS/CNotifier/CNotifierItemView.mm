@@ -60,7 +60,7 @@
 	self.label.font = [UIFont boldSystemFontOfSize:14.0];
 	self.label.textAlignment = NSTextAlignmentCenter;
 	self.label.adjustsFontSizeToFitWidth = YES;
-	self.label.minimumFontSize = 10.0;
+    self.label.minimumScaleFactor = 0.5;
 	self.label.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 	[self addSubview:self.label];
 	

@@ -67,7 +67,7 @@
 - (void)cancel
 {
 	[self.delegate setupEditServerViewController:self didFinishSaving:NO];
-	[self.navigationController dismissModalViewControllerAnimated:YES];
+    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (BOOL)validate
@@ -97,7 +97,7 @@
 
 	if([self validate]) {
 		[self.delegate setupEditServerViewController:self didFinishSaving:YES];
-		[self.navigationController dismissModalViewControllerAnimated:YES];
+        [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
 	}
 }
 

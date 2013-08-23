@@ -26,6 +26,6 @@
 @property (strong, nonatomic) CWorker* worker;
 @property (nonatomic) NSUInteger row;
 @property (nonatomic) CGFloat fontSize;
-@property (nonatomic) CGFloat minimumFontSize;
+@property (nonatomic) CGFloat minimumScaleFactor;
 
 @end

@@ -49,13 +49,4 @@
 	[self customizeNavigationBar];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-	BOOL should = YES;
-	if(IsPhone()) {
-		should = toInterfaceOrientation == UIInterfaceOrientationPortrait;
-	}
-	return should;
-}
-
 @end

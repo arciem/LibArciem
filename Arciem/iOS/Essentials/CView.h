@@ -20,7 +20,8 @@
 
 typedef enum {
 	kViewKeyboardAdjustmentTypeNone = 0,
-	kViewKeyboardAdjustmentTypeShrink
+	kViewKeyboardAdjustmentTypeShrink,
+    kViewKeyboardAdjustmentTypeBottomConstraint
 } CViewKeyboardAdjustmentType;
 
 @protocol CViewLayoutDelegate;
@@ -31,6 +32,7 @@ typedef enum {
 @property (nonatomic) CViewKeyboardAdjustmentType keyboardAdjustmentType;
 @property (nonatomic) BOOL tapResignsFirstResponder;
 @property (assign, nonatomic) id<CViewLayoutDelegate> layoutDelegate;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 
 - (void)setup;
 

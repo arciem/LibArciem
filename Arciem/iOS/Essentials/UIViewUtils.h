@@ -52,9 +52,12 @@ extern NSString* const sTapInBackgroundNotification;
 - (void)addSubview:(UIView *)view animated:(BOOL)animated;
 - (void)removeFromSuperviewAnimated:(BOOL)animated;
 
+// Not supported for iOS 6 and later.
+#if 0
 - (UIView*)addTopBevelView;
 - (UIView*)addBottomBevelView;
 - (UIView*)addBevelViewAtY:(CGFloat)y top:(BOOL)top;
+#endif
 
 @property(readonly, nonatomic) NSUInteger indexInSubviews;
 

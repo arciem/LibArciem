@@ -69,23 +69,6 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	return self;
 }
 
-- (void)unload
-{
-	// behavior provided by subclasses
-}
-
-- (void)dealloc
-{
-	self.backButtonViewController = nil;
-	[self unload];
-}
-
-- (void)viewDidUnload
-{
-	[self unload];
-	[super viewDidUnload];
-}
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -162,19 +145,6 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 - (BOOL)shouldPopViewController
 {
 	return YES;
-}
-
-#pragma mark - UIViewController
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	BOOL should = YES;
-	
-	if (IsPhone()) {
-		should = interfaceOrientation == UIInterfaceOrientationPortrait;
-	}
-	
-	return should;
 }
 
 #pragma mark - CViewLayoutDelegate

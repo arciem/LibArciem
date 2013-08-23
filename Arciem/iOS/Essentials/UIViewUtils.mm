@@ -539,6 +539,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	[self.superview exchangeSubviewAtIndex:self.indexInSubviews withSubviewAtIndex:swapView.indexInSubviews];
 }
 
+#if 0
 - (UIView*)addBevelViewAtY:(CGFloat)y top:(BOOL)top
 {
 	NSString* imageName = top ? @"BevelTop" : @"BevelBottom";
@@ -571,6 +572,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 {
 	return [self addBevelViewAtY:self.boundsBottom top:NO];
 }
+#endif
 
 - (CFrame*)cframe NS_RETURNS_RETAINED
 {

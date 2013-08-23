@@ -27,7 +27,7 @@
 	UIFont* font = nil;
 	CGFloat maxHeight = self.bounds.size.height;
 	CGFloat maxWidth = self.bounds.size.width;
-	for(CGFloat fontSize = largeFontSize; fontSize >= self.minimumFontSize; --fontSize) {
+	for(CGFloat fontSize = largeFontSize; fontSize >= self.font.pointSize * self.minimumScaleFactor; --fontSize) {
 		font = [self.font fontWithSize:fontSize];
 		CGSize size = [self.text sizeWithFont:font constrainedToSize:self.bounds.size lineBreakMode:self.lineBreakMode];
 		CGFloat lines = size.height / font.leading;

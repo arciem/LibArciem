@@ -40,13 +40,4 @@
 	self.tableView.backgroundView.backgroundColor = [UIColor diagonalRight:NO patternColorWithColor1:color1 color2:color2 size:CGSizeMake(64, 64) scale:0.0];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-	BOOL should = YES;
-	if(IsPhone()) {
-		should = toInterfaceOrientation == UIInterfaceOrientationPortrait;
-	}
-	return should;
-}
-
 @end

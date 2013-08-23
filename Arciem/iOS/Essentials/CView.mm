@@ -129,6 +129,9 @@
 			case kViewKeyboardAdjustmentTypeShrink:
 				[self startObservingKeyboard];
 				break;
+			case kViewKeyboardAdjustmentTypeBottomConstraint:
+				[self startObservingKeyboard];
+				break;
 		}
 	}
 }
@@ -143,7 +146,7 @@
 
 - (void)keyboardWillMove:(NSNotification*)notification
 {
-	if(self.keyboardAdjustmentType == kViewKeyboardAdjustmentTypeShrink) {
+	if(self.keyboardAdjustmentType != kViewKeyboardAdjustmentTypeNone) {
 		CGRect endKeyboardRectangle = [self endKeyboardRectangleFromNotification:notification];
 		// The keyboard doesn't just move up and down-- when pushing a new UIViewController on a UINavigationController's stack, the keyboard can actually animate sideways out of the frame without moving down at all. So instead of merely following the top of the keyboard, we actually need to see whether it's final position intersects the receiver's superview at all. If not, then the bottom of the receiver should be at the maximum position, regardless of the vertical position of the keyboard.
 		CGFloat newMaxY = self.superview.boundsBottom;
@@ -169,10 +172,19 @@
 				options |= UIViewAnimationOptionCurveLinear;
 				break;
 		}
+        
+        if(self.keyboardAdjustmentType == kViewKeyboardAdjustmentTypeBottomConstraint) {
+            NSAssert1(self.bottomConstraint != nil, @"%@ bottomConstraint not set.", self);
+            self.bottomConstraint.constant = newMaxY - self.superview.boundsBottom;
+        }
+        
 		[UIView animateWithDuration:duration delay:0 options:options animations:^{
-			self.cframe.flexibleBottom = newMaxY;
+            if(self.keyboardAdjustmentType == kViewKeyboardAdjustmentTypeBottomConstraint) {
+                [self layoutIfNeeded];
+            } else {
+                self.cframe.flexibleBottom = newMaxY;
+            }
 		} completion:NULL];
-		[UIView commitAnimations];
 	}
 }
 
