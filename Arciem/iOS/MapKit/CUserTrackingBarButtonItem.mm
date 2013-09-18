@@ -19,20 +19,29 @@
 #import "CUserTrackingBarButtonItem.h"
 #import "UIImageUtils.h"
 #import "UIColorUtils.h"
+#import "DeviceUtils.h"
 
 @interface CUserTrackingBarButtonItem ()
 
 @property (strong, readwrite, nonatomic) MKMapView* mapView;
-@property (strong, nonatomic) UIImage* noFollowImage;
-@property (strong, nonatomic) UIImage* followImage;
-@property (strong, nonatomic) UIImage* followWithHeadingImage;
+@property (readonly, nonatomic) CGSize shadowOffset;
+@property (readonly, nonatomic) UIColor *shadowColor;
+@property (strong, readonly, nonatomic) UIImage* noFollowImage;
+@property (strong, readonly, nonatomic) UIImage* followImage;
+@property (strong, readonly, nonatomic) UIImage* followWithHeadingImage;
 @property (strong, nonatomic) UIButton* button;
 
-- (void)sync;
+- (void)syncAnimated:(BOOL)animated;
 
 @end
 
 @implementation CUserTrackingBarButtonItem
+
+@synthesize noFollowImage = _noFollowImage;
+@synthesize followImage = _followImage;
+@synthesize followWithHeadingImage = _followWithHeadingImage;
+@synthesize onColor = _onColor;
+@synthesize offColor = _offColor;
 
 - (id)initWithMapView:(MKMapView*)mapView
 {
@@ -43,22 +52,88 @@
 //		self.button.showsTouchWhenHighlighted = YES;
 		self.button.adjustsImageWhenHighlighted = YES;
 		
+        _onColor = [UIColor yellowColor];
+        _offColor = [UIColor systemNavigationBlue];
+        
 		[self.button addTarget:self action:@selector(buttonTapped) forControlEvents:UIControlEventTouchUpInside];
-
-		UIColor* onColor = [UIColor yellowColor];
-		self.noFollowImage = [UIImage imageWithShapeImage:[UIImage imageNamed:@"Tracking~iPad"] tintColor:[UIColor whiteColor] shadowColor:[UIColor colorWithWhite:0 alpha:0.5] shadowOffset:CGSizeMake(0,-1) shadowBlur:0.0];
-		self.followImage = [UIImage imageWithShapeImage:[UIImage imageNamed:@"Tracking~iPad"] tintColor:onColor shadowColor:[UIColor colorWithWhite:0 alpha:0.5] shadowOffset:CGSizeMake(0,-1) shadowBlur:0.0];
-		self.followWithHeadingImage = [UIImage imageWithShapeImage:[UIImage imageNamed:@"TrackingWithHeading~iPad"] tintColor:onColor shadowColor:nil shadowOffset:CGSizeMake(0,-1) shadowBlur:0.0];
 		
 		CGRect frame = {CGPointZero, self.noFollowImage.size};
 		self.button.frame = frame;
 		self.width = frame.size.width;
 		
-		[self sync];
+		[self syncAnimated:NO];
 	} else {
 		self.button = nil;
 	}
 	return self;
+}
+
+- (UIColor *)onColor {
+    return _onColor;
+}
+
+- (void)setOnColor:(UIColor *)onColor {
+    _onColor = onColor;
+    _followImage = nil;
+    _followWithHeadingImage = nil;
+    [self syncAnimated:NO];
+}
+
+- (UIColor *)offColor {
+    return _offColor;
+}
+
+- (void)setOffColor:(UIColor *)offColor {
+    _offColor = offColor;
+    _noFollowImage = nil;
+    [self syncAnimated:NO];
+}
+
+- (CGSize)shadowOffset {
+    static CGSize offset;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if(IsOSVersionAtLeast7()) {
+            offset = CGSizeZero;
+        } else {
+            offset = CGSizeMake(0, -1);
+        }
+    });
+    return offset;
+}
+
+- (UIColor *)shadowColor {
+    static UIColor *color;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if(IsOSVersionAtLeast7()) {
+            color = nil;
+        } else {
+            color = [UIColor colorWithWhite:0 alpha:0.5];
+        }
+    });
+    return color;
+}
+
+- (UIImage *)noFollowImage {
+    if(_noFollowImage == nil) {
+		_noFollowImage = [UIImage imageWithShapeImage:[UIImage imageNamed:@"Tracking~iPad"] tintColor:self.offColor shadowColor:self.shadowColor shadowOffset:self.shadowOffset shadowBlur:0.0];
+    }
+    return _noFollowImage;
+}
+
+- (UIImage *)followImage {
+    if(_followImage == nil) {
+		_followImage = [UIImage imageWithShapeImage:[UIImage imageNamed:@"Tracking~iPad"] tintColor:self.onColor shadowColor:self.shadowColor shadowOffset:self.shadowOffset shadowBlur:0.0];
+    }
+    return _followImage;
+}
+
+- (UIImage *)followWithHeadingImage {
+    if(_followWithHeadingImage == nil) {
+		_followWithHeadingImage = [UIImage imageWithShapeImage:[UIImage imageNamed:@"TrackingWithHeading~iPad"] tintColor:self.onColor shadowColor:nil shadowOffset:self.shadowOffset shadowBlur:0.0];
+    }
+    return _followWithHeadingImage;
 }
 
 - (void)setImage:(UIImage*)image animated:(BOOL)animated
@@ -78,7 +153,7 @@
 	}
 }
 
-- (void)sync
+- (void)syncAnimated:(BOOL)animated
 {
 	UIImage* oldImage = [self.button imageForState:UIControlStateNormal];
 	UIImage* newImage = nil;
@@ -95,11 +170,11 @@
 			break;
 	}
 	
-	BOOL animated = (newImage != oldImage) && 
+	BOOL animate = animated && (newImage != oldImage) &&
 	(newImage == self.followWithHeadingImage || 
 	 oldImage == self.followWithHeadingImage);
 	
-	[self setImage:newImage animated:animated];
+	[self setImage:newImage animated:animate];
 }
 
 - (void)buttonTapped
@@ -115,12 +190,12 @@
 			[self.mapView setUserTrackingMode:MKUserTrackingModeNone animated:YES];
 			break;
 	}
-	[self sync];
+	[self syncAnimated:YES];
 }
 
 - (void)didChangeUserTrackingMode
 {
-	[self sync];
+	[self syncAnimated:YES];
 }
 
 @end

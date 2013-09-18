@@ -37,6 +37,7 @@ extern NSString* const InterfaceWillChangeOrientationNotification;
 @property(assign, nonatomic) UIViewAnimationTransition transitionForNextPush;
 @property(nonatomic) BOOL activityShieldViewVisible;
 @property (strong, nonatomic) NSNumber* overrideDisablesAutomaticKeyboardDismissal;
+@property(readonly) UIModalPresentationStyle effectiveModalPresentationStyle;
 
 // Called during -initWithNibName:bundle: and -awakeFromNib. Subclasses should do any one-time initialization here. Be sure to call super's implementation.
 - (void)setup;
@@ -53,5 +54,7 @@ extern NSString* const InterfaceWillChangeOrientationNotification;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
 - (id)initWithDeviceNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
+
+- (void)setStatusBarStyleIfFullScreen:(UIStatusBarStyle)statusBarStyle;
 
 @end

@@ -21,6 +21,7 @@
 #import "UIColorUtils.h"
 #import "CGUtils.h"
 #import "UIImageUtils.h"
+#import "DeviceUtils.h"
 
 @interface CNotifierItemView ()
 
@@ -33,11 +34,8 @@
 
 @implementation CNotifierItemView
 
-@synthesize item = item_;
-@synthesize label = label_;
-@synthesize backgroundImageView = backgroundImageView_;
-@synthesize rightAccessoryView = rightAccessoryView_;
-@synthesize tapRecognizer = tapRecognizer_;
+@synthesize rightAccessoryView = _rightAccessoryView;
+@synthesize contentOffsetTop = _contentOffsetTop;
 
 - (void)setup
 {
@@ -56,7 +54,6 @@
 	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.label.opaque = NO;
 	self.label.backgroundColor = [UIColor clearColor];
-//	self.label.backgroundColor = [[UIColor greenColor] colorWithAlpha:0.5];
 	self.label.font = [UIFont boldSystemFontOfSize:14.0];
 	self.label.textAlignment = NSTextAlignmentCenter;
 	self.label.adjustsFontSizeToFitWidth = YES;
@@ -72,20 +69,29 @@
 	[self removeObserver:self forKeyPath:@"item"];
 }
 
+- (CGFloat)contentOffsetTop {
+    return _contentOffsetTop;
+}
+
+- (void)setContentOffsetTop:(CGFloat)contentOffsetTop {
+    _contentOffsetTop = contentOffsetTop;
+    [self setNeedsLayout];
+}
+
 - (UIView*)rightAccessoryView
 {
-	return rightAccessoryView_;
+	return _rightAccessoryView;
 }
 
 - (void)setRightAccessoryView:(UIView *)rightAccessoryView
 {
-	if(rightAccessoryView_ != rightAccessoryView) {
-		[rightAccessoryView_ removeFromSuperview];
-		rightAccessoryView_ = rightAccessoryView;
-		if(rightAccessoryView_ != nil) {
-			[rightAccessoryView_ sizeToFit];
-			rightAccessoryView_.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
-			[self addSubview:rightAccessoryView_];
+	if(_rightAccessoryView != rightAccessoryView) {
+		[_rightAccessoryView removeFromSuperview];
+		_rightAccessoryView = rightAccessoryView;
+		if(_rightAccessoryView != nil) {
+			[_rightAccessoryView sizeToFit];
+			_rightAccessoryView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
+			[self addSubview:_rightAccessoryView];
 		}
 
 		[self setNeedsLayout];
@@ -98,13 +104,14 @@
 
 	CFrame* labelFrame = self.label.cframe;
 	labelFrame.frame = self.bounds;
+    labelFrame.flexibleTop += self.contentOffsetTop;
 	labelFrame.flexibleLeft = self.boundsLeft + 10;
 	labelFrame.flexibleRight = self.boundsRight - 10;
 	labelFrame.top -= 1;
 
 	if(self.rightAccessoryView != nil) {
 		CFrame* rightAccessoryViewFrame = self.rightAccessoryView.cframe;
-		rightAccessoryViewFrame.top = self.boundsTop;
+		rightAccessoryViewFrame.top = self.boundsTop + self.contentOffsetTop;
 		rightAccessoryViewFrame.flexibleBottom = self.boundsBottom;
 		rightAccessoryViewFrame.width = 30;
 		rightAccessoryViewFrame.right = self.boundsRight;
@@ -118,26 +125,39 @@
 {
 	CGRect imageBounds = {0, 0, 10, self.height};
 	
+    CGFloat topEdgeWidth = 0.5;
+    CGFloat bottomEdgeWidth = 0.5;
+    
+    if(IsOSVersionAtLeast7()) {
+        topEdgeWidth = 0.0;
+    }
+    
 	CGRect topEdge, middle, bottomEdge;
-	CGRectDivide(imageBounds, &topEdge, &middle, 1.0, CGRectMinYEdge);
-	CGRectDivide(middle, &bottomEdge, &middle, 1.0, CGRectMaxYEdge);
+	CGRectDivide(imageBounds, &topEdge, &middle, topEdgeWidth, CGRectMinYEdge);
+	CGRectDivide(middle, &bottomEdge, &middle, bottomEdgeWidth, CGRectMaxYEdge);
 	
 	UIColor* tintColor = [self.item.tintColor colorWithAlphaComponent:1.0];
 	UIColor* topColor = [tintColor colorByLighteningFraction:0.3];
-	UIColor* bottomColor = [tintColor colorByDarkeningFraction:0.4];
+	UIColor* bottomColor = [[tintColor colorByDarkeningFraction:0.3] colorByColorBurnFraction:0.1];
 	
-	UIColor* color1 = [tintColor colorByLighteningFraction:0.2];
-	UIColor* color2 = [tintColor colorByDarkeningFraction:0.3];
+    UIColor *color1, *color2;
+    if(IsOSVersionAtLeast7()) {
+        color1 = [tintColor colorByLighteningFraction:0.1];
+        color2 = [tintColor colorByDarkeningFraction:0.1];
+    } else {
+        color1 = [tintColor colorByLighteningFraction:0.2];
+        color2 = [tintColor colorByDarkeningFraction:0.3];
+    }
 
 	UIGraphicsBeginImageContextWithOptions(imageBounds.size, YES, 0.0);
+    
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGGradientRef gradient = GradientCreateWith2Colors(color1.CGColor, color2.CGColor, SharedColorSpaceDeviceRGB());
+	ContextFillRectGradientVertical(context, imageBounds, gradient);
+	CGGradientRelease(gradient);
 	
 	[topColor set];
 	UIRectFill(topEdge);
-
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGGradientRef gradient = GradientCreateWith2Colors(color1.CGColor, color2.CGColor, SharedColorSpaceDeviceRGB());
-	ContextFillRectGradientVertical(context, middle, gradient);
-	CGGradientRelease(gradient);
 
 	[bottomColor set];
 	UIRectFill(bottomEdge);
@@ -156,12 +176,16 @@
 
 	if(self.item.whiteText) {
 		self.label.textColor = [UIColor whiteColor];
-		self.label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-		self.label.shadowOffset = CGSizeMake(0, -1);
+        if(!IsOSVersionAtLeast7()) {
+            self.label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+            self.label.shadowOffset = CGSizeMake(0, -1);
+        }
 	} else {
 		self.label.textColor = [UIColor blackColor];
-		self.label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.5];
-		self.label.shadowOffset = CGSizeMake(0, 1);
+        if(!IsOSVersionAtLeast7()) {
+            self.label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.5];
+            self.label.shadowOffset = CGSizeMake(0, 1);
+        }
 	}
 
 	UIImageView* rightAccessoryView = nil;

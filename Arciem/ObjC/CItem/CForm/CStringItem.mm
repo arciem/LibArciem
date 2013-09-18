@@ -36,7 +36,6 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 @synthesize maxLength = maxLength_;
 @synthesize validCharacterSet = validCharacterSet_;
 @synthesize invalidCharacterSet = invalidCharacterSet_;
-@synthesize validRegularExpression = validRegularExpression_;
 
 #pragma mark - Lifecycle
 
@@ -80,7 +79,6 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	item.minLength = self.minLength;
 	item.maxLength = self.maxLength;
 	item.validCharacterSet = self.validCharacterSet;
-	item.validRegularExpression = self.validRegularExpression;
 	
 	return item;
 }
@@ -261,6 +259,34 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	return [self string:string matchesRegularExpression:self.validRegularExpression];
 }
 
+#pragma mark - @property validRegularExpression
+
+- (NSString*)validRegularExpression
+{
+	return (self.dict)[@"validRegularExpression"];
+}
+
+- (void)setValidRegularExpression:(NSString *)validRegularExpression
+{
+	(self.dict)[@"validRegularExpression"] = validRegularExpression;
+}
+
+#pragma mark - @property invalidRegularExpressionMessage
+
+- (NSString*)invalidRegularExpressionMessage
+{
+	NSString *message = (self.dict)[@"invalidRegularExpressionMessage"];
+    if(message == nil) {
+        message = @"%@ is invalid.";
+    }
+    return message;
+}
+
+- (void)setInvalidRegularExpressionMessage:(NSString *)invalidRegularExpressionMessage
+{
+	(self.dict)[@"invalidRegularExpressionMessage"] = invalidRegularExpressionMessage;
+}
+
 #pragma mark - @property fieldWidthCharacters
 
 - (NSUInteger)fieldWidthCharacters
@@ -345,12 +371,11 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 			
 			if(error == nil) {
 				if(![self stringMatchesValidRegularExpression:self.stringValue]) {
-					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorSyntaxError localizedFormat:@"%@ is not valid.", self.title];
+					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorSyntaxError localizedFormat:self.invalidRegularExpressionMessage, self.title];
 				}
 			}
 		}
 	}
-	
 	return error;
 }
 

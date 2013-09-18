@@ -19,6 +19,7 @@
 #import "CNotifierViewController.h"
 
 #import "UIViewUtils.h"
+#import "DeviceUtils.h"
 
 static const CGFloat kNotifierBarHeight = 30.0;
 
@@ -33,6 +34,7 @@ static const CGFloat kNotifierBarHeight = 30.0;
 @synthesize bodyViewController = _bodyViewController;
 @synthesize notifier = _notifier;
 @synthesize rowCapacity = _rowCapacity;
+@synthesize statusBarHeight = _statusBarHeight;
 
 - (void)setup {
     [super setup];
@@ -43,11 +45,27 @@ static const CGFloat kNotifierBarHeight = 30.0;
 - (void)viewDidLoad {
     self.notifierBar = [[CNotifierBar alloc] initWithFrame:CGRectMake(0, 0, self.view.width, kNotifierBarHeight)];
     self.notifierBar.rowCapacity = self.rowCapacity;
+    self.notifierBar.statusBarHeight = self.statusBarHeight;
     self.notifierBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
 //    self.notifierBar.debugColor = [UIColor redColor];
     [self.view addSubview:self.notifierBar];
     self.notifierBar.delegate = self;
     self.notifierBar.notifier = self.notifier;
+    [self syncToModalPresentationStyle];
+}
+
+- (void)syncToModalPresentationStyle {
+    if(IsOSVersionAtLeast7()) {
+        self.statusBarHeight = 20;
+        if(IsPad() && self.modalPresentationStyle != UIModalPresentationFullScreen) {
+            self.statusBarHeight = 0;
+        }
+    }
+}
+
+- (void)setModalPresentationStyle:(UIModalPresentationStyle)modalPresentationStyle {
+    [super setModalPresentationStyle:modalPresentationStyle];
+    [self syncToModalPresentationStyle];
 }
 
 - (UIViewController*)bodyViewController {
@@ -86,6 +104,15 @@ static const CGFloat kNotifierBarHeight = 30.0;
 - (void)setRowCapacity:(NSUInteger)rowCapacity {
     _rowCapacity = rowCapacity;
     self.notifierBar.rowCapacity = _rowCapacity;
+}
+
+- (CGFloat)statusBarHeight {
+    return _statusBarHeight;
+}
+
+- (void)setStatusBarHeight:(CGFloat)statusBarHeight {
+    _statusBarHeight = statusBarHeight;
+    self.notifierBar.statusBarHeight = statusBarHeight;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

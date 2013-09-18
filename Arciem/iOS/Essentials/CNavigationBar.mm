@@ -115,6 +115,10 @@
     }
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+}
+
 - (UIView*)centerView
 {
     return _centerView;

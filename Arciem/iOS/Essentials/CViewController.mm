@@ -196,4 +196,22 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	return disables;
 }
 
+- (UIModalPresentationStyle)effectiveModalPresentationStyle {
+    UIModalPresentationStyle style;
+    UIViewController *controller = self;
+    do {
+        style = controller.modalPresentationStyle;
+        controller = controller.parentViewController;
+    } while(style == UIModalPresentationCurrentContext);
+    return style;
+}
+
+- (void)setStatusBarStyleIfFullScreen:(UIStatusBarStyle)statusBarStyle {
+    if(IsOSVersionAtLeast7()) {
+        if(IsPhone() || self.effectiveModalPresentationStyle == UIModalPresentationFullScreen) {
+            [UIApplication sharedApplication].statusBarStyle = statusBarStyle;
+        }
+    }
+}
+
 @end

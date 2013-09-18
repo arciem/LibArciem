@@ -19,6 +19,7 @@
 #import "CBadgeView.h"
 #import "ObjectUtils.h"
 #import "StringUtils.h"
+#import "DeviceUtils.h"
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
@@ -60,13 +61,16 @@ static const CGFloat kFontSize = 14.0;
     self.contentScaleFactor = [[UIScreen mainScreen] scale];
     self.backgroundColor = [UIColor clearColor];
     self.textColor = [UIColor whiteColor];
-    self.strokeColor = [UIColor whiteColor];
     self.fillColor = [UIColor redColor];
     self.cornerRoundness = 0.5;
-    self.hasGloss = YES;
     _scaleFactor = 1.0;
-    _shadowRadius = 3.0;
-    _shadowOffset = CGSizeMake(0.0, 1.0);
+
+    if(!IsOSVersionAtLeast7()) {
+        self.strokeColor = [UIColor whiteColor];
+        self.hasGloss = YES;
+        _shadowRadius = 3.0;
+        _shadowOffset = CGSizeMake(0.0, 1.0);
+    }
 }
 
 + (CBadgeView*)badgeViewWithText:(NSString *)text {

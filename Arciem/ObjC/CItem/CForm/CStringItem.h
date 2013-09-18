@@ -30,17 +30,18 @@ enum {
 
 @interface CStringItem : CItem
 
-@property (strong, nonatomic) NSString* stringValue;
+@property (strong, nonatomic) NSString *stringValue;
 @property (readonly, nonatomic) NSUInteger currentLength;
 @property (nonatomic) NSUInteger minLength;
 @property (nonatomic) NSUInteger maxLength;
 @property (readonly, nonatomic) NSInteger remainingLength;
-@property (copy, nonatomic) NSCharacterSet* validCharacterSet;
-@property (copy, nonatomic) NSString* validCharacters;
-@property (copy, nonatomic) NSString* validRegularExpression;
+@property (copy, nonatomic) NSCharacterSet *validCharacterSet;
+@property (copy, nonatomic) NSString *validCharacters;
+@property (copy, nonatomic) NSString *validRegularExpression;
+@property (copy, nonatomic) NSString *invalidRegularExpressionMessage;
 @property (nonatomic) NSUInteger fieldWidthCharacters;
-@property (strong, nonatomic) NSString* autocapitalizationType; // sentences, none, words, all
-@property (strong, nonatomic) NSString* keyboardType; // default, emailAddress, phonePad, asciiCapable
+@property (strong, nonatomic) NSString *autocapitalizationType; // sentences, none, words, all
+@property (strong, nonatomic) NSString *keyboardType; // default, emailAddress, phonePad, asciiCapable
 @property (nonatomic) BOOL secureTextEntry;
 
 + (CItem*)stringItem;

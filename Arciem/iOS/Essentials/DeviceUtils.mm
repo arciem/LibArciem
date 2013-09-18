@@ -52,6 +52,15 @@ BOOL IsOSVersionAtLeast(NSString *minVerStr)
 	return [currSysVer compare:minVerStr options:NSNumericSearch] != NSOrderedAscending;
 }
 
+BOOL IsOSVersionAtLeast7() {
+    static BOOL atLeast7;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        atLeast7 = IsOSVersionAtLeast(@"7.0");
+    });
+    return atLeast7;
+}
+
 CGFloat ScreenScale()
 {
 	static CGFloat scale = 0.0;

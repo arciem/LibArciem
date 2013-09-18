@@ -90,7 +90,11 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	if([view isKindOfClass:[UIScrollView class]]) {
 		prefix = @"***";
 	}
-	CLogPrint(@"%@%@%3d %@", prefix, indent, level, view);
+    NSString *tintColorString = @"";
+    if(IsOSVersionAtLeast7()) {
+        tintColorString = [NSString stringWithFormat:@" tintColor:%@", view.tintColor];
+    }
+	CLogPrint(@"%@%@%3d %@ %@", prefix, indent, level, view, tintColorString);
 	indent = [indent stringByAppendingString:@"  |"];
 	for(UIView* subview in view.subviews) {
 		[self printViewHierarchy:subview indent:indent level:level+1];

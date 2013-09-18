@@ -30,6 +30,7 @@
 - (void)updateItemsAnimated:(BOOL)animated;
 
 @property (nonatomic) CGFloat rowHeight;
+@property (nonatomic) CGFloat statusBarHeight;
 
 @end
 

@@ -19,6 +19,16 @@
 #import "CItem.h"
 #import "CTableSectionItem.h"
 #import "CTableSpacerItem.h"
+#import "CTableActionItem.h"
+#import "CTableAddRepeatingItem.h"
+#import "CTableBooleanItem.h"
+#import "CTableButtonItem.h"
+#import "CTableCreditCardItem.h"
+#import "CTableMultiChoiceItem.h"
+#import "CTableNoteItem.h"
+#import "CTableRowItem.h"
+#import "CTableSummaryItem.h"
+#import "CTableTextFieldItem.h"
 
 @protocol CTableItemDelegate;
 

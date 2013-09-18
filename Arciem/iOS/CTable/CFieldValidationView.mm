@@ -43,18 +43,13 @@ static UIImage* sInvalidImage = nil;
 
 @implementation CFieldValidationView
 
-@synthesize item = item_;
-@synthesize newView = newView_;
-@synthesize validView = validView_;
-@synthesize invalidView	= invalidView_;
-@synthesize needsValidationView = needsValidationView_;
-@synthesize validatingView = validatingView_;
-@synthesize contentView = contentView_;
-@synthesize lastContentView = lastContentView_;
-@synthesize validMarkTintColor = validMarkTintColor_;
-@synthesize invalidMarkTintColor = invalidMarkTintColor_;
-@synthesize itemStateObserver = itemStateObserver_;
-@synthesize itemEditingObserver = itemEditingObserver_;
+@synthesize validView = _validView;
+@synthesize invalidView = _invalidView;
+@synthesize validatingView = _validatingView;
+@synthesize item = _item;
+@synthesize newView = _newView;
+@synthesize needsValidationView = _needsValidationView;
+@synthesize contentView = _contentView;
 
 - (void)setup
 {
@@ -107,80 +102,80 @@ static UIImage* sInvalidImage = nil;
 
 - (UIView*)validView
 {
-	if(validView_ == nil) {
+	if(_validView == nil) {
 		if(sValidImage == nil) {
 			sValidImage = [self imageNamed:@"FieldValidMark" tintColor:self.validMarkTintColor];
 		}
-		validView_ = [self viewWithImage:sValidImage tintColor:self.validMarkTintColor];
+		_validView = [self viewWithImage:sValidImage tintColor:self.validMarkTintColor];
 	}
-	return validView_;
+	return _validView;
 }
 
 - (UIView*)invalidView
 {
-	if(invalidView_ == nil) {
+	if(_invalidView == nil) {
 		if(sInvalidImage == nil) {
 			sInvalidImage = [self imageNamed:@"FieldInvalidMark" tintColor:self.invalidMarkTintColor];
 		}
-		invalidView_ = [self viewWithImage:sInvalidImage tintColor:self.invalidMarkTintColor];
+		_invalidView = [self viewWithImage:sInvalidImage tintColor:self.invalidMarkTintColor];
 	}
-	return invalidView_;
+	return _invalidView;
 }
 
 - (UIView*)newView
 {
-	return newView_;
+	return _newView;
 }
 
 - (UIView*)needsValidationView
 {
-	return needsValidationView_;
+	return _needsValidationView;
 }
 
 - (UIView*)validatingView
 {
-	if(validatingView_ == nil) {
-		validatingView_ = [self viewWithImage:nil tintColor:[UIColor blueColor]];
+	if(_validatingView == nil) {
+		_validatingView = [self viewWithImage:nil tintColor:[UIColor blueColor]];
 	}
-	return validatingView_;
+	return _validatingView;
 }
 
 - (CItem*)item
 {
-	return item_;
+	return _item;
 }
 
 - (void)setItem:(CItem *)item
 {
-	if(item_ != item) {
-		[self.itemStateObserver removeObject:item_];
-		[self.itemEditingObserver removeObject:item_];
-		item_ = item;
-		[self.itemStateObserver addObject:item_];
-		[self.itemEditingObserver addObject:item_];
+	if(_item != item) {
+		[self.itemStateObserver removeObject:_item];
+		[self.itemEditingObserver removeObject:_item];
+		_item = item;
+		[self.itemStateObserver addObject:_item];
+		[self.itemEditingObserver addObject:_item];
 	}
 }
 
 - (UIView*)contentView
 {
-	return contentView_;
+	return _contentView;
 }
 
 - (void)setContentView:(UIView *)contentView
 {
-	if(contentView_ != contentView) {
+	if(_contentView != contentView) {
 		[self.lastContentView removeFromSuperview];
-		self.lastContentView = contentView_;
-		contentView_ = contentView;
+		self.lastContentView = _contentView;
+		_contentView = contentView;
 		
-		if(contentView_ != nil) {
-			[self addSubview:contentView_];
+		if(_contentView != nil) {
+			[self addSubview:_contentView];
 		}
 
-		contentView_.frame = self.bounds;
-		contentView_.alpha = 0.0;
+		_contentView.frame = self.bounds;
+		_contentView.alpha = 0.0;
 		[UIView animateWithDuration:0.3 animations:^{
-			contentView_.alpha = 1.0;
+			_contentView.alpha = 1.0;
 			self.lastContentView.alpha = 0.0;
 		}];
 	}

@@ -22,5 +22,6 @@
 @interface CNotifierItemView : CView
 
 @property (strong, nonatomic) CNotifierItem* item;
+@property (nonatomic) CGFloat contentOffsetTop;
 
 @end
