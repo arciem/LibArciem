@@ -20,6 +20,6 @@
 
 @interface CTableActionItem : CTableRowItem
 
-@property (strong, nonatomic) NSString* action;
+@property (nonatomic) NSString* action;
 
 @end

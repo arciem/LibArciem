@@ -49,7 +49,7 @@ void dispatch_async_repeated(double intervalInSeconds, dispatch_queue_t queue, v
                 waitUntilDone:wait];
 }
 
-- (void)performBlock:(void (^)(BOOL* stop))block queue:(dispatch_queue_t)queue repeatInterval:(NSTimeInterval)repeatInterval;
+- (void)performBlock:(void (^)(BOOL* stop))block queue:(dispatch_queue_t)queue repeatInterval:(NSTimeInterval)repeatInterval
 {
     dispatch_async_repeated(repeatInterval, queue, block);
 }

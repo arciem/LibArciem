@@ -27,7 +27,8 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 
 @interface CWorkerDebugView ()
 
-@property (strong, nonatomic) UILabel* label;
+@property (nonatomic) UILabel* label;
+@property (nonatomic) CLayoutConstraintsGroup *myConstraintsGroup;
 
 @end
 
@@ -63,10 +64,13 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 - (void)setup
 {
 	[super setup];
+    
+    self.backgroundColor = [UIColor clearColor];
+    self.opaque = NO;
 	
-//	self.debugColor = [UIColor redColor];
+    //	self.debugColor = [UIColor redColor];
+    //	self.backgroundColor = [[UIColor blueColor] colorWithAlpha:0.5];
 
-//	self.backgroundColor = [[UIColor blueColor] colorWithAlpha:0.5];
 	self.userInteractionEnabled = NO;
 	self.layer.borderWidth = 0.5;
 
@@ -78,15 +82,27 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 #endif
 	
 	self.label = [[UILabel alloc] initWithFrame:CGRectInset(self.bounds, 10, 0)];
+    self.label.translatesAutoresizingMaskIntoConstraints = NO;
 	self.label.backgroundColor = [UIColor clearColor];
 	self.label.opaque = NO;
-	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.fontSize = kCWorkerDebugViewFontSize;
-	self.label.textAlignment = NSTextAlignmentCenter;
+//	self.label.textAlignment = NSTextAlignmentCenter;
 	self.label.adjustsFontSizeToFitWidth = YES;
 	self.label.minimumScaleFactor = kCWorkerDebugViewMinimumScaleFactor;
 	self.label.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 	[self addSubview:self.label];
+}
+
+- (void)updateConstraints {
+    [super updateConstraints];
+    
+    self.myConstraintsGroup = [CLayoutConstraintsGroup groupWithOwner:self];
+    [self.myConstraintsGroup addConstraint:[self.label constrainTopEqualToTopOfItem:self]];
+    [self.myConstraintsGroup addConstraint:[self.label constrainBottomEqualToBottomOfItem:self]];
+    [self.myConstraintsGroup addConstraint:[self.label constrainLeadingGreaterThanOrEqualToLeadingOfItem:self offset:10]];
+    [self.myConstraintsGroup addConstraint:[self.label constrainTrailingLessThanOrEqualToTrailingOfItem:self offset:-10]];
+    [self.myConstraintsGroup addConstraint:[self.label constrainCenterXEqualToCenterXOfItem:self]];
 }
 
 - (void)syncToWorker
@@ -142,6 +158,8 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 		self.layer.borderColor = [backgroundColor colorByDarkeningFraction:0.5].CGColor;
 	
 		CLogTrace(@"C_WORKER_DEBUG_VIEW", @"worker: %@ %@ isActive:%d", self.worker, status, self.worker.isActive);
+        
+        [self setNeedsUpdateConstraints];
 	}
 }
 

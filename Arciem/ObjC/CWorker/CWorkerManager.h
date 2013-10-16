@@ -24,7 +24,7 @@
 
 - (void)addWorker:(CWorker*)worker success:(void (^)(CWorker*))success shouldRetry:(BOOL (^)(CWorker*, NSError*))shouldRetry failure:(void (^)(CWorker*, NSError*))failure finally:(void (^)(CWorker*))finally;
 
-@property (strong, readonly, nonatomic) NSOperationQueue* queue;
+@property (readonly, nonatomic) NSOperationQueue* queue;
 @property (readonly, nonatomic) NSMutableSet* workers;
 
 - (NSMutableSet*)workers;

@@ -36,6 +36,8 @@ static const CGFloat kFrameWidth = 8.0;
 - (void)setup
 {
     [super setup];
+    self.opaque = NO;
+    self.backgroundColor = [UIColor clearColor];
     self.userInteractionEnabled = NO;
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.contentMode = UIViewContentModeRedraw;

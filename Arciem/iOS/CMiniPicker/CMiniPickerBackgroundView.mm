@@ -30,6 +30,7 @@
 
 - (void)setup
 {
+    [super setup];
     self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.contentMode = UIViewContentModeRedraw;
     self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];

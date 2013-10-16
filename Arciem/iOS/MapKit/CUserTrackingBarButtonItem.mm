@@ -23,13 +23,12 @@
 
 @interface CUserTrackingBarButtonItem ()
 
-@property (strong, readwrite, nonatomic) MKMapView* mapView;
 @property (readonly, nonatomic) CGSize shadowOffset;
 @property (readonly, nonatomic) UIColor *shadowColor;
-@property (strong, readonly, nonatomic) UIImage* noFollowImage;
-@property (strong, readonly, nonatomic) UIImage* followImage;
-@property (strong, readonly, nonatomic) UIImage* followWithHeadingImage;
-@property (strong, nonatomic) UIButton* button;
+@property (nonatomic) UIImage* noFollowImage;
+@property (nonatomic) UIImage* followImage;
+@property (nonatomic) UIImage* followWithHeadingImage;
+@property (nonatomic) UIButton* button;
 
 - (void)syncAnimated:(BOOL)animated;
 
@@ -42,12 +41,12 @@
 @synthesize followWithHeadingImage = _followWithHeadingImage;
 @synthesize onColor = _onColor;
 @synthesize offColor = _offColor;
+@synthesize mapView = _mapView;
 
 - (id)initWithMapView:(MKMapView*)mapView
 {
 	self.button = [UIButton buttonWithType:UIButtonTypeCustom];
 	if(self = [super initWithCustomView:self.button]) {
-		self.mapView = mapView;
 
 //		self.button.showsTouchWhenHighlighted = YES;
 		self.button.adjustsImageWhenHighlighted = YES;
@@ -61,7 +60,7 @@
 		self.button.frame = frame;
 		self.width = frame.size.width;
 		
-		[self syncAnimated:NO];
+		self.mapView = mapView;
 	} else {
 		self.button = nil;
 	}
@@ -74,8 +73,8 @@
 
 - (void)setOnColor:(UIColor *)onColor {
     _onColor = onColor;
-    _followImage = nil;
-    _followWithHeadingImage = nil;
+    self.followImage = nil;
+    self.followWithHeadingImage = nil;
     [self syncAnimated:NO];
 }
 
@@ -85,11 +84,13 @@
 
 - (void)setOffColor:(UIColor *)offColor {
     _offColor = offColor;
-    _noFollowImage = nil;
+    self.noFollowImage = nil;
     [self syncAnimated:NO];
 }
 
 - (CGSize)shadowOffset {
+    return CGSizeZero;
+#if 0
     static CGSize offset;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -100,9 +101,12 @@
         }
     });
     return offset;
+#endif
 }
 
 - (UIColor *)shadowColor {
+    return nil;
+#if 0
     static UIColor *color;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -113,6 +117,7 @@
         }
     });
     return color;
+#endif
 }
 
 - (UIImage *)noFollowImage {
@@ -159,7 +164,6 @@
 	UIImage* newImage = nil;
 	switch(self.mapView.userTrackingMode) {
 		case MKUserTrackingModeNone:
-		default:
 			newImage = self.noFollowImage;
 			break;
 		case MKUserTrackingModeFollow:
@@ -196,6 +200,15 @@
 - (void)didChangeUserTrackingMode
 {
 	[self syncAnimated:YES];
+}
+
+- (MKMapView *)mapView {
+    return _mapView;
+}
+
+- (void)setMapView:(MKMapView *)mapView {
+    _mapView = mapView;
+    [self syncAnimated:NO];
 }
 
 @end

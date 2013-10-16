@@ -20,13 +20,15 @@
 #import "CObserver.h"
 #import "UIViewUtils.h"
 #import "CGUtils.h"
+#import "DeviceUtils.h"
+#import "ObjectUtils.h"
 #include <cmath>
 #include <algorithm>
 
 @interface CMiniPickerViewCell ()
 
-@property (strong, nonatomic) NSMutableArray* columnLabels;
-@property (strong, nonatomic) CObserver* modelObserver;
+@property (nonatomic) NSMutableArray* columnLabels;
+@property (nonatomic) CObserver* modelObserver;
 
 @end
 
@@ -43,12 +45,16 @@
     label.backgroundColor = [UIColor clearColor];
     if(self.onDarkBackground) {
         label.textColor = [UIColor whiteColor];
-        label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.6];
-        label.shadowOffset = CGSizeMake(0, -1);
+        if(!IsOSVersionAtLeast7()) {
+            label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.6];
+            label.shadowOffset = CGSizeMake(0, -1);
+        }
     } else {
         label.textColor = [UIColor blackColor];
-        label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.6];
-        label.shadowOffset = CGSizeMake(0, 1);
+        if(!IsOSVersionAtLeast7()) {
+            label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+            label.shadowOffset = CGSizeMake(0, 1);
+        }
     }
     return label;
 }
@@ -57,10 +63,12 @@
 {
     [super setup];
 
+    self.layoutView = YES;
     self.font = [UIFont boldSystemFontOfSize:14.0];
 
+    BSELF;
     self.modelObserver = [CObserver observerWithKeyPath:@"model" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self syncToModel];
+		[bself syncToModel];
 	}];
     
     self.columnLabels = [NSMutableArray new];

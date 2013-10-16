@@ -29,7 +29,7 @@
 
 @end
 
-@interface CSetupMainViewController : CSetupTableViewController<SetupEditServerViewControllerDelegate>
+@interface CSetupMainViewController : UIViewController
 
 @property (assign, nonatomic) id<CSetupMainViewControllerDelegate> delegate;
 

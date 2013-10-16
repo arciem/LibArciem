@@ -63,14 +63,14 @@ static const CGFloat kFontSize = 14.0;
     self.textColor = [UIColor whiteColor];
     self.fillColor = [UIColor redColor];
     self.cornerRoundness = 0.5;
-    _scaleFactor = 1.0;
+    self.scaleFactor = 1.0;
 
-    if(!IsOSVersionAtLeast7()) {
-        self.strokeColor = [UIColor whiteColor];
-        self.hasGloss = YES;
-        _shadowRadius = 3.0;
-        _shadowOffset = CGSizeMake(0.0, 1.0);
-    }
+//    if(!IsOSVersionAtLeast7()) {
+//        self.strokeColor = [UIColor whiteColor];
+//        self.hasGloss = YES;
+//        _shadowRadius = 3.0;
+//        _shadowOffset = CGSizeMake(0.0, 1.0);
+//    }
 }
 
 + (CBadgeView*)badgeViewWithText:(NSString *)text {
@@ -112,7 +112,7 @@ static const CGFloat kFontSize = 14.0;
 }
 
 - (void)setScaleFactor:(CGFloat)scaleFactor {
-    if(_scaleFactor != scaleFactor) {
+    if(fabs(_scaleFactor - scaleFactor) > 0.001) {
         _scaleFactor = scaleFactor;
         [self syncToSize];
     }
@@ -123,7 +123,7 @@ static const CGFloat kFontSize = 14.0;
 }
 
 - (void)setShadowRadius:(CGFloat)shadowRadius {
-    if(_shadowRadius != shadowRadius) {
+    if(fabs(_shadowRadius - shadowRadius) > 0.001) {
         _shadowRadius = shadowRadius;
         [self syncToSize];
     }

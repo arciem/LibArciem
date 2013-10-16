@@ -25,7 +25,7 @@ namespace arciem {
 
 class arc2 {
 public:	
-	arc2() : mRadius(0.0), mStartAngle(0.0), mSweepAngle(0.0) { }
+	arc2() : mStartAngle(0.0), mSweepAngle(0.0), mRadius(0.0) { }
 	arc2(point2 const& center, double startAngle = 0.0, double sweepAngle = 0.0, double radius = 0.0)
 		: mCenter(center)
 		, mStartAngle(startAngle)

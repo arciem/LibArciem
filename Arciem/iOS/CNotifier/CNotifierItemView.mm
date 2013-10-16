@@ -25,10 +25,10 @@
 
 @interface CNotifierItemView ()
 
-@property (strong, nonatomic) UILabel* label;
-@property (strong, nonatomic) UIImageView* backgroundImageView;
-@property (strong, nonatomic) UIView* rightAccessoryView;
-@property (strong, nonatomic) UITapGestureRecognizer* tapRecognizer;
+@property (nonatomic) UILabel* label;
+@property (nonatomic) UIImageView* backgroundImageView;
+@property (nonatomic) UIView* rightAccessoryView;
+@property (nonatomic) UITapGestureRecognizer* tapRecognizer;
 
 @end
 
@@ -141,13 +141,13 @@
 	UIColor* bottomColor = [[tintColor colorByDarkeningFraction:0.3] colorByColorBurnFraction:0.1];
 	
     UIColor *color1, *color2;
-    if(IsOSVersionAtLeast7()) {
+//    if(IsOSVersionAtLeast7()) {
         color1 = [tintColor colorByLighteningFraction:0.1];
         color2 = [tintColor colorByDarkeningFraction:0.1];
-    } else {
-        color1 = [tintColor colorByLighteningFraction:0.2];
-        color2 = [tintColor colorByDarkeningFraction:0.3];
-    }
+//    } else {
+//        color1 = [tintColor colorByLighteningFraction:0.2];
+//        color2 = [tintColor colorByDarkeningFraction:0.3];
+//    }
 
 	UIGraphicsBeginImageContextWithOptions(imageBounds.size, YES, 0.0);
     
@@ -176,16 +176,16 @@
 
 	if(self.item.whiteText) {
 		self.label.textColor = [UIColor whiteColor];
-        if(!IsOSVersionAtLeast7()) {
-            self.label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-            self.label.shadowOffset = CGSizeMake(0, -1);
-        }
+//        if(!IsOSVersionAtLeast7()) {
+//            self.label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+//            self.label.shadowOffset = CGSizeMake(0, -1);
+//        }
 	} else {
 		self.label.textColor = [UIColor blackColor];
-        if(!IsOSVersionAtLeast7()) {
-            self.label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.5];
-            self.label.shadowOffset = CGSizeMake(0, 1);
-        }
+//        if(!IsOSVersionAtLeast7()) {
+//            self.label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.5];
+//            self.label.shadowOffset = CGSizeMake(0, 1);
+//        }
 	}
 
 	UIImageView* rightAccessoryView = nil;

@@ -22,8 +22,8 @@
 
 @interface CSubmitItem ()
 
-@property (strong, nonatomic) CObserver* rootStateObserver;
-@property (strong, nonatomic) CObserver* isEditingObserver;
+@property (nonatomic) CObserver* rootStateObserver;
+@property (nonatomic) CObserver* isEditingObserver;
 
 @end
 
@@ -46,8 +46,9 @@
 {
 	[super activate];
 	
+    BSELF;
 	CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self syncState];
+		[bself syncState];
 	};
 	
 	self.rootStateObserver = [CObserver observerWithKeyPath:@"state" ofObject:self.rootItem action:action initial:action];

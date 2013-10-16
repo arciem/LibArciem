@@ -28,7 +28,7 @@ enum CViewControllerState {
 extern NSString* const InterfaceDidChangeOrientationNotification;
 extern NSString* const InterfaceWillChangeOrientationNotification;
 
-@interface CViewController : UIViewController<CViewLayoutDelegate>
+@interface CViewController : UIViewController
 
 @property(nonatomic, getter = isInterfaceLocked) BOOL interfaceLocked;
 @property(nonatomic) CViewControllerState state;
@@ -36,8 +36,8 @@ extern NSString* const InterfaceWillChangeOrientationNotification;
 @property(assign, nonatomic) UIViewController* backButtonViewController;
 @property(assign, nonatomic) UIViewAnimationTransition transitionForNextPush;
 @property(nonatomic) BOOL activityShieldViewVisible;
-@property (strong, nonatomic) NSNumber* overrideDisablesAutomaticKeyboardDismissal;
-@property(readonly) UIModalPresentationStyle effectiveModalPresentationStyle;
+@property(nonatomic) NSNumber* overrideDisablesAutomaticKeyboardDismissal;
+@property(readonly, nonatomic) UIModalPresentationStyle effectiveModalPresentationStyle;
 
 // Called during -initWithNibName:bundle: and -awakeFromNib. Subclasses should do any one-time initialization here. Be sure to call super's implementation.
 - (void)setup;
@@ -50,7 +50,6 @@ extern NSString* const InterfaceWillChangeOrientationNotification;
 
 // Behavior provided by subclasses
 - (void)stateDidChangeFrom:(CViewControllerState)oldState to:(CViewControllerState)newState;
-- (void)viewLayoutSubviews:(UIView*)view;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
 - (id)initWithDeviceNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;

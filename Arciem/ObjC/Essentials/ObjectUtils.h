@@ -18,6 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define BSELF __weak __typeof(self) bself = self
+
 BOOL IsNull(id a);
 id Denull(id a);
 id Ennull(id a);
@@ -41,6 +43,8 @@ id<NSObject> ClassAlloc(NSString* className);
 
 - (void)setAssociatedObject:(id)obj forKey:(NSString*)key;
 - (id)associatedObjectForKey:(NSString*)key;
+
+@property (nonatomic) NSString *debugName;
 
 @end
 

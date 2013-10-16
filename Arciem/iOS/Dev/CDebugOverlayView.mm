@@ -18,13 +18,14 @@
 
 #import "CDebugOverlayView.h"
 #import "UIViewUtils.h"
+#import "ObjectUtils.h"
 
 @interface CDebugOverlayView ()
 
 @property (nonatomic) UIInterfaceOrientation orientation;
 @property (nonatomic) UIInterfaceOrientation lastSyncOrientation;
 @property (nonatomic) BOOL justMovedToSuperview;
-@property (strong, nonatomic) NSTimer* stayOnTopTimer;
+@property (nonatomic) NSTimer* stayOnTopTimer;
 
 @end
 
@@ -45,10 +46,14 @@
 {
 	[super setup];
 	
+    self.opaque = NO;
+    self.backgroundColor = [UIColor clearColor];
 //	self.debugColor = [UIColor blueColor];
 	self.lastSyncOrientation = [UIApplication sharedApplication].statusBarOrientation;
 	self.orientation = self.lastSyncOrientation;
 	CView* contentView = [[CView alloc] initWithFrame:CGRectZero];
+    contentView.opaque = NO;
+    contentView.backgroundColor = [UIColor clearColor];
 //	contentView.debugColor = [UIColor redColor];
 	self.contentView = contentView;
 }
@@ -101,8 +106,6 @@
 			contentCenterX = self.boundsCenterX;
 			rotationAngle = -M_PI/2;
 			break;
-		default:
-			break;
 	}
 	
 	CGPoint contentCenter = CGPointMake(contentCenterX, contentCenterY);
@@ -122,10 +125,11 @@
 	
 	self.lastSyncOrientation = self.orientation;
 	
+    BSELF;
 	[UIView animateWithDuration:duration animations:^{
-		contentView_.bounds = contentBounds;
-		contentView_.center = contentCenter;
-		contentView_.transform = contentTransform;
+		bself.contentView.bounds = contentBounds;
+		bself.contentView.center = contentCenter;
+		bself.contentView.transform = contentTransform;
 	}];
 }
 

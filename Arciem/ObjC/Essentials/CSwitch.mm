@@ -20,7 +20,7 @@
 
 @interface CSwitch ()
 
-@property (strong, nonatomic) NSMutableDictionary* dict;
+@property (nonatomic) NSMutableDictionary* dict;
 
 @end
 

@@ -28,8 +28,8 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 
 @interface CNotifierBar ()
 
-@property (strong, nonatomic) NSArray* items;
-@property (strong, nonatomic) NSArray* sortDescriptors;
+@property (nonatomic) NSArray* items;
+@property (nonatomic) NSArray* sortDescriptors;
 
 @end
 

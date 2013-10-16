@@ -21,6 +21,6 @@
 
 @interface CActionItemTableViewCell : CRowItemTableViewCell
 
-@property (strong, nonatomic) CTableActionItem* actionItem;
+@property (nonatomic) CTableActionItem* actionItem;
 
 @end

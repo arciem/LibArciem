@@ -37,12 +37,13 @@ typedef NSUInteger CItemState;
 
 @property (copy, readonly, nonatomic) NSMutableDictionary* dict;
 
-@property (strong, nonatomic) NSString* title;			// localized, human-readable
-@property (strong, nonatomic) NSString* key;			// NSKeyValueCoding-compatible
+@property (nonatomic) NSString* title;			// localized, human-readable
+@property (nonatomic) NSString* key;			// NSKeyValueCoding-compatible
 @property (readonly, nonatomic) NSString* keyPath;
-@property (strong, nonatomic) id value;
-@property (strong, nonatomic) id defaultValue;
-@property (strong, nonatomic) NSError* error;
+@property (nonatomic) id value;
+@property (nonatomic) id defaultValue;
+@property (nonatomic) NSArray *dummyValues;
+@property (nonatomic) NSError* error;
 @property (nonatomic) BOOL isRequired;
 @property (readonly, nonatomic) CItemState state;
 @property (nonatomic) BOOL validatesAutomatically;
@@ -63,7 +64,7 @@ typedef NSUInteger CItemState;
 //@property (readonly, nonatomic) NSString* keyPath;
 
 @property (weak, readonly, nonatomic) CItem* superitem;
-@property (strong, readonly, nonatomic) NSMutableArray* subitems;
+@property (readonly, nonatomic) NSMutableArray* subitems;
 @property (copy, nonatomic) NSMutableArray* dependentKeyPaths;
 @property (copy, nonatomic) NSString* mustEqualKeyPath;
 @property (readonly, nonatomic) CItem* rootItem;
@@ -102,5 +103,7 @@ typedef NSUInteger CItemState;
 - (void)printHierarchy;
 
 - (NSArray*)tableRowItems;
+
+- (void)setValuesFromDummyValuesHierarchical:(BOOL)hierarchical;
 
 @end

@@ -63,7 +63,10 @@ public:
 	delta2 operator*(double n) const { return delta2(dx * n, dy * n); }
 	delta2 operator/(double n) const { return delta2(dx / n, dy / n); }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 	bool operator==(delta2 const& d) const { return dx == d.dx && dy == d.dy; }
+#pragma clang diagnostic pop
 	bool operator!=(delta2 const& d) const { return !(*this == d); }
 	
 	double area(void) const { return dx * dy; }

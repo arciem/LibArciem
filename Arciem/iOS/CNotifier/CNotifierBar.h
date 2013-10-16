@@ -23,7 +23,7 @@
 
 @interface CNotifierBar : CView
 
-@property (strong, nonatomic) CNotifier* notifier;
+@property (nonatomic) CNotifier* notifier;
 @property (weak, nonatomic) id<CNotifierBarDelegate> delegate;
 @property (nonatomic) NSUInteger rowCapacity;
 

@@ -18,6 +18,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Geom.h"
+#import "CView.h"
 
 extern NSString* const sTapInBackgroundNotification;
 
@@ -40,7 +41,10 @@ extern NSString* const sTapInBackgroundNotification;
 - (void)sendSubview:(UIView*)view belowSubview:(UIView*)siblingSubview;
 
 - (void)printViewHierarchy;
+- (void)printConstraintsHierarchy;
 - (void)printResponderChain;
+- (void)exerciseAmbiguityInViewHierarchy;
+- (void)animateAmbiguityInViewHierarchy;
 - (UIResponder*)findNextResponderRespondingToSelector:(SEL)selector;
 - (UIResponder*)findFirstResponder;
 - (void)resignAnyFirstResponder;
@@ -52,6 +56,42 @@ extern NSString* const sTapInBackgroundNotification;
 - (void)addSubview:(UIView *)view animated:(BOOL)animated;
 - (void)removeFromSuperviewAnimated:(BOOL)animated;
 
+- (NSLayoutConstraint *)constrainLeadingEqualToLeadingOfItem:(id)item;
+- (NSLayoutConstraint *)constrainTrailingEqualToTrailingOfItem:(id)item;
+- (NSLayoutConstraint *)constrainLeadingEqualToTrailingOfItem:(id)item;
+- (NSLayoutConstraint *)constrainTopEqualToTopOfItem:(id)item;
+- (NSLayoutConstraint *)constrainBottomEqualToBottomOfItem:(id)item;
+- (NSLayoutConstraint *)constrainTopEqualToBottomOfItem:(id)item;
+- (NSLayoutConstraint *)constrainCenterXEqualToCenterXOfItem:(id)item;
+- (NSLayoutConstraint *)constrainCenterYEqualToCenterYOfItem:(id)item;
+- (NSLayoutConstraint *)constrainWidthEqualToItem:(id)item;
+- (NSLayoutConstraint *)constrainHeightEqualToItem:(id)item;
+
+- (NSLayoutConstraint *)constrainWidthEqualTo:(CGFloat)width;
+- (NSLayoutConstraint *)constrainHeightEqualTo:(CGFloat)height;
+- (NSArray *)constrainSizeEqualTo:(CGSize)size;
+
+- (NSLayoutConstraint *)constrainLeadingEqualToLeadingOfItem:(id)item offset:(CGFloat)constant;
+- (NSLayoutConstraint *)constrainTrailingEqualToTrailingOfItem:(id)item offset:(CGFloat)constant;
+- (NSLayoutConstraint *)constrainLeadingEqualToTrailingOfItem:(id)item offset:(CGFloat)constant;
+- (NSLayoutConstraint *)constrainTopEqualToTopOfItem:(id)item offset:(CGFloat)constant;
+- (NSLayoutConstraint *)constrainBottomEqualToBottomOfItem:(id)item offset:(CGFloat)constant;
+- (NSLayoutConstraint *)constrainTopEqualToBottomOfItem:(id)item offset:(CGFloat)constant;
+- (NSLayoutConstraint *)constrainCenterXEqualToCenterXOfItem:(id)item offset:(CGFloat)constant;
+- (NSLayoutConstraint *)constrainCenterYEqualToCenterYOfItem:(id)item offset:(CGFloat)constant;
+- (NSLayoutConstraint *)constrainWidthEqualToItem:(id)item offset:(CGFloat)constant;
+- (NSLayoutConstraint *)constrainHeightEqualToItem:(id)item offset:(CGFloat)constant;
+
+- (NSLayoutConstraint *)constrainWidthEqualToItem:(id)item multiplier:(CGFloat)multiplier offset:(CGFloat)constant;
+- (NSLayoutConstraint *)constrainHeightEqualToItem:(id)item multiplier:(CGFloat)multiplier offset:(CGFloat)constant;
+
+- (NSLayoutConstraint *)constrainLeadingGreaterThanOrEqualToLeadingOfItem:(id)item offset:(CGFloat)constant;
+- (NSLayoutConstraint *)constrainTrailingLessThanOrEqualToTrailingOfItem:(id)item offset:(CGFloat)constant;
+
+- (NSArray *)constrainCenterEqualToCenterOfItem:(id)item;
+- (NSArray *)constrainSizeToSizeOfItem:(id)item;
+- (NSArray *)constrainFrameToFrameOfItem:(id)item;
+
 // Not supported for iOS 6 and later.
 #if 0
 - (UIView*)addTopBevelView;
@@ -60,6 +100,8 @@ extern NSString* const sTapInBackgroundNotification;
 #endif
 
 @property(readonly, nonatomic) NSUInteger indexInSubviews;
+
+@property(nonatomic) BOOL tapResignsFirstResponder;
 
 - (void)bringToFront;
 - (void)sentToBack;
@@ -143,5 +185,37 @@ extern NSString* const sTapInBackgroundNotification;
 
 // Useful for pre-iOS 6.0. Under iOS 6.0 or later, uses -bezierPathByReversingPath. Under iOS 5.0, uses its own reversal algorithm, under which multiple subpaths are not currently supported.
 - (UIBezierPath*)pathByReversingPath;
+
+@end
+
+@interface CLayoutConstraintsGroup : NSObject
+
++ (instancetype)groupWithOwner:(id)owner NS_RETURNS_RETAINED;
++ (instancetype)groupWithName:(NSString *)name owner:(id)owner NS_RETURNS_RETAINED;
+
+@property (readonly, nonatomic) NSArray *constraints;
+@property (readonly, nonatomic) NSString *name;
+
+- (void)addConstraint:(NSLayoutConstraint *)constraint;
+- (void)addConstraints:(NSArray *)constraints;
+- (void)addConstraint:(NSLayoutConstraint *)constraint withPriority:(UILayoutPriority)priority;
+- (void)addConstraints:(NSArray *)constraints withPriority:(UILayoutPriority)priority;
+- (void)removeConstraint:(NSLayoutConstraint *)constraint;
+- (void)removeConstraints:(NSArray *)constraints;
+- (void)removeAllConstraints;
+
+@end
+
+@interface NSLayoutConstraint (UIViewUtils)
+
+@property (nonatomic) NSString *layoutGroupName;
+
+@end
+
+@interface CSpacerView : CView
+
+- (instancetype)init;
+- (instancetype)initWithFrame:(CGRect)frame;
++ (instancetype)addSpacerViewToSuperview:(UIView *)superview;
 
 @end

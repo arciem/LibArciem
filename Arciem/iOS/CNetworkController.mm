@@ -22,12 +22,12 @@
 @interface CNetworkController ()
 
 @property (copy, readwrite, nonatomic) NSString* hostName;
-@property (strong, nonatomic) CReachability* networkReachability;
-@property (strong, nonatomic) CReachability* hostReachability;
-@property (strong, nonatomic) CNotifierItem* networkReachabilityNotifierItem;
-@property (strong, nonatomic) CNotifierItem* hostReachabilityNotifierItem;
-@property (strong, nonatomic) CNotifierItem* networkReachableNotifierItem;
-@property (strong, nonatomic) CNotifierItem* offlineNotifierItem;
+@property (nonatomic) CReachability* networkReachability;
+@property (nonatomic) CReachability* hostReachability;
+@property (nonatomic) CNotifierItem* networkReachabilityNotifierItem;
+@property (nonatomic) CNotifierItem* hostReachabilityNotifierItem;
+@property (nonatomic) CNotifierItem* networkReachableNotifierItem;
+@property (nonatomic) CNotifierItem* offlineNotifierItem;
 @property (strong, readwrite, nonatomic) CNotifier* notifier;
 @property (readwrite, nonatomic) BOOL isReachable;
 

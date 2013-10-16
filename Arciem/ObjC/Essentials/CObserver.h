@@ -18,6 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "ObjectUtils.h"
+
 typedef void(^CObserverBlock)(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet* indexes);
 
 @interface CObserver : NSObject

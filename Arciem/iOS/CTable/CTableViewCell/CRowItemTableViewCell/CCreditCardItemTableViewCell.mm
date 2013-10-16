@@ -21,22 +21,37 @@
 #import "CCreditCardItem.h"
 #import "UIViewUtils.h"
 #import "Geom.h"
+#import "ObjectUtils.h"
+#import "UIImageUtils.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface CCreditCardItemTableViewCell ()
 
-@property (strong, nonatomic) CObserver* cardTypeObserver;
-@property (strong, nonatomic) NSMutableArray* cardTypeViews;
-@property (strong, nonatomic) NSMutableDictionary* cardTypeViewsByType;
+@property (nonatomic) CObserver* cardTypeObserver;
+@property (nonatomic) NSMutableArray* cardTypeViews;
+@property (nonatomic) NSMutableDictionary* cardTypeViewsByType;
 @property (readonly, nonatomic) CCreditCardItem* creditCardItem;
+@property (nonatomic) CSpacerView *spacer1;
+@property (nonatomic) CSpacerView *spacer2;
 
 @end
 
 @implementation CCreditCardItemTableViewCell
 
-@synthesize cardTypeObserver = cardTypeObserver_;
-@synthesize cardTypeViews = cardTypeViews_;
-@synthesize cardTypeViewsByType = cardTypeViewsByType_;
+- (void)setup {
+    [super setup];
+
+    self.cardTypeViews = [NSMutableArray array];
+    self.cardTypeViewsByType = [NSMutableDictionary dictionary];
+    
+    self.spacer1 = [CSpacerView addSpacerViewToSuperview:self.contentView];
+    self.spacer2 = [CSpacerView addSpacerViewToSuperview:self.contentView];
+    
+//    self.spacer1.debugColor = [UIColor redColor];
+//    self.spacer2.debugColor = [UIColor redColor];
+    
+//	self.contentView.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.1];
+}
 
 - (void)syncToRowItem
 {
@@ -46,46 +61,44 @@
 		for(UIView* view in self.cardTypeViews) {
 			[view removeFromSuperview];
 		}
-		self.cardTypeViews = nil;
-		self.cardTypeViewsByType = nil;
+		[self.cardTypeViews removeAllObjects];
+		[self.cardTypeViewsByType removeAllObjects];
 		self.cardTypeObserver = nil;
 	} else {
-		__unsafe_unretained CCreditCardItemTableViewCell* self__ = self;
-		CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-			[self__ syncCardType];
-		};
-		self.cardTypeObserver = [CObserver observerWithKeyPath:@"cardType" ofObject:self.rowItem.model action:action initial:action];
-		
-		self.cardTypeViews = [NSMutableArray array];
-		self.cardTypeViewsByType = [NSMutableDictionary dictionary];
-		for(NSString* cardType in self.creditCardItem.validCardTypes) {
-			NSString* imageName = [NSString stringWithFormat:@"CC_%@", cardType];
-			UIImage* image = [UIImage imageNamed:imageName];
-			NSAssert1(image != nil, @"no image found for name:%@", imageName);
-			UIImageView* view = [[UIImageView alloc] initWithImage:image];
-			view.contentMode = UIViewContentModeTopLeft;
-			
-			view.layer.shadowColor = [UIColor blackColor].CGColor;
-			view.layer.shadowOffset = CGSizeMake(0, 1);
-			view.layer.shadowOpacity = 0.5;
-			view.layer.shadowRadius = 1.0;
-			
-//			[view sizeToFit];
-			[self.contentView addSubview:view];
-			[self.cardTypeViews addObject:view];
-			(self.cardTypeViewsByType)[cardType] = view;
-		}
+		BSELF;
+        self.cardTypeObserver = [CObserver observerWithKeyPath:@"cardType" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+            [bself syncCardTypeAnimated:YES];
+        }];
 	}
-	
-	self.textField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-	self.validationView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-//	self.contentView.backgroundColor = [UIColor blueColor];
 }
 
-- (void)syncCardType
+- (UIImageView *)viewForCardType:(NSString *)cardType {
+    UIImageView *view = (self.cardTypeViewsByType)[cardType];
+    if(view == nil) {
+        NSString* imageName = [NSString stringWithFormat:@"CC_%@", cardType];
+        UIImage* highlightedImage = [UIImage imageNamed:imageName];
+        NSAssert1(highlightedImage != nil, @"no image found for name:%@", imageName);
+        UIImage* image = [highlightedImage imageByDesaturating:0.0];
+        view = [[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage];
+        view.translatesAutoresizingMaskIntoConstraints = NO;
+        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        view.contentMode = UIViewContentModeTopLeft;
+        [self.contentView addSubview:view];
+        [self.cardTypeViews addObject:view];
+        (self.cardTypeViewsByType)[cardType] = view;
+    }
+    return view;
+}
+
+- (void)syncCardTypeAnimated:(BOOL)animated
 {
-//	CLogDebug(nil, @"cardType:%@", self.creditCardItem.cardType);
-	[self layoutCardViewsAnimated:YES];
+    [self setNeedsUpdateConstraints];
+    [self setNeedsLayout];
+	NSTimeInterval duration = animated ? 0.4 : 0.0;
+    [UIView animateWithDuration:duration animations:^{
+        [self layoutIfNeeded];
+    }];
 }
 			
 - (CCreditCardItem*)creditCardItem
@@ -95,54 +108,99 @@
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-	size.height = 77;
+    UIView *cardView = [self viewForCardType:self.creditCardItem.validCardTypes[0]];
+	size.height = 8 + cardView.intrinsicContentSize.height + 8 + self.textField.intrinsicContentSize.height + 8;
 	return size;
 }
 
-- (void)layoutCardViewsAnimated:(BOOL)animated
-{
-	NSTimeInterval duration = animated ? 0.4 : 0.0;
-	[UIView animateWithDuration:duration animations:^{
-		const CGFloat kGutter = 10;
-		
-		CGFloat totalWidth = 0;
-		for(UIView* view in self.cardTypeViews) {
-			totalWidth += view.width;
-		}
-		totalWidth += (self.cardTypeViews.count - 1) * kGutter;
-		
-		CGFloat x = (self.contentView.width - totalWidth) / 2;
-		CGFloat bottomY = self.textField.top - 8;
-		for(NSString* cardType in self.creditCardItem.validCardTypes) {
-			UIView* view = (self.cardTypeViewsByType)[cardType];
-			CFrame* viewFrame = view.cframe;
-			
-			viewFrame.top = bottomY - viewFrame.size.height;
-			viewFrame.left = x;
-			
-			if(self.creditCardItem.cardType == nil) {
-				view.alpha = 1.0;
-			} else {
-				if([cardType isEqualToString:self.creditCardItem.cardType]) {
-					[view bringToFront];
-					view.alpha = 1.0;
-					viewFrame.frame = [Geom alignRectMidX:viewFrame.frame toX:self.contentView.boundsCenterX];
-				} else {
-					view.alpha = 0.0;
-				}
-			}
-			
-			x += viewFrame.width + kGutter;
-		}
-	}];
+- (void)updateConstraints {
+    [super updateConstraints];
+
+    CLayoutConstraintsGroup *group = [self resetConstraintsGroupForKey:@"CCreditCardItemTableViewCell_contentView" owner:self.contentView];
+
+    __block UIView *lastLeftCardView;
+    __block UIView *firstLeftCardView;
+    __block UIView *lastRightCardView;
+    BSELF;
+    [self.creditCardItem.validCardTypes enumerateObjectsUsingBlock:^(NSString* cardType, NSUInteger idx, BOOL *stop) {
+        UIView* thisCardView = [bself viewForCardType:cardType];
+        [group addConstraint:[thisCardView constrainTopEqualToTopOfItem:bself.contentView offset:8]];
+
+        BOOL highlight = YES;
+        if(self.creditCardItem.cardType != nil) {
+            if(![cardType isEqualToString:self.creditCardItem.cardType]) {
+                highlight = NO;
+            }
+        }
+
+        if(highlight) {
+            if(lastLeftCardView != nil) {
+                [group addConstraint:[thisCardView constrainLeadingEqualToTrailingOfItem:lastLeftCardView offset:8]];
+            }
+            lastLeftCardView = thisCardView;
+            
+            if(firstLeftCardView == nil) {
+                firstLeftCardView = thisCardView;
+            }
+        } else {
+            if(lastRightCardView != nil) {
+                [group addConstraint:[thisCardView constrainLeadingEqualToTrailingOfItem:lastRightCardView offset:8]];
+            }
+            lastRightCardView = thisCardView;
+        }
+    }];
+    
+    if(firstLeftCardView != nil) {
+        [group addConstraint:[firstLeftCardView constrainLeadingEqualToTrailingOfItem:bself.spacer1]];
+    }
+    
+    if(lastRightCardView != nil) {
+        [group addConstraint:[bself.spacer2 constrainLeadingEqualToTrailingOfItem:lastRightCardView]];
+    } else {
+        [group addConstraint:[bself.spacer2 constrainLeadingEqualToTrailingOfItem:lastLeftCardView]];
+    }
+    
+    UIView *cardView = [self viewForCardType:self.creditCardItem.validCardTypes[0]];
+    [group addConstraint:[self.textField constrainTopEqualToBottomOfItem:cardView offset:8]];
+
+    [group addConstraint:[self.spacer1 constrainCenterYEqualToCenterYOfItem:cardView]];
+    [group addConstraint:[self.spacer1 constrainLeadingEqualToLeadingOfItem:self.contentView]];
+    
+    [group addConstraint:[self.spacer2 constrainCenterYEqualToCenterYOfItem:cardView]];
+    [group addConstraint:[self.spacer2 constrainTrailingEqualToTrailingOfItem:self.contentView]];
+    
+    [group addConstraint:[self.spacer1 constrainWidthEqualToItem:self.spacer2]];
+    
+    if(self.creditCardItem.cardType != nil) {
+        [group addConstraint:[self.textField constrainLeadingEqualToTrailingOfItem:self.spacer1]];
+        [group addConstraint:[self.spacer2 constrainLeadingEqualToTrailingOfItem:self.textField]];
+    }
+
+#if 0
+#warning DEBUG ONLY
+    [self printConstraintsHierarchy];
+#endif
 }
 
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	self.textField.cframe.bottom = self.contentView.boundsHeight - 5;
-	self.validationView.cframe.centerY = self.textField.centerY;
-	[self layoutCardViewsAnimated:NO];
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    for(NSString* cardType in self.creditCardItem.validCardTypes) {
+        UIImageView* view = (self.cardTypeViewsByType)[cardType];
+        if(self.creditCardItem.cardType == nil) {
+            view.alpha = 1.0;
+            view.highlighted = YES;
+        } else {
+            if([cardType isEqualToString:self.creditCardItem.cardType]) {
+                [view bringToFront];
+                view.alpha = 1.0;
+                view.highlighted = YES;
+            } else {
+                view.alpha = 0.5;
+                view.highlighted = NO;
+            }
+        }
+    }
 }
 
 @end

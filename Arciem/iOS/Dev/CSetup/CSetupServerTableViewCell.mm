@@ -25,7 +25,7 @@
 - (id)initWithReuseIdentifier:(NSString*)reuseIdentifier
 {
 	if(self = [self initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier]) {
-		
+        self.translatesAutoresizingMaskIntoConstraints = NO;
 	}
 	return self;
 }

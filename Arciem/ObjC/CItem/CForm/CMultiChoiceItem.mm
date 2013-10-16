@@ -29,8 +29,8 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 
 @interface CMultiChoiceItem ()
 
-@property (strong, nonatomic) CObserver* subitemsObserver;
-@property (strong, nonatomic) CObserver* subitemsValueObserver;
+@property (nonatomic) CObserver* subitemsObserver;
+@property (nonatomic) CObserver* subitemsValueObserver;
 
 @end
 
@@ -48,10 +48,11 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 	[super setup];
 	[self setupChoices];
 
+    BSELF;
 	self.subitemsValueObserver = [CObserver observerWithKeyPath:@"value" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self updateValue];
+		[bself updateValue];
 	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self updateValue];
+		[bself updateValue];
 	}];
 
 	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:^(id object, NSArray* newSubitems, NSArray* oldSubitems, NSKeyValueChange kind, NSIndexSet *indexes) {
@@ -59,22 +60,22 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 		NSAssert1(oldSubitems == nil || [oldSubitems isKindOfClass:[NSArray class]], @"oldSubitems not of expected type:%@", oldSubitems);
 		switch(kind) {
 			case NSKeyValueChangeSetting:
-				self.subitemsValueObserver.objects = newSubitems;
+				bself.subitemsValueObserver.objects = newSubitems;
 				break;
 			case NSKeyValueChangeInsertion:
-				[self.subitemsValueObserver addObjects:newSubitems];
+				[bself.subitemsValueObserver addObjects:newSubitems];
 				break;
 			case NSKeyValueChangeRemoval:
-				[self.subitemsValueObserver removeObjects:oldSubitems];
+				[bself.subitemsValueObserver removeObjects:oldSubitems];
 				break;
 			case NSKeyValueChangeReplacement:
-				[self.subitemsValueObserver removeObjects:oldSubitems];
-				[self.subitemsValueObserver addObjects:newSubitems];
+				[bself.subitemsValueObserver removeObjects:oldSubitems];
+				[bself.subitemsValueObserver addObjects:newSubitems];
 				break;
 		}
 	} initial:^(id object, NSArray* newSubitems, NSArray* oldSubitems, NSKeyValueChange kind, NSIndexSet *indexes) {
 		NSAssert1(newSubitems == nil || [newSubitems isKindOfClass:[NSArray class]], @"newSubitems not of expected type:%@", newSubitems);
-		self.subitemsValueObserver.objects = newSubitems;
+		bself.subitemsValueObserver.objects = newSubitems;
 	}];
 }
 

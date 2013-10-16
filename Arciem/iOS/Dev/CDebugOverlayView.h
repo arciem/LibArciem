@@ -20,6 +20,6 @@
 
 @interface CDebugOverlayView : CView
 
-@property (strong, nonatomic) UIView* contentView;
+@property (nonatomic) UIView* contentView;
 
 @end

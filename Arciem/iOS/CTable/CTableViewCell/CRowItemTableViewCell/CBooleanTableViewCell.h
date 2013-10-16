@@ -20,6 +20,6 @@
 
 @interface CBooleanTableViewCell : CRowItemTableViewCell
 
-@property (strong, nonatomic) UIButton* checkmarkButton;
+@property (nonatomic) UIButton* checkmarkButton;
 
 @end

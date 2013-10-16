@@ -20,30 +20,26 @@
 #import "DeviceUtils.h"
 #import "CBooleanItem.h"
 #import "UIViewUtils.h"
+#import "ThreadUtils.h"
+
+@interface CBooleanTableViewCell ()
+
+@end
 
 @implementation CBooleanTableViewCell
 
-@synthesize checkmarkButton = checkmarkButton_;
+@synthesize checkmarkButton = _checkmarkButton;
 
 - (void)setup
 {
 	[super setup];
 	
-	self.textLabel.font = self.font;
+	self.titleLabel.font = self.font;
 }
 
 - (UIFont*)font
 {
 	return [UIFont systemFontOfSize:self.fontSize];
-}
-
-- (CGSize)sizeThatFits:(CGSize)size
-{
-	if(IsPhone()) {
-		size.height = 34;
-	}
-	
-	return size;
 }
 
 - (void)syncCheckMark
@@ -55,6 +51,7 @@
 - (void)syncToRowItem
 {
 	[super syncToRowItem];
+    [self syncTitleLabelToRowItem];
 	[self syncCheckMark];
 }
 
@@ -69,38 +66,27 @@
 	return 0;
 }
 
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	
-	CGRect layoutFrame = self.layoutFrame;
+- (void)updateConstraints {
+    [super updateConstraints];
 
-	if(IsPad()) {
-		CFrame* textLabelFrame = self.textLabel.cframe;
-		textLabelFrame.flexibleLeft = CGRectGetMinX(layoutFrame);
-		
-		CFrame* checkmarkButtonFrame = self.checkmarkButton.cframe;
-		[checkmarkButtonFrame sizeToFit];
-		
-		checkmarkButtonFrame.right = textLabelFrame.left - 6;
-		checkmarkButtonFrame.centerY = self.contentView.boundsCenterY;
-	} else {
-		CFrame* checkmarkButtonFrame = self.checkmarkButton.cframe;
-		[checkmarkButtonFrame sizeToFit];
-		checkmarkButtonFrame.left = CGRectGetMinX(layoutFrame);
-		checkmarkButtonFrame.centerY = self.contentView.boundsCenterY;
-		
-		CFrame* textLabelFrame = self.textLabel.cframe;
-		textLabelFrame.flexibleLeft = checkmarkButtonFrame.right + 6;
-	}
+    UIEdgeInsets insets = self.contentInset;
+    
+    CLayoutConstraintsGroup *group = [self resetConstraintsGroupForKey:@"CBooleanTableViewCell_contentView" owner:self.contentView];
+    [group addConstraint:[self.checkmarkButton constrainCenterYEqualToCenterYOfItem:self.titleLabel]];
+    [group addConstraint:[self.checkmarkButton constrainLeadingEqualToLeadingOfItem:self.contentView offset:insets.left]];
+    [group addConstraint:[self.titleLabel constrainLeadingEqualToTrailingOfItem:self.checkmarkButton offset:8]];
+    [group addConstraint:[self.titleLabel constrainCenterYEqualToCenterYOfItem:self.contentView]];
 }
 
 #pragma mark - @property checkmarkButton
 
 - (UIButton*)checkmarkButton
 {
-	if(checkmarkButton_ == nil) {
+	if(_checkmarkButton == nil) {
 		UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.translatesAutoresizingMaskIntoConstraints = NO;
+        [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+        [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 		UIImage* selectedImage = [UIImage imageNamed:@"SurveyCheckYes"];
 		[button setImage:selectedImage forState:UIControlStateSelected];
 		UIImage* unselectedImage = [UIImage imageNamed:@"SurveyCheckNo"];
@@ -108,19 +94,19 @@
 		self.checkmarkButton = button;
 	}
 	
-	return checkmarkButton_;
+	return _checkmarkButton;
 }
 
 - (void)setCheckmarkButton:(UIButton *)checkmarkButton
 {
-	if(checkmarkButton_ != checkmarkButton) {
-		[checkmarkButton_ removeFromSuperview];
-		checkmarkButton_ = checkmarkButton;
-		if(checkmarkButton_ != nil) {
-			[self.contentView addSubview:checkmarkButton_];
-			checkmarkButton_.userInteractionEnabled = NO;
+	if(_checkmarkButton != checkmarkButton) {
+		[_checkmarkButton removeFromSuperview];
+		_checkmarkButton = checkmarkButton;
+		if(_checkmarkButton != nil) {
+			[self.contentView addSubview:_checkmarkButton];
+			_checkmarkButton.userInteractionEnabled = NO;
 		}
-		[self setNeedsLayout];
+		[self setNeedsUpdateConstraints];
 	}
 }
 @end

@@ -24,8 +24,8 @@
 
 @interface CNotifier ()
 
-@property (strong, nonatomic) NSMutableSet* subscriptions;
-@property (strong, nonatomic) NSMutableSet* internalItems;
+@property (nonatomic) NSMutableSet* subscriptions;
+@property (nonatomic) NSMutableSet* internalItems;
 
 @end
 

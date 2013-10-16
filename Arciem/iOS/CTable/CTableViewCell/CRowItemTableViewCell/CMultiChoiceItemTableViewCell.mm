@@ -18,6 +18,11 @@
 
 #import "CMultiChoiceItemTableViewCell.h"
 #import "CTableMultiChoiceItem.h"
+#import "UIViewUtils.h"
+
+@interface CMultiChoiceItemTableViewCell ()
+
+@end
 
 @implementation CMultiChoiceItemTableViewCell
 
@@ -40,7 +45,16 @@
 	} else {
 		title = [NSString stringWithFormat:@"%@...", title];
 	}
-	self.textLabel.text = title;
+	self.titleLabel.text = title;
+}
+
+- (void)updateConstraints {
+    [super updateConstraints];
+
+    CLayoutConstraintsGroup *group = [self resetConstraintsGroupForKey:@"CMultiChoiceItemTableViewCell_contentView" owner:self.contentView];
+    
+    [group addConstraints:[self.titleLabel constrainCenterEqualToCenterOfItem:self.contentView]];
+    [group addConstraint:[self.titleLabel constrainLeadingEqualToTrailingOfItem:self.validationView offset:8]];
 }
 
 @end

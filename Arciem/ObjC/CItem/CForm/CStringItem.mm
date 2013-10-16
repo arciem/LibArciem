@@ -26,7 +26,7 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 @interface CStringItem ()
 
-@property (strong, nonatomic) NSCharacterSet* invalidCharacterSet;
+@property (nonatomic) NSCharacterSet* invalidCharacterSet;
 
 @end
 
@@ -332,7 +332,10 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 - (NSString*)formatCharacterCount:(NSUInteger)count
 {
 	NSString* format = count == 1 ? @"%d character" : @"%d characters";
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	return [NSString stringWithFormat:format, count];
+#pragma clang diagnostic pop
 }
 
 - (NSError*)validate

@@ -23,8 +23,8 @@
 
 @interface CTableRowItem ()
 
-@property (strong, nonatomic) NSMutableArray* nonretainedModels;
-@property (strong, nonatomic) CObserver* isHiddenObserver;
+@property (nonatomic) NSMutableArray* nonretainedModels;
+@property (nonatomic) CObserver* isHiddenObserver;
 
 @end
 
@@ -77,8 +77,9 @@
 {
 	[super activate];
 //	CLogDebug(nil, @"%@ activate", self);
+    BSELF;
 	self.isHiddenObserver = [CObserver observerWithKeyPath:@"isHidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[(CTableSectionItem*)self.superitem tableRowItem:self didChangeHiddenFrom:[oldValue boolValue] to:[newValue boolValue]];
+		[(CTableSectionItem*)bself.superitem tableRowItem:bself didChangeHiddenFrom:[oldValue boolValue] to:[newValue boolValue]];
 	}];
 }
 

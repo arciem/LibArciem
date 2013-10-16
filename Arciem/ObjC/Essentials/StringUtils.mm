@@ -163,7 +163,10 @@ BOOL IsVisibleString(NSString* str)
 NSString* FormatInt(int i, int places, BOOL leadingZero)
 {
     if(leadingZero) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
         return [NSString stringWithFormat:[@"%0" stringByAppendingString:[NSString stringWithFormat:@"%dd", places]], i];
+#pragma clang diagnostic pop
     } else {
         return [NSString stringWithFormat:@"%d", i];
     }
@@ -290,13 +293,13 @@ string ToStd(NSString* s)
 @implementation NSString (CStringAdditions)
 
 // From OmniFoundation
-+ (NSString *)stringWithCharacter:(unichar)aCharacter;
++ (NSString *)stringWithCharacter:(unichar)aCharacter
 {
     return [[NSString alloc] initWithCharacters:&aCharacter length:1];
 }
 
 // From OmniFoundation
-+ (NSString *)horizontalEllipsisString;
++ (NSString *)horizontalEllipsisString
 {
     static NSString *string = nil;
 
@@ -537,7 +540,7 @@ string ToStd(NSString* s)
 - (NSArray*)allCharacters
 {
 	NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:self.length];
-	for (int i=0; i < self.length; i++) {
+	for (NSUInteger i=0; i < self.length; i++) {
 		NSString *ichar  = [NSString stringWithFormat:@"%c", [self characterAtIndex:i]];
 		[characters addObject:ichar];
 	}
@@ -556,7 +559,7 @@ string ToStd(NSString* s)
 	unsigned char *outputBuffer = (unsigned char *)malloc(encodedLength);
 	unsigned char *inputBuffer = (unsigned char *)data.bytes;
 	
-	NSInteger i;
+	NSUInteger i;
 	NSInteger j = 0;
 	int remain;
 	
@@ -635,7 +638,7 @@ NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle)
 
 @interface CEntitiesConverter : NSObject<NSXMLParserDelegate>
 
-@property (strong, nonatomic) NSMutableString* resultString;
+@property (nonatomic) NSMutableString* resultString;
 
 @end
 
@@ -792,7 +795,7 @@ NSString* StringByEscapingQuotesAndBackslashes(NSString* s)
 
 		if(scanningForCharactersToEscape) {
 			if([source scanCharactersFromSet:charactersToEscape intoString:&scannedCharacters]) {
-				for(int i = 0; i < scannedCharacters.length; i++) {
+				for(NSUInteger i = 0; i < scannedCharacters.length; i++) {
 					unichar c = [scannedCharacters characterAtIndex:i];
 					[sink appendFormat:@"\\%C", c];
 				}
@@ -840,7 +843,7 @@ NSString* StringByLimitingLengthOfString(NSString* s, NSUInteger maxLength, BOOL
 			mLength -= 3;
 			if(mLength < 0) mLength = 0;
 		}
-		if(s.length > mLength) {
+		if(s.length > (NSUInteger)mLength) {
 			s = [s substringToIndex:mLength];
 			if(addEllipsis) {
 				s = [s stringByAppendingString:@"..."];

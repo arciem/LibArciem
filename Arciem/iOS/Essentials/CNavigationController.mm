@@ -19,13 +19,11 @@
 #import "CNavigationController.h"
 #import "CViewController.h"
 
-#if 0
-@interface UINavigationController (Superclass)
+@interface CNavigationController () <UINavigationControllerDelegate>
 
-- (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item;
+@property (copy, nonatomic) dispatch_block_t completion;
 
 @end
-#endif
 
 @implementation CNavigationController
 
@@ -40,6 +38,7 @@
 {
 	if(self = [super initWithRootViewController:rootViewController]) {
 		CLogTrace(@"C_NAVIGATION_CONTROLLER", @"%@ initWithRootViewController:", self, rootViewController);
+        self.delegate = self;
 	}
 	
 	return self;
@@ -147,6 +146,20 @@
 	}
 	
 	return disables;
+}
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(dispatch_block_t)completion {
+    self.completion = completion;
+    [self pushViewController:viewController animated:animated];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if(self.completion != nil) {
+        self.completion();
+        self.completion = nil;
+    }
 }
 
 @end

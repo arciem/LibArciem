@@ -29,7 +29,7 @@
 
 @interface CTextFieldItemTableViewCell ()
 
-@property (strong, nonatomic) NSMutableArray* textFields;
+@property (nonatomic) NSMutableArray* textFields;
 
 @end
 
@@ -40,7 +40,6 @@
 - (void)setup
 {
 	[super setup];
-	self.textLabel.hidden = YES;
 }
 
 - (UITextField*)textField
@@ -56,14 +55,18 @@
 
 	while(self.textFields.count <= index) {
 		UITextField* field = [[UITextField alloc] initWithFrame:CGRectZero];
+        field.translatesAutoresizingMaskIntoConstraints = NO;
 		//		field.backgroundColor = [UIColor greenColor];
+        [field setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 		field.borderStyle = UITextBorderStyleRoundedRect;
 //		field.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		field.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 		field.contentMode = UIViewContentModeRedraw;
+        field.font = self.font;
 		[self.textFields addObject:field];
 		[self.contentView addSubview:field];
 		field.delegate = self;
+		[self setNeedsUpdateConstraints];
 	}
 	
 	return (self.textFields)[index];
@@ -78,7 +81,7 @@
 		(self.textFields)[index] = textField;
 		[self.contentView addSubview:textField];
 		textField.delegate = self;
-		[self setNeedsLayout];
+		[self setNeedsUpdateConstraints];
 	}
 }
 
@@ -114,6 +117,7 @@
 	return result;
 }
 
+#if 0
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
@@ -160,6 +164,58 @@
 		
 		fieldRect.origin.x += textFieldFrame.width + gap;
 	}];
+}
+#endif
+
+- (void)updateConstraints {
+    [super updateConstraints];
+    
+	NSUInteger count = self.models.count;
+	
+	CGFloat gap = IsPad() ? 20 : 10;
+	if(count > 2) gap += 30;
+    
+    CLayoutConstraintsGroup *group = [self resetConstraintsGroupForKey:@"CTextFieldItemTableViewCell_contentView" owner:self.contentView];
+
+    __block UITextField *lastField;
+    [self.textFields enumerateObjectsUsingBlock:^(UITextField* field, NSUInteger idx, BOOL *stop) {
+        
+        // If there was a previous field
+        if(lastField != nil) {
+            // Constrain the gap between this field and the previous field to a constant
+            [group addConstraint:[field constrainLeadingEqualToTrailingOfItem:lastField offset:gap]];
+            
+            // Constrain the width of this field to equal the width of the previous field.
+            [group addConstraint:[field constrainWidthEqualToItem:lastField]];
+        }
+
+        // If this is the first field
+        if(idx == 0) {
+            // Constraint its left side to the superview's left side
+            [group addConstraint:[field constrainLeadingEqualToLeadingOfItem:self.contentView offset:self.contentInset.left]];
+        }
+        
+        // If this is the last field
+        if(idx == count - 1) {
+            // Constrain its right side to the superview's right side
+            [group addConstraint:[field constrainTrailingEqualToTrailingOfItem:self.contentView offset:-self.contentInset.right]];
+        }
+
+        CFieldValidationView *validationView = self.validationViews[idx];
+        
+        // If there's more than one field in this cell and this is the last field,
+        if(count > 1 && idx == count - 1) {
+            // put it's validation view on the right.
+            [group addConstraint:[validationView constrainLeadingEqualToTrailingOfItem:field offset:8]];
+        } else {
+            // put it's validation view on the left.
+            [group addConstraint:[field constrainLeadingEqualToTrailingOfItem:validationView offset:8]];
+        }
+        
+        [group addConstraint:[validationView constrainCenterYEqualToCenterYOfItem:field]];
+        
+        lastField = field;
+    }];
 }
 
 - (UIKeyboardType)keyboardTypeForModel:(CStringItem*)model
@@ -256,6 +312,10 @@
 		CItem* model = (self.models)[index];
 
 		textField.placeholder = model.title;
+        if([model isKindOfClass:[CStringItem class]]) {
+            CStringItem *stringItem = (CStringItem *)model;
+            textField.text = stringItem.stringValue;
+        }
 
 		if([model isKindOfClass:[CStringItem class]]) {
 			CStringItem* stringItem = (CStringItem*)model;
@@ -264,6 +324,7 @@
 			textField.autocapitalizationType = [self autocapitalizationTypeForModel:stringItem];
 			textField.keyboardType = [self keyboardTypeForModel:stringItem];
 			textField.secureTextEntry = stringItem.secureTextEntry;
+            textField.keyboardAppearance = stringItem.secureTextEntry ? UIKeyboardAppearanceDark : UIKeyboardAppearanceDefault;
 		} else {
 			UIControl* control = [self inputViewForModel:model];
 			textField.inputView = control;
@@ -328,6 +389,21 @@
 	}
 	
 	return result;
+}
+
+- (void)willTransitionToState:(UITableViewCellStateMask)state {
+    [super willTransitionToState:state];
+    
+    BOOL enabled = YES;
+    if(state & UITableViewCellStateShowingEditControlMask || state & UITableViewCellStateShowingDeleteConfirmationMask) {
+        enabled = NO;
+    }
+    
+	[self.textFields enumerateObjectsUsingBlock:^(UITextField *field, NSUInteger idx, BOOL *stop) {
+        field.enabled = enabled;
+	}];
+    
+    [self setNeedsUpdateConstraints];
 }
 
 #pragma mark - UITextFieldDelegate

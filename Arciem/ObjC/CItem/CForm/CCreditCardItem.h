@@ -36,7 +36,7 @@ enum {
 
 @interface CCreditCardItem : CStringItem
 
-@property (strong, nonatomic) NSArray* validCardTypes;
-@property (strong, readonly, nonatomic) NSString* cardType;
+@property (nonatomic) NSArray* validCardTypes;
+@property (readonly, nonatomic) NSString* cardType;
 
 @end

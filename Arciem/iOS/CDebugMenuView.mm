@@ -1,5 +1,5 @@
 //
-//  CDebugMenuView.m
+//  CDebugMenuView.mm
 //  Arciem
 //
 //  Created by Robert McNally on 5/29/13.

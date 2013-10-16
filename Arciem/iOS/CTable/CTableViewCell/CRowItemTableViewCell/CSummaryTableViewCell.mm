@@ -24,7 +24,7 @@
 
 @interface CSummaryTableViewCell ()
 
-@property (strong, nonatomic) CObserver* modelValueObserver;
+@property (nonatomic) CObserver* modelValueObserver;
 
 @end
 
@@ -36,35 +36,36 @@
 {
 	[super setup];
 	
-	self.textLabel.font = self.font;
-	self.textLabel.adjustsFontSizeToFitWidth = YES;
-	self.textLabel.minimumScaleFactor = 0.6;
-	self.textLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+	self.titleLabel.font = self.font;
+	self.titleLabel.adjustsFontSizeToFitWidth = YES;
+	self.titleLabel.minimumScaleFactor = 0.6;
+	self.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 
+    BSELF;
 	self.modelValueObserver = [CObserver observerWithKeyPath:@"value" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self syncToModelValue:newValue];
+		[bself syncToModelValue:newValue];
 	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self syncToModelValue:newValue];
+		[bself syncToModelValue:newValue];
 	}];
 }
 
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	
-	CGRect layoutFrame = self.layoutFrame;
-	
-	CFrame* textLabelFrame = self.textLabel.cframe;
-	textLabelFrame.flexibleLeft = CGRectGetMinX(layoutFrame);
-	textLabelFrame.flexibleRight = CGRectGetMaxX(layoutFrame);
-	
-	CFieldValidationView* validationView = self.validationView;
-	CFrame* validationViewFrame = validationView.cframe;
-	validationViewFrame.centerY = textLabelFrame.centerY;
-	validationViewFrame.right = textLabelFrame.left - 8;
-	
-	//	self.rowItem.model.needsValidation = YES;
-}
+//- (void)layoutSubviews
+//{
+//	[super layoutSubviews];
+//	
+//	CGRect layoutFrame = self.layoutFrame;
+//	
+//	CFrame* textLabelFrame = self.titleLabel.cframe;
+//	textLabelFrame.flexibleLeft = CGRectGetMinX(layoutFrame);
+//	textLabelFrame.flexibleRight = CGRectGetMaxX(layoutFrame);
+//	
+//	CFieldValidationView* validationView = self.validationView;
+//	CFrame* validationViewFrame = validationView.cframe;
+//	validationViewFrame.centerY = textLabelFrame.centerY;
+//	validationViewFrame.right = textLabelFrame.left - 8;
+//	
+//	//	self.rowItem.model.needsValidation = YES;
+//}
 
 - (void)syncToRowItem
 {

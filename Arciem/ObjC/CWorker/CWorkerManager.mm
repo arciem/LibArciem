@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import "CWorkerManager.h"
+#import "ObjectUtils.h"
 
 @interface CWorkerManager ()
 
@@ -159,7 +160,7 @@
 		NSAssert1(!worker.isExecuting, @"worker already executing: %@", worker);
 		NSAssert1(!worker.isFinished, @"worker already finished: %@", worker);
 		
-		__weak CWorkerManager* manager_ = self;
+		BSELF;
 		
 		worker.success = ^(CWorker* worker) {
 			@synchronized(worker) {
@@ -176,7 +177,7 @@
 					retry = shouldRetry(worker, error);
 				}
 				if(retry) {
-					[manager_ startWorker:worker];
+					[bself startWorker:worker];
 				} else {
 					failure(worker, error);
 				}
@@ -190,10 +191,10 @@
 				if(!worker.isCancelled) {
 					finally(worker);
 				}
-				@synchronized(manager_) {
-					[manager_.workers removeObject:worker];
+				@synchronized(bself) {
+					[bself.workers removeObject:worker];
 					worker.isExecuting = NO;
-					[manager_ startReadyWorkers];
+					[bself startReadyWorkers];
 				}
 			}
 		};

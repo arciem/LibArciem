@@ -27,13 +27,13 @@ enum {
 
 @interface CDateItem : CItem
 
-@property (strong, nonatomic) NSDate* dateValue;
+@property (nonatomic) NSDate* dateValue;
 @property (readonly, nonatomic) NSString* formattedDateValue;
-@property (strong, nonatomic) NSDate* minDate;
-@property (strong, nonatomic) NSDate* maxDate;
-@property (strong, nonatomic) NSString* stringValue;
+@property (nonatomic) NSDate* minDate;
+@property (nonatomic) NSDate* maxDate;
+@property (nonatomic) NSString* stringValue;
 @property (nonatomic) NSUInteger fieldWidthCharacters;
-@property (strong, nonatomic) NSString* datePickerMode; // time, date, dateAndTime, countDownTimer, monthAndYear
+@property (nonatomic) NSString* datePickerMode; // time, date, dateAndTime, countDownTimer, monthAndYear
 
 - (BOOL)shouldChangeCharactersInRange:(NSRange)range inString:(NSString*)fromString toReplacementString:(NSString*)string resultString:(NSString**)resultString;
 

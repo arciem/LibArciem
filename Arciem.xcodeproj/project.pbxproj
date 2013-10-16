@@ -32,12 +32,19 @@
 		033A75F517274B8F0045933D /* AppUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033A75F317274B8F0045933D /* AppUtils.mm */; };
 		033A75FE172754ED0045933D /* CKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 033A75FC172754ED0045933D /* CKeychainUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		033A75FF172754ED0045933D /* CKeychainUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033A75FD172754ED0045933D /* CKeychainUtils.mm */; };
+		034305F1180938380091133D /* CTextFieldTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 034305EF180938380091133D /* CTextFieldTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		034305F2180938380091133D /* CTextFieldTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 034305F0180938380091133D /* CTextFieldTableViewCell.mm */; };
+		0349E19B180E15BC00F74905 /* CCreditCardSummaryItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E199180E15BC00F74905 /* CCreditCardSummaryItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0349E19C180E15BC00F74905 /* CCreditCardSummaryItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E19A180E15BC00F74905 /* CCreditCardSummaryItem.mm */; };
+		0349E19F180E16ED00F74905 /* CTableCreditCardSummaryItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E19D180E16ED00F74905 /* CTableCreditCardSummaryItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0349E1A0180E16ED00F74905 /* CTableCreditCardSummaryItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E19E180E16ED00F74905 /* CTableCreditCardSummaryItem.mm */; };
+		0349E1A3180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E1A1180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0349E1A4180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E1A2180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.mm */; };
 		0362A8F5174FF48C005AA5ED /* CWorkerDebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0362A8F1174FF48C005AA5ED /* CWorkerDebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0362A8F6174FF48C005AA5ED /* CWorkerDebugView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */; };
 		0362A8F7174FF48C005AA5ED /* CWorkerManagerDebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0362A8F8174FF48C005AA5ED /* CWorkerManagerDebugView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0362A8F4174FF48C005AA5ED /* CWorkerManagerDebugView.mm */; };
 		036DE93A1755E31200B6B345 /* CDebugMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE9381755E31200B6B345 /* CDebugMenuView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		036DE93B1755E31200B6B345 /* CDebugMenuView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 036DE9391755E31200B6B345 /* CDebugMenuView.mm */; };
 		0370D7AF173761E0005165CA /* CNotifierViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370D7AD173761E0005165CA /* CNotifierViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0370D7B0173761E0005165CA /* CNotifierViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0370D7AE173761E0005165CA /* CNotifierViewController.mm */; };
 		0370D7B917381A5A005165CA /* CShadowView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370D7B717381A59005165CA /* CShadowView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -45,6 +52,8 @@
 		0374651C17421EB60007F56D /* CTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 0374651B17421EB60007F56D /* CTable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0374652B17449CA70007F56D /* CDisclosureIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0374652917449CA70007F56D /* CDisclosureIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0374652C17449CA70007F56D /* CDisclosureIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0374652A17449CA70007F56D /* CDisclosureIndicator.mm */; };
+		0378B89517EA9A6E0073D97E /* CShieldView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0378B89317EA9A6E0073D97E /* CShieldView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0378B89617EA9A6E0073D97E /* CShieldView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0378B89417EA9A6E0073D97E /* CShieldView.mm */; };
 		039DC11316CB300D00B52A7F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC11216CB300D00B52A7F /* Foundation.framework */; };
 		039DC12116CB32B000B52A7F /* Arciem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC11716CB300D00B52A7F /* Arciem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC13E16CB398A00B52A7F /* CLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12416CB398A00B52A7F /* CLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -117,7 +126,7 @@
 		039DC1B616CB3DF700B52A7F /* wedge2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC18716CB3DF700B52A7F /* wedge2.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC1B716CB3DF700B52A7F /* gl_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC18816CB3DF700B52A7F /* gl_utils.cpp */; };
 		039DC1B816CB3DF700B52A7F /* gl_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC18916CB3DF700B52A7F /* gl_utils.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC1B916CB3DF700B52A7F /* murmur_hash_3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC18A16CB3DF700B52A7F /* murmur_hash_3.cpp */; };
+		039DC1B916CB3DF700B52A7F /* murmur_hash_3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC18A16CB3DF700B52A7F /* murmur_hash_3.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		039DC1BA16CB3DF700B52A7F /* murmur_hash_3.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC18B16CB3DF700B52A7F /* murmur_hash_3.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC1BB16CB3DF700B52A7F /* stringstreams.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC18C16CB3DF700B52A7F /* stringstreams.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC1C716CB4B1700B52A7F /* ArciemGeom.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1BC16CB4B1100B52A7F /* ArciemGeom.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -198,7 +207,7 @@
 		039DC25916CB4CCE00B52A7F /* CWorkerManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC25116CB4CCE00B52A7F /* CWorkerManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC25A16CB4CCE00B52A7F /* CWorkerManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC25216CB4CCE00B52A7F /* CWorkerManager.mm */; };
 		039DC25E16CB4FAF00B52A7F /* ISO8601DateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC25C16CB4FAF00B52A7F /* ISO8601DateFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC25F16CB4FAF00B52A7F /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 039DC25D16CB4FAF00B52A7F /* ISO8601DateFormatter.m */; };
+		039DC25F16CB4FAF00B52A7F /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 039DC25D16CB4FAF00B52A7F /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		039DC26316CB516400B52A7F /* CNetworkActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC26116CB516400B52A7F /* CNetworkActivity.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC26416CB516400B52A7F /* CNetworkActivity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC26216CB516400B52A7F /* CNetworkActivity.mm */; };
 		039DC26616CB518B00B52A7F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC26516CB518A00B52A7F /* UIKit.framework */; };
@@ -327,6 +336,7 @@
 		03AC9091174EC5B800781374 /* CUserTrackingBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */; };
 		03AC9092174EC5B800781374 /* MapKitUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC908A174EC5B800781374 /* MapKitUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03AC9093174EC5B800781374 /* MapKitUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC908B174EC5B800781374 /* MapKitUtils.mm */; };
+		03CF6070180E22A500B123F4 /* CDebugMenuView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 036DE9391755E31200B6B345 /* CDebugMenuView.mm */; };
 		03D6585917601085002B9023 /* URLRequestUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D6585717601085002B9023 /* URLRequestUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03D6585A17601085002B9023 /* URLRequestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03D6585817601085002B9023 /* URLRequestUtils.mm */; };
 		03E3C840174ACBFF004E00EB /* CBadgeView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E3C83E174ACBFF004E00EB /* CBadgeView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -372,6 +382,14 @@
 		033A75F317274B8F0045933D /* AppUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppUtils.mm; sourceTree = "<group>"; };
 		033A75FC172754ED0045933D /* CKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKeychainUtils.h; sourceTree = "<group>"; };
 		033A75FD172754ED0045933D /* CKeychainUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CKeychainUtils.mm; sourceTree = "<group>"; };
+		034305EF180938380091133D /* CTextFieldTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextFieldTableViewCell.h; sourceTree = "<group>"; };
+		034305F0180938380091133D /* CTextFieldTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTextFieldTableViewCell.mm; sourceTree = "<group>"; };
+		0349E199180E15BC00F74905 /* CCreditCardSummaryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCreditCardSummaryItem.h; sourceTree = "<group>"; };
+		0349E19A180E15BC00F74905 /* CCreditCardSummaryItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCreditCardSummaryItem.mm; sourceTree = "<group>"; };
+		0349E19D180E16ED00F74905 /* CTableCreditCardSummaryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableCreditCardSummaryItem.h; sourceTree = "<group>"; };
+		0349E19E180E16ED00F74905 /* CTableCreditCardSummaryItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableCreditCardSummaryItem.mm; sourceTree = "<group>"; };
+		0349E1A1180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCreditCardSummaryItemTableViewCell.h; sourceTree = "<group>"; };
+		0349E1A2180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCreditCardSummaryItemTableViewCell.mm; sourceTree = "<group>"; };
 		0362A8F1174FF48C005AA5ED /* CWorkerDebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CWorkerDebugView.h; path = CWorker/CWorkerDebugView.h; sourceTree = "<group>"; };
 		0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CWorkerDebugView.mm; path = CWorker/CWorkerDebugView.mm; sourceTree = "<group>"; };
 		0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CWorkerManagerDebugView.h; path = CWorker/CWorkerManagerDebugView.h; sourceTree = "<group>"; };
@@ -385,6 +403,8 @@
 		0374651B17421EB60007F56D /* CTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTable.h; sourceTree = "<group>"; };
 		0374652917449CA70007F56D /* CDisclosureIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDisclosureIndicator.h; sourceTree = "<group>"; };
 		0374652A17449CA70007F56D /* CDisclosureIndicator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDisclosureIndicator.mm; sourceTree = "<group>"; };
+		0378B89317EA9A6E0073D97E /* CShieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShieldView.h; sourceTree = "<group>"; };
+		0378B89417EA9A6E0073D97E /* CShieldView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CShieldView.mm; sourceTree = "<group>"; };
 		039DC10F16CB300D00B52A7F /* libArciem.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libArciem.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		039DC11216CB300D00B52A7F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		039DC11616CB300D00B52A7F /* Arciem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Arciem-Prefix.pch"; path = "Arciem/Arciem-Prefix.pch"; sourceTree = "<group>"; };
@@ -674,6 +694,8 @@
 		03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUserTrackingBarButtonItem.mm; sourceTree = "<group>"; };
 		03AC908A174EC5B800781374 /* MapKitUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapKitUtils.h; sourceTree = "<group>"; };
 		03AC908B174EC5B800781374 /* MapKitUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MapKitUtils.mm; sourceTree = "<group>"; };
+		03D2A4B817FB87540098939E /* CDebugMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDebugMenuView.h; path = "../../../../../../../Library/Developer/Xcode/DerivedData/QP-dmhjmwesuqqztzhjqfjsifbirwsj/Build/Products/Debug-iphoneos/Headers/Arciem/CDebugMenuView.h"; sourceTree = "<group>"; };
+		03D2A4B917FB87540098939E /* CDebugMenuView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CDebugMenuView.mm; path = "../../../../../../../Library/Developer/Xcode/DerivedData/QP-dmhjmwesuqqztzhjqfjsifbirwsj/Build/Products/Debug-iphoneos/Headers/Arciem/CDebugMenuView.mm"; sourceTree = "<group>"; };
 		03D6585717601085002B9023 /* URLRequestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = URLRequestUtils.h; path = Arciem/ObjC/URLRequestUtils.h; sourceTree = SOURCE_ROOT; };
 		03D6585817601085002B9023 /* URLRequestUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = URLRequestUtils.mm; path = Arciem/ObjC/URLRequestUtils.mm; sourceTree = SOURCE_ROOT; };
 		03E3C83E174ACBFF004E00EB /* CBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBadgeView.h; sourceTree = "<group>"; };
@@ -907,6 +929,8 @@
 				039DC1D516CB4C4400B52A7F /* CBooleanItem.mm */,
 				039DC1D616CB4C4400B52A7F /* CCreditCardItem.h */,
 				039DC1D716CB4C4400B52A7F /* CCreditCardItem.mm */,
+				0349E199180E15BC00F74905 /* CCreditCardSummaryItem.h */,
+				0349E19A180E15BC00F74905 /* CCreditCardSummaryItem.mm */,
 				039DC1D816CB4C4400B52A7F /* CDateItem.h */,
 				039DC1D916CB4C4400B52A7F /* CDateItem.mm */,
 				039DC1DA16CB4C4400B52A7F /* CEmailItem.h */,
@@ -963,6 +987,8 @@
 				039DC1FD16CB4C4400B52A7F /* CTableButtonItem.mm */,
 				039DC1FE16CB4C4400B52A7F /* CTableCreditCardItem.h */,
 				039DC1FF16CB4C4400B52A7F /* CTableCreditCardItem.mm */,
+				0349E19D180E16ED00F74905 /* CTableCreditCardSummaryItem.h */,
+				0349E19E180E16ED00F74905 /* CTableCreditCardSummaryItem.mm */,
 				039DC20016CB4C4400B52A7F /* CTableMultiChoiceItem.h */,
 				039DC20116CB4C4400B52A7F /* CTableMultiChoiceItem.mm */,
 				039DC20216CB4C4400B52A7F /* CTableNoteItem.h */,
@@ -1052,6 +1078,8 @@
 		039DC26B16CB662100B52A7F /* Essentials */ = {
 			isa = PBXGroup;
 			children = (
+				0378B89317EA9A6E0073D97E /* CShieldView.h */,
+				0378B89417EA9A6E0073D97E /* CShieldView.mm */,
 				039DC26C16CB662100B52A7F /* CActivityShieldView.h */,
 				039DC26D16CB662100B52A7F /* CActivityShieldView.mm */,
 				039DC26E16CB662100B52A7F /* CAlertManager.h */,
@@ -1091,6 +1119,8 @@
 				039DC28E16CB662100B52A7F /* UIViewUtils.mm */,
 				03AC907F174E680700781374 /* UIViewControllerUtils.h */,
 				03AC9080174E680700781374 /* UIViewControllerUtils.mm */,
+				034305EF180938380091133D /* CTextFieldTableViewCell.h */,
+				034305F0180938380091133D /* CTextFieldTableViewCell.mm */,
 			);
 			path = Essentials;
 			sourceTree = "<group>";
@@ -1149,6 +1179,8 @@
 				039DC2D216CB689900B52A7F /* CButtonTableViewCell.mm */,
 				039DC2D316CB689900B52A7F /* CCreditCardItemTableViewCell.h */,
 				039DC2D416CB689900B52A7F /* CCreditCardItemTableViewCell.mm */,
+				0349E1A1180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.h */,
+				0349E1A2180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.mm */,
 				039DC2D516CB689900B52A7F /* CMultiChoiceItemTableViewCell.h */,
 				039DC2D616CB689900B52A7F /* CMultiChoiceItemTableViewCell.mm */,
 				039DC2D716CB689900B52A7F /* CNoteTableViewCell.h */,
@@ -1172,6 +1204,8 @@
 			children = (
 				039DC30616CB693700B52A7F /* CDebugOverlayView.h */,
 				039DC30716CB693700B52A7F /* CDebugOverlayView.mm */,
+				03D2A4B817FB87540098939E /* CDebugMenuView.h */,
+				03D2A4B917FB87540098939E /* CDebugMenuView.mm */,
 				039DC30816CB693700B52A7F /* CSetup */,
 			);
 			path = Dev;
@@ -1280,6 +1314,7 @@
 			files = (
 				039DC19416CB3DF700B52A7F /* align.hpp in Headers */,
 				039DC19616CB3DF700B52A7F /* arc2.hpp in Headers */,
+				034305F1180938380091133D /* CTextFieldTableViewCell.h in Headers */,
 				039DC19816CB3DF700B52A7F /* area.hpp in Headers */,
 				039DC19A16CB3DF700B52A7F /* areai.hpp in Headers */,
 				039DC19C16CB3DF700B52A7F /* bezier2.hpp in Headers */,
@@ -1309,6 +1344,7 @@
 				039DC14E16CB398A00B52A7F /* JSONUtils.h in Headers */,
 				039DC15016CB398A00B52A7F /* ObjectUtils.h in Headers */,
 				039DC15216CB398A00B52A7F /* PropertyUtils.h in Headers */,
+				0349E19B180E15BC00F74905 /* CCreditCardSummaryItem.h in Headers */,
 				039DC15416CB398A00B52A7F /* StringUtils.h in Headers */,
 				039DC15616CB398A00B52A7F /* ThreadUtils.h in Headers */,
 				039DC18D16CB3DF700B52A7F /* config.hpp in Headers */,
@@ -1336,12 +1372,14 @@
 				039DC22216CB4C4400B52A7F /* CPhoneItem.h in Headers */,
 				039DC22416CB4C4400B52A7F /* CRepeatingItem.h in Headers */,
 				039DC22616CB4C4400B52A7F /* CSpacerItem.h in Headers */,
+				0378B89517EA9A6E0073D97E /* CShieldView.h in Headers */,
 				039DC22816CB4C4400B52A7F /* CStringItem.h in Headers */,
 				039DC22A16CB4C4400B52A7F /* CSubmitItem.h in Headers */,
 				039DC22C16CB4C4400B52A7F /* CItem.h in Headers */,
 				039DC22E16CB4C4400B52A7F /* CTableItem.h in Headers */,
 				039DC23016CB4C4400B52A7F /* CTableActionItem.h in Headers */,
 				039DC23216CB4C4400B52A7F /* CTableAddRepeatingItem.h in Headers */,
+				0349E19F180E16ED00F74905 /* CTableCreditCardSummaryItem.h in Headers */,
 				039DC23416CB4C4400B52A7F /* CTableBooleanItem.h in Headers */,
 				039DC23616CB4C4400B52A7F /* CTableButtonItem.h in Headers */,
 				039DC23816CB4C4400B52A7F /* CTableCreditCardItem.h in Headers */,
@@ -1367,6 +1405,7 @@
 				039DC29716CB662100B52A7F /* CImageView.h in Headers */,
 				039DC29916CB662100B52A7F /* CNavigationBar.h in Headers */,
 				039DC29B16CB662100B52A7F /* CNavigationController.h in Headers */,
+				0349E1A3180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.h in Headers */,
 				039DC29D16CB662100B52A7F /* CTapToDismissKeyboardManager.h in Headers */,
 				039DC29F16CB662100B52A7F /* CView.h in Headers */,
 				039DC2A116CB662100B52A7F /* CViewController.h in Headers */,
@@ -1574,6 +1613,7 @@
 				039DC19716CB3DF700B52A7F /* area.cpp in Sources */,
 				039DC19916CB3DF700B52A7F /* areai.cpp in Sources */,
 				039DC19B16CB3DF700B52A7F /* bezier2.cpp in Sources */,
+				034305F2180938380091133D /* CTextFieldTableViewCell.mm in Sources */,
 				039DC19D16CB3DF700B52A7F /* bezier2_list.cpp in Sources */,
 				039DC19F16CB3DF700B52A7F /* delta2.cpp in Sources */,
 				039DC1A116CB3DF700B52A7F /* delta2i.cpp in Sources */,
@@ -1586,6 +1626,7 @@
 				039DC1AF16CB3DF700B52A7F /* point2i.cpp in Sources */,
 				039DC1B116CB3DF700B52A7F /* point3.cpp in Sources */,
 				039DC1B316CB3DF700B52A7F /* volume.cpp in Sources */,
+				0349E1A4180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.mm in Sources */,
 				039DC1B516CB3DF700B52A7F /* wedge2.cpp in Sources */,
 				039DC1B716CB3DF700B52A7F /* gl_utils.cpp in Sources */,
 				039DC1B916CB3DF700B52A7F /* murmur_hash_3.cpp in Sources */,
@@ -1618,6 +1659,7 @@
 				039DC23B16CB4C4400B52A7F /* CTableMultiChoiceItem.mm in Sources */,
 				039DC23D16CB4C4400B52A7F /* CTableNoteItem.mm in Sources */,
 				039DC23F16CB4C4400B52A7F /* CTableRowItem.mm in Sources */,
+				0349E19C180E15BC00F74905 /* CCreditCardSummaryItem.mm in Sources */,
 				039DC24116CB4C4400B52A7F /* CTableSpacerItem.mm in Sources */,
 				039DC24316CB4C4400B52A7F /* CTableSummaryItem.mm in Sources */,
 				039DC24516CB4C4400B52A7F /* CTableTextFieldItem.mm in Sources */,
@@ -1660,6 +1702,7 @@
 				039DC2F216CB689900B52A7F /* CButtonTableViewCell.mm in Sources */,
 				039DC2F416CB689900B52A7F /* CCreditCardItemTableViewCell.mm in Sources */,
 				039DC2F616CB689900B52A7F /* CMultiChoiceItemTableViewCell.mm in Sources */,
+				0378B89617EA9A6E0073D97E /* CShieldView.mm in Sources */,
 				039DC2F816CB689900B52A7F /* CNoteTableViewCell.mm in Sources */,
 				039DC2FA16CB689900B52A7F /* CRowItemTableViewCell.mm in Sources */,
 				039DC2FC16CB689900B52A7F /* CSpacerTableViewCell.mm in Sources */,
@@ -1684,6 +1727,7 @@
 				039DC39016CCA43000B52A7F /* CTabBar.mm in Sources */,
 				039DC39616CCA44000B52A7F /* UILabelUtils.mm in Sources */,
 				039DC39816CCA44000B52A7F /* WhiteLabel.mm in Sources */,
+				0349E1A0180E16ED00F74905 /* CTableCreditCardSummaryItem.mm in Sources */,
 				032AEEF116DE66DA0024D14E /* CSystemSound.mm in Sources */,
 				03F9446316E9735D00F9FEF3 /* CMiniPickerBackgroundView.mm in Sources */,
 				03F9446516E9735D00F9FEF3 /* CMiniPickerFrameView.mm in Sources */,
@@ -1692,6 +1736,7 @@
 				03F9446B16E9735D00F9FEF3 /* CMiniPickerViewCell.mm in Sources */,
 				03258715171CA8F800AE084E /* CNetworkController.mm in Sources */,
 				033A75F517274B8F0045933D /* AppUtils.mm in Sources */,
+				03CF6070180E22A500B123F4 /* CDebugMenuView.mm in Sources */,
 				033A75FF172754ED0045933D /* CKeychainUtils.mm in Sources */,
 				03F263241734D99D0078F41D /* CSidebarContainerViewController.mm in Sources */,
 				0370D7B0173761E0005165CA /* CNotifierViewController.mm in Sources */,
@@ -1705,7 +1750,6 @@
 				03AC9093174EC5B800781374 /* MapKitUtils.mm in Sources */,
 				0362A8F6174FF48C005AA5ED /* CWorkerDebugView.mm in Sources */,
 				0362A8F8174FF48C005AA5ED /* CWorkerManagerDebugView.mm in Sources */,
-				036DE93B1755E31200B6B345 /* CDebugMenuView.mm in Sources */,
 				03D6585A17601085002B9023 /* URLRequestUtils.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1772,7 +1816,17 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PUBLIC_HEADERS_FOLDER_PATH = Headers/Arciem;
 				SDKROOT = iphoneos;
-				STRIP_STYLE = "non-global";
+				STRIP_INSTALLED_PRODUCT = NO;
+				WARNING_CFLAGS = (
+					"-Wno-error=#warnings",
+					"-Weverything",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-idiomatic-parentheses",
+					"-Wno-pedantic",
+					"-Wno-c++98-compat-pedantic",
+					"-Wno-direct-ivar-access",
+					"-Wno-explicit-ownership-type",
+				);
 			};
 			name = Debug;
 		};
@@ -1797,8 +1851,18 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PUBLIC_HEADERS_FOLDER_PATH = Headers/Arciem;
 				SDKROOT = iphoneos;
-				STRIP_STYLE = "non-global";
+				STRIP_INSTALLED_PRODUCT = NO;
 				VALIDATE_PRODUCT = YES;
+				WARNING_CFLAGS = (
+					"-Wno-error=#warnings",
+					"-Weverything",
+					"-Wno-objc-missing-property-synthesis",
+					"-Wno-idiomatic-parentheses",
+					"-Wno-pedantic",
+					"-Wno-c++98-compat-pedantic",
+					"-Wno-direct-ivar-access",
+					"-Wno-explicit-ownership-type",
+				);
 			};
 			name = Release;
 		};

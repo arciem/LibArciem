@@ -75,6 +75,8 @@
 - (void)setup
 {
     [super setup];
+    self.opaque = NO;
+    self.backgroundColor = [UIColor clearColor];
     self.userInteractionEnabled = NO;
     self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.contentMode = UIViewContentModeRedraw;

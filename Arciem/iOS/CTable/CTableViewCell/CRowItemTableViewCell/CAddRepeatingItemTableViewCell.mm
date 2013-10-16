@@ -22,13 +22,18 @@
 #import "DeviceUtils.h"
 #import "UIViewUtils.h"
 
+@interface CAddRepeatingItemTableViewCell ()
+
+@end
+
 @implementation CAddRepeatingItemTableViewCell
+
 
 - (void)setup
 {
 	[super setup];
 	
-	self.textLabel.font = self.font;
+	self.titleLabel.font = self.font;
 }
 
 - (void)syncToRowItem
@@ -40,16 +45,8 @@
 	if(IsEmptyString(prompt)) {
 		prompt = @"Add Another...";
 	}
-	self.textLabel.text = prompt;
-}
-
-- (CGSize)sizeThatFits:(CGSize)size
-{
-	if(IsPhone()) {
-		size.height = 30;
-	}
-	
-	return size;
+	self.titleLabel.text = prompt;
+    [self setNeedsUpdateConstraints];
 }
 
 - (NSUInteger)validationViewsNeeded
@@ -57,10 +54,15 @@
 	return 0;
 }
 
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	self.textLabel.cframe.flexibleLeft = CGRectGetMinX(self.layoutFrame);
+- (void)updateConstraints {
+    [super updateConstraints];
+
+    CLayoutConstraintsGroup *group = [self resetConstraintsGroupForKey:@"CAddRepeatingItemTableViewCell_contentView" owner:self.contentView];
+    [group addConstraints:[self.titleLabel constrainCenterEqualToCenterOfItem:self.contentView]];
+    [group addConstraint:[self.titleLabel constrainTopEqualToTopOfItem:self.contentView offset:8]];
+    [group addConstraint:[self.titleLabel constrainBottomEqualToBottomOfItem:self.contentView offset:-8]];
+    [group addConstraint:[self.titleLabel constrainLeadingGreaterThanOrEqualToLeadingOfItem:self.contentView offset:20]];
+    [group addConstraint:[self.titleLabel constrainTrailingLessThanOrEqualToTrailingOfItem:self.contentView offset:-20]];
 }
 
 @end

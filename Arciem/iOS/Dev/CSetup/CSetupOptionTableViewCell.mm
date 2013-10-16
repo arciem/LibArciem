@@ -25,6 +25,7 @@
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
 	if(self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
 		self.textLabel.adjustsFontSizeToFitWidth = YES;
 		self.textLabel.minimumScaleFactor = 0.5;
 		self.textLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;

@@ -24,8 +24,8 @@
 
 @interface CMonthAndYearPicker () <UIPickerViewDataSource, UIPickerViewDelegate>
 
-@property (strong, nonatomic) UIPickerView* pickerView;
-@property (strong, nonatomic) UIImageView* backgroundView;
+@property (nonatomic) UIPickerView* pickerView;
+@property (nonatomic) UIImageView* backgroundView;
 @property (readonly, nonatomic) NSLocale* locale;
 @property (readonly, nonatomic) NSCalendar* calendar;
 @property (readonly, nonatomic) NSDateFormatter* dateFormatter;
@@ -40,13 +40,10 @@
 @implementation CMonthAndYearPicker
 
 @synthesize pickerView = pickerView_;
-@synthesize backgroundView = backgroundView_;
 @synthesize date = date_;
 @synthesize locale = locale_;
 @synthesize calendar = calendar_;
 @synthesize dateFormatter = dateFormatter_;
-@synthesize minimumDate = minimumDate_;
-@synthesize maximumDate = maximumDate_;
 @synthesize currentDate = currentDate_;
 
 - (id)init
@@ -62,14 +59,10 @@
 	if(self = [super initWithFrame:CGRectMake(0, 0, 320, 216)]) {
 		self.date = [NSDate date];
 
-		UIImage* backgroundImage = [UIImage imageNamed:@"PickerBackground"];
-		backgroundView_ = [[UIImageView alloc] initWithImage:backgroundImage];
-		backgroundView_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		backgroundView_.contentMode = UIViewContentModeScaleToFill;
-		backgroundView_.frame = self.bounds;
-		[self addSubview:backgroundView_];
+        self.opaque = YES;
+        self.backgroundColor = [UIColor whiteColor];
 
-		pickerView_ = [[UIPickerView alloc] initWithFrame:CGRectZero];
+		pickerView_ = [[UIPickerView alloc] initWithFrame:self.bounds];
 		pickerView_.dataSource = self;
 		pickerView_.delegate = self;
 		pickerView_.showsSelectionIndicator = YES;

@@ -39,7 +39,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 
 @interface CNetworkActivityIndicator : NSObject
 
-@property (strong, nonatomic) NSTimer* timer;
+@property (nonatomic) NSTimer* timer;
 @property (nonatomic) NSInteger activationsCount;
 
 + (CNetworkActivityIndicator*)sharedIndicator;

@@ -25,7 +25,7 @@ static const CGFloat kNotifierBarHeight = 30.0;
 
 @interface CNotifierViewController () <CNotifierBarDelegate>
 
-@property (strong, nonatomic) CNotifierBar *notifierBar;
+@property (nonatomic) CNotifierBar *notifierBar;
 
 @end
 
@@ -124,7 +124,8 @@ static const CGFloat kNotifierBarHeight = 30.0;
 #pragma mark - CNotifierBarDelegate
 
 - (void)notifierBar:(CNotifierBar *)notifierBar willChangeFrame:(CGRect)newFrame animated:(BOOL)animated {
-    self.bodyViewController.view.cframe.flexibleTop = CGRectGetMaxY(newFrame);
+    CFrame *bodyViewControllerFrame = self.bodyViewController.view.cframe;
+    bodyViewControllerFrame.flexibleTop = CGRectGetMaxY(newFrame);
 }
 
 @end

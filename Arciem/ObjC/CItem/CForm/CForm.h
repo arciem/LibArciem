@@ -19,6 +19,7 @@
 #import "CItem.h"
 #import "CBooleanItem.h"
 #import "CCreditCardItem.h"
+#import "CCreditCardSummaryItem.h"
 #import "CDateItem.h"
 #import "CEmailItem.h"
 #import "CMultiChoiceItem.h"
@@ -33,7 +34,7 @@
 
 @interface CForm : NSObject
 
-@property (strong, nonatomic) CItem* rootItem;
+@property (nonatomic) CItem* rootItem;
 
 - (id)initWithRootItem:(CItem*)rootItem;
 

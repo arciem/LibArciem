@@ -21,21 +21,22 @@
 #import "ThreadUtils.h"
 #import "UIColorUtils.h"
 #import "CObserver.h"
+#import "ObjectUtils.h"
 
 static UIImage* sValidImage = nil;
 static UIImage* sInvalidImage = nil;
 
 @interface CFieldValidationView ()
 
-@property (strong, readonly, nonatomic) UIView* newView;
-@property (strong, readonly, nonatomic) UIView* validView;
-@property (strong, readonly, nonatomic) UIView* invalidView;
-@property (strong, readonly, nonatomic) UIView* needsValidationView;
-@property (strong, readonly, nonatomic) UIView* validatingView;
-@property (strong, nonatomic) UIView* contentView;
-@property (strong, nonatomic) UIView* lastContentView;
-@property (strong, nonatomic) CObserver* itemStateObserver;
-@property (strong, nonatomic) CObserver* itemEditingObserver;
+@property (readonly, nonatomic) UIView* newView;
+@property (readonly, nonatomic) UIView* validView;
+@property (readonly, nonatomic) UIView* invalidView;
+@property (readonly, nonatomic) UIView* needsValidationView;
+@property (readonly, nonatomic) UIView* validatingView;
+@property (nonatomic) UIView* contentView;
+@property (nonatomic) UIView* lastContentView;
+@property (nonatomic) CObserver* itemStateObserver;
+@property (nonatomic) CObserver* itemEditingObserver;
 
 - (void)syncToState;
 
@@ -55,18 +56,21 @@ static UIImage* sInvalidImage = nil;
 {
 	[super setup];
 	[self syncToState];
+    self.opaque = NO;
+    self.backgroundColor = [UIColor clearColor];
 	self.userInteractionEnabled = NO;
 	self.validMarkTintColor = [[UIColor greenColor] colorByDarkeningFraction:0.2];
 	self.invalidMarkTintColor = [[UIColor redColor] colorByDarkeningFraction:0.1];
-	
+    
+    BSELF;
 	self.itemStateObserver = [CObserver observerWithKeyPath:@"state" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self armSyncToState];
+		[bself armSyncToState];
 	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self armSyncToState];
+		[bself armSyncToState];
 	}];
 	
 	self.itemEditingObserver = [CObserver observerWithKeyPath:@"isEditing" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self armSyncToState];
+		[bself armSyncToState];
 	}];
 }
 
@@ -79,7 +83,8 @@ static UIImage* sInvalidImage = nil;
 {
 	UIImage* image = [UIImage imageNamed:imageName];
 	if(image != nil) {
-		image = [UIImage imageWithShapeImage:image tintColor:tintColor shadowColor:[UIColor colorWithWhite:0.0 alpha:0.8] shadowOffset:CGSizeMake(0.0, -1.0) shadowBlur:0];
+		image = [UIImage imageWithShapeImage:image tintColor:tintColor shadowColor:[UIColor clearColor] shadowOffset:CGSizeMake(0.0, 0.0) shadowBlur:0];
+//		image = [UIImage imageWithShapeImage:image tintColor:tintColor shadowColor:[UIColor colorWithWhite:0.0 alpha:0.8] shadowOffset:CGSizeMake(0.0, -1.0) shadowBlur:0];
 	}
 	return image;
 }
@@ -172,11 +177,12 @@ static UIImage* sInvalidImage = nil;
 			[self addSubview:_contentView];
 		}
 
-		_contentView.frame = self.bounds;
-		_contentView.alpha = 0.0;
+		self.contentView.frame = self.bounds;
+		self.contentView.alpha = 0.0;
+        BSELF;
 		[UIView animateWithDuration:0.3 animations:^{
-			_contentView.alpha = 1.0;
-			self.lastContentView.alpha = 0.0;
+			bself.contentView.alpha = 1.0;
+			bself.lastContentView.alpha = 0.0;
 		}];
 	}
 }
@@ -215,9 +221,13 @@ static UIImage* sInvalidImage = nil;
 	}];
 }
 
+- (CGSize)intrinsicContentSize {
+    return CGSizeMake(20, 20);
+}
+
 - (CGSize)sizeThatFits:(CGSize)size
 {
-	return CGSizeMake(20, 20);
+	return self.intrinsicContentSize;
 }
 
 @end

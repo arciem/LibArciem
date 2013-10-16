@@ -37,8 +37,6 @@
 #include "volume.hpp"
 #include "wedge2.hpp"
 
-using namespace std;
-
 #ifdef __OBJC__
 
 #import <UIKit/UIKit.h>
@@ -110,6 +108,7 @@ using namespace std;
 #import "MapKitUtils.h"
 
 // Essentials
+#import "CShieldView.h"
 #import "CActivityShieldView.h"
 #import "CAlertManager.h"
 #import "CGradientView.h"
@@ -129,6 +128,7 @@ using namespace std;
 #import "UIImageUtils.h"
 #import "UIViewUtils.h"
 #import "UIViewControllerUtils.h"
+#import "CTextFieldTableViewCell.h"
 
 // CTableManager
 #import "CTableManager.h"

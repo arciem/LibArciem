@@ -33,7 +33,10 @@ public:
 	orientation() : axis(-delta3::z_axis()), angle(0.0) { }
 	orientation(const delta3& axis, angle_t angle) : axis(axis), angle(angle) { }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 	bool operator==(orientation const& o) const { return axis == o.axis && angle == o.angle; }
+#pragma clang diagnostic pop
 	bool operator!=(orientation const& o) const { return !(*this == o); }
 };
 

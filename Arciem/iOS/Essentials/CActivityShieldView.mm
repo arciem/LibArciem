@@ -19,35 +19,11 @@
 #import "CActivityShieldView.h"
 #import "CGUtils.h"
 #import "Geom.h"
-#import "UIViewUtils.h"
-
-static NSString* const kClassLogTag = @"ACTIVITY_SHIELD_VIEW";
-
-@interface CActivityShieldView ()
-
-@property (weak, nonatomic) UIView *parentView;
-
-@end
 
 @implementation CActivityShieldView
 
-+ (void)initialize {
-//    CLogSetTagActive(kClassLogTag, YES);
-}
-
-- (id)initWithParentView:(UIView *)parentView {
-    if(self = [super initWithFrame:parentView.bounds]) {
-        self.parentView = parentView;
-    }
-    return self;
-}
-
 - (void)setup {
 	[super setup];
-	
-	self.contentMode = UIViewContentModeRedraw;
-//	self.userInteractionEnabled = NO;
-	self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
 	UIActivityIndicatorView* activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 	activityIndicatorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -55,51 +31,25 @@ static NSString* const kClassLogTag = @"ACTIVITY_SHIELD_VIEW";
 	activityIndicatorView.frame = CGRectIntegral(activityIndicatorView.frame);
 	[self addSubview:activityIndicatorView];
 	[activityIndicatorView startAnimating];
-	
-//	self.debugColor = [UIColor whiteColor];
 }
 
 - (void)drawRect:(CGRect)rect {
 	[super drawRect:rect];
-
+    
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
 	CGContextSaveGState(context);
-		ContextFillShieldGradient(context, self.bounds);
-		
-		CGRect boxFrame = CGRectMake(0, 0, 100, 100);
-		boxFrame = [Geom alignRectMid:boxFrame toRectMid:self.bounds];
-		CGPathRef boxPath = CreateRoundedRectPath(boxFrame, 10, NO);
-		CGContextAddPath(context, boxPath);
-//		CGColorRef color = [UIColor colorWithRed:0.0 green:0.0 blue:0.4 alpha:0.5].CGColor;
-		CGColorRef color = [UIColor colorWithHue:(214.0 / 360.0) saturation:1.0 brightness:0.3 alpha:0.6].CGColor;
-		CGContextSetFillColorWithColor(context, color);
-		CGContextFillPath(context);
-		CGPathRelease(boxPath);
+    
+    CGRect boxFrame = CGRectMake(0, 0, 100, 100);
+    boxFrame = [Geom alignRectMid:boxFrame toRectMid:self.bounds];
+    CGPathRef boxPath = CreateRoundedRectPath(boxFrame, 10, NO);
+    CGContextAddPath(context, boxPath);
+    //		CGColorRef color = [UIColor colorWithRed:0.0 green:0.0 blue:0.4 alpha:0.5].CGColor;
+    CGColorRef color = [UIColor colorWithHue:(214.0 / 360.0) saturation:1.0 brightness:0.3 alpha:0.6].CGColor;
+    CGContextSetFillColorWithColor(context, color);
+    CGContextFillPath(context);
+    CGPathRelease(boxPath);
 	CGContextRestoreGState(context);
-}
-
-- (void)addToParentDelayed {
-    @synchronized(self) {
-        CLogTrace(kClassLogTag, @"%@ addToParentDelayed", self);
-        [self performSelector:@selector(addToParent) withObject:nil afterDelay:0.5];
-    }
-}
-
-- (void)addToParent {
-    @synchronized(self) {
-        CLogTrace(kClassLogTag, @"%@ addToParent", self);
-        [self.parentView addSubview:self animated:YES];
-    }
-}
-
-- (void)removeFromParent {
-    @synchronized(self) {
-        CLogTrace(kClassLogTag, @"%@ removeFromParent", self);
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(addToParent) object:nil];
-//        [[NSRunLoop currentRunLoop] cancelPerformSelector:@selector(addToParent) target:self argument:nil];
-        [self removeFromSuperviewAnimated:YES];
-    }
 }
 
 @end

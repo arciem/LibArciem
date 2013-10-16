@@ -35,8 +35,11 @@ namespace arciem {
 		inline GLfloat operator[](int i) const { return (&x)[i]; }
 		inline GLfloat& operator[](int i) { return (&x)[i]; }
 		
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 		bool operator==(vector2 const& v) const { return x == v.x && y == v.y; }
 		bool operator!=(vector2 const& v) const { return x != v.x || y != v.y; }
+#pragma clang diagnostic pop
 		vector2 operator+(vector2 const& v) const { return vector2(x + v.x, y + v.y); }
 		vector2 operator-(vector2 const& v) const { return vector2(x - v.x, y - v.y); }
 		vector2 operator*(vector2 const& v) const { return vector2(x * v.x, y * v.y); }
@@ -74,8 +77,11 @@ namespace arciem {
 		inline GLfloat operator[](int i) const { return (&x)[i]; }
 		inline GLfloat& operator[](int i) { return (&x)[i]; }
 		
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 		bool operator==(vector3 const& v) const { return x == v.x && y == v.y && z == v.z; }
 		bool operator!=(vector3 const& v) const { return x != v.x || y != v.y || z != v.z; }
+#pragma clang diagnostic pop
 		vector3 operator+(vector3 const& v) const { return vector3(x + v.x, y + v.y, z + v.z); }
 		vector3 operator-(vector3 const& v) const { return vector3(x - v.x, y - v.y, z - v.z); }
 		vector3 operator*(vector3 const& v) const { return vector3(x * v.x, y * v.y, z * v.z); }
@@ -114,8 +120,11 @@ namespace arciem {
 		inline GLfloat operator[](int i) const { return (&x)[i]; }
 		inline GLfloat& operator[](int i) { return (&x)[i]; }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 		bool operator==(vector4 const& v) const { return x == v.x && y == v.y && z == v.z && w == v.w; }
 		bool operator!=(vector4 const& v) const { return x != v.x || y != v.y || z != v.z || w != v.w; }
+#pragma clang diagnostic pop
 		vector4 operator+(vector4 const& v) const { return vector4(x + v.x, y + v.y, z + v.z, w + v.w); }
 		vector4 operator-(vector4 const& v) const { return vector4(x - v.x, y - v.y, z - v.z, w - v.w); }
 		vector4 operator*(vector4 const& v) const { return vector4(x * v.x, y * v.y, z * v.z, w * v.w); }
@@ -151,8 +160,11 @@ namespace arciem {
 		inline GLfloat operator[](int i) const { return (&r)[i]; }
 		inline GLfloat& operator[](int i) { return (&r)[i]; }
 		
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 		bool operator==(color const& c) const { return r == c.r && g == c.g && b == c.b && a == c.a; }
 		bool operator!=(color const& c) const { return r != c.r || g != c.g || b != c.b || a != c.a; }
+#pragma clang diagnostic pop
 		color operator+(color const& c) const { return color(r + c.r, g + c.g, b + c.b, a + c.a); }
 		color operator-(color const& c) const { return color(r - c.r, g - c.g, b - c.b, a - c.a); }
 		color operator*(color const& c) const { return color(r * c.r, g * c.g, b * c.b, a * c.a); }

@@ -28,11 +28,12 @@ typedef enum {
 
 @interface CView : UIView<UIGestureRecognizerDelegate>
 
-@property (strong, nonatomic) UIColor* debugColor;
+@property (nonatomic) UIColor* debugColor;
 @property (nonatomic) CViewKeyboardAdjustmentType keyboardAdjustmentType;
-@property (nonatomic) BOOL tapResignsFirstResponder;
+//@property (nonatomic) BOOL tapResignsFirstResponder;
+@property (nonatomic) BOOL layoutView;
 @property (assign, nonatomic) id<CViewLayoutDelegate> layoutDelegate;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
+@property (nonatomic) IBOutlet NSLayoutConstraint *bottomConstraint;
 
 - (void)setup;
 

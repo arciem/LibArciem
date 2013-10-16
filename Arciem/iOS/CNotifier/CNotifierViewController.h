@@ -24,8 +24,8 @@
 
 @interface CNotifierViewController : CViewController
 
-@property (strong, nonatomic) UIViewController *bodyViewController;
-@property (strong, nonatomic) CNotifier *notifier;
+@property (nonatomic) UIViewController *bodyViewController;
+@property (nonatomic) CNotifier *notifier;
 @property (nonatomic) NSUInteger rowCapacity;
 @property (nonatomic) CGFloat statusBarHeight;
 

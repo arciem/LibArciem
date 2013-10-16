@@ -141,7 +141,7 @@
 	@synchronized(self) {
 		if(!hasReaper) {
 			hasReaper = YES;
-			[NSThread performBlockInBackground:^ {
+			[NSThread performBlockInBackground:^ __attribute__((noreturn)) {
 				while(YES) {
 					[NSThread sleepForTimeInterval:10.0];
 					@synchronized(workerManager) {

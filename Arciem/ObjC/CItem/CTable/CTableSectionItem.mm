@@ -22,7 +22,7 @@
 
 @interface CTableSectionItem ()
 
-@property (strong, nonatomic) CObserver* subitemsObserver;
+@property (nonatomic) CObserver* subitemsObserver;
 
 @end
 
@@ -33,9 +33,10 @@
 
 - (void)setup
 {
+    BSELF;
 	CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		if(!self.isReordering) {
-			[(CTableItem*)self.superitem tableSectionItem:self rowsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
+		if(!bself.isReordering) {
+			[(CTableItem*)bself.superitem tableSectionItem:bself rowsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
 		}
 	};
 	

@@ -150,7 +150,10 @@ NSString* DeviceIPAddress()
 		while(temp_addr != NULL) {
 			if(temp_addr->ifa_addr->sa_family == AF_INET) {
 				NSString* interfaceName = @(temp_addr->ifa_name);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-align"
 				NSString* address = @(inet_ntoa(((struct sockaddr_in *)temp_addr->ifa_addr)->sin_addr));
+#pragma clang diagnostic pop
 				CLogDebug(nil, @"interface:%@ address:%@", interfaceName, address);
 				if([interfaceName isEqualToString:@"en0"]) {
 					// Interface is en0 which is the wifi connection on the iPhone

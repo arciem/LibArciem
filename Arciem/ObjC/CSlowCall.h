@@ -21,7 +21,7 @@
 @interface CSlowCall : NSObject
 
 @property (nonatomic) NSTimeInterval delay;
-@property (strong, readonly, nonatomic) id object;
+@property (readonly, nonatomic) id object;
 @property (readonly, nonatomic) BOOL isArmed;
 
 @property (weak, readonly, nonatomic) id target;

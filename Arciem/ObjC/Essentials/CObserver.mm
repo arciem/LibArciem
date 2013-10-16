@@ -21,8 +21,8 @@
 
 @interface CObserver ()
 
-@property (strong, nonatomic) NSString* keyPath;
-@property (strong, nonatomic) NSMutableArray* mutableObjects;
+@property (nonatomic) NSString *keyPath;
+@property (nonatomic) NSPointerArray *mutableObjects;
 @property (copy, nonatomic) CObserverBlock action;
 @property (copy, nonatomic) CObserverBlock initial;
 @property (copy, nonatomic) CObserverBlock prior;
@@ -41,7 +41,9 @@
 {
 	if(self = [super init]) {
 		self.keyPath = keyPath;
-		self.mutableObjects = [NSMutableArray array];
+//        self.mutableObjects = [NSPointerArray weakObjectsPointerArray];
+        // Can't use strong or we create retain cycles. Can't use weak or we can't remove observers we've added when we're dealloced. So use opaque.
+        self.mutableObjects = [[NSPointerArray alloc] initWithOptions:NSPointerFunctionsOpaqueMemory];
 		self.action = action;
 		self.initial = initial;
 		self.prior = prior;
@@ -82,8 +84,8 @@
 {
 	__block NSUInteger foundIndex = NSNotFound;
 
-	[self.mutableObjects enumerateObjectsUsingBlock:^(NSValue* value, NSUInteger idx, BOOL *stop) {
-		if([value nonretainedObjectValue] == object) {
+	[[self.mutableObjects allObjects] enumerateObjectsUsingBlock:^(id value, NSUInteger idx, BOOL *stop) {
+		if(value == object) {
 			foundIndex = idx;
 			*stop = YES;
 		}
@@ -94,13 +96,13 @@
 
 - (void)addObject_:(id)object
 {
-	[self.mutableObjects addObject:[NSValue valueWithNonretainedObject:object]];
+	[self.mutableObjects addPointer:(void*)object];
 	[object addObserver:self forKeyPath:self.keyPath options:self.options context:NULL];
 }
 
 - (void)removeObject:(id)object atIndex_:(NSUInteger)index
 {
-	[self.mutableObjects removeObjectAtIndex:index];
+	[self.mutableObjects removePointerAtIndex:index];
 	[object removeObserver:self forKeyPath:self.keyPath];
 }
 
@@ -138,17 +140,18 @@
 
 - (NSArray*)objects
 {
-	return [self.mutableObjects copy];
+	return [self.mutableObjects allObjects];
 }
 
 - (void)setObjects:(NSArray*)objects
 {
+    BSELF;
 	[objects enumerateObjectsUsingBlock:^(id object, NSUInteger idx, BOOL *stop) {
-		NSUInteger index = [self indexOfObject:object];
+		NSUInteger index = [bself indexOfObject:object];
 		if(index == NSNotFound) {
-			[self addObject_:object];
+			[bself addObject_:object];
 		} else {
-			[self removeObject:object atIndex_:index];
+			[bself removeObject:object atIndex_:index];
 		}
 	}];
 }
@@ -178,12 +181,13 @@
 - (void)dealloc
 {
 	CLogTrace(@"C_OBSERVER", @"%@ dealloc", self);
-//	NSAssert1(self.object != nil, @"object deallocated before observer for keyPath:%@", self.keyPath);
-	[self.mutableObjects enumerateObjectsUsingBlock:^(NSValue* value, NSUInteger idx, BOOL *stop) {
-		id object = [value nonretainedObjectValue];
-		[object removeObserver:self forKeyPath:self.keyPath context:NULL];
-	}];
+    for(id value in self.mutableObjects) {
+		[value removeObserver:self forKeyPath:self.keyPath context:NULL];
+    }
 	self.mutableObjects = nil;
+    self.action = nil;
+    self.initial = nil;
+    self.prior = nil;
 }
 
 + (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior
@@ -208,23 +212,21 @@
 	id newValue = change[NSKeyValueChangeNewKey];
 	NSIndexSet* indexes = change[NSKeyValueChangeIndexesKey];
 	CLogTrace(@"C_OBSERVER", @"%@ change new:%@ old:%@ kind:%d indexes:%@", self, newValue, oldValue, kind, indexes);
-	if(!Same(newValue, oldValue)) {
-		if([change[NSKeyValueChangeNotificationIsPriorKey] boolValue]) {
-			if(self.prior != NULL) {
-				// newValue will always be nil
-				self.prior(object, newValue, oldValue, kind, indexes);
-			}
-		} else if(oldValue == nil && kind == NSKeyValueChangeSetting) {
-			if(self.initial != NULL) {
-				// oldValue will always be nil
-				self.initial(object, newValue, oldValue, kind, indexes);
-			}
-		} else {
-			if(self.action != NULL) {
-				self.action(object, newValue, oldValue, kind, indexes);
-			}
-		}
-	}
+    if([change[NSKeyValueChangeNotificationIsPriorKey] boolValue]) {
+        if(self.prior != NULL) {
+            // newValue will always be nil
+            self.prior(object, newValue, oldValue, kind, indexes);
+        }
+    } else if(oldValue == nil && kind == NSKeyValueChangeSetting) {
+        if(self.initial != NULL) {
+            // oldValue will always be nil
+            self.initial(object, newValue, oldValue, kind, indexes);
+        }
+    } else {
+        if(self.action != NULL) {
+            self.action(object, newValue, oldValue, kind, indexes);
+        }
+    }
 }
 
 @end

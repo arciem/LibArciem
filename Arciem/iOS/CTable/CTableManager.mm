@@ -28,9 +28,9 @@
 
 @interface CTableManager () <CRowItemTableViewCellDelegate>
 
-@property (strong, nonatomic) NSArray* visibleSections;
-@property (strong, nonatomic) NSMutableDictionary* visibleRowsBySection;
-@property (strong, readonly, nonatomic) CSlowCall* scrollToRowSlowCall;
+@property (nonatomic) NSArray* visibleSections;
+@property (nonatomic) NSMutableDictionary* visibleRowsBySection;
+@property (readonly, nonatomic) CSlowCall* scrollToRowSlowCall;
 
 @end
 
@@ -469,7 +469,6 @@
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
 	cell.rowItem = rowItem;
 	cell.cframe.size = CGSizeMake(tableView.width, result);
-	[cell setNeedsLayout];
 	[cell layoutIfNeeded];
 	[cell sizeToFit];
 	result = cell.height;

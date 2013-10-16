@@ -21,7 +21,7 @@
 
 @interface CSetupBoolOptionTableViewCell ()
 
-@property (strong, nonatomic) UISwitch* switchView;
+@property (nonatomic) UISwitch* switchView;
 @property (readonly, nonatomic) CBooleanItem* boolOption;
 
 @end

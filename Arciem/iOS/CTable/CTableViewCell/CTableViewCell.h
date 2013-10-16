@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import <UIKit/UIKit.h>
+#import "UIViewUtils.h"
 
 @class CTableRowItem;
 
@@ -26,5 +27,9 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+
+@property (readonly, nonatomic) UILabel *titleLabel;
+
+- (CLayoutConstraintsGroup *)resetConstraintsGroupForKey:(NSString *)key owner:(id)owner;
 
 @end

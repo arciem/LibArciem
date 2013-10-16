@@ -20,9 +20,9 @@
 
 @interface CMonthAndYearPicker : UIControl
 
-@property (strong, nonatomic) NSDate* date;
-@property (strong, nonatomic) NSDate* minimumDate;
-@property (strong, nonatomic) NSDate* maximumDate;
+@property (nonatomic) NSDate* date;
+@property (nonatomic) NSDate* minimumDate;
+@property (nonatomic) NSDate* maximumDate;
 
 - (id)init;
 - (void)setDate:(NSDate *)date animated:(BOOL)animated;

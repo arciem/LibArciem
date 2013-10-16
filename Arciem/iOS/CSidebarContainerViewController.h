@@ -31,14 +31,14 @@ extern NSString *const SidebarContainerViewControllerWillSwipeClosedRightViewCon
 
 @interface CSidebarContainerViewController : CViewController<UIGestureRecognizerDelegate>
 
-@property (strong, nonatomic) UIViewController* centerViewController;
-@property (strong, nonatomic) UIViewController* leftViewController;
-@property (strong, nonatomic) UIViewController* rightViewController;
+@property (nonatomic) UIViewController* centerViewController;
+@property (nonatomic) UIViewController* leftViewController;
+@property (nonatomic) UIViewController* rightViewController;
 
-@property (strong, readonly, nonatomic) UISwipeGestureRecognizer* centerSwipeRightRecognizer;
-@property (strong, readonly, nonatomic) UISwipeGestureRecognizer* centerSwipeLeftRecognizer;
-@property (strong, readonly, nonatomic) UISwipeGestureRecognizer* leftSwipeLeftRecognizer;
-@property (strong, readonly, nonatomic) UISwipeGestureRecognizer* rightSwipeRightRecognizer;
+@property (readonly, nonatomic) UISwipeGestureRecognizer* centerSwipeRightRecognizer;
+@property (readonly, nonatomic) UISwipeGestureRecognizer* centerSwipeLeftRecognizer;
+@property (readonly, nonatomic) UISwipeGestureRecognizer* leftSwipeLeftRecognizer;
+@property (readonly, nonatomic) UISwipeGestureRecognizer* rightSwipeRightRecognizer;
 
 @property (nonatomic) BOOL leftViewVisible;
 @property (nonatomic) BOOL rightViewVisible;

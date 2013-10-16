@@ -24,8 +24,8 @@
 
 - (void)didChangeUserTrackingMode;
 
-@property (strong, readonly, nonatomic) MKMapView* mapView;
-@property (strong, nonatomic) UIColor *onColor;
-@property (strong, nonatomic) UIColor *offColor;
+@property (nonatomic) MKMapView *mapView;
+@property (nonatomic) UIColor *onColor;
+@property (nonatomic) UIColor *offColor;
 
 @end

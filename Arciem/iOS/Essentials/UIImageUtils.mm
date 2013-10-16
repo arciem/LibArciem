@@ -211,6 +211,20 @@
     return newImage;
 }
 
+- (UIImage *)imageByDesaturating:(CGFloat)desaturation
+{
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CIImage *ciimage = [CIImage imageWithCGImage:self.CGImage];
+    CIFilter *filter = [CIFilter filterWithName:@"CIColorControls"];
+    [filter setValue:ciimage forKey:@"inputImage"];
+    [filter setValue:[NSNumber numberWithFloat:desaturation] forKey:@"inputSaturation"];
+    CIImage *result = [filter valueForKey:kCIOutputImageKey];
+    CGImageRef cgImage = [context createCGImage:result fromRect:[result extent]];
+    UIImage* image = [UIImage imageWithCGImage:cgImage scale:self.scale orientation:UIImageOrientationUp];
+    CGImageRelease(cgImage);
+    return image;
+}
+
 - (UIImage*)imageByScalingToSize:(CGSize)size
 {
 	UIImage* result = nil;
@@ -227,7 +241,7 @@
 {
 	UIImage* result = nil;
 	
-	UIGraphicsBeginImageContext( imageSize );
+	UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0.0);
 
 		CGContextRef context = UIGraphicsGetCurrentContext();
 		CGRect bounds;
@@ -549,19 +563,23 @@
 	UIColor *tintColor;
 	UIColor* shadowColor;
 	CGSize shadowOffset;
+    
+    // Make room for the shadow
+    CGSize size = CGSizeMake(self.size.width + 2, self.size.height + 2);
+    UIImage *image = [self imageByScalingToSize:self.size centeredWithinImageOfSize:size backgroundColor:[UIColor clearColor]];
 
 	if(darkBar) {
 		tintColor = [UIColor whiteColor];
 		shadowOffset = CGSizeMake(0, -1);
 		shadowColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-		
-		resultImage = [UIImage imageWithShapeImage:self tintColor:tintColor shadowColor:shadowColor shadowOffset:shadowOffset shadowBlur:0.0];
+
+		resultImage = [UIImage imageWithShapeImage:image tintColor:tintColor shadowColor:shadowColor shadowOffset:shadowOffset shadowBlur:0.0];
 	} else {
 		tintColor = [UIColor colorWithHue:0.600 saturation:0.173 brightness:0.423 alpha:1.000];
 		shadowOffset = CGSizeMake(0, 1);
 		shadowColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
 		
-		resultImage = [UIImage imageWithShapeImage:self tintColor:tintColor shadowColor:shadowColor shadowOffset:shadowOffset shadowBlur:0.0];
+		resultImage = [UIImage imageWithShapeImage:image tintColor:tintColor shadowColor:shadowColor shadowOffset:shadowOffset shadowBlur:0.0];
 	}
 	
 	return resultImage;

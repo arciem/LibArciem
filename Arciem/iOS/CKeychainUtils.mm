@@ -219,14 +219,14 @@ static NSString* const CKeychainUtilsErrorDomain = @"CKeychainUtilsErrorDomain";
 	// One likely way such an incorrect item could have come about is due to the previous (incorrect)
 	// version of this code (which set the password as a generic attribute instead of password data).
 	
-	NSDictionary *attributeResult = NULL;
+//	NSDictionary *attributeResult = NULL;
 	NSMutableDictionary *attributeQuery = [query mutableCopy];
 	attributeQuery[(__bridge id) kSecReturnAttributes] = (id) kCFBooleanTrue;
 	CFTypeRef attributeResultRef;
 	OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef) attributeQuery, &attributeResultRef);
-	if(status == noErr) {
-		attributeResult = CFBridgingRelease(attributeResultRef);
-	}
+//	if(status == noErr) {
+//		attributeResult = CFBridgingRelease(attributeResultRef);
+//	}
 	
 	if (status != noErr) {
 		// No existing item found--simply return nil for the password

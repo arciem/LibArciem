@@ -21,7 +21,7 @@
 
 @interface CSetupOptionTableViewCell : UITableViewCell
 
-@property(strong, nonatomic) CItem* option;
+@property(nonatomic) CItem* option;
 
 - (id)initWithReuseIdentifier:(NSString*)reuseIdentifier;
 

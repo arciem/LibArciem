@@ -32,17 +32,17 @@ static __strong CSystemSound* sDetentSound = nil;
 
 @interface CMiniPickerView () <UIScrollViewDelegate, CMiniPickerViewCellDelegate>
 
-@property (strong, nonatomic) CMiniPickerBackgroundView* backgroundView;
-@property (strong, nonatomic) UIScrollView *scrollView;
-@property (strong, nonatomic) CView* scrollContentView;
-@property (strong, nonatomic) NSMutableArray *contentViews;
-@property (strong, nonatomic) CMiniPickerFrameView *frameView;
-@property (strong, nonatomic) CMiniPickerOverlayView *overlayView;
+@property (nonatomic) CMiniPickerBackgroundView* backgroundView;
+@property (nonatomic) UIScrollView *scrollView;
+@property (nonatomic) CView* scrollContentView;
+@property (nonatomic) NSMutableArray *contentViews;
+@property (nonatomic) CMiniPickerFrameView *frameView;
+@property (nonatomic) CMiniPickerOverlayView *overlayView;
 @property (nonatomic) NSUInteger lastSelectedIndex;
 @property (nonatomic) CGFloat lastSelectedIndexOffsetFraction;
-@property (strong, nonatomic) CObserver* modelObserver;
-@property (strong, nonatomic) NSDate* suppressSoundUntilDate;
-@property (strong, nonatomic) NSMutableArray* columnWidths;
+@property (nonatomic) CObserver* modelObserver;
+@property (nonatomic) NSDate* suppressSoundUntilDate;
+@property (nonatomic) NSMutableArray* columnWidths;
 
 @end
 
@@ -57,11 +57,14 @@ static __strong CSystemSound* sDetentSound = nil;
 - (void)setup
 {
     [super setup];
-    
+
     self.font = [UIFont boldSystemFontOfSize:14.0];
 
+    self.columnWidths = [NSMutableArray new];
+
+    BSELF;
     self.modelObserver = [CObserver observerWithKeyPath:@"model" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self syncToModel];
+		[bself syncToModel];
 	}];
 
 //    self.debugColor = [UIColor blueColor];
@@ -77,6 +80,8 @@ static __strong CSystemSound* sDetentSound = nil;
 //  self.scrollView.backgroundColor = [[UIColor orangeColor] colorWithAlpha:0.5];
     
     self.scrollContentView = [CView new];
+    self.scrollContentView.opaque = NO;
+    self.scrollContentView.backgroundColor = [UIColor clearColor];
 //    self.scrollContentView.debugColor = [UIColor redColor];
     [self.scrollView addSubview:self.scrollContentView];
     
@@ -238,7 +243,7 @@ static __strong CSystemSound* sDetentSound = nil;
         cellView.margins = cellViewMargins;
         cellView.model = choiceItem;
         cellView.font = self.font;
-        cellView.onDarkBackground = singleChoice ? YES : NO;
+        cellView.onDarkBackground = NO; // singleChoice ? YES : NO;
         cellView.delegate = self;
         [self.contentViews addObject:cellView];
         [self.scrollContentView addSubview:cellView];

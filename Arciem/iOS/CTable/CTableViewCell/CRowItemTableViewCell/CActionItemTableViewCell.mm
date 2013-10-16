@@ -27,6 +27,8 @@
 {
 	[super syncToRowItem];
 
+    [self syncTitleLabelToRowItem];
+
 	self.accessoryType = IsEmptyString(self.actionItem.action) ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
 //    self.accessoryView.hidden = self.rowItem.isDisabled;
 }
@@ -39,6 +41,14 @@
 - (void)setActionItem:(CTableActionItem *)actionItem
 {
 	self.rowItem = actionItem;
+}
+
+- (void)updateConstraints {
+    [super updateConstraints];
+    
+    CLayoutConstraintsGroup *group = [self resetConstraintsGroupForKey:@"CActionItemTableViewCell_contentView" owner:self.contentView];
+    [group addConstraint:[self.titleLabel constrainLeadingEqualToLeadingOfItem:self.contentView offset:20]];
+    [group addConstraint:[self.titleLabel constrainCenterYEqualToCenterYOfItem:self.contentView]];
 }
 
 - (void)layoutSubviews {

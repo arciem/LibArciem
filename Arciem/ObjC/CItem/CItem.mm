@@ -21,6 +21,7 @@
 #import "StringUtils.h"
 #import "ErrorUtils.h"
 #import "CObserver.h"
+#import "random.hpp"
 
 NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
@@ -34,10 +35,11 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 @property (nonatomic) NSUInteger currentRevision;
 @property (nonatomic) NSUInteger lastValidatedRevision;
 @property (readonly, nonatomic) NSUInteger validationsInProgress;
-@property (strong, nonatomic) NSMutableArray* subitemErrors;
+@property (nonatomic) NSMutableArray* subitemErrors;
 @property (readwrite, nonatomic, setter = setValidating:) BOOL isValidating;
-@property (strong, nonatomic) CObserver* valueObserver;
+@property (nonatomic) CObserver* valueObserver;
 @property (readwrite, nonatomic) BOOL isActive;
+@property (copy, readwrite, nonatomic) NSMutableDictionary* dict;
 
 @end
 
@@ -154,10 +156,10 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 - (void)dealloc
 {
 	CLogTrace(@"C_ITEM", @"%@ dealloc", [self formatObjectWithValues:nil]);
-	@autoreleasepool {
-		[self.subitems removeAllObjects];
-		subitems__ = nil;
-	}
+//	@autoreleasepool {
+//		[self.subitems removeAllObjects];
+//		subitems__ = nil;
+//	}
 }
 
 + (CItem*)itemWithDictionary:(NSDictionary*)dict
@@ -213,9 +215,9 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 {
 	NSAssert1(self.isActive == NO, @"Attempt to activate item that is already active:%@", self);
 	self.isActive = YES;
-	__weak CItem* self__ = self;
+	BSELF;
 	self.valueObserver = [CObserver observerWithKeyPath:@"value" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		self__.needsValidation = YES;
+		bself.needsValidation = YES;
 	}];
 }
 
@@ -359,6 +361,9 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		case CItemStateInvalid:
 			statePrefix = @"ERROR";
 			break;
+        default:
+            statePrefix = @"?????";
+            break;
 	}
 	NSString* newPrefix = item.isNew ? @"NEW" : @"   ";
 	NSString* reqPrefix = item.isRequired ? @"REQ" : @"   ";
@@ -451,9 +456,10 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 {
 	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"subitems"];
 	[subitems__ insertObjects:array atIndexes:indexes];
+    BSELF;
 	[array enumerateObjectsUsingBlock:^(CItem* item, NSUInteger idx, BOOL *stop) {
 		item.superitem = self;
-		if(self.isActive) {
+		if(bself.isActive) {
 			[item activateAll];
 		}
 	}];
@@ -469,9 +475,10 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 - (void)removeSubitems_AtIndexes:(NSIndexSet *)indexes
 {
 	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:@"subitems"];
+    BSELF;
 	[indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		CItem* item = subitems__[idx];
-		if(self.isActive) {
+		CItem* item = self->subitems__[idx];
+		if(bself.isActive) {
 			[item deactivateAll];
 		}
 		item.superitem = nil;
@@ -822,6 +829,58 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	}
 }
 
+#pragma mark - @property dummyValues
+
++ (BOOL)automaticallyNotifiesObserversOfDummyValues {
+    return NO;
+}
+
+- (NSArray *)dummyValues {
+    id values = (self.dict)[@"dummyValues"];
+    if(values == nil || values == [NSNull null]) values = [NSArray new];
+    return values;
+}
+
+- (void)setDummyValues:(NSArray *)newDummyValues {
+	newDummyValues = [self ennullValue:newDummyValues];
+	NSArray *oldDummyValues = [self ennullValue:(self.dict)[@"dummyValues"]];
+	if(!Same(oldDummyValues, newDummyValues)) {
+		[self willChangeValueForKey:@"dummyValues"];
+		(self.dict)[@"dummyValues"] = newDummyValues;
+		[self didChangeValueForKey:@"dummyValues"];
+	}
+}
+
+- (id)transformDummyValue:(id)dummyValue {
+    if([dummyValue isKindOfClass:[NSString class]]) {
+        NSString *originalDummyValue = (NSString *)dummyValue;
+        NSMutableString* modifiedDummyValue = [originalDummyValue mutableCopy];
+        for(NSUInteger i = 0; i < originalDummyValue.length; i++) {
+            NSRange r = NSMakeRange(i, 1);
+            NSString* c = [originalDummyValue substringWithRange:r];
+            if([c isEqualToString:@"#"]) {
+                NSString* s = [NSString stringWithFormat:@"%d", (int)arciem::random_range(0, 10)];
+                [modifiedDummyValue replaceCharactersInRange:r withString:s];
+            }
+        }
+        dummyValue = [modifiedDummyValue copy];
+    }
+    return dummyValue;
+}
+
+- (void)setValuesFromDummyValuesHierarchical:(BOOL)hierarchical {
+    if(self.dummyValues.count > 0) {
+        id dummyValue = self.dummyValues[0];
+        self.value = [self transformDummyValue:dummyValue];
+    }
+    if(hierarchical) {
+        for(CItem *subitem in self.subitems) {
+            [subitem setValuesFromDummyValuesHierarchical:YES];
+        }
+    }
+}
+
+
 #pragma mark - @property error
 
 + (BOOL)automaticallyNotifiesObserversOfError
@@ -909,16 +968,16 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		for(CItem* subitem in self.subitems) {
 			[subitem validateSubtree];
 		}
-		__weak CItem* self__ = self;
+		BSELF;
 		[self validateWithCompletion:^(NSError* error) {
 			if(error != nil) {
-				self__.error = error;
-				[self__.superitem addSubitemError:error];
+				bself.error = error;
+				[bself.superitem addSubitemError:error];
 			}
-			[self__ decrementValidationsInProgress];
+			[bself decrementValidationsInProgress];
 			
-			if(self__.printHierarchyAfterValidate) {
-				[self__ printHierarchy];
+			if(bself.printHierarchyAfterValidate) {
+				[bself printHierarchy];
 			}
 		}];
 	} else {

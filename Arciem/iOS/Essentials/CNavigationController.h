@@ -20,6 +20,8 @@
 
 @interface CNavigationController : UINavigationController
 
-@property (strong, nonatomic) NSNumber* overrideDisablesAutomaticKeyboardDismissal;
+@property (nonatomic) NSNumber* overrideDisablesAutomaticKeyboardDismissal;
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(dispatch_block_t)completion;
 
 @end

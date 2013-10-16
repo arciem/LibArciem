@@ -23,7 +23,7 @@
 
 @interface CTableItem ()
 
-@property (strong, nonatomic) CObserver* subitemsObserver;
+@property (nonatomic) CObserver* subitemsObserver;
 
 @end
 
@@ -34,8 +34,9 @@
 
 - (void)setup
 {
+    BSELF;
 	CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self.delegate tableItem:self sectionsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
+		[bself.delegate tableItem:bself sectionsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
 	};
 	
 	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];

@@ -32,7 +32,7 @@ enum {
 @property (readonly, nonatomic) NSUInteger choicesCount;
 @property (copy, nonatomic) NSArray* choices;
 @property (readonly, nonatomic) CBooleanItem* selectedSubitem;
-@property (readonly, strong, nonatomic) NSIndexSet* selectedSubitemIndexes;
+@property (readonly, nonatomic) NSIndexSet* selectedSubitemIndexes;
 
 - (void)selectSubitem:(CBooleanItem*)item;
 

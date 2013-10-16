@@ -21,13 +21,13 @@
 #import "CTableRowItem.h"
 #import "CTableSectionItem.h"
 #import "CFieldValidationView.h"
-#import "CMonthAndYearPicker.h"
 #import "CTableViewCell.h"
 #import "CActionItemTableViewCell.h"
 #import "CAddRepeatingItemTableViewCell.h"
 #import "CBooleanTableViewCell.h"
 #import "CButtonTableViewCell.h"
 #import "CCreditCardItemTableViewCell.h"
+#import "CCreditCardSummaryItemTableViewCell.h"
 #import "CMultiChoiceItemTableViewCell.h"
 #import "CNoteTableViewCell.h"
 #import "CRowItemTableViewCell.h"
@@ -41,7 +41,7 @@
 @interface CTableManager : NSObject<UITableViewDelegate, UITableViewDataSource, CTableItemDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView* tableView;
-@property (strong, nonatomic) CTableItem* model;
+@property (nonatomic) CTableItem* model;
 @property (weak, nonatomic) IBOutlet id<CTableManagerDelegate> delegate;
 @property (nonatomic) BOOL cachesAllCells;
 

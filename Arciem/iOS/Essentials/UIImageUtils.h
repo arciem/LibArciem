@@ -32,25 +32,27 @@
 + (UIImage*)etchedButtonWithBackgroundImage:(UIImage*)backgroundImage cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;
 + (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor shadowColor:(UIColor*)shadowColor shadowOffset:(CGSize)shadowOffset shadowBlur:(CGFloat)shadowBlur;
 + (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor;
-+ (UIImage*)navigationBarImageWithBackgroundPatternImage:patternImage glossAlpha:(CGFloat)glossAlpha;
-+ (UIImage*)navigationBarImageWithBackgroundPatternImage:patternImage;
-+ (UIImage*)toolbarImageWithBackgroundPatternImage:patternImage toolbarPosition:(UIToolbarPosition)position glossAlpha:(CGFloat)glossAlpha;
-+ (UIImage*)toolbarImageWithBackgroundPatternImage:patternImage toolbarPosition:(UIToolbarPosition)position;
++ (UIImage*)navigationBarImageWithBackgroundPatternImage:(UIImage*)patternImage glossAlpha:(CGFloat)glossAlpha;
++ (UIImage*)navigationBarImageWithBackgroundPatternImage:(UIImage*)patternImage;
++ (UIImage*)toolbarImageWithBackgroundPatternImage:(UIImage*)patternImage toolbarPosition:(UIToolbarPosition)position glossAlpha:(CGFloat)glossAlpha;
++ (UIImage*)toolbarImageWithBackgroundPatternImage:(UIImage*)patternImage toolbarPosition:(UIToolbarPosition)position;
 
 + (CGContextRef)beginImageContextWithSize:(CGSize)size opaque:(BOOL)opaque scale:(CGFloat)scale flipped:(BOOL)flipped;
 + (UIImage*)endImageContext;
 
 - (UIImage*)reflectedImageWithHeight:(NSUInteger)height;
 
-- (UIImage*)imageByColorizing:(UIColor*)theColor;
+- (UIImage *)imageByColorizing:(UIColor*)theColor;
+- (UIImage *)imageByDesaturating:(CGFloat)desaturation;
+
 - (UIImage *)imageByMaskingWithImage:(UIImage*)shapeImage;
 
-- (UIImage*)imageByScalingToSize:(CGSize)size;
+- (UIImage *)imageByScalingToSize:(CGSize)size;
 
-- (UIImage*)imageByScalingToSize:(CGSize)inSize centeredWithinImageOfSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor;
-- (UIImage*)imageByAspectFitToSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor;
-- (UIImage*)imageByAspectFitToSize:(CGSize)imageSize;
-- (UIImage*)imageByAspectFillToSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor;
+- (UIImage *)imageByScalingToSize:(CGSize)inSize centeredWithinImageOfSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor;
+- (UIImage *)imageByAspectFitToSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor;
+- (UIImage *)imageByAspectFitToSize:(CGSize)imageSize;
+- (UIImage *)imageByAspectFillToSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor;
 
 - (UIImage*)imageWithRoundedCornerRadius:(CGFloat)radius;
 

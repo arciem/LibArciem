@@ -24,8 +24,8 @@
 @interface CMiniPickerViewCell : CView
 
 @property (nonatomic) UIEdgeInsets margins;
-@property (strong, nonatomic) UIFont* font;
-@property (strong, nonatomic) CItem* model;
+@property (nonatomic) UIFont* font;
+@property (nonatomic) CItem* model;
 @property (nonatomic) BOOL onDarkBackground;
 @property (weak, nonatomic) id<CMiniPickerViewCellDelegate> delegate;
 

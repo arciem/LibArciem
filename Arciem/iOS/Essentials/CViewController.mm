@@ -26,7 +26,7 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 
 @interface CViewController ()
 
-@property(strong, nonatomic) CActivityShieldView* activityShieldView;
+@property(nonatomic) CActivityShieldView* activityShieldView;
 
 @end
 
@@ -145,12 +145,6 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 - (BOOL)shouldPopViewController
 {
 	return YES;
-}
-
-#pragma mark - CViewLayoutDelegate
-
-- (void)viewLayoutSubviews:(UIView*)view
-{
 }
 
 #pragma mark - Shield view

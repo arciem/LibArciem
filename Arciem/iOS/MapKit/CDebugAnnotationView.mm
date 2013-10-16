@@ -25,7 +25,7 @@ static void* const kAnnotationCoordinateChangedContext = (void*)0x2;
 
 @interface CDebugAnnotationView ()
 
-@property (strong, nonatomic) UILabel* label;
+@property (nonatomic) UILabel* label;
 
 @end
 

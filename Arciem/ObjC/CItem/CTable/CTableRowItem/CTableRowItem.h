@@ -22,7 +22,7 @@
 
 @property (readonly, nonatomic) CItem* model;
 @property (readonly, nonatomic) NSArray* models;
-@property (strong, nonatomic) NSString* cellType;
+@property (nonatomic) NSString* cellType;
 @property (copy, nonatomic) NSMutableDictionary* textLabelAttributes;
 @property (readonly, nonatomic) NSString* defaultCellType;
 @property (readonly, nonatomic) BOOL isUnselectable;

@@ -27,8 +27,8 @@
 
 @interface CMiniPickerView : CView
 
-@property (strong, nonatomic) CMultiChoiceItem* model;
-@property (strong, nonatomic) UIFont* font;
+@property (nonatomic) CMultiChoiceItem* model;
+@property (nonatomic) UIFont* font;
 @property (weak, nonatomic) id<CMiniPickerViewDelegate> delegate;
 
 @end
