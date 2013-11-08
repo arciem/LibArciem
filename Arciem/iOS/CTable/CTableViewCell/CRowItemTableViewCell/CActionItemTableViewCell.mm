@@ -21,26 +21,24 @@
 
 @implementation CActionItemTableViewCell
 
-@dynamic actionItem;
-
 - (void)syncToRowItem
 {
 	[super syncToRowItem];
 
     [self syncTitleLabelToRowItem];
 
-	self.accessoryType = IsEmptyString(self.actionItem.action) ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
-//    self.accessoryView.hidden = self.rowItem.isDisabled;
+	self.accessoryType = IsEmptyString(self.tableActionItem.actionItem.actionValue) ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
+//    self.accessoryView.hidden = self.rowItem.disabled;
 }
 
-- (CTableActionItem*)actionItem
+- (CActionTableRowItem*)tableActionItem
 {
-	return (CTableActionItem*)self.rowItem;
+	return (CActionTableRowItem*)self.rowItem;
 }
 
-- (void)setActionItem:(CTableActionItem *)actionItem
+- (void)setTableActionItem:(CActionTableRowItem *)tableActionItem
 {
-	self.rowItem = actionItem;
+	self.rowItem = tableActionItem;
 }
 
 - (void)updateConstraints {
@@ -53,7 +51,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.accessoryView.alpha = self.rowItem.isDisabled ? 0.5 : 1.0;
+    self.accessoryView.alpha = self.rowItem.disabled ? 0.5 : 1.0;
 }
 
 @end

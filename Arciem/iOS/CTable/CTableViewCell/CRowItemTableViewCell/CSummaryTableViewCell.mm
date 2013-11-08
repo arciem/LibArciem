@@ -18,8 +18,7 @@
 
 #import "CSummaryTableViewCell.h"
 #import "UIViewUtils.h"
-#import "CTableSummaryItem.h"
-#import "DeviceUtils.h"
+#import "CSummaryTableRowItem.h"
 #import "CObserver.h"
 
 @interface CSummaryTableViewCell ()
@@ -49,29 +48,11 @@
 	}];
 }
 
-//- (void)layoutSubviews
-//{
-//	[super layoutSubviews];
-//	
-//	CGRect layoutFrame = self.layoutFrame;
-//	
-//	CFrame* textLabelFrame = self.titleLabel.cframe;
-//	textLabelFrame.flexibleLeft = CGRectGetMinX(layoutFrame);
-//	textLabelFrame.flexibleRight = CGRectGetMaxX(layoutFrame);
-//	
-//	CFieldValidationView* validationView = self.validationView;
-//	CFrame* validationViewFrame = validationView.cframe;
-//	validationViewFrame.centerY = textLabelFrame.centerY;
-//	validationViewFrame.right = textLabelFrame.left - 8;
-//	
-//	//	self.rowItem.model.needsValidation = YES;
-//}
-
 - (void)syncToRowItem
 {
 	[super syncToRowItem];
 	
-	CTableSummaryItem* rowItem = (CTableSummaryItem*)self.rowItem;
+	CSummaryTableRowItem* rowItem = (CSummaryTableRowItem*)self.rowItem;
 	if(rowItem.requiresDrillDown) {
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else {
@@ -85,20 +66,6 @@
 - (void)syncToModelValue:(id)value
 {
 //	CLogDebug(nil, @"%@ syncToModelValue:%@", self, value);
-}
-
-- (CGSize)sizeThatFits:(CGSize)size
-{
-	if(IsPhone()) {
-		size.height = 30;
-	}
-	
-	return size;
-}
-
-- (NSUInteger)validationViewsNeeded
-{
-	return 1;
 }
 
 @end

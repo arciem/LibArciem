@@ -44,24 +44,25 @@ typedef NSUInteger CItemState;
 @property (nonatomic) id defaultValue;
 @property (nonatomic) NSArray *dummyValues;
 @property (nonatomic) NSError* error;
-@property (nonatomic) BOOL isRequired;
+@property (nonatomic, getter = isRequired) BOOL required;
 @property (readonly, nonatomic) CItemState state;
 @property (nonatomic) BOOL validatesAutomatically;
 @property (nonatomic) BOOL needsValidation;
 
-@property (readonly, nonatomic) BOOL isActive;
-@property (readonly, nonatomic) BOOL isValidating;
-@property (readonly, nonatomic) BOOL isEmpty;
-@property (readonly, nonatomic) BOOL isValid;
-@property (nonatomic, setter = setNew:) BOOL isNew;
-@property (nonatomic, setter = setEditing:) BOOL isEditing;
+@property (readonly, nonatomic, getter = isActive) BOOL active;
+@property (readonly, nonatomic, getter = isValidating) BOOL validating;
+@property (readonly, nonatomic, getter = isEmpty) BOOL empty;
+@property (readonly, nonatomic, getter = isValid) BOOL valid;
+@property (nonatomic, getter = isFresh) BOOL fresh;
+@property (nonatomic, getter = isEditing) BOOL editing;
 
-@property (nonatomic, setter = setHidden:) BOOL isHidden;
+@property (nonatomic, getter = isHidden) BOOL hidden;
 @property (readonly, nonatomic) NSArray* visibleSubitems;
 
-@property (nonatomic, setter = setDisabled:) BOOL isDisabled;
+@property (nonatomic, getter = isDisabled) BOOL disabled;
 
-//@property (readonly, nonatomic) NSString* keyPath;
+@property (nonatomic, getter = isSelectable) BOOL selectable;
+@property (nonatomic, getter = isSelected) BOOL selected;
 
 @property (weak, readonly, nonatomic) CItem* superitem;
 @property (readonly, nonatomic) NSMutableArray* subitems;
@@ -69,6 +70,9 @@ typedef NSUInteger CItemState;
 @property (copy, nonatomic) NSString* mustEqualKeyPath;
 @property (readonly, nonatomic) CItem* rootItem;
 @property (readonly, nonatomic) NSString* jsonRepresentation;
+
+@property (readonly, nonatomic) NSIndexSet *indexesOfSelectedSubitems;
+@property (readonly, nonatomic) NSArray *selectedSubitems;
 
 @property (nonatomic) BOOL printHierarchyAfterValidate;
 
@@ -107,3 +111,5 @@ typedef NSUInteger CItemState;
 - (void)setValuesFromDummyValuesHierarchical:(BOOL)hierarchical;
 
 @end
+
+typedef void (^citem_block_t)(CItem *);

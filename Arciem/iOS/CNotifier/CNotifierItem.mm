@@ -35,7 +35,7 @@
 //	CLogSetTagActive(@"C_NOTIFIER_ITEM", YES);
 }
 
-- (id)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler
+- (id)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(dispatch_block_t)tapHandler
 {
 	if(self = [super init]) {
 		self.message = message;
@@ -56,7 +56,7 @@
 	CLogTrace(@"C_NOTIFIER_ITEM", @"%@ dealloc", self);
 }
 
-+ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler
++ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(dispatch_block_t)tapHandler
 {
 	return [[self alloc] initWithMessage:message priority:priority tapHandler:tapHandler];
 }

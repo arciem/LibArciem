@@ -66,17 +66,17 @@
 
 - (NSUInteger)testingServersSectionIndex
 {
-	return self.isEditing ? NSNotFound : 0;
+	return self.editing ? NSNotFound : 0;
 }
 
 - (NSUInteger)devServersSectionIndex
 {
-	return self.isEditing ? 0 : 1;
+	return self.editing ? 0 : 1;
 }
 
 - (NSUInteger)optionsSectionIndex
 {
-	return self.isEditing ? NSNotFound : 2;
+	return self.editing ? NSNotFound : 2;
 }
 
 - (NSArray*)testingServers
@@ -209,7 +209,7 @@
 	self.navigationItem.title = @"Setup";
 	self.startButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Start" style:UIBarButtonItemStyleDone target:self action:@selector(start)];
 	
-	if(!self.tableView.isEditing) {
+	if(!self.tableView.editing) {
 		self.navigationItem.leftBarButtonItem = self.startButtonItem;
 	}
 }
@@ -300,7 +300,7 @@
 {
 	NSInteger sections;
 	
-	if(self.isEditing) {
+	if(self.editing) {
 		sections = 1;
 	} else {
 		sections = 2;
@@ -376,7 +376,7 @@
 {
 	BOOL match = NO;
 	
-	if(!self.isEditing) {
+	if(!self.editing) {
 		match = indexPath.section == 0;
 	}
 	
@@ -387,7 +387,7 @@
 {
 	BOOL match = YES;
 	
-	if(!self.isEditing) {
+	if(!self.editing) {
 		match = indexPath.section == 1 && (NSUInteger)indexPath.row != self.devServers.count;
 	}
 	
@@ -526,7 +526,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(self.isEditing) {
+	if(self.editing) {
 		[self presentServerEditorForIndexPath:indexPath];
 	} else {
 		if([[self addCellIndexPath] isEqual:indexPath]) {

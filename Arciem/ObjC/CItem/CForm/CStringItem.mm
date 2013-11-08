@@ -20,7 +20,7 @@
 #import "ObjectUtils.h"
 #import "StringUtils.h"
 #import "ErrorUtils.h"
-#import "CTableTextFieldItem.h"
+#import "CTextFieldTableRowItem.h"
 
 NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
@@ -55,17 +55,17 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	[self syncToValidCharacters];
 }
 
-+ (CItem*)stringItemWithDictionary:(NSDictionary*)dict
++ (CStringItem*)stringItemWithDictionary:(NSDictionary*)dict
 {
 	return [[self alloc] initWithDictionary:dict];
 }
 
-+ (CItem*)stringItem
++ (CStringItem*)stringItem
 {
 	return [self stringItemWithDictionary:nil];
 }
 
-+ (CItem*)stringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue
++ (CStringItem*)stringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue
 {
 	return [self stringItemWithDictionary:@{@"title": title,
 											 @"key": key,
@@ -386,7 +386,7 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 - (NSArray*)tableRowItems
 {
-	CTableTextFieldItem* rowItem = [CTableTextFieldItem itemWithKey:self.key title:self.title stringItem:self];
+	CTextFieldTableRowItem* rowItem = [CTextFieldTableRowItem itemWithKey:self.key title:self.title stringItem:self];
 	return @[rowItem];
 }
 

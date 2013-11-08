@@ -20,12 +20,14 @@
 
 #import "UIViewUtils.h"
 #import "DeviceUtils.h"
+#import "CStatusBar.h"
 
 static const CGFloat kNotifierBarHeight = 30.0;
 
 @interface CNotifierViewController () <CNotifierBarDelegate>
 
 @property (nonatomic) CNotifierBar *notifierBar;
+@property (nonatomic) CStatusBarProxy *statusBarProxy;
 
 @end
 
@@ -51,6 +53,9 @@ static const CGFloat kNotifierBarHeight = 30.0;
     [self.view addSubview:self.notifierBar];
     self.notifierBar.delegate = self;
     self.notifierBar.notifier = self.notifier;
+    
+    self.statusBarProxy = [CStatusBarProxy proxy];
+
     [self syncToModalPresentationStyle];
 }
 
@@ -117,8 +122,15 @@ static const CGFloat kNotifierBarHeight = 30.0;
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-    
+
+    [[CStatusBar sharedStatusBar] addProxy:self.statusBarProxy];
 	[self.notifierBar updateItemsAnimated:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [[CStatusBar sharedStatusBar] removeProxy:self.statusBarProxy];
 }
 
 #pragma mark - CNotifierBarDelegate
@@ -126,6 +138,10 @@ static const CGFloat kNotifierBarHeight = 30.0;
 - (void)notifierBar:(CNotifierBar *)notifierBar willChangeFrame:(CGRect)newFrame animated:(BOOL)animated {
     CFrame *bodyViewControllerFrame = self.bodyViewController.view.cframe;
     bodyViewControllerFrame.flexibleTop = CGRectGetMaxY(newFrame);
+}
+
+- (void)notifierBar:(CNotifierBar *)notifierBar wantsStatusBarStyle:(UIStatusBarStyle)statusBarStyle animated:(BOOL)animated {
+    [self.statusBarProxy setStatusBarStyle:statusBarStyle animated:animated];
 }
 
 @end

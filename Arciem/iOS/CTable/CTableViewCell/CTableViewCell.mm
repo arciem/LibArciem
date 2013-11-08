@@ -111,4 +111,16 @@
     return group;
 }
 
++ (UIButton *)createCheckboxButton {
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    UIImage* selectedImage = [UIImage imageNamed:@"SurveyCheckYes"];
+    [button setImage:selectedImage forState:UIControlStateSelected];
+    UIImage* unselectedImage = [UIImage imageNamed:@"SurveyCheckNo"];
+    [button setImage:unselectedImage forState:UIControlStateNormal];
+    return button;
+}
+
 @end

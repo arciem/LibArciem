@@ -42,17 +42,17 @@
 	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
 }
 
-- (NSMutableDictionary*)textLabelAttributes
+- (NSDictionary*)textLabelAttributes
 {
-	return (self.dict)[@"textLabelAttributes"];
+    return (self.dict)[@"textLabelAttributes"];
 }
 					   
-- (void)setTextLabelAttributes:(NSMutableDictionary *)textLabelAttributes
+- (void)setTextLabelAttributes:(NSDictionary *)textLabelAttributes
 {
-	(self.dict)[@"textLabelAttributes"] = [textLabelAttributes mutableCopy];
+	(self.dict)[@"textLabelAttributes"] = [textLabelAttributes copy];
 }
 
-+ (CTableItem*)item
++ (CTableItem*)tableItem
 {
 	return [[self alloc] init];
 }

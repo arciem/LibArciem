@@ -45,11 +45,11 @@
 - (BOOL)removeDependency:(CWorker *)worker;
 
 // Status
-@property (nonatomic) BOOL isExecuting;
-@property (nonatomic) BOOL isReady;
-@property (nonatomic) BOOL isActive;
-@property (nonatomic) BOOL isFinished;
-@property (nonatomic) BOOL isCancelled;
+@property (nonatomic, getter = isExecuting) BOOL executing;
+@property (nonatomic, getter = isReady) BOOL ready;
+@property (nonatomic, getter = isActive) BOOL active;
+@property (nonatomic, getter = isFinished) BOOL finished;
+@property (nonatomic, getter = isCancelled) BOOL cancelled;
 @property (readonly, nonatomic) NSError* error;
 
 @property (readonly, nonatomic) NSUInteger tryCount; // initially 0, incremented for each call to -createOperation

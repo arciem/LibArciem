@@ -18,14 +18,16 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^error_block_t)(NSError *);
+
 @interface NSThread (BlocksAdditions)
 
-- (void)performBlock:(void (^)(void))block;
-- (void)performBlock:(void (^)(void))block waitUntilDone:(BOOL)wait;
+- (void)performBlock:(dispatch_block_t)block;
+- (void)performBlock:(dispatch_block_t)block waitUntilDone:(BOOL)wait;
 - (void)performBlock:(void (^)(BOOL* stop))block queue:(dispatch_queue_t)queue repeatInterval:(NSTimeInterval)repeatInterval;
-+ (void)performBlockInBackground:(void (^)(void))block;
-+ (void)performBlockOnMainThread:(void (^)(void))block;
-+ (void)performBlockOnMainThread:(void (^)(void))block afterDelay:(NSTimeInterval)delay;
++ (void)performBlockInBackground:(dispatch_block_t)block;
++ (void)performBlockOnMainThread:(dispatch_block_t)block;
++ (void)performBlockOnMainThread:(dispatch_block_t)block afterDelay:(NSTimeInterval)delay;
 + (void)performBlockOnMainThread:(void (^)(BOOL* stop))block repeatInterval:(NSTimeInterval)repeatInterval;
 + (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2;
 

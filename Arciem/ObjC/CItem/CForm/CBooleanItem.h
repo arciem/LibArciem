@@ -18,12 +18,23 @@
 
 #import "CItem.h"
 
+extern NSString* const CBooleanItemErrorDomain;
+
+extern NSString* const CBooleanItemInterfaceCheckbox;
+extern NSString* const CBooleanItemInterfaceSwitch;
+
+enum {
+	CBooleanItemErrorInvalidValue = 1000
+};
+
 @interface CBooleanItem : CItem
 
 + (CBooleanItem*)booleanItem;
 + (CBooleanItem*)booleanItemWithDictionary:(NSDictionary*)dict;
 + (CBooleanItem*)booleanItemWithTitle:(NSString*)title key:(NSString*)key boolValue:(BOOL)boolValue;
 
-@property(nonatomic) BOOL booleanValue;
+@property (nonatomic) BOOL booleanValue;
+@property (nonatomic) NSNumber *validValue;
+@property (nonatomic) NSString *interface;
 
 @end

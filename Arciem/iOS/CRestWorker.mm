@@ -181,7 +181,7 @@ NSString *const CRestJSONMIMEType = @"application/json";
     BSELF;
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         @synchronized(bself) {
-            if(!self.isCancelled) {
+            if(!self.cancelled) {
                 if(data != nil) {
                     [bself.mutableData appendData:data];
                 }
@@ -218,7 +218,7 @@ NSString *const CRestJSONMIMEType = @"application/json";
 	// So run the run loop until it is out of sources, at which point the callbacks will all be done.
     CLogTrace(@"C_REST_WORKER", @"%@ entering worker wait loop", self);
     while(YES) {
-        if(self.isCancelled) {
+        if(self.cancelled) {
             CLogTrace(@"C_REST_WORKER", @"%@ aborting aborting worker wait loop due to cancel", self);
             break;
         }
@@ -305,7 +305,7 @@ NSString *const CRestJSONMIMEType = @"application/json";
 	@synchronized(self) {
 		CLogTrace(@"C_REST_WORKER", @"%@ connection:didReceiveResponse:", self);
 		
-		if(!self.isCancelled) {
+		if(!self.cancelled) {
 			self.response = response;
 			[self.mutableData setLength:0];
 		}
@@ -317,7 +317,7 @@ NSString *const CRestJSONMIMEType = @"application/json";
 	@synchronized(self) {
 		CLogTrace(@"C_REST_WORKER", @"%@ connection:didReceiveData:", self);
 
-		if(!self.isCancelled) {
+		if(!self.cancelled) {
 			[self.mutableData appendData:data];
 		}
 	}

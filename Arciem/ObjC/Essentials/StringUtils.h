@@ -118,6 +118,12 @@ NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* 
 
 @end
 
+@interface NSAttributedString (CStringAdditions)
+
+- (NSAttributedString *)stringByReplacingTemplatesWithReplacements:(NSDictionary*)replacementsDict attributes:(NSDictionary *)attributesDict;
+
+@end
+
 @interface NSRegularExpression (CRegularExpressionAdditions)
 
 + (NSRegularExpression*)regularExpressionWithPattern:(NSString *)pattern;

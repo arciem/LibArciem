@@ -153,8 +153,8 @@ static NSUInteger sNextSequenceNumber = 0;
 	@synchronized(self) {
 		BOOL added = NO;
 		
-		NSAssert1(!self.isExecuting, @"may not add dependencies to executing worker: %@", self);
-		NSAssert1(!self.isFinished, @"may not add dependencies to finished worker: %@", self);
+		NSAssert1(!self.executing, @"may not add dependencies to executing worker: %@", self);
+		NSAssert1(!self.finished, @"may not add dependencies to finished worker: %@", self);
 		if(![self.mutableDependencies containsObject:worker]) {
 			added = YES;
 			[self willChangeValueForKey:@"dependencies" withSetMutation:NSKeyValueUnionSetMutation usingObjects:[NSSet setWithObject:worker]];
@@ -169,8 +169,8 @@ static NSUInteger sNextSequenceNumber = 0;
 {
 	@synchronized(self) {
 		BOOL removed = NO;
-		NSAssert1(!self.isExecuting, @"may not remove dependencies from executing worker: %@", self);
-		NSAssert1(!self.isFinished, @"may not remove dependencies from finished worker: %@", self);
+		NSAssert1(!self.executing, @"may not remove dependencies from executing worker: %@", self);
+		NSAssert1(!self.finished, @"may not remove dependencies from finished worker: %@", self);
 		if([self.mutableDependencies containsObject:worker]) {
 			removed = YES;
 			[self willChangeValueForKey:@"dependencies" withSetMutation:NSKeyValueMinusSetMutation usingObjects:[NSSet setWithObject:worker]];
@@ -188,10 +188,10 @@ static NSUInteger sNextSequenceNumber = 0;
 
 - (void)performDelay:(NSTimeInterval)delay
 {
-	if(!self.isCancelled && delay > 0.0) {
+	if(!self.cancelled && delay > 0.0) {
 		CLogTrace(nil, @"%@ starting delay: %f sec", self, delay);
 		NSDate* endDate = [NSDate dateWithTimeIntervalSinceNow:delay];
-		while(!self.isCancelled && [endDate timeIntervalSinceNow] > 0.0) {
+		while(!self.cancelled && [endDate timeIntervalSinceNow] > 0.0) {
 			[NSThread sleepForTimeInterval:0.1];
 		}
 		CLogTrace(nil, @"%@ ending delay", self);
@@ -215,19 +215,19 @@ static NSUInteger sNextSequenceNumber = 0;
 		BSELF;
 		self.operation = [NSBlockOperation blockOperationWithBlock:^{
 			CLogTrace(@"C_WORKER", @"%@ entered NSBlockOperation currentRunLoop:0x%08x", bself, [NSRunLoop currentRunLoop]);
-			bself.isActive = YES;
+			bself.active = YES;
 			[bself operationDidBegin];
 			[bself performDelay:bself.startDelay];
-			if(!bself.isCancelled) {
+			if(!bself.cancelled) {
 				if(bself.tryCount > 1) {
 					[bself performRetryDelay];
 				}
-				if(!bself.isCancelled) {
+				if(!bself.cancelled) {
 					[bself performOperationWork];
 				}
 			}
 			[bself operationWillEnd];
-			bself.isActive = NO;
+			bself.active = NO;
 			CLogTrace(@"C_WORKER", @"%@ exiting NSBlockOperation", bself);
 		}];
 		
@@ -241,8 +241,8 @@ static NSUInteger sNextSequenceNumber = 0;
 {
 	@synchronized(self) {
 		CLogTrace(@"C_WORKER", @"%@ cancel", self);
-		if(!self.isFinished && !self.isCancelled) {
-			self.isCancelled = YES;
+		if(!self.finished && !self.cancelled) {
+			self.cancelled = YES;
 			[self didCancel];
 			[self.operation cancel];
 			[self.callbackThread performBlock:^{
@@ -293,7 +293,7 @@ static NSUInteger sNextSequenceNumber = 0;
 		
 		[self.callbackThread performBlock:^{
 			@synchronized(bself) {
-				if(!bself.isCancelled) {
+				if(!bself.cancelled) {
 					bself.failure(bself, error);
 				}
 				bself.finally(bself);
@@ -315,7 +315,7 @@ static NSUInteger sNextSequenceNumber = 0;
 		
 		[self.callbackThread performBlock:^{
 			@synchronized(bself) {
-				if(!bself.isCancelled) {
+				if(!bself.cancelled) {
 					bself.success(bself);
 				}
 				bself.finally(bself);

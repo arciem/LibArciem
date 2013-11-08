@@ -23,7 +23,6 @@
 @interface CNoteTableViewCell ()
 
 @property (nonatomic) UIEdgeInsets labelInsets;
-
 @end
 
 @implementation CNoteTableViewCell
@@ -40,14 +39,11 @@
 		self.labelInsets = UIEdgeInsetsMake(8, 100, 8, 100);
 	}
 
-	UILabel* label = self.titleLabel;
-    label.text = @"Hello World";
-	label.textColor = [UIColor grayColor];
-	label.shadowColor = [[UIColor whiteColor] colorWithAlphaComponent:1];
-	label.shadowOffset = CGSizeMake(0, 1);
-	label.font = [UIFont boldSystemFontOfSize:14];
-	label.textAlignment = NSTextAlignmentCenter;
-	label.numberOfLines = 0;
+    self.titleLabel.text = @"Hello World";
+	self.titleLabel.textColor = [UIColor darkGrayColor];
+	self.titleLabel.font = [UIFont systemFontOfSize:14];
+	self.titleLabel.textAlignment = NSTextAlignmentCenter;
+	self.titleLabel.numberOfLines = 0;
 }
 
 - (void)updateConstraints {
@@ -62,15 +58,22 @@
     [group addConstraint:[self.titleLabel constrainTrailingEqualToTrailingOfItem:self.contentView offset:-self.labelInsets.right]];
 }
 
+
 - (void)syncToRowItem {
     [super syncToRowItem];
     [self syncTitleLabelToRowItem];
     [self setNeedsUpdateConstraints];
 }
 
-- (NSUInteger)validationViewsNeeded
-{
+- (NSUInteger)validationViewsNeeded {
 	return 0;
+}
+
+- (CGSize)sizeThatFits:(CGSize)size {
+    CGSize s = size;
+    self.titleLabel.cframe.height = 1000;
+    [self.titleLabel sizeToFit];
+    return CGSizeMake(s.width, self.titleLabel.height);
 }
 
 @end

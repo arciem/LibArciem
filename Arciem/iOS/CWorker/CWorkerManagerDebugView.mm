@@ -101,17 +101,17 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 		NSComparisonResult result = NSOrderedSame;
 		
 		if(result == NSOrderedSame) {
-			if(view1.worker.isActive && !view2.worker.isActive) {
+			if(view1.worker.active && !view2.worker.active) {
 				result = NSOrderedAscending;
-			} else if(view2.worker.isActive && !view1.worker.isActive) {
+			} else if(view2.worker.active && !view1.worker.active) {
 				result = NSOrderedDescending;
 			}
 		}
 		
 		if(result == NSOrderedSame) {
-			if(view1.worker.isReady && !view2.worker.isReady) {
+			if(view1.worker.ready && !view2.worker.ready) {
 				result = NSOrderedAscending;
-			} else if(view2.worker.isReady && !view1.worker.isReady) {
+			} else if(view2.worker.ready && !view1.worker.ready) {
 				result = NSOrderedDescending;
 			}
 		}
@@ -140,7 +140,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 	if(![visitedNodes containsObject:node]) {
 		[visitedNodes addObject:node];
 		
-		if(!node.worker.isFinished) {
+		if(!node.worker.finished) {
 			for(CWorkerDebugView* mNode in allNodes) {
 				if(node != mNode) {
 					if([mNode.worker.dependencies containsObject:node.worker]) {
@@ -167,7 +167,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 		for(CWorkerDebugView* node in allNodes) {
 			BOOL nowReady = YES;
 			for(CWorker* predecessorWorker in node.worker.dependencies) {
-				if(!predecessorWorker.isFinished) {
+				if(!predecessorWorker.finished) {
 					nowReady = NO;
 					break;
 				}
@@ -220,8 +220,8 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 - (void)beginObservingWorkers:(NSSet*)workers
 {
 	for(CWorker* worker in workers) {
-		[worker addObserver:self forKeyPath:@"isReady" options:0 context:(void*)0x123];
-		[worker addObserver:self forKeyPath:@"isActive" options:0 context:(void*)0x123];
+		[worker addObserver:self forKeyPath:@"ready" options:0 context:(void*)0x123];
+		[worker addObserver:self forKeyPath:@"active" options:0 context:(void*)0x123];
         CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"beginObservingWorkers:%@", workers);
 	}
 }
@@ -229,8 +229,8 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 - (void)endObservingWorkers:(NSSet*)workers
 {
 	for(CWorker* worker in workers) {
-		[worker removeObserver:self forKeyPath:@"isReady" context:(void*)0x123];
-		[worker removeObserver:self forKeyPath:@"isActive" context:(void*)0x123];
+		[worker removeObserver:self forKeyPath:@"ready" context:(void*)0x123];
+		[worker removeObserver:self forKeyPath:@"active" context:(void*)0x123];
         CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"endObservingWorkers:%@", workers);
 	}
 }

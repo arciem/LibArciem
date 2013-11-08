@@ -22,6 +22,7 @@
 #import "UIColorUtils.h"
 #import "CObserver.h"
 #import "ObjectUtils.h"
+#import "UIViewUtils.h"
 
 static UIImage* sValidImage = nil;
 static UIImage* sInvalidImage = nil;
@@ -69,7 +70,7 @@ static UIImage* sInvalidImage = nil;
 		[bself armSyncToState];
 	}];
 	
-	self.itemEditingObserver = [CObserver observerWithKeyPath:@"isEditing" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.itemEditingObserver = [CObserver observerWithKeyPath:@"editing" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[bself armSyncToState];
 	}];
 }
@@ -197,10 +198,10 @@ static UIImage* sInvalidImage = nil;
 			self.contentView = self.validatingView;
 			break;
 		case CItemStateValid:
-			if(self.item.isNew) {
+			if(self.item.fresh) {
 				self.contentView = self.newView;
 			} else {
-				if(self.item.isEditing) {
+				if(self.item.editing) {
 					self.contentView = self.validView;
 				} else {
 					self.contentView = self.newView;
@@ -208,7 +209,7 @@ static UIImage* sInvalidImage = nil;
 			}
 			break;
 		case CItemStateInvalid:
-			self.contentView = self.item.isNew ? self.newView : self.invalidView;
+			self.contentView = self.item.fresh ? self.newView : self.invalidView;
 			break;
 	}
 }

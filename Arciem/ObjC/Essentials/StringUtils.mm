@@ -476,7 +476,10 @@ string ToStd(NSString* s)
     NSMutableString* mutableStr = [self mutableCopy];
     
     NSError* error = nil;
-    NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"\\{(.*?)\\}" options:0 error:&error];
+    static NSRegularExpression *regex;
+    if(regex == nil) {
+        regex = [[NSRegularExpression alloc] initWithPattern:@"\\{(.*?)\\}" options:0 error:&error];
+    }
     NSInteger offset = 0;
     for(NSTextCheckingResult* result in [regex matchesInString:self options:0 range:NSMakeRange(0, self.length)]) {
         NSRange resultRange = result.range;
@@ -600,6 +603,33 @@ string ToStd(NSString* s)
 - (NSString*)stringUsingBase64Encoding
 {
 	return [self stringUsingBase64EncodingURLSafe:NO];
+}
+
+@end
+
+@implementation NSAttributedString (CStringAdditions)
+
+- (NSAttributedString *)stringByReplacingTemplatesWithReplacements:(NSDictionary*)replacementsDict attributes:(NSDictionary *)attributesDict {
+    NSMutableAttributedString* mutableStr = [self mutableCopy];
+    
+    NSError* error = nil;
+    static NSRegularExpression *regex;
+    if(regex == nil) {
+        regex = [[NSRegularExpression alloc] initWithPattern:@"\\{(.*?)\\}" options:0 error:&error];
+    }
+    NSInteger offset = 0;
+    for(NSTextCheckingResult* result in [regex matchesInString:self.string options:0 range:NSMakeRange(0, self.length)]) {
+        NSRange resultRange = result.range;
+        resultRange.location += offset;
+        NSString* match = [regex replacementStringForResult:result inString:mutableStr.string offset:offset template:@"$1"];
+        NSString* replacement = replacementsDict[match];
+        NSDictionary *attributes = attributesDict[match];
+        NSAttributedString *attributedReplacement = [[NSAttributedString alloc] initWithString:replacement attributes:attributes];
+        [mutableStr replaceCharactersInRange:resultRange withAttributedString:attributedReplacement];
+        offset = offset + replacement.length - resultRange.length;
+    }
+    
+    return [mutableStr copy];
 }
 
 @end

@@ -11,5 +11,6 @@
 @interface UIViewController (UIViewControllerUtils)
 
 - (void)printContainmentHierarchy;
+- (void)printPresentationHierarchy;
 
 @end

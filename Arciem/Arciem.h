@@ -83,6 +83,7 @@
 // iOS
 #import "CBeveledBackgroundView.h"
 #import "CNetworkActivity.h"
+#import "CStatusBar.h"
 #import "CNetworkController.h"
 #import "CRestWorker.h"
 #import "CReachability.h"

@@ -23,11 +23,11 @@
 @property (readonly, nonatomic) CItem* model;
 @property (readonly, nonatomic) NSArray* models;
 @property (nonatomic) NSString* cellType;
-@property (copy, nonatomic) NSMutableDictionary* textLabelAttributes;
+@property (copy, nonatomic) NSDictionary* textLabelAttributes;
 @property (readonly, nonatomic) NSString* defaultCellType;
-@property (readonly, nonatomic) BOOL isUnselectable;
-@property (nonatomic) BOOL isDeletable;
-@property (nonatomic) BOOL isReorderable;
+@property (readonly, nonatomic, getter = isRowSelectable) BOOL rowSelectable;
+@property (nonatomic, getter = isDeletable) BOOL deletable;
+@property (nonatomic, getter = isReorderable) BOOL reorderable;
 @property (nonatomic) NSInteger indentationLevel;
 
 - (id)initWithKey:(NSString*)key title:(NSString*)title models:(NSArray*)models;

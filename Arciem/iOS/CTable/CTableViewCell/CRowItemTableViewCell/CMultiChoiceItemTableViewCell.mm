@@ -17,8 +17,9 @@
  *******************************************************************************/
 
 #import "CMultiChoiceItemTableViewCell.h"
-#import "CTableMultiChoiceItem.h"
+#import "CMultiChoiceSummaryTableRowItem.h"
 #import "UIViewUtils.h"
+#import "DeviceUtils.h"
 
 @interface CMultiChoiceItemTableViewCell ()
 
@@ -30,7 +31,7 @@
 {
 	[super syncToModelValue:value];
 	
-	CTableMultiChoiceItem* rowItem = (CTableMultiChoiceItem*)self.rowItem;
+	CMultiChoiceSummaryTableRowItem* rowItem = (CMultiChoiceSummaryTableRowItem*)self.rowItem;
 	NSString* title = self.rowItem.title;
 	if(rowItem.requiresDrillDown) {
 		CMultiChoiceItem* model = (CMultiChoiceItem*)rowItem.model;
@@ -55,6 +56,20 @@
     
     [group addConstraints:[self.titleLabel constrainCenterEqualToCenterOfItem:self.contentView]];
     [group addConstraint:[self.titleLabel constrainLeadingEqualToTrailingOfItem:self.validationView offset:8]];
+}
+
+- (CGSize)sizeThatFits:(CGSize)size
+{
+	if(IsPhone()) {
+		size.height = 30;
+	}
+	
+	return size;
+}
+
+- (NSUInteger)validationViewsNeeded
+{
+	return 1;
 }
 
 @end

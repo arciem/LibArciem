@@ -15,7 +15,7 @@
 
 @interface CTextFieldTableViewCell ()
 
-@property(strong, readwrite, nonatomic) UITextField* textField;
+@property(readwrite, nonatomic) UITextField *textField;
 
 @end
 

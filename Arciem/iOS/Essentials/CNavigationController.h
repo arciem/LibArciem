@@ -18,10 +18,15 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *const CNavigationControllerWillShowViewControllerNotification;
+extern NSString *const CNavigationControllerDidShowViewControllerNotification;
+
 @interface CNavigationController : UINavigationController
 
 @property (nonatomic) NSNumber* overrideDisablesAutomaticKeyboardDismissal;
 
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated completion:(dispatch_block_t)completion;
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated willShowViewController:(dispatch_block_t)willShowViewController;
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated didShowViewController:(dispatch_block_t)didShowViewController;
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated willShowViewController:(dispatch_block_t)willShowViewController didShowViewController:(dispatch_block_t)didShowViewController;
 
 @end

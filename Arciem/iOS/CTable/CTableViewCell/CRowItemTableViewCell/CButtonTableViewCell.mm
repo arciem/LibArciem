@@ -94,7 +94,7 @@
 
 - (BOOL)isButtonEnabled
 {
-	return !self.rowItem.model.isDisabled;
+	return !self.rowItem.model.disabled;
 }
 
 - (void)syncToState
@@ -117,12 +117,16 @@
 	} else {
 		[self.button setTitle:self.rowItem.model.title forState:UIControlStateNormal];
 		
+        if([self.rowItem.model isKindOfClass:[CSubmitItem class]]) {
+            self.button.titleLabel.font = [UIFont boldSystemFontOfSize:self.button.titleLabel.font.pointSize];
+        }
+        
 		BSELF;
 		CObserverBlock action = ^(id object, NSNumber* newValue, NSNumber* oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 			[bself setNeedsSyncToState];
 		};
 		
-		self.modelDisabledObserver = [CObserver observerWithKeyPath:@"isDisabled" ofObject:self.rowItem.model action:action initial:action];
+		self.modelDisabledObserver = [CObserver observerWithKeyPath:@"disabled" ofObject:self.rowItem.model action:action initial:action];
 	}
 }
 

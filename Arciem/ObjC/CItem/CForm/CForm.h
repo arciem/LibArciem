@@ -18,8 +18,10 @@
 
 #import "CItem.h"
 #import "CBooleanItem.h"
-#import "CCreditCardItem.h"
-#import "CCreditCardSummaryItem.h"
+#import "CActionItem.h"
+#import "CSectionItem.h"
+#import "CCardNumberItem.h"
+#import "CPaymentMethodSummaryItem.h"
 #import "CDateItem.h"
 #import "CEmailItem.h"
 #import "CMultiChoiceItem.h"

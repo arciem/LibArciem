@@ -17,16 +17,33 @@
  *******************************************************************************/
 
 #import "CMultiTextItem.h"
-#import "CTableTextFieldItem.h"
+#import "CTextFieldTableRowItem.h"
 
 @implementation CMultiTextItem
+
++ (CMultiTextItem *)multiTextItemWithDictionary:(NSDictionary*)dict
+{
+	return [[self alloc] initWithDictionary:dict];
+}
+
++ (CMultiTextItem *)multiTextItem
+{
+	return [self multiTextItemWithDictionary:nil];
+}
+
++ (CMultiTextItem *)multiTextItemWithTitle:(NSString*)title key:(NSString*)key
+{
+	return [self multiTextItemWithDictionary:@{@"title": title,
+                                            @"key": key
+                                               }];
+}
 
 #pragma mark - Table Support
 
 - (NSArray*)tableRowItems
 {
 	NSAssert1(self.subitems.count == 2, @"count of %d not supported.", self.subitems.count);
-	CTableTextFieldItem* rowItem = [CTableTextFieldItem itemWithKey:self.key title:self.title multiTextItem:self];
+	CTextFieldTableRowItem* rowItem = [CTextFieldTableRowItem itemWithKey:self.key title:self.title multiTextItem:self];
 	return @[rowItem];
 }
 

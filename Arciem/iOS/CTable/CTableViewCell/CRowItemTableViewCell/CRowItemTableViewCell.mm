@@ -26,6 +26,7 @@
 #import "DeviceUtils.h"
 
 static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
+static BOOL sTestingMode;
 
 @interface CRowItemTableViewCell ()
 
@@ -95,6 +96,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 		view.backgroundColor = [[UIColor blueColor] colorWithAlpha:0.2];
 #endif
         view.translatesAutoresizingMaskIntoConstraints = NO;
+        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 		[self.mutableValidationViews addObject:view];
 		[self.contentView addSubview:view];
 		[self setNeedsUpdateConstraints];
@@ -227,7 +229,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	[self applyAttributes:tableItem.textLabelAttributes toLabel:self.titleLabel];
 	[self applyAttributes:rowItem.textLabelAttributes toLabel:self.titleLabel];
     
-	self.titleLabel.alpha = rowItem.isDisabled ? 0.5 : 1.0;
+	self.titleLabel.alpha = rowItem.disabled ? 0.5 : 1.0;
 }
 
 // May be overridden by subclasses
@@ -235,7 +237,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 {
 	CTableRowItem* rowItem = self.rowItem;
 	
-	if(rowItem.isUnselectable) {
+	if(!rowItem.rowSelectable) {
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else {
         if(IsOSVersionAtLeast7()) {
@@ -268,8 +270,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
                      ^(UILabel* lbl, id value) {
                          if([value boolValue]) {
                              lbl.textColor = [UIColor colorWithWhite:0.95 alpha:1.0];
-                             lbl.shadowOffset = CGSizeMake(0, -1);
-                             lbl.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+                             lbl.highlightedTextColor = [UIColor blackColor];
                          }
                      },
                  @"adjustsFontSizeToFitWidth":
@@ -291,6 +292,10 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
                  @"textColor":
                      ^(UILabel* lbl, id value) {
                          lbl.textColor = [UIColor colorWithString:(NSString*)value];
+                     },
+                 @"bold":
+                     ^(UILabel* lbl, id value) {
+                         lbl.font = [UIFont boldSystemFontOfSize:lbl.font.pointSize];
                      },
                  };
 	}
@@ -316,7 +321,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 			}];
 			[bself.modelValueObservers addObject:modelValueObserver];
         }];
-        self.rowItemDisabledObserver = [CObserver observerWithKeyPath:@"isDisabled" ofObject:newRowItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+        self.rowItemDisabledObserver = [CObserver observerWithKeyPath:@"disabled" ofObject:newRowItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
             [bself syncToRowItem];
         }];
 	}
@@ -325,6 +330,14 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 - (void)model:(CItem*)model valueDidChangeFrom:(id)oldValue to:(id)newValue
 {
 //	CLogDebug(nil, @"model:%@ valueDidChangeFrom:%@ to:%@", model, oldValue, newValue);
+}
+
++ (void)setTestingMode:(BOOL)testingMode {
+    sTestingMode = testingMode;
+}
+
+- (BOOL)isTestingMode {
+    return sTestingMode;
 }
 
 #pragma mark - @propery activeItem
@@ -351,7 +364,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 
 - (UIFont*)font
 {
-	return [UIFont boldSystemFontOfSize:self.fontSize];
+	return [UIFont systemFontOfSize:self.fontSize];
 }
 
 #pragma mark - @property contentInset
@@ -363,7 +376,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	if(IsPad()) {
         margin = 70;
 	} else {
-		margin = self.isEditing ? 10 : 35;
+		margin = self.editing ? 10 : 35;
 	}
 
     inset.left += margin;
@@ -386,7 +399,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	if(IsPad()) {
 		frame.size = CGSizeMake(self.contentView.width - 140, 31);
 	} else {
-		CGFloat margins = self.isEditing ? 20 : 70;
+		CGFloat margins = self.editing ? 20 : 70;
 		frame.size = CGSizeMake(self.contentView.width - margins, 31);
 	}
 	

@@ -19,6 +19,7 @@
 #import "CTableSectionItem.h"
 #import "CObserver.h"
 #import "CTableItem.h"
+#import "StringUtils.h"
 
 @interface CTableSectionItem ()
 
@@ -43,9 +44,21 @@
 	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
 }
 
-+ (CTableSectionItem*)item
++ (CTableSectionItem*)tableSectionItem
 {
 	return [[self alloc] init];
+}
+
++ (CTableSectionItem *)tableSectionItemWithTitle:(NSString*)title key:(NSString*)key {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    if(!IsEmptyString(title)) {
+        dict[@"title"] = title;
+    }
+    if(!IsEmptyString(key)) {
+        dict[@"key"] = key;
+    }
+    dict[@"type"] = @"section";
+	return [[self alloc] initWithDictionary:dict];
 }
 
 - (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden

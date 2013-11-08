@@ -235,7 +235,7 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
         [self.delegate notifierBar:self willChangeFrame:myFrame.frame animated:animated];
 
         if(self.statusBarHeight > 0) {
-            [[UIApplication sharedApplication] setStatusBarStyle:statusBarStyle animated:YES];
+            [self.delegate notifierBar:self wantsStatusBarStyle:statusBarStyle animated:YES];
         }
     } completion:^(BOOL finished) {
 		for(CNotifierItemView* view in exitingViews) {

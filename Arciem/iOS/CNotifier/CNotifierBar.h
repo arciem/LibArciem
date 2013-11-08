@@ -38,6 +38,7 @@
 
 @required
 // Called from within animation block.
-- (void)notifierBar:(CNotifierBar*)notifierBar willChangeFrame:(CGRect)newFrame animated:(BOOL)animated;
+- (void)notifierBar:(CNotifierBar *)notifierBar willChangeFrame:(CGRect)newFrame animated:(BOOL)animated;
+- (void)notifierBar:(CNotifierBar *)notifierBar wantsStatusBarStyle:(UIStatusBarStyle)statusBarStyle animated:(BOOL)animated;
 
 @end

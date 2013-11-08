@@ -23,23 +23,33 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		030F11FD181688AD0098DC59 /* CActionItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 030F11FB181688AD0098DC59 /* CActionItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		030F11FE181688AD0098DC59 /* CActionItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030F11FC181688AD0098DC59 /* CActionItem.mm */; };
+		030F12011816A1660098DC59 /* CSectionItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 030F11FF1816A1660098DC59 /* CSectionItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		030F12021816A1660098DC59 /* CSectionItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030F12001816A1660098DC59 /* CSectionItem.mm */; };
+		0318155D181ED11B007794F3 /* CPaymentMethodTypeImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0318155B181ED11B007794F3 /* CPaymentMethodTypeImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0318155E181ED11B007794F3 /* CPaymentMethodTypeImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0318155C181ED11B007794F3 /* CPaymentMethodTypeImageView.mm */; };
 		03258714171CA8F800AE084E /* CNetworkController.h in Headers */ = {isa = PBXBuildFile; fileRef = 03258712171CA8F700AE084E /* CNetworkController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03258715171CA8F800AE084E /* CNetworkController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03258713171CA8F800AE084E /* CNetworkController.mm */; };
 		032AEEF016DE66DA0024D14E /* CSystemSound.h in Headers */ = {isa = PBXBuildFile; fileRef = 032AEEEE16DE66D90024D14E /* CSystemSound.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		032AEEF116DE66DA0024D14E /* CSystemSound.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032AEEEF16DE66D90024D14E /* CSystemSound.mm */; };
 		032AEEF316DE67940024D14E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032AEEF216DE67940024D14E /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		03336555181B97AA00308E0A /* CSwitchTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 03336553181B97AA00308E0A /* CSwitchTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03336556181B97AA00308E0A /* CSwitchTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03336554181B97AA00308E0A /* CSwitchTableRowItem.mm */; };
+		03336559181B99FB00308E0A /* CSwitchTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 03336557181B99FB00308E0A /* CSwitchTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0333655A181B99FB00308E0A /* CSwitchTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03336558181B99FB00308E0A /* CSwitchTableViewCell.mm */; };
 		033A75F417274B8F0045933D /* AppUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 033A75F217274B8F0045933D /* AppUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		033A75F517274B8F0045933D /* AppUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033A75F317274B8F0045933D /* AppUtils.mm */; };
 		033A75FE172754ED0045933D /* CKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 033A75FC172754ED0045933D /* CKeychainUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		033A75FF172754ED0045933D /* CKeychainUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033A75FD172754ED0045933D /* CKeychainUtils.mm */; };
 		034305F1180938380091133D /* CTextFieldTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 034305EF180938380091133D /* CTextFieldTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		034305F2180938380091133D /* CTextFieldTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 034305F0180938380091133D /* CTextFieldTableViewCell.mm */; };
-		0349E19B180E15BC00F74905 /* CCreditCardSummaryItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E199180E15BC00F74905 /* CCreditCardSummaryItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0349E19C180E15BC00F74905 /* CCreditCardSummaryItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E19A180E15BC00F74905 /* CCreditCardSummaryItem.mm */; };
-		0349E19F180E16ED00F74905 /* CTableCreditCardSummaryItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E19D180E16ED00F74905 /* CTableCreditCardSummaryItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0349E1A0180E16ED00F74905 /* CTableCreditCardSummaryItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E19E180E16ED00F74905 /* CTableCreditCardSummaryItem.mm */; };
-		0349E1A3180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E1A1180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0349E1A4180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E1A2180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.mm */; };
+		0349E19B180E15BC00F74905 /* CPaymentMethodSummaryItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E199180E15BC00F74905 /* CPaymentMethodSummaryItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0349E19C180E15BC00F74905 /* CPaymentMethodSummaryItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E19A180E15BC00F74905 /* CPaymentMethodSummaryItem.mm */; };
+		0349E19F180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E19D180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0349E1A0180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E19E180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.mm */; };
+		0349E1A3180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E1A1180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0349E1A4180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E1A2180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.mm */; };
 		0362A8F5174FF48C005AA5ED /* CWorkerDebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0362A8F1174FF48C005AA5ED /* CWorkerDebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0362A8F6174FF48C005AA5ED /* CWorkerDebugView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */; };
 		0362A8F7174FF48C005AA5ED /* CWorkerManagerDebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -142,8 +152,8 @@
 		039DC1D116CB4B1700B52A7F /* NSIndexPathUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1C616CB4B1600B52A7F /* NSIndexPathUtils.mm */; };
 		039DC21016CB4C4400B52A7F /* CBooleanItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1D416CB4C4400B52A7F /* CBooleanItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC21116CB4C4400B52A7F /* CBooleanItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1D516CB4C4400B52A7F /* CBooleanItem.mm */; };
-		039DC21216CB4C4400B52A7F /* CCreditCardItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1D616CB4C4400B52A7F /* CCreditCardItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC21316CB4C4400B52A7F /* CCreditCardItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1D716CB4C4400B52A7F /* CCreditCardItem.mm */; };
+		039DC21216CB4C4400B52A7F /* CCardNumberItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1D616CB4C4400B52A7F /* CCardNumberItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC21316CB4C4400B52A7F /* CCardNumberItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1D716CB4C4400B52A7F /* CCardNumberItem.mm */; };
 		039DC21416CB4C4400B52A7F /* CDateItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1D816CB4C4400B52A7F /* CDateItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC21516CB4C4400B52A7F /* CDateItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1D916CB4C4400B52A7F /* CDateItem.mm */; };
 		039DC21616CB4C4400B52A7F /* CEmailItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1DA16CB4C4400B52A7F /* CEmailItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -172,32 +182,32 @@
 		039DC22D16CB4C4400B52A7F /* CItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1F116CB4C4400B52A7F /* CItem.mm */; };
 		039DC22E16CB4C4400B52A7F /* CTableItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1F316CB4C4400B52A7F /* CTableItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC22F16CB4C4400B52A7F /* CTableItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1F416CB4C4400B52A7F /* CTableItem.mm */; };
-		039DC23016CB4C4400B52A7F /* CTableActionItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1F616CB4C4400B52A7F /* CTableActionItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC23116CB4C4400B52A7F /* CTableActionItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1F716CB4C4400B52A7F /* CTableActionItem.mm */; };
-		039DC23216CB4C4400B52A7F /* CTableAddRepeatingItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1F816CB4C4400B52A7F /* CTableAddRepeatingItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC23316CB4C4400B52A7F /* CTableAddRepeatingItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1F916CB4C4400B52A7F /* CTableAddRepeatingItem.mm */; };
-		039DC23416CB4C4400B52A7F /* CTableBooleanItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1FA16CB4C4400B52A7F /* CTableBooleanItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC23516CB4C4400B52A7F /* CTableBooleanItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1FB16CB4C4400B52A7F /* CTableBooleanItem.mm */; };
-		039DC23616CB4C4400B52A7F /* CTableButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1FC16CB4C4400B52A7F /* CTableButtonItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC23716CB4C4400B52A7F /* CTableButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1FD16CB4C4400B52A7F /* CTableButtonItem.mm */; };
-		039DC23816CB4C4400B52A7F /* CTableCreditCardItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1FE16CB4C4400B52A7F /* CTableCreditCardItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC23916CB4C4400B52A7F /* CTableCreditCardItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1FF16CB4C4400B52A7F /* CTableCreditCardItem.mm */; };
-		039DC23A16CB4C4400B52A7F /* CTableMultiChoiceItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20016CB4C4400B52A7F /* CTableMultiChoiceItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC23B16CB4C4400B52A7F /* CTableMultiChoiceItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20116CB4C4400B52A7F /* CTableMultiChoiceItem.mm */; };
-		039DC23C16CB4C4400B52A7F /* CTableNoteItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20216CB4C4400B52A7F /* CTableNoteItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC23D16CB4C4400B52A7F /* CTableNoteItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20316CB4C4400B52A7F /* CTableNoteItem.mm */; };
+		039DC23016CB4C4400B52A7F /* CActionTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1F616CB4C4400B52A7F /* CActionTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC23116CB4C4400B52A7F /* CActionTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1F716CB4C4400B52A7F /* CActionTableRowItem.mm */; };
+		039DC23216CB4C4400B52A7F /* CAddRepeatingTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1F816CB4C4400B52A7F /* CAddRepeatingTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC23316CB4C4400B52A7F /* CAddRepeatingTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1F916CB4C4400B52A7F /* CAddRepeatingTableRowItem.mm */; };
+		039DC23416CB4C4400B52A7F /* CCheckboxTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1FA16CB4C4400B52A7F /* CCheckboxTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC23516CB4C4400B52A7F /* CCheckboxTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1FB16CB4C4400B52A7F /* CCheckboxTableRowItem.mm */; };
+		039DC23616CB4C4400B52A7F /* CButtonTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1FC16CB4C4400B52A7F /* CButtonTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC23716CB4C4400B52A7F /* CButtonTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1FD16CB4C4400B52A7F /* CButtonTableRowItem.mm */; };
+		039DC23816CB4C4400B52A7F /* CCardNumberTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1FE16CB4C4400B52A7F /* CCardNumberTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC23916CB4C4400B52A7F /* CCardNumberTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1FF16CB4C4400B52A7F /* CCardNumberTableRowItem.mm */; };
+		039DC23A16CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20016CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC23B16CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20116CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.mm */; };
+		039DC23C16CB4C4400B52A7F /* CNoteTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20216CB4C4400B52A7F /* CNoteTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC23D16CB4C4400B52A7F /* CNoteTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20316CB4C4400B52A7F /* CNoteTableRowItem.mm */; };
 		039DC23E16CB4C4400B52A7F /* CTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20416CB4C4400B52A7F /* CTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC23F16CB4C4400B52A7F /* CTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20516CB4C4400B52A7F /* CTableRowItem.mm */; };
-		039DC24016CB4C4400B52A7F /* CTableSpacerItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20616CB4C4400B52A7F /* CTableSpacerItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC24116CB4C4400B52A7F /* CTableSpacerItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20716CB4C4400B52A7F /* CTableSpacerItem.mm */; };
-		039DC24216CB4C4400B52A7F /* CTableSummaryItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20816CB4C4400B52A7F /* CTableSummaryItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC24316CB4C4400B52A7F /* CTableSummaryItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20916CB4C4400B52A7F /* CTableSummaryItem.mm */; };
-		039DC24416CB4C4400B52A7F /* CTableTextFieldItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20A16CB4C4400B52A7F /* CTableTextFieldItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC24516CB4C4400B52A7F /* CTableTextFieldItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20B16CB4C4400B52A7F /* CTableTextFieldItem.mm */; };
+		039DC24016CB4C4400B52A7F /* CSpacerTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20616CB4C4400B52A7F /* CSpacerTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC24116CB4C4400B52A7F /* CSpacerTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20716CB4C4400B52A7F /* CSpacerTableRowItem.mm */; };
+		039DC24216CB4C4400B52A7F /* CSummaryTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20816CB4C4400B52A7F /* CSummaryTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC24316CB4C4400B52A7F /* CSummaryTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20916CB4C4400B52A7F /* CSummaryTableRowItem.mm */; };
+		039DC24416CB4C4400B52A7F /* CTextFieldTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20A16CB4C4400B52A7F /* CTextFieldTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC24516CB4C4400B52A7F /* CTextFieldTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20B16CB4C4400B52A7F /* CTextFieldTableRowItem.mm */; };
 		039DC24616CB4C4400B52A7F /* CTableSectionItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20C16CB4C4400B52A7F /* CTableSectionItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC24716CB4C4400B52A7F /* CTableSectionItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20D16CB4C4400B52A7F /* CTableSectionItem.mm */; };
-		039DC24816CB4C4400B52A7F /* CTitleTableItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20E16CB4C4400B52A7F /* CTitleTableItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC24916CB4C4400B52A7F /* CTitleTableItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20F16CB4C4400B52A7F /* CTitleTableItem.mm */; };
+		039DC24816CB4C4400B52A7F /* CTitleTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20E16CB4C4400B52A7F /* CTitleTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC24916CB4C4400B52A7F /* CTitleTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20F16CB4C4400B52A7F /* CTitleTableRowItem.mm */; };
 		039DC25316CB4CCE00B52A7F /* CDummyWorker.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC24B16CB4CCE00B52A7F /* CDummyWorker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC25416CB4CCE00B52A7F /* CDummyWorker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC24C16CB4CCE00B52A7F /* CDummyWorker.mm */; };
 		039DC25516CB4CCE00B52A7F /* CRestWorker.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC24D16CB4CCE00B52A7F /* CRestWorker.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -265,12 +275,12 @@
 		039DC2EC16CB689900B52A7F /* CActionItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2CC16CB689900B52A7F /* CActionItemTableViewCell.mm */; };
 		039DC2ED16CB689900B52A7F /* CAddRepeatingItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2CD16CB689900B52A7F /* CAddRepeatingItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC2EE16CB689900B52A7F /* CAddRepeatingItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2CE16CB689900B52A7F /* CAddRepeatingItemTableViewCell.mm */; };
-		039DC2EF16CB689900B52A7F /* CBooleanTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2CF16CB689900B52A7F /* CBooleanTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC2F016CB689900B52A7F /* CBooleanTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2D016CB689900B52A7F /* CBooleanTableViewCell.mm */; };
+		039DC2EF16CB689900B52A7F /* CCheckboxTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2CF16CB689900B52A7F /* CCheckboxTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC2F016CB689900B52A7F /* CCheckboxTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2D016CB689900B52A7F /* CCheckboxTableViewCell.mm */; };
 		039DC2F116CB689900B52A7F /* CButtonTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2D116CB689900B52A7F /* CButtonTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC2F216CB689900B52A7F /* CButtonTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2D216CB689900B52A7F /* CButtonTableViewCell.mm */; };
-		039DC2F316CB689900B52A7F /* CCreditCardItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2D316CB689900B52A7F /* CCreditCardItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		039DC2F416CB689900B52A7F /* CCreditCardItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2D416CB689900B52A7F /* CCreditCardItemTableViewCell.mm */; };
+		039DC2F316CB689900B52A7F /* CCardNumberItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2D316CB689900B52A7F /* CCardNumberItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039DC2F416CB689900B52A7F /* CCardNumberItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2D416CB689900B52A7F /* CCardNumberItemTableViewCell.mm */; };
 		039DC2F516CB689900B52A7F /* CMultiChoiceItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2D516CB689900B52A7F /* CMultiChoiceItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC2F616CB689900B52A7F /* CMultiChoiceItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2D616CB689900B52A7F /* CMultiChoiceItemTableViewCell.mm */; };
 		039DC2F716CB689900B52A7F /* CNoteTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2D716CB689900B52A7F /* CNoteTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -336,6 +346,8 @@
 		03AC9091174EC5B800781374 /* CUserTrackingBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */; };
 		03AC9092174EC5B800781374 /* MapKitUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC908A174EC5B800781374 /* MapKitUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03AC9093174EC5B800781374 /* MapKitUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC908B174EC5B800781374 /* MapKitUtils.mm */; };
+		03C8C9A8181ACEEC0019D97E /* CStatusBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C8C9A6181ACEEC0019D97E /* CStatusBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03C8C9A9181ACEEC0019D97E /* CStatusBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C8C9A7181ACEEC0019D97E /* CStatusBar.mm */; };
 		03CF6070180E22A500B123F4 /* CDebugMenuView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 036DE9391755E31200B6B345 /* CDebugMenuView.mm */; };
 		03D6585917601085002B9023 /* URLRequestUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D6585717601085002B9023 /* URLRequestUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03D6585A17601085002B9023 /* URLRequestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03D6585817601085002B9023 /* URLRequestUtils.mm */; };
@@ -373,23 +385,33 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		030F11FB181688AD0098DC59 /* CActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CActionItem.h; sourceTree = "<group>"; };
+		030F11FC181688AD0098DC59 /* CActionItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CActionItem.mm; sourceTree = "<group>"; };
+		030F11FF1816A1660098DC59 /* CSectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSectionItem.h; sourceTree = "<group>"; };
+		030F12001816A1660098DC59 /* CSectionItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSectionItem.mm; sourceTree = "<group>"; };
+		0318155B181ED11B007794F3 /* CPaymentMethodTypeImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPaymentMethodTypeImageView.h; sourceTree = "<group>"; };
+		0318155C181ED11B007794F3 /* CPaymentMethodTypeImageView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CPaymentMethodTypeImageView.mm; sourceTree = "<group>"; };
 		03258712171CA8F700AE084E /* CNetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNetworkController.h; sourceTree = "<group>"; };
 		03258713171CA8F800AE084E /* CNetworkController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNetworkController.mm; sourceTree = "<group>"; };
 		032AEEEE16DE66D90024D14E /* CSystemSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSystemSound.h; sourceTree = "<group>"; };
 		032AEEEF16DE66D90024D14E /* CSystemSound.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSystemSound.mm; sourceTree = "<group>"; };
 		032AEEF216DE67940024D14E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		03336553181B97AA00308E0A /* CSwitchTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSwitchTableRowItem.h; sourceTree = "<group>"; };
+		03336554181B97AA00308E0A /* CSwitchTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSwitchTableRowItem.mm; sourceTree = "<group>"; };
+		03336557181B99FB00308E0A /* CSwitchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSwitchTableViewCell.h; sourceTree = "<group>"; };
+		03336558181B99FB00308E0A /* CSwitchTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSwitchTableViewCell.mm; sourceTree = "<group>"; };
 		033A75F217274B8F0045933D /* AppUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppUtils.h; sourceTree = "<group>"; };
 		033A75F317274B8F0045933D /* AppUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppUtils.mm; sourceTree = "<group>"; };
 		033A75FC172754ED0045933D /* CKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKeychainUtils.h; sourceTree = "<group>"; };
 		033A75FD172754ED0045933D /* CKeychainUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CKeychainUtils.mm; sourceTree = "<group>"; };
 		034305EF180938380091133D /* CTextFieldTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextFieldTableViewCell.h; sourceTree = "<group>"; };
 		034305F0180938380091133D /* CTextFieldTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTextFieldTableViewCell.mm; sourceTree = "<group>"; };
-		0349E199180E15BC00F74905 /* CCreditCardSummaryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCreditCardSummaryItem.h; sourceTree = "<group>"; };
-		0349E19A180E15BC00F74905 /* CCreditCardSummaryItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCreditCardSummaryItem.mm; sourceTree = "<group>"; };
-		0349E19D180E16ED00F74905 /* CTableCreditCardSummaryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableCreditCardSummaryItem.h; sourceTree = "<group>"; };
-		0349E19E180E16ED00F74905 /* CTableCreditCardSummaryItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableCreditCardSummaryItem.mm; sourceTree = "<group>"; };
-		0349E1A1180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCreditCardSummaryItemTableViewCell.h; sourceTree = "<group>"; };
-		0349E1A2180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCreditCardSummaryItemTableViewCell.mm; sourceTree = "<group>"; };
+		0349E199180E15BC00F74905 /* CPaymentMethodSummaryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPaymentMethodSummaryItem.h; sourceTree = "<group>"; };
+		0349E19A180E15BC00F74905 /* CPaymentMethodSummaryItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CPaymentMethodSummaryItem.mm; sourceTree = "<group>"; };
+		0349E19D180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPaymentMethodSummaryTableRowItem.h; sourceTree = "<group>"; };
+		0349E19E180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CPaymentMethodSummaryTableRowItem.mm; sourceTree = "<group>"; };
+		0349E1A1180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPaymentMethodSummaryItemTableViewCell.h; sourceTree = "<group>"; };
+		0349E1A2180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CPaymentMethodSummaryItemTableViewCell.mm; sourceTree = "<group>"; };
 		0362A8F1174FF48C005AA5ED /* CWorkerDebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CWorkerDebugView.h; path = CWorker/CWorkerDebugView.h; sourceTree = "<group>"; };
 		0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CWorkerDebugView.mm; path = CWorker/CWorkerDebugView.mm; sourceTree = "<group>"; };
 		0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CWorkerManagerDebugView.h; path = CWorker/CWorkerManagerDebugView.h; sourceTree = "<group>"; };
@@ -496,8 +518,8 @@
 		039DC1C616CB4B1600B52A7F /* NSIndexPathUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NSIndexPathUtils.mm; sourceTree = "<group>"; };
 		039DC1D416CB4C4400B52A7F /* CBooleanItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBooleanItem.h; sourceTree = "<group>"; };
 		039DC1D516CB4C4400B52A7F /* CBooleanItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CBooleanItem.mm; sourceTree = "<group>"; };
-		039DC1D616CB4C4400B52A7F /* CCreditCardItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCreditCardItem.h; sourceTree = "<group>"; };
-		039DC1D716CB4C4400B52A7F /* CCreditCardItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCreditCardItem.mm; sourceTree = "<group>"; };
+		039DC1D616CB4C4400B52A7F /* CCardNumberItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCardNumberItem.h; sourceTree = "<group>"; };
+		039DC1D716CB4C4400B52A7F /* CCardNumberItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCardNumberItem.mm; sourceTree = "<group>"; };
 		039DC1D816CB4C4400B52A7F /* CDateItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDateItem.h; sourceTree = "<group>"; };
 		039DC1D916CB4C4400B52A7F /* CDateItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDateItem.mm; sourceTree = "<group>"; };
 		039DC1DA16CB4C4400B52A7F /* CEmailItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEmailItem.h; sourceTree = "<group>"; };
@@ -526,32 +548,32 @@
 		039DC1F116CB4C4400B52A7F /* CItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CItem.mm; sourceTree = "<group>"; };
 		039DC1F316CB4C4400B52A7F /* CTableItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableItem.h; sourceTree = "<group>"; };
 		039DC1F416CB4C4400B52A7F /* CTableItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableItem.mm; sourceTree = "<group>"; };
-		039DC1F616CB4C4400B52A7F /* CTableActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableActionItem.h; sourceTree = "<group>"; };
-		039DC1F716CB4C4400B52A7F /* CTableActionItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableActionItem.mm; sourceTree = "<group>"; };
-		039DC1F816CB4C4400B52A7F /* CTableAddRepeatingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableAddRepeatingItem.h; sourceTree = "<group>"; };
-		039DC1F916CB4C4400B52A7F /* CTableAddRepeatingItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableAddRepeatingItem.mm; sourceTree = "<group>"; };
-		039DC1FA16CB4C4400B52A7F /* CTableBooleanItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableBooleanItem.h; sourceTree = "<group>"; };
-		039DC1FB16CB4C4400B52A7F /* CTableBooleanItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableBooleanItem.mm; sourceTree = "<group>"; };
-		039DC1FC16CB4C4400B52A7F /* CTableButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableButtonItem.h; sourceTree = "<group>"; };
-		039DC1FD16CB4C4400B52A7F /* CTableButtonItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableButtonItem.mm; sourceTree = "<group>"; };
-		039DC1FE16CB4C4400B52A7F /* CTableCreditCardItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableCreditCardItem.h; sourceTree = "<group>"; };
-		039DC1FF16CB4C4400B52A7F /* CTableCreditCardItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableCreditCardItem.mm; sourceTree = "<group>"; };
-		039DC20016CB4C4400B52A7F /* CTableMultiChoiceItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableMultiChoiceItem.h; sourceTree = "<group>"; };
-		039DC20116CB4C4400B52A7F /* CTableMultiChoiceItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableMultiChoiceItem.mm; sourceTree = "<group>"; };
-		039DC20216CB4C4400B52A7F /* CTableNoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableNoteItem.h; sourceTree = "<group>"; };
-		039DC20316CB4C4400B52A7F /* CTableNoteItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableNoteItem.mm; sourceTree = "<group>"; };
+		039DC1F616CB4C4400B52A7F /* CActionTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CActionTableRowItem.h; sourceTree = "<group>"; };
+		039DC1F716CB4C4400B52A7F /* CActionTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CActionTableRowItem.mm; sourceTree = "<group>"; };
+		039DC1F816CB4C4400B52A7F /* CAddRepeatingTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAddRepeatingTableRowItem.h; sourceTree = "<group>"; };
+		039DC1F916CB4C4400B52A7F /* CAddRepeatingTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAddRepeatingTableRowItem.mm; sourceTree = "<group>"; };
+		039DC1FA16CB4C4400B52A7F /* CCheckboxTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCheckboxTableRowItem.h; sourceTree = "<group>"; };
+		039DC1FB16CB4C4400B52A7F /* CCheckboxTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCheckboxTableRowItem.mm; sourceTree = "<group>"; };
+		039DC1FC16CB4C4400B52A7F /* CButtonTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CButtonTableRowItem.h; sourceTree = "<group>"; };
+		039DC1FD16CB4C4400B52A7F /* CButtonTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CButtonTableRowItem.mm; sourceTree = "<group>"; };
+		039DC1FE16CB4C4400B52A7F /* CCardNumberTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCardNumberTableRowItem.h; sourceTree = "<group>"; };
+		039DC1FF16CB4C4400B52A7F /* CCardNumberTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCardNumberTableRowItem.mm; sourceTree = "<group>"; };
+		039DC20016CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMultiChoiceSummaryTableRowItem.h; sourceTree = "<group>"; };
+		039DC20116CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMultiChoiceSummaryTableRowItem.mm; sourceTree = "<group>"; };
+		039DC20216CB4C4400B52A7F /* CNoteTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNoteTableRowItem.h; sourceTree = "<group>"; };
+		039DC20316CB4C4400B52A7F /* CNoteTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNoteTableRowItem.mm; sourceTree = "<group>"; };
 		039DC20416CB4C4400B52A7F /* CTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableRowItem.h; sourceTree = "<group>"; };
 		039DC20516CB4C4400B52A7F /* CTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableRowItem.mm; sourceTree = "<group>"; };
-		039DC20616CB4C4400B52A7F /* CTableSpacerItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableSpacerItem.h; sourceTree = "<group>"; };
-		039DC20716CB4C4400B52A7F /* CTableSpacerItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableSpacerItem.mm; sourceTree = "<group>"; };
-		039DC20816CB4C4400B52A7F /* CTableSummaryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableSummaryItem.h; sourceTree = "<group>"; };
-		039DC20916CB4C4400B52A7F /* CTableSummaryItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableSummaryItem.mm; sourceTree = "<group>"; };
-		039DC20A16CB4C4400B52A7F /* CTableTextFieldItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableTextFieldItem.h; sourceTree = "<group>"; };
-		039DC20B16CB4C4400B52A7F /* CTableTextFieldItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableTextFieldItem.mm; sourceTree = "<group>"; };
+		039DC20616CB4C4400B52A7F /* CSpacerTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpacerTableRowItem.h; sourceTree = "<group>"; };
+		039DC20716CB4C4400B52A7F /* CSpacerTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSpacerTableRowItem.mm; sourceTree = "<group>"; };
+		039DC20816CB4C4400B52A7F /* CSummaryTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSummaryTableRowItem.h; sourceTree = "<group>"; };
+		039DC20916CB4C4400B52A7F /* CSummaryTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSummaryTableRowItem.mm; sourceTree = "<group>"; };
+		039DC20A16CB4C4400B52A7F /* CTextFieldTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextFieldTableRowItem.h; sourceTree = "<group>"; };
+		039DC20B16CB4C4400B52A7F /* CTextFieldTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTextFieldTableRowItem.mm; sourceTree = "<group>"; };
 		039DC20C16CB4C4400B52A7F /* CTableSectionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableSectionItem.h; sourceTree = "<group>"; };
 		039DC20D16CB4C4400B52A7F /* CTableSectionItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableSectionItem.mm; sourceTree = "<group>"; };
-		039DC20E16CB4C4400B52A7F /* CTitleTableItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTitleTableItem.h; sourceTree = "<group>"; };
-		039DC20F16CB4C4400B52A7F /* CTitleTableItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTitleTableItem.mm; sourceTree = "<group>"; };
+		039DC20E16CB4C4400B52A7F /* CTitleTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTitleTableRowItem.h; sourceTree = "<group>"; };
+		039DC20F16CB4C4400B52A7F /* CTitleTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTitleTableRowItem.mm; sourceTree = "<group>"; };
 		039DC24B16CB4CCE00B52A7F /* CDummyWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDummyWorker.h; sourceTree = "<group>"; };
 		039DC24C16CB4CCE00B52A7F /* CDummyWorker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDummyWorker.mm; sourceTree = "<group>"; };
 		039DC24D16CB4CCE00B52A7F /* CRestWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRestWorker.h; sourceTree = "<group>"; };
@@ -620,12 +642,12 @@
 		039DC2CC16CB689900B52A7F /* CActionItemTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CActionItemTableViewCell.mm; sourceTree = "<group>"; };
 		039DC2CD16CB689900B52A7F /* CAddRepeatingItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAddRepeatingItemTableViewCell.h; sourceTree = "<group>"; };
 		039DC2CE16CB689900B52A7F /* CAddRepeatingItemTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CAddRepeatingItemTableViewCell.mm; sourceTree = "<group>"; };
-		039DC2CF16CB689900B52A7F /* CBooleanTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBooleanTableViewCell.h; sourceTree = "<group>"; };
-		039DC2D016CB689900B52A7F /* CBooleanTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CBooleanTableViewCell.mm; sourceTree = "<group>"; };
+		039DC2CF16CB689900B52A7F /* CCheckboxTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCheckboxTableViewCell.h; sourceTree = "<group>"; };
+		039DC2D016CB689900B52A7F /* CCheckboxTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCheckboxTableViewCell.mm; sourceTree = "<group>"; };
 		039DC2D116CB689900B52A7F /* CButtonTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CButtonTableViewCell.h; sourceTree = "<group>"; };
 		039DC2D216CB689900B52A7F /* CButtonTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CButtonTableViewCell.mm; sourceTree = "<group>"; };
-		039DC2D316CB689900B52A7F /* CCreditCardItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCreditCardItemTableViewCell.h; sourceTree = "<group>"; };
-		039DC2D416CB689900B52A7F /* CCreditCardItemTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCreditCardItemTableViewCell.mm; sourceTree = "<group>"; };
+		039DC2D316CB689900B52A7F /* CCardNumberItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCardNumberItemTableViewCell.h; sourceTree = "<group>"; };
+		039DC2D416CB689900B52A7F /* CCardNumberItemTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CCardNumberItemTableViewCell.mm; sourceTree = "<group>"; };
 		039DC2D516CB689900B52A7F /* CMultiChoiceItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMultiChoiceItemTableViewCell.h; sourceTree = "<group>"; };
 		039DC2D616CB689900B52A7F /* CMultiChoiceItemTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMultiChoiceItemTableViewCell.mm; sourceTree = "<group>"; };
 		039DC2D716CB689900B52A7F /* CNoteTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNoteTableViewCell.h; sourceTree = "<group>"; };
@@ -694,6 +716,8 @@
 		03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUserTrackingBarButtonItem.mm; sourceTree = "<group>"; };
 		03AC908A174EC5B800781374 /* MapKitUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapKitUtils.h; sourceTree = "<group>"; };
 		03AC908B174EC5B800781374 /* MapKitUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MapKitUtils.mm; sourceTree = "<group>"; };
+		03C8C9A6181ACEEC0019D97E /* CStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CStatusBar.h; sourceTree = "<group>"; };
+		03C8C9A7181ACEEC0019D97E /* CStatusBar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CStatusBar.mm; sourceTree = "<group>"; };
 		03D2A4B817FB87540098939E /* CDebugMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDebugMenuView.h; path = "../../../../../../../Library/Developer/Xcode/DerivedData/QP-dmhjmwesuqqztzhjqfjsifbirwsj/Build/Products/Debug-iphoneos/Headers/Arciem/CDebugMenuView.h"; sourceTree = "<group>"; };
 		03D2A4B917FB87540098939E /* CDebugMenuView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CDebugMenuView.mm; path = "../../../../../../../Library/Developer/Xcode/DerivedData/QP-dmhjmwesuqqztzhjqfjsifbirwsj/Build/Products/Debug-iphoneos/Headers/Arciem/CDebugMenuView.mm"; sourceTree = "<group>"; };
 		03D6585717601085002B9023 /* URLRequestUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = URLRequestUtils.h; path = Arciem/ObjC/URLRequestUtils.h; sourceTree = SOURCE_ROOT; };
@@ -914,9 +938,9 @@
 		039DC1D216CB4C4300B52A7F /* CItem */ = {
 			isa = PBXGroup;
 			children = (
-				039DC1D316CB4C4400B52A7F /* CForm */,
 				039DC1F016CB4C4400B52A7F /* CItem.h */,
 				039DC1F116CB4C4400B52A7F /* CItem.mm */,
+				039DC1D316CB4C4400B52A7F /* CForm */,
 				039DC1F216CB4C4400B52A7F /* CTable */,
 			);
 			path = CItem;
@@ -925,18 +949,22 @@
 		039DC1D316CB4C4400B52A7F /* CForm */ = {
 			isa = PBXGroup;
 			children = (
+				039DC1DC16CB4C4400B52A7F /* CForm.h */,
+				039DC1DD16CB4C4400B52A7F /* CForm.mm */,
 				039DC1D416CB4C4400B52A7F /* CBooleanItem.h */,
 				039DC1D516CB4C4400B52A7F /* CBooleanItem.mm */,
-				039DC1D616CB4C4400B52A7F /* CCreditCardItem.h */,
-				039DC1D716CB4C4400B52A7F /* CCreditCardItem.mm */,
-				0349E199180E15BC00F74905 /* CCreditCardSummaryItem.h */,
-				0349E19A180E15BC00F74905 /* CCreditCardSummaryItem.mm */,
+				030F11FB181688AD0098DC59 /* CActionItem.h */,
+				030F11FC181688AD0098DC59 /* CActionItem.mm */,
+				030F11FF1816A1660098DC59 /* CSectionItem.h */,
+				030F12001816A1660098DC59 /* CSectionItem.mm */,
+				039DC1D616CB4C4400B52A7F /* CCardNumberItem.h */,
+				039DC1D716CB4C4400B52A7F /* CCardNumberItem.mm */,
+				0349E199180E15BC00F74905 /* CPaymentMethodSummaryItem.h */,
+				0349E19A180E15BC00F74905 /* CPaymentMethodSummaryItem.mm */,
 				039DC1D816CB4C4400B52A7F /* CDateItem.h */,
 				039DC1D916CB4C4400B52A7F /* CDateItem.mm */,
 				039DC1DA16CB4C4400B52A7F /* CEmailItem.h */,
 				039DC1DB16CB4C4400B52A7F /* CEmailItem.mm */,
-				039DC1DC16CB4C4400B52A7F /* CForm.h */,
-				039DC1DD16CB4C4400B52A7F /* CForm.mm */,
 				039DC1DE16CB4C4400B52A7F /* CMultiChoiceItem.h */,
 				039DC1DF16CB4C4400B52A7F /* CMultiChoiceItem.mm */,
 				039DC1E016CB4C4400B52A7F /* CMultiTextItem.h */,
@@ -965,11 +993,9 @@
 				0374651B17421EB60007F56D /* CTable.h */,
 				039DC1F316CB4C4400B52A7F /* CTableItem.h */,
 				039DC1F416CB4C4400B52A7F /* CTableItem.mm */,
-				039DC1F516CB4C4400B52A7F /* CTableRowItem */,
 				039DC20C16CB4C4400B52A7F /* CTableSectionItem.h */,
 				039DC20D16CB4C4400B52A7F /* CTableSectionItem.mm */,
-				039DC20E16CB4C4400B52A7F /* CTitleTableItem.h */,
-				039DC20F16CB4C4400B52A7F /* CTitleTableItem.mm */,
+				039DC1F516CB4C4400B52A7F /* CTableRowItem */,
 			);
 			path = CTable;
 			sourceTree = "<group>";
@@ -977,30 +1003,34 @@
 		039DC1F516CB4C4400B52A7F /* CTableRowItem */ = {
 			isa = PBXGroup;
 			children = (
-				039DC1F616CB4C4400B52A7F /* CTableActionItem.h */,
-				039DC1F716CB4C4400B52A7F /* CTableActionItem.mm */,
-				039DC1F816CB4C4400B52A7F /* CTableAddRepeatingItem.h */,
-				039DC1F916CB4C4400B52A7F /* CTableAddRepeatingItem.mm */,
-				039DC1FA16CB4C4400B52A7F /* CTableBooleanItem.h */,
-				039DC1FB16CB4C4400B52A7F /* CTableBooleanItem.mm */,
-				039DC1FC16CB4C4400B52A7F /* CTableButtonItem.h */,
-				039DC1FD16CB4C4400B52A7F /* CTableButtonItem.mm */,
-				039DC1FE16CB4C4400B52A7F /* CTableCreditCardItem.h */,
-				039DC1FF16CB4C4400B52A7F /* CTableCreditCardItem.mm */,
-				0349E19D180E16ED00F74905 /* CTableCreditCardSummaryItem.h */,
-				0349E19E180E16ED00F74905 /* CTableCreditCardSummaryItem.mm */,
-				039DC20016CB4C4400B52A7F /* CTableMultiChoiceItem.h */,
-				039DC20116CB4C4400B52A7F /* CTableMultiChoiceItem.mm */,
-				039DC20216CB4C4400B52A7F /* CTableNoteItem.h */,
-				039DC20316CB4C4400B52A7F /* CTableNoteItem.mm */,
 				039DC20416CB4C4400B52A7F /* CTableRowItem.h */,
 				039DC20516CB4C4400B52A7F /* CTableRowItem.mm */,
-				039DC20616CB4C4400B52A7F /* CTableSpacerItem.h */,
-				039DC20716CB4C4400B52A7F /* CTableSpacerItem.mm */,
-				039DC20816CB4C4400B52A7F /* CTableSummaryItem.h */,
-				039DC20916CB4C4400B52A7F /* CTableSummaryItem.mm */,
-				039DC20A16CB4C4400B52A7F /* CTableTextFieldItem.h */,
-				039DC20B16CB4C4400B52A7F /* CTableTextFieldItem.mm */,
+				039DC20816CB4C4400B52A7F /* CSummaryTableRowItem.h */,
+				039DC20916CB4C4400B52A7F /* CSummaryTableRowItem.mm */,
+				039DC1F616CB4C4400B52A7F /* CActionTableRowItem.h */,
+				039DC1F716CB4C4400B52A7F /* CActionTableRowItem.mm */,
+				039DC1F816CB4C4400B52A7F /* CAddRepeatingTableRowItem.h */,
+				039DC1F916CB4C4400B52A7F /* CAddRepeatingTableRowItem.mm */,
+				039DC1FA16CB4C4400B52A7F /* CCheckboxTableRowItem.h */,
+				039DC1FB16CB4C4400B52A7F /* CCheckboxTableRowItem.mm */,
+				03336553181B97AA00308E0A /* CSwitchTableRowItem.h */,
+				03336554181B97AA00308E0A /* CSwitchTableRowItem.mm */,
+				039DC1FC16CB4C4400B52A7F /* CButtonTableRowItem.h */,
+				039DC1FD16CB4C4400B52A7F /* CButtonTableRowItem.mm */,
+				039DC1FE16CB4C4400B52A7F /* CCardNumberTableRowItem.h */,
+				039DC1FF16CB4C4400B52A7F /* CCardNumberTableRowItem.mm */,
+				0349E19D180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.h */,
+				0349E19E180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.mm */,
+				039DC20016CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.h */,
+				039DC20116CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.mm */,
+				039DC20216CB4C4400B52A7F /* CNoteTableRowItem.h */,
+				039DC20316CB4C4400B52A7F /* CNoteTableRowItem.mm */,
+				039DC20616CB4C4400B52A7F /* CSpacerTableRowItem.h */,
+				039DC20716CB4C4400B52A7F /* CSpacerTableRowItem.mm */,
+				039DC20A16CB4C4400B52A7F /* CTextFieldTableRowItem.h */,
+				039DC20B16CB4C4400B52A7F /* CTextFieldTableRowItem.mm */,
+				039DC20E16CB4C4400B52A7F /* CTitleTableRowItem.h */,
+				039DC20F16CB4C4400B52A7F /* CTitleTableRowItem.mm */,
 			);
 			path = CTableRowItem;
 			sourceTree = "<group>";
@@ -1034,6 +1064,8 @@
 				039DC26816CB65EC00B52A7F /* CBeveledBackgroundView.mm */,
 				039DC26116CB516400B52A7F /* CNetworkActivity.h */,
 				039DC26216CB516400B52A7F /* CNetworkActivity.mm */,
+				03C8C9A6181ACEEC0019D97E /* CStatusBar.h */,
+				03C8C9A7181ACEEC0019D97E /* CStatusBar.mm */,
 				03258712171CA8F700AE084E /* CNetworkController.h */,
 				03258713171CA8F800AE084E /* CNetworkController.mm */,
 				039DC24D16CB4CCE00B52A7F /* CRestWorker.h */,
@@ -1159,9 +1191,9 @@
 		039DC2C916CB689900B52A7F /* CTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
-				039DC2CA16CB689900B52A7F /* CRowItemTableViewCell */,
 				039DC2E316CB689900B52A7F /* CTableViewCell.h */,
 				039DC2E416CB689900B52A7F /* CTableViewCell.mm */,
+				039DC2CA16CB689900B52A7F /* CRowItemTableViewCell */,
 			);
 			path = CTableViewCell;
 			sourceTree = "<group>";
@@ -1169,24 +1201,28 @@
 		039DC2CA16CB689900B52A7F /* CRowItemTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
+				039DC2D916CB689900B52A7F /* CRowItemTableViewCell.h */,
+				039DC2DA16CB689900B52A7F /* CRowItemTableViewCell.mm */,
 				039DC2CB16CB689900B52A7F /* CActionItemTableViewCell.h */,
 				039DC2CC16CB689900B52A7F /* CActionItemTableViewCell.mm */,
 				039DC2CD16CB689900B52A7F /* CAddRepeatingItemTableViewCell.h */,
 				039DC2CE16CB689900B52A7F /* CAddRepeatingItemTableViewCell.mm */,
-				039DC2CF16CB689900B52A7F /* CBooleanTableViewCell.h */,
-				039DC2D016CB689900B52A7F /* CBooleanTableViewCell.mm */,
+				039DC2CF16CB689900B52A7F /* CCheckboxTableViewCell.h */,
+				039DC2D016CB689900B52A7F /* CCheckboxTableViewCell.mm */,
+				03336557181B99FB00308E0A /* CSwitchTableViewCell.h */,
+				03336558181B99FB00308E0A /* CSwitchTableViewCell.mm */,
 				039DC2D116CB689900B52A7F /* CButtonTableViewCell.h */,
 				039DC2D216CB689900B52A7F /* CButtonTableViewCell.mm */,
-				039DC2D316CB689900B52A7F /* CCreditCardItemTableViewCell.h */,
-				039DC2D416CB689900B52A7F /* CCreditCardItemTableViewCell.mm */,
-				0349E1A1180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.h */,
-				0349E1A2180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.mm */,
+				039DC2D316CB689900B52A7F /* CCardNumberItemTableViewCell.h */,
+				039DC2D416CB689900B52A7F /* CCardNumberItemTableViewCell.mm */,
+				0318155B181ED11B007794F3 /* CPaymentMethodTypeImageView.h */,
+				0318155C181ED11B007794F3 /* CPaymentMethodTypeImageView.mm */,
+				0349E1A1180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.h */,
+				0349E1A2180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.mm */,
 				039DC2D516CB689900B52A7F /* CMultiChoiceItemTableViewCell.h */,
 				039DC2D616CB689900B52A7F /* CMultiChoiceItemTableViewCell.mm */,
 				039DC2D716CB689900B52A7F /* CNoteTableViewCell.h */,
 				039DC2D816CB689900B52A7F /* CNoteTableViewCell.mm */,
-				039DC2D916CB689900B52A7F /* CRowItemTableViewCell.h */,
-				039DC2DA16CB689900B52A7F /* CRowItemTableViewCell.mm */,
 				039DC2DB16CB689900B52A7F /* CSpacerTableViewCell.h */,
 				039DC2DC16CB689900B52A7F /* CSpacerTableViewCell.mm */,
 				039DC2DD16CB689900B52A7F /* CSummaryTableViewCell.h */,
@@ -1333,6 +1369,7 @@
 				039DC1B616CB3DF700B52A7F /* wedge2.hpp in Headers */,
 				039DC1BB16CB3DF700B52A7F /* stringstreams.hpp in Headers */,
 				039DC12116CB32B000B52A7F /* Arciem.h in Headers */,
+				030F12011816A1660098DC59 /* CSectionItem.h in Headers */,
 				039DC13E16CB398A00B52A7F /* CLog.h in Headers */,
 				039DC14016CB398A00B52A7F /* CObserver.h in Headers */,
 				039DC14216CB398A00B52A7F /* CSwitch.h in Headers */,
@@ -1344,7 +1381,7 @@
 				039DC14E16CB398A00B52A7F /* JSONUtils.h in Headers */,
 				039DC15016CB398A00B52A7F /* ObjectUtils.h in Headers */,
 				039DC15216CB398A00B52A7F /* PropertyUtils.h in Headers */,
-				0349E19B180E15BC00F74905 /* CCreditCardSummaryItem.h in Headers */,
+				0349E19B180E15BC00F74905 /* CPaymentMethodSummaryItem.h in Headers */,
 				039DC15416CB398A00B52A7F /* StringUtils.h in Headers */,
 				039DC15616CB398A00B52A7F /* ThreadUtils.h in Headers */,
 				039DC18D16CB3DF700B52A7F /* config.hpp in Headers */,
@@ -1361,12 +1398,14 @@
 				039DC1CE16CB4B1700B52A7F /* CSlowCall.h in Headers */,
 				039DC1D016CB4B1700B52A7F /* NSIndexPathUtils.h in Headers */,
 				039DC21016CB4C4400B52A7F /* CBooleanItem.h in Headers */,
-				039DC21216CB4C4400B52A7F /* CCreditCardItem.h in Headers */,
+				039DC21216CB4C4400B52A7F /* CCardNumberItem.h in Headers */,
+				0318155D181ED11B007794F3 /* CPaymentMethodTypeImageView.h in Headers */,
 				039DC21416CB4C4400B52A7F /* CDateItem.h in Headers */,
 				039DC21616CB4C4400B52A7F /* CEmailItem.h in Headers */,
 				039DC21816CB4C4400B52A7F /* CForm.h in Headers */,
 				039DC21A16CB4C4400B52A7F /* CMultiChoiceItem.h in Headers */,
 				039DC21C16CB4C4400B52A7F /* CMultiTextItem.h in Headers */,
+				030F11FD181688AD0098DC59 /* CActionItem.h in Headers */,
 				039DC21E16CB4C4400B52A7F /* CNoteItem.h in Headers */,
 				039DC22016CB4C4400B52A7F /* CPasswordItem.h in Headers */,
 				039DC22216CB4C4400B52A7F /* CPhoneItem.h in Headers */,
@@ -1377,25 +1416,27 @@
 				039DC22A16CB4C4400B52A7F /* CSubmitItem.h in Headers */,
 				039DC22C16CB4C4400B52A7F /* CItem.h in Headers */,
 				039DC22E16CB4C4400B52A7F /* CTableItem.h in Headers */,
-				039DC23016CB4C4400B52A7F /* CTableActionItem.h in Headers */,
-				039DC23216CB4C4400B52A7F /* CTableAddRepeatingItem.h in Headers */,
-				0349E19F180E16ED00F74905 /* CTableCreditCardSummaryItem.h in Headers */,
-				039DC23416CB4C4400B52A7F /* CTableBooleanItem.h in Headers */,
-				039DC23616CB4C4400B52A7F /* CTableButtonItem.h in Headers */,
-				039DC23816CB4C4400B52A7F /* CTableCreditCardItem.h in Headers */,
-				039DC23A16CB4C4400B52A7F /* CTableMultiChoiceItem.h in Headers */,
-				039DC23C16CB4C4400B52A7F /* CTableNoteItem.h in Headers */,
+				039DC23016CB4C4400B52A7F /* CActionTableRowItem.h in Headers */,
+				039DC23216CB4C4400B52A7F /* CAddRepeatingTableRowItem.h in Headers */,
+				0349E19F180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.h in Headers */,
+				039DC23416CB4C4400B52A7F /* CCheckboxTableRowItem.h in Headers */,
+				039DC23616CB4C4400B52A7F /* CButtonTableRowItem.h in Headers */,
+				039DC23816CB4C4400B52A7F /* CCardNumberTableRowItem.h in Headers */,
+				039DC23A16CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.h in Headers */,
+				039DC23C16CB4C4400B52A7F /* CNoteTableRowItem.h in Headers */,
 				039DC23E16CB4C4400B52A7F /* CTableRowItem.h in Headers */,
-				039DC24016CB4C4400B52A7F /* CTableSpacerItem.h in Headers */,
-				039DC24216CB4C4400B52A7F /* CTableSummaryItem.h in Headers */,
-				039DC24416CB4C4400B52A7F /* CTableTextFieldItem.h in Headers */,
+				039DC24016CB4C4400B52A7F /* CSpacerTableRowItem.h in Headers */,
+				039DC24216CB4C4400B52A7F /* CSummaryTableRowItem.h in Headers */,
+				039DC24416CB4C4400B52A7F /* CTextFieldTableRowItem.h in Headers */,
 				039DC24616CB4C4400B52A7F /* CTableSectionItem.h in Headers */,
-				039DC24816CB4C4400B52A7F /* CTitleTableItem.h in Headers */,
+				039DC24816CB4C4400B52A7F /* CTitleTableRowItem.h in Headers */,
 				039DC25316CB4CCE00B52A7F /* CDummyWorker.h in Headers */,
 				039DC25516CB4CCE00B52A7F /* CRestWorker.h in Headers */,
 				039DC25716CB4CCE00B52A7F /* CWorker.h in Headers */,
 				039DC25916CB4CCE00B52A7F /* CWorkerManager.h in Headers */,
 				039DC25E16CB4FAF00B52A7F /* ISO8601DateFormatter.h in Headers */,
+				03C8C9A8181ACEEC0019D97E /* CStatusBar.h in Headers */,
+				03336555181B97AA00308E0A /* CSwitchTableRowItem.h in Headers */,
 				039DC26316CB516400B52A7F /* CNetworkActivity.h in Headers */,
 				039DC26916CB65EC00B52A7F /* CBeveledBackgroundView.h in Headers */,
 				039DC28F16CB662100B52A7F /* CActivityShieldView.h in Headers */,
@@ -1405,7 +1446,7 @@
 				039DC29716CB662100B52A7F /* CImageView.h in Headers */,
 				039DC29916CB662100B52A7F /* CNavigationBar.h in Headers */,
 				039DC29B16CB662100B52A7F /* CNavigationController.h in Headers */,
-				0349E1A3180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.h in Headers */,
+				0349E1A3180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.h in Headers */,
 				039DC29D16CB662100B52A7F /* CTapToDismissKeyboardManager.h in Headers */,
 				039DC29F16CB662100B52A7F /* CView.h in Headers */,
 				039DC2A116CB662100B52A7F /* CViewController.h in Headers */,
@@ -1425,9 +1466,9 @@
 				039DC2E916CB689900B52A7F /* CTableManager.h in Headers */,
 				039DC2EB16CB689900B52A7F /* CActionItemTableViewCell.h in Headers */,
 				039DC2ED16CB689900B52A7F /* CAddRepeatingItemTableViewCell.h in Headers */,
-				039DC2EF16CB689900B52A7F /* CBooleanTableViewCell.h in Headers */,
+				039DC2EF16CB689900B52A7F /* CCheckboxTableViewCell.h in Headers */,
 				039DC2F116CB689900B52A7F /* CButtonTableViewCell.h in Headers */,
-				039DC2F316CB689900B52A7F /* CCreditCardItemTableViewCell.h in Headers */,
+				039DC2F316CB689900B52A7F /* CCardNumberItemTableViewCell.h in Headers */,
 				039DC2F516CB689900B52A7F /* CMultiChoiceItemTableViewCell.h in Headers */,
 				039DC2F716CB689900B52A7F /* CNoteTableViewCell.h in Headers */,
 				039DC2F916CB689900B52A7F /* CRowItemTableViewCell.h in Headers */,
@@ -1458,6 +1499,7 @@
 				03F9446616E9735D00F9FEF3 /* CMiniPickerOverlayView.h in Headers */,
 				03F9446816E9735D00F9FEF3 /* CMiniPickerView.h in Headers */,
 				03F9446A16E9735D00F9FEF3 /* CMiniPickerViewCell.h in Headers */,
+				03336559181B99FB00308E0A /* CSwitchTableViewCell.h in Headers */,
 				03258714171CA8F800AE084E /* CNetworkController.h in Headers */,
 				033A75F417274B8F0045933D /* AppUtils.h in Headers */,
 				033A75FE172754ED0045933D /* CKeychainUtils.h in Headers */,
@@ -1594,6 +1636,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				030F11FE181688AD0098DC59 /* CActionItem.mm in Sources */,
 				039DC13F16CB398A00B52A7F /* CLog.mm in Sources */,
 				039DC14116CB398A00B52A7F /* CObserver.mm in Sources */,
 				039DC14316CB398A00B52A7F /* CSwitch.mm in Sources */,
@@ -1602,6 +1645,7 @@
 				039DC14916CB398A00B52A7F /* Geom.mm in Sources */,
 				039DC14B16CB398A00B52A7F /* I18nUtils.mm in Sources */,
 				039DC14D16CB398A00B52A7F /* InvocationUtils.mm in Sources */,
+				030F12021816A1660098DC59 /* CSectionItem.mm in Sources */,
 				039DC14F16CB398A00B52A7F /* JSONUtils.mm in Sources */,
 				039DC15116CB398A00B52A7F /* ObjectUtils.mm in Sources */,
 				039DC15316CB398A00B52A7F /* PropertyUtils.mm in Sources */,
@@ -1626,7 +1670,7 @@
 				039DC1AF16CB3DF700B52A7F /* point2i.cpp in Sources */,
 				039DC1B116CB3DF700B52A7F /* point3.cpp in Sources */,
 				039DC1B316CB3DF700B52A7F /* volume.cpp in Sources */,
-				0349E1A4180E1BBC00F74905 /* CCreditCardSummaryItemTableViewCell.mm in Sources */,
+				0349E1A4180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.mm in Sources */,
 				039DC1B516CB3DF700B52A7F /* wedge2.cpp in Sources */,
 				039DC1B716CB3DF700B52A7F /* gl_utils.cpp in Sources */,
 				039DC1B916CB3DF700B52A7F /* murmur_hash_3.cpp in Sources */,
@@ -1636,7 +1680,7 @@
 				039DC1CF16CB4B1700B52A7F /* CSlowCall.mm in Sources */,
 				039DC1D116CB4B1700B52A7F /* NSIndexPathUtils.mm in Sources */,
 				039DC21116CB4C4400B52A7F /* CBooleanItem.mm in Sources */,
-				039DC21316CB4C4400B52A7F /* CCreditCardItem.mm in Sources */,
+				039DC21316CB4C4400B52A7F /* CCardNumberItem.mm in Sources */,
 				039DC21516CB4C4400B52A7F /* CDateItem.mm in Sources */,
 				039DC21716CB4C4400B52A7F /* CEmailItem.mm in Sources */,
 				039DC21916CB4C4400B52A7F /* CForm.mm in Sources */,
@@ -1651,22 +1695,24 @@
 				039DC22B16CB4C4400B52A7F /* CSubmitItem.mm in Sources */,
 				039DC22D16CB4C4400B52A7F /* CItem.mm in Sources */,
 				039DC22F16CB4C4400B52A7F /* CTableItem.mm in Sources */,
-				039DC23116CB4C4400B52A7F /* CTableActionItem.mm in Sources */,
-				039DC23316CB4C4400B52A7F /* CTableAddRepeatingItem.mm in Sources */,
-				039DC23516CB4C4400B52A7F /* CTableBooleanItem.mm in Sources */,
-				039DC23716CB4C4400B52A7F /* CTableButtonItem.mm in Sources */,
-				039DC23916CB4C4400B52A7F /* CTableCreditCardItem.mm in Sources */,
-				039DC23B16CB4C4400B52A7F /* CTableMultiChoiceItem.mm in Sources */,
-				039DC23D16CB4C4400B52A7F /* CTableNoteItem.mm in Sources */,
+				039DC23116CB4C4400B52A7F /* CActionTableRowItem.mm in Sources */,
+				039DC23316CB4C4400B52A7F /* CAddRepeatingTableRowItem.mm in Sources */,
+				039DC23516CB4C4400B52A7F /* CCheckboxTableRowItem.mm in Sources */,
+				039DC23716CB4C4400B52A7F /* CButtonTableRowItem.mm in Sources */,
+				039DC23916CB4C4400B52A7F /* CCardNumberTableRowItem.mm in Sources */,
+				039DC23B16CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.mm in Sources */,
+				039DC23D16CB4C4400B52A7F /* CNoteTableRowItem.mm in Sources */,
 				039DC23F16CB4C4400B52A7F /* CTableRowItem.mm in Sources */,
-				0349E19C180E15BC00F74905 /* CCreditCardSummaryItem.mm in Sources */,
-				039DC24116CB4C4400B52A7F /* CTableSpacerItem.mm in Sources */,
-				039DC24316CB4C4400B52A7F /* CTableSummaryItem.mm in Sources */,
-				039DC24516CB4C4400B52A7F /* CTableTextFieldItem.mm in Sources */,
+				03C8C9A9181ACEEC0019D97E /* CStatusBar.mm in Sources */,
+				0349E19C180E15BC00F74905 /* CPaymentMethodSummaryItem.mm in Sources */,
+				039DC24116CB4C4400B52A7F /* CSpacerTableRowItem.mm in Sources */,
+				039DC24316CB4C4400B52A7F /* CSummaryTableRowItem.mm in Sources */,
+				039DC24516CB4C4400B52A7F /* CTextFieldTableRowItem.mm in Sources */,
 				039DC24716CB4C4400B52A7F /* CTableSectionItem.mm in Sources */,
-				039DC24916CB4C4400B52A7F /* CTitleTableItem.mm in Sources */,
+				039DC24916CB4C4400B52A7F /* CTitleTableRowItem.mm in Sources */,
 				039DC25416CB4CCE00B52A7F /* CDummyWorker.mm in Sources */,
 				039DC25616CB4CCE00B52A7F /* CRestWorker.mm in Sources */,
+				03336556181B97AA00308E0A /* CSwitchTableRowItem.mm in Sources */,
 				039DC25816CB4CCE00B52A7F /* CWorker.mm in Sources */,
 				039DC25A16CB4CCE00B52A7F /* CWorkerManager.mm in Sources */,
 				039DC25F16CB4FAF00B52A7F /* ISO8601DateFormatter.m in Sources */,
@@ -1698,9 +1744,10 @@
 				039DC2EA16CB689900B52A7F /* CTableManager.mm in Sources */,
 				039DC2EC16CB689900B52A7F /* CActionItemTableViewCell.mm in Sources */,
 				039DC2EE16CB689900B52A7F /* CAddRepeatingItemTableViewCell.mm in Sources */,
-				039DC2F016CB689900B52A7F /* CBooleanTableViewCell.mm in Sources */,
+				039DC2F016CB689900B52A7F /* CCheckboxTableViewCell.mm in Sources */,
+				0318155E181ED11B007794F3 /* CPaymentMethodTypeImageView.mm in Sources */,
 				039DC2F216CB689900B52A7F /* CButtonTableViewCell.mm in Sources */,
-				039DC2F416CB689900B52A7F /* CCreditCardItemTableViewCell.mm in Sources */,
+				039DC2F416CB689900B52A7F /* CCardNumberItemTableViewCell.mm in Sources */,
 				039DC2F616CB689900B52A7F /* CMultiChoiceItemTableViewCell.mm in Sources */,
 				0378B89617EA9A6E0073D97E /* CShieldView.mm in Sources */,
 				039DC2F816CB689900B52A7F /* CNoteTableViewCell.mm in Sources */,
@@ -1717,6 +1764,7 @@
 				039DC32816CB693700B52A7F /* CSetupMainViewController.mm in Sources */,
 				039DC32A16CB693700B52A7F /* CSetupNavigationController.mm in Sources */,
 				039DC32C16CB693700B52A7F /* CSetupOptionTableViewCell.mm in Sources */,
+				0333655A181B99FB00308E0A /* CSwitchTableViewCell.mm in Sources */,
 				039DC32E16CB693700B52A7F /* CSetupServer.mm in Sources */,
 				039DC33016CB693700B52A7F /* CSetupServerItem.mm in Sources */,
 				039DC33216CB693700B52A7F /* CSetupServerTableViewCell.mm in Sources */,
@@ -1727,7 +1775,7 @@
 				039DC39016CCA43000B52A7F /* CTabBar.mm in Sources */,
 				039DC39616CCA44000B52A7F /* UILabelUtils.mm in Sources */,
 				039DC39816CCA44000B52A7F /* WhiteLabel.mm in Sources */,
-				0349E1A0180E16ED00F74905 /* CTableCreditCardSummaryItem.mm in Sources */,
+				0349E1A0180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.mm in Sources */,
 				032AEEF116DE66DA0024D14E /* CSystemSound.mm in Sources */,
 				03F9446316E9735D00F9FEF3 /* CMiniPickerBackgroundView.mm in Sources */,
 				03F9446516E9735D00F9FEF3 /* CMiniPickerFrameView.mm in Sources */,

@@ -113,7 +113,7 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 		UIColor* backgroundColor = [UIColor grayColor];
 		UIColor* textColor = [UIColor whiteColor];
 		
-		if(self.worker.isFinished) {
+		if(self.worker.finished) {
 			status = @"FINISHED";
 			if(self.worker.error == nil) {
 				backgroundColor = [[UIColor greenColor] colorByDarkeningFraction:0.7];
@@ -121,20 +121,20 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 				backgroundColor = [[UIColor redColor] colorByDarkeningFraction:0.5];
 			}
 			textColor = [UIColor whiteColor];
-			if(self.worker.isCancelled) {
+			if(self.worker.cancelled) {
 				status = @"CANCELLED";
 				backgroundColor = [UIColor blackColor];
 				textColor = [UIColor whiteColor];
 			}
-		} else if(self.worker.isExecuting) {
+		} else if(self.worker.executing) {
 			status = @"EXECUTING";
 			backgroundColor = [[UIColor blueColor] colorByLighteningFraction:0.5];
 			textColor = [UIColor blackColor];
-			if(self.worker.isActive) {
+			if(self.worker.active) {
 				status = @"ACTIVE";
 				backgroundColor = [UIColor yellowColor];
 				textColor = [UIColor blackColor];
-			} else if(self.worker.isReady) {
+			} else if(self.worker.ready) {
 				status = @"READY";
 				backgroundColor = [UIColor orangeColor];
 				textColor = [UIColor blackColor];
@@ -157,7 +157,7 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 		self.layer.backgroundColor = backgroundColor.CGColor;
 		self.layer.borderColor = [backgroundColor colorByDarkeningFraction:0.5].CGColor;
 	
-		CLogTrace(@"C_WORKER_DEBUG_VIEW", @"worker: %@ %@ isActive:%d", self.worker, status, self.worker.isActive);
+		CLogTrace(@"C_WORKER_DEBUG_VIEW", @"worker: %@ %@ active:%d", self.worker, status, self.worker.active);
         
         [self setNeedsUpdateConstraints];
 	}
@@ -167,10 +167,10 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncToWorker) name:@"workerViewNeedsSync" object:self];
 	[self.worker addObserver:self forKeyPath:@"title" options:0 context:nil];
-	[self.worker addObserver:self forKeyPath:@"isFinished" options:0 context:nil];
-	[self.worker addObserver:self forKeyPath:@"isCancelled" options:0 context:nil];
-	[self.worker addObserver:self forKeyPath:@"isReady" options:0 context:nil];
-	[self.worker addObserver:self forKeyPath:@"isActive" options:0 context:nil];
+	[self.worker addObserver:self forKeyPath:@"finished" options:0 context:nil];
+	[self.worker addObserver:self forKeyPath:@"cancelled" options:0 context:nil];
+	[self.worker addObserver:self forKeyPath:@"ready" options:0 context:nil];
+	[self.worker addObserver:self forKeyPath:@"active" options:0 context:nil];
 	[self syncToWorker];
 }
 
@@ -178,10 +178,10 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"workerViewNeedsSync" object:self];
 	[self.worker removeObserver:self forKeyPath:@"title"];
-	[self.worker removeObserver:self forKeyPath:@"isFinished"];
-	[self.worker removeObserver:self forKeyPath:@"isCancelled"];
-	[self.worker removeObserver:self forKeyPath:@"isReady"];
-	[self.worker removeObserver:self forKeyPath:@"isActive"];
+	[self.worker removeObserver:self forKeyPath:@"finished"];
+	[self.worker removeObserver:self forKeyPath:@"cancelled"];
+	[self.worker removeObserver:self forKeyPath:@"ready"];
+	[self.worker removeObserver:self forKeyPath:@"active"];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

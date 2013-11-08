@@ -4,7 +4,7 @@
 //
 //  Based on:
 //
-// SFHFKeychainUtils.m
+// SFHFKeychainUtils.mm
 //
 // Created by Buzz Andersen on 10/20/08.
 // Based partly on code by Jonathan Wight, Jon Crosby, and Mike Malone.

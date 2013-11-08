@@ -20,8 +20,8 @@
 #import "CObserver.h"
 #import "CBooleanItem.h"
 #import "ObjectUtils.h"
-#import "CTableMultiChoiceItem.h"
-#import "CTableBooleanItem.h"
+#import "CMultiChoiceSummaryTableRowItem.h"
+#import "CCheckboxTableRowItem.h"
 #import "CSpacerItem.h"
 #import "ErrorUtils.h"
 
@@ -35,11 +35,6 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 @end
 
 @implementation CMultiChoiceItem
-
-@synthesize minValidChoices = minValidChoices_;
-@synthesize maxValidChoices = maxValidChoices_;
-@synthesize subitemsObserver = subitemsObserver_;
-@synthesize subitemsValueObserver = subitemsValueObserver_;
 
 @dynamic choicesCount;
 
@@ -216,7 +211,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 		[self addSubitem:item];
 	}];
 	
-	self.isNew = YES;
+	self.fresh = YES;
 }
 
 #pragma mark - @property selectedSubitemIndexes
@@ -272,7 +267,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 - (NSArray*)tableRowItems
 {
 	NSMutableArray* rowItems = [NSMutableArray array];
-	CTableMultiChoiceItem* rowItem = [CTableMultiChoiceItem itemWithKey:self.key title:self.title multiChoiceItem:self];
+	CMultiChoiceSummaryTableRowItem* rowItem = [CMultiChoiceSummaryTableRowItem itemWithKey:self.key title:self.title multiChoiceItem:self];
 	[rowItems addObject:rowItem];
 	if(!rowItem.requiresDrillDown) {
 		for(CItem* item in self.subitems) {

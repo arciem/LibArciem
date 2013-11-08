@@ -171,8 +171,8 @@
 	NSIndexPath* indexPath = [self indexPathOfRowForKeyPath:keyPath];
 	if(indexPath != nil) {
 		CTableRowItem* row = [self rowAtIndexPath:indexPath];
-		if(row.isDisabled != disabled) {
-			row.isDisabled = disabled;
+		if(row.disabled != disabled) {
+			row.disabled = disabled;
 			[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:animation];
 		}
 	}
@@ -265,10 +265,10 @@
 - (void)replaceSectionAtIndex:(NSUInteger)leavingSectionIndex withSectionWithKey:(NSString*)newSectionKey
 {
 	CTableSectionItem* leavingSection = [self sectionForIndex:leavingSectionIndex];
-	leavingSection.isHidden = YES;
+	leavingSection.hidden = YES;
 	
 	CTableSectionItem* enteringSection = [self.model valueForKey:newSectionKey];
-	enteringSection.isHidden = NO;
+	enteringSection.hidden = NO;
 
 	[self invalidateCache];
 
@@ -357,6 +357,10 @@
 	[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
+- (void)reloadTableData {
+    [self.tableView reloadData];
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -380,7 +384,9 @@
 	cell = (CRowItemTableViewCell*)ClassAlloc(cellType);
 	cell = [cell initWithReuseIdentifier:reuseIdentifier];
 	cell.delegate = self;
-    [self.delegate tableManager:self prepareCell:cell];
+    if([self.delegate respondsToSelector:@selector(tableManager:prepareCell:)]) {
+        [self.delegate tableManager:self prepareCell:cell];
+    }
 	return cell;
 }
 
@@ -479,8 +485,8 @@
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
-//	CLogDebug(nil, @"%@ canMoveRowAtIndexPath:%@ value:%d", self, indexPath, rowItem.isReorderable);
-	return rowItem.isReorderable;
+//	CLogDebug(nil, @"%@ canMoveRowAtIndexPath:%@ value:%d", self, indexPath, rowItem.reorderable);
+	return rowItem.reorderable;
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
@@ -513,6 +519,10 @@
 	
 	[self invalidateRowsForSection:sourceIndexPath.section];
 	
+    if([self.delegate respondsToSelector:@selector(tableManager:didMoveRow:toIndexPath:)]) {
+        [self.delegate tableManager:self didMoveRow:rowItem toIndexPath:destinationIndexPath];
+    }
+    
 //	[self.model printHierarchy];
 //	[repeatingItem printHierarchy];
 }
@@ -522,6 +532,9 @@
 	NSAssert1(editingStyle == UITableViewCellEditingStyleDelete, @"Unimplemented editing style:%d", editingStyle);
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
 	[rowItem.model removeFromSuperitem];
+    if([self.delegate respondsToSelector:@selector(tableManager:didDeleteRow:atIndexPath:)]) {
+        [self.delegate tableManager:self didDeleteRow:rowItem atIndexPath:indexPath];
+    }
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
@@ -533,7 +546,7 @@
 	NSMutableIndexSet* allowedIndexes = [NSMutableIndexSet indexSet];
 	NSArray* rows = [self rowsForSection:sourceSectionIndex];
 	[rows enumerateObjectsUsingBlock:^(CTableRowItem* row, NSUInteger idx, BOOL *stop) {
-		if(row.isReorderable) {
+		if(row.reorderable) {
 			[allowedIndexes addIndex:idx];
 		}
 	}];
@@ -557,7 +570,7 @@
 	NSIndexPath* result = indexPath;
 	
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
-	if(rowItem.isUnselectable) {
+	if(!rowItem.rowSelectable) {
 		result = nil;
 	}
 	
@@ -567,7 +580,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	CTableRowItem* rowItem = [self rowAtIndexPath:indexPath];
-	[self.delegate tableManager:self didSelectRow:rowItem atIndexPath:indexPath];
+    if([self.delegate respondsToSelector:@selector(tableManager:didSelectRow:atIndexPath:)]) {
+        [self.delegate tableManager:self didSelectRow:rowItem atIndexPath:indexPath];
+    }
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -635,7 +650,7 @@
 - (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden
 {
 //	CLogDebug(nil, @"%@ tableRowItem:%@ didChangeHiddenFrom:%d to:%d", self, rowItem, fromHidden, toHidden);
-	[self setRow:rowItem hidden:rowItem.isHidden withRowAnimation:UITableViewRowAnimationAutomatic];
+	[self setRow:rowItem hidden:rowItem.hidden withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - @protocol CRowItemTableViewCellDelegate

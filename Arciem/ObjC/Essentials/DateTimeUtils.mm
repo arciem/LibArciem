@@ -142,7 +142,7 @@ NSTimeInterval TimeIntervalFromDaysHoursMinutesSeconds(int days, int hours, int 
 @end
 
 //
-//  GHNSDate+Parsing.m
+//  GHNSDate+Parsing.mm
 //
 //  Created by Gabe on 3/18/08.
 //  Copyright 2008 Gabriel Handford

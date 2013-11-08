@@ -24,10 +24,11 @@
 #import "CTableViewCell.h"
 #import "CActionItemTableViewCell.h"
 #import "CAddRepeatingItemTableViewCell.h"
-#import "CBooleanTableViewCell.h"
+#import "CCheckboxTableViewCell.h"
+#import "CSwitchTableViewCell.h"
 #import "CButtonTableViewCell.h"
-#import "CCreditCardItemTableViewCell.h"
-#import "CCreditCardSummaryItemTableViewCell.h"
+#import "CCardNumberItemTableViewCell.h"
+#import "CPaymentMethodSummaryItemTableViewCell.h"
 #import "CMultiChoiceItemTableViewCell.h"
 #import "CNoteTableViewCell.h"
 #import "CRowItemTableViewCell.h"
@@ -50,13 +51,16 @@
 - (void)replaceSectionAtIndex:(NSUInteger)leavingSectionIndex withSectionWithKey:(NSString*)newSectionKey;
 - (NSIndexPath*)indexPathForModel:(CItem*)model;
 - (CTableSectionItem*)sectionForIndex:(NSUInteger)sectionIndex;
+- (void)reloadTableData;
 
 @end
 
 @protocol CTableManagerDelegate <NSObject>
 
-@required
+@optional
 - (void)tableManager:(CTableManager*)tableManager didSelectRow:(CTableRowItem*)rowItem atIndexPath:(NSIndexPath *)indexPath;
+- (void)tableManager:(CTableManager *)tableManager didDeleteRow:(CTableRowItem *)rowItem atIndexPath:(NSIndexPath *)indexPath;
+- (void)tableManager:(CTableManager *)tableManager didMoveRow:(CTableRowItem *)rowItem toIndexPath:(NSIndexPath *)indexPath;
 - (void)tableManager:(CTableManager*)tableManager prepareCell:(CRowItemTableViewCell*)cell;
 
 @end

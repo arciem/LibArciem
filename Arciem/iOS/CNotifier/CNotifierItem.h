@@ -20,8 +20,8 @@
 
 @interface CNotifierItem : NSObject
 
-- (id)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler;
-+ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler;
+- (id)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(dispatch_block_t)tapHandler;
++ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(dispatch_block_t)tapHandler;
 
 @property (copy, readonly, nonatomic) NSString* message;
 @property (readonly, nonatomic) NSInteger priority;

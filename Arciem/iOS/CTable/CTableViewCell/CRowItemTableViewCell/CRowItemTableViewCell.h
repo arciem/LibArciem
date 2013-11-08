@@ -38,6 +38,9 @@
 @property (readonly, nonatomic) UIFont* font;
 @property (readonly, nonatomic) CGRect layoutFrame __attribute__((deprecated));
 @property (readonly, nonatomic) UIEdgeInsets contentInset;
+@property (readonly, nonatomic, getter = isTestingMode) BOOL testingMode;
+
++ (void)setTestingMode:(BOOL)testingMode;
 
 - (void)setNumberOfValidationViewsTo:(NSUInteger)count;
 

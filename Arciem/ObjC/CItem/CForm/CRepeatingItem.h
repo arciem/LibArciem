@@ -20,16 +20,19 @@
 
 @interface CRepeatingItem : CItem
 
-@property (nonatomic) NSDictionary* templateDict;
+@property (nonatomic) NSDictionary *templateDict;
 
 @property (nonatomic) NSUInteger minValidRepeats;
 @property (nonatomic) NSUInteger maxValidRepeats;
 @property (nonatomic) NSUInteger startRepeats;
 @property (nonatomic) NSUInteger dummyStartRepeats;
 @property (readonly, nonatomic) BOOL hasDummyStartRepeats;
-@property (copy, nonatomic) NSString* addAnotherPrompt;
+@property (copy, nonatomic) NSString *addAnotherPrompt;
+@property (copy, nonatomic) NSString *addFirstPrompt;
 @property (nonatomic) BOOL isReordering;
+@property (nonatomic) BOOL addRequiresDrillDown;
 
-- (CItem*)addSubitemFromTemplate;
+- (CItem *)createItemFromTemplate;
+- (CItem *)addSubitemFromTemplate;
 
 @end

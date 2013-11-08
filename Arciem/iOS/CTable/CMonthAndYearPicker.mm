@@ -57,7 +57,7 @@
 - (id)initWithFrame:(CGRect)frame
 {
 	if(self = [super initWithFrame:CGRectMake(0, 0, 320, 216)]) {
-		self.date = [NSDate date];
+        self.date = [NSDate date];
 
         self.opaque = YES;
         self.backgroundColor = [UIColor whiteColor];
@@ -168,7 +168,11 @@
 
 - (void)syncToDateAnimated:(BOOL)animated
 {
-	NSDateComponents* comps = [self.calendar components:(NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:self.date];
+    NSDate *date = self.date;
+    if(date == nil) {
+        date = [NSDate date];
+    }
+	NSDateComponents* comps = [self.calendar components:(NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:date];
 	NSInteger monthRow = comps.month - 1;
 	NSInteger yearRow = comps.year - self.minimumYear;
 	[self.pickerView selectRow:monthRow inComponent:0 animated:animated];
@@ -271,8 +275,8 @@
 		label.opaque = NO;
 		label.backgroundColor = [UIColor clearColor];
 //		label.backgroundColor = component == 0 ? [UIColor redColor] : [UIColor blueColor];
-		label.shadowOffset = CGSizeMake(0, 1);
-		label.shadowColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+//		label.shadowOffset = CGSizeMake(0, 1);
+//		label.shadowColor = [UIColor colorWithWhite:1.0 alpha:1.0];
 	}
 
 	BOOL highlighted = NO;
@@ -286,7 +290,7 @@
 
 			NSString* monthString = (self.dateFormatter.standaloneMonthSymbols)[row];
 			
-			label.text = [NSString stringWithFormat:@"%@ %02d", monthString, month];
+			label.text = [NSString stringWithFormat:@"(%02d) %@", month, monthString];
 			label.textAlignment = NSTextAlignmentRight;
 			
 			highlighted = month == self.currentMonth;
