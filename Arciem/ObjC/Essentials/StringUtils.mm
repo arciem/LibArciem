@@ -701,7 +701,7 @@ NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle)
 
 NSString* StringByUnescapingEntitiesInString(NSString* s)
 {
-	CEntitiesConverter* converter = [[CEntitiesConverter alloc] init];
+	CEntitiesConverter* converter = [CEntitiesConverter new];
 	
 	return [converter unescapeEntitiesInString:s];
 }

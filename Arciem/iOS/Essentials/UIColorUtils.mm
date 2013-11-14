@@ -441,7 +441,7 @@
 		arciem::swap(minX, maxX);
 	}
 	
-	UIBezierPath* path = [[UIBezierPath alloc] init];
+	UIBezierPath* path = [UIBezierPath new];
 	[path moveToPoint:CGPointMake(minX, minY)];
 	[path addLineToPoint:CGPointMake(midX, minY)];
 	[path addLineToPoint:CGPointMake(minX, midY)];

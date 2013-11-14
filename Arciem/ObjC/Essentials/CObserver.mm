@@ -160,7 +160,9 @@
 {
 	if(self = [self initWithKeyPath:keyPath action:action initial:initial prior:prior]) {
 		NSAssert(object != nil, @"Cannot create observer for nil object");
-		[self addObject:object];
+        if(object != nil) {
+            [self addObject:object];
+        }
 	}
 	return self;
 }

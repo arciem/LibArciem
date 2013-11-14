@@ -51,7 +51,7 @@
 - (id)init
 {
 	if(self = [super init]) {
-		self.notifier = [[CNotifier alloc] init];
+		self.notifier = [CNotifier new];
 		self.notifier.name = @"CNetworkController";
 
 		self.networkReachability = [CReachability reachabilityForInternetConnection];

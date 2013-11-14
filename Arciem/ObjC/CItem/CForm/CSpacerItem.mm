@@ -23,7 +23,7 @@
 
 + (CSpacerItem*)spacerItem
 {
-	return [[self alloc] init];
+	return [self new];
 }
 
 - (NSArray*)tableRowItems

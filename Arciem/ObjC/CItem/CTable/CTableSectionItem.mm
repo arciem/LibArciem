@@ -46,7 +46,7 @@
 
 + (CTableSectionItem*)tableSectionItem
 {
-	return [[self alloc] init];
+	return [self new];
 }
 
 + (CTableSectionItem *)tableSectionItemWithTitle:(NSString*)title key:(NSString*)key {

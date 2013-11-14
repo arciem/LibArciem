@@ -20,6 +20,8 @@
 #import "Geom.h"
 #import "CView.h"
 
+typedef void (^view_block_t)(UIView *view);
+
 extern NSString* const sTapInBackgroundNotification;
 
 // See http://clang.llvm.org/docs/AutomaticReferenceCounting.html#optimization.precise
@@ -52,9 +54,13 @@ extern NSString* const sTapInBackgroundNotification;
 - (void)sizeToFitSubviews;
 - (void)removeAllSubviews;
 //- (void)viewHierarchyPerformSelector:(SEL)selector withObject:(id)object;
+- (void)visitAllDescendentViewsWithBlock:(view_block_t)block;
 
 - (void)addSubview:(UIView *)view animated:(BOOL)animated;
 - (void)removeFromSuperviewAnimated:(BOOL)animated;
+
+- (NSArray *)collectKeyViews;
+- (NSArray *)subviewsSortedByReadingOrder:(NSArray *)views;
 
 - (NSLayoutConstraint *)constrainLeadingEqualToLeadingOfItem:(id)item;
 - (NSLayoutConstraint *)constrainTrailingEqualToTrailingOfItem:(id)item;

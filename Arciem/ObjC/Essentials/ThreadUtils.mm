@@ -87,7 +87,7 @@ void dispatch_async_repeated(double intervalInSeconds, dispatch_queue_t queue, v
 
 + (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2
 {
-	NSCondition* condition = [[NSCondition alloc] init];
+	NSCondition* condition = [NSCondition new];
 	
 	[self performBlockOnMainThread:^{
 		block1(condition);

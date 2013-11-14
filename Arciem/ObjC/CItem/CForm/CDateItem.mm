@@ -37,7 +37,7 @@ static NSCalendar* sCalendar = nil;
 
 - (ISO8601DateFormatter*)formatter {
 	if(sFormatter == nil) {
-		sFormatter = [[ISO8601DateFormatter alloc] init];
+		sFormatter = [ISO8601DateFormatter new];
 	}
 	
 	return sFormatter;

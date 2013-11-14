@@ -68,7 +68,7 @@ void CLogv(CLogLevel level, NSString *format, va_list args)
 static NSMutableSet* getLogTags()
 {
 	if(sLogTags == nil) {
-		sLogTags = [[NSMutableSet alloc] init];
+		sLogTags = [NSMutableSet new];
 	}
 	
 	return sLogTags;

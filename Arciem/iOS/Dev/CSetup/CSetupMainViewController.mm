@@ -498,7 +498,7 @@
 {
 	self.editingIndexPath = indexPath;
 
-	CSetupEditServerViewController* viewController = [[CSetupEditServerViewController alloc] init];
+	CSetupEditServerViewController* viewController = [CSetupEditServerViewController new];
 	viewController.delegate = self;
 
 	if(indexPath == nil) {

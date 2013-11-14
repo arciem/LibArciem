@@ -18,6 +18,8 @@
 
 #import "CRowItemTableViewCell.h"
 
+extern NSString *const CAdvanceToNextKeyViewNotification;
+
 @interface CTextFieldItemTableViewCell : CRowItemTableViewCell<UITextFieldDelegate>
 
 @property (readonly, nonatomic) UITextField* textField;

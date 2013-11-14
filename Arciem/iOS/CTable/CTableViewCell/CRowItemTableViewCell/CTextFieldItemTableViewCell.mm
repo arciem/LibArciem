@@ -28,6 +28,8 @@
 #import "CMonthAndYearPicker.h"
 #import "CObserver.h"
 
+NSString *const CAdvanceToNextKeyViewNotification = @"CAdvanceToNextKeyViewNotification";
+
 @interface CTextFieldItemTableViewCell ()
 
 @property (nonatomic) NSMutableArray *textFields;
@@ -256,7 +258,7 @@
 		CDateItem* dateItem = (CDateItem*)model;
 		
 		if([dateItem.datePickerMode isEqualToString:@"monthAndYear"]) {
-			CMonthAndYearPicker* picker = [[CMonthAndYearPicker alloc] init];
+			CMonthAndYearPicker* picker = [CMonthAndYearPicker new];
 			picker.minimumDate = dateItem.minDate;
 			picker.maximumDate = dateItem.maxDate;
 			picker.date = dateItem.dateValue;
@@ -275,7 +277,7 @@
 			} else {
 				NSAssert1(NO, @"Unknown date picker mode:%@", dateItem.datePickerMode);
 			}
-			UIDatePicker* picker = [[UIDatePicker alloc] init];
+			UIDatePicker* picker = [UIDatePicker new];
 			picker.date = dateItem.dateValue;
 			picker.datePickerMode = datePickerMode;
 			picker.minimumDate = dateItem.minDate;
@@ -335,6 +337,16 @@
 		CItem* model = (bself.models)[index];
 
 		textField.placeholder = model.title;
+        textField.returnKeyType = UIReturnKeyDefault;
+        
+        UIToolbar *toolbar = [UIToolbar new];
+        UIBarButtonItem *spacerItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIBarButtonItem *nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonTapped:)];
+        NSArray *items = @[spacerItem, nextButtonItem];
+        toolbar.items = items;
+        textField.inputAccessoryView = toolbar;
+        [toolbar sizeToFit];
+        
         if([model isKindOfClass:[CStringItem class]]) {
             CStringItem *stringItem = (CStringItem *)model;
             textField.text = stringItem.stringValue;
@@ -440,6 +452,15 @@
     [self setNeedsUpdateConstraints];
 }
 
+- (void)advanceToNextKeyViewFromKeyView:(UIView *)keyView {
+    [[NSNotificationCenter defaultCenter] postNotificationName:CAdvanceToNextKeyViewNotification object:keyView];
+}
+
+- (void)nextButtonTapped:(id)sender {
+    UIView *keyView = (UIView *)[self findFirstResponder];
+    [self advanceToNextKeyViewFromKeyView:keyView];
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -479,26 +500,19 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    // KLUDGE: Prevents rogue animation of text in field the first time leaving it.
+    [textField setNeedsLayout];
+    [textField layoutIfNeeded];
+
 	CStringItem* model = [self modelForTextField:textField];
 	[model validate];
 	model.editing = NO;
 	self.activeItem = nil;
 }
 
-#if 0
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-	if(textField == self.emailTextField) {
-		[self.passwordTextField becomeFirstResponder];
-	} else if(textField == self.passwordTextField) {
-		if(self.emailItem.valid && self.passwordItem.valid) {
-			[self login];
-		} else {
-			[self.emailTextField becomeFirstResponder];
-		}
-	}
-	return NO;
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self advanceToNextKeyViewFromKeyView:textField];
+    return NO;
 }
-#endif
 
 @end

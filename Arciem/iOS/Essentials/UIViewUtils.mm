@@ -795,6 +795,56 @@ static const NSTimeInterval kAnimationDuration = 0.4;
     return constraints;
 }
 
+- (void)collectKeyViewsIntoArray:(NSMutableArray *)keyViews {
+    for(UIView *subview in self.subviews) {
+        if([subview conformsToProtocol:@protocol(UITextInputTraits)]) {
+            if([subview canBecomeFirstResponder]) {
+                if(!subview.hidden) {
+                    [keyViews addObject:subview];
+                }
+            }
+        } else {
+            [subview collectKeyViewsIntoArray:keyViews];
+        }
+    }
+}
+
+- (NSArray *)collectKeyViews {
+    NSMutableArray *keyViews = [NSMutableArray new];
+    [self collectKeyViewsIntoArray:keyViews];
+    return [keyViews copy];
+}
+
+- (NSArray *)subviewsSortedByReadingOrder:(NSArray *)subviews {
+    return [subviews sortedArrayWithOptions:0 usingComparator:^NSComparisonResult(UIView *subview1, UIView *subview2) {
+        CGRect rect1 = [self convertRect:subview1.frame fromView:subview1.superview];
+        CGRect rect2 = [self convertRect:subview2.frame fromView:subview2.superview];
+        
+        NSComparisonResult result = NSOrderedSame;
+        
+        if(rect1.origin.y > rect2.origin.y) {
+            result = NSOrderedDescending;
+        } else if(rect1.origin.y < rect2.origin.y) {
+            result = NSOrderedAscending;
+        } else {
+            if(rect1.origin.x > rect2.origin.x) {
+                result = NSOrderedDescending;
+            } else if(rect1.origin.x < rect2.origin.x) {
+                result = NSOrderedAscending;
+            }
+        }
+        
+        return result;
+    }];
+}
+
+- (void)visitAllDescendentViewsWithBlock:(view_block_t)block {
+    block(self);
+    [self.subviews enumerateObjectsUsingBlock:^(UIView *subview, NSUInteger idx, BOOL *stop) {
+        [subview visitAllDescendentViewsWithBlock:block];
+    }];
+}
+
 @end
 
 @interface CFrame ()

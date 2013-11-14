@@ -50,7 +50,7 @@
 - (id)init
 {
 	if(self = [super init]) {
-		self.queue = [[NSOperationQueue alloc] init];
+		self.queue = [NSOperationQueue new];
 		self.queue.maxConcurrentOperationCount = 1;		// Make the framework user set it to something higher
 		
 		self.mutableWorkers = [NSMutableSet set];

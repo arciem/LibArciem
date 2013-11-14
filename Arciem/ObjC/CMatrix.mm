@@ -49,7 +49,7 @@
 
 + (CMatrix*)matrix
 {
-	return [[self alloc] init];
+	return [self new];
 }
 
 - (NSUInteger)rowCount

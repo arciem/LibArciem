@@ -70,7 +70,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 			self.indicator = indicator;
 			CLogDebug(@"NETWORK_ACTIVITY", @"%@ init", self);
 			if(sActivities == nil) {
-				sActivities = [[NSMutableArray alloc] init];
+				sActivities = [NSMutableArray new];
 			}
 			[sActivities addObject:[NSValue valueWithNonretainedObject:self]];
 			if(self.hasIndicator) {
@@ -142,7 +142,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 + (CNetworkActivityIndicator*)sharedIndicator
 {
 	if(sSharedIndicator == nil) {
-		sSharedIndicator = [[CNetworkActivityIndicator alloc] init];
+		sSharedIndicator = [CNetworkActivityIndicator new];
 	}
 	
 	return sSharedIndicator;

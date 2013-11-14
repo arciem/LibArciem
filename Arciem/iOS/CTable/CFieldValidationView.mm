@@ -39,8 +39,6 @@ static UIImage* sInvalidImage = nil;
 @property (nonatomic) CObserver* itemStateObserver;
 @property (nonatomic) CObserver* itemEditingObserver;
 
-- (void)syncToState;
-
 @end
 
 @implementation CFieldValidationView
@@ -65,13 +63,13 @@ static UIImage* sInvalidImage = nil;
     
     BSELF;
 	self.itemStateObserver = [CObserver observerWithKeyPath:@"state" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[bself armSyncToState];
+		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
 	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[bself armSyncToState];
+		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
 	}];
 	
 	self.itemEditingObserver = [CObserver observerWithKeyPath:@"editing" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[bself armSyncToState];
+		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
 	}];
 }
 
@@ -188,38 +186,58 @@ static UIImage* sInvalidImage = nil;
 	}
 }
 
-- (void)syncToState
-{
-	switch(self.item.state) {
-		case CItemStateNeedsValidation:
-			self.contentView = self.needsValidationView;
-			break;
-		case CItemStateValidating:
-			self.contentView = self.validatingView;
-			break;
-		case CItemStateValid:
-			if(self.item.fresh) {
-				self.contentView = self.newView;
-			} else {
-				if(self.item.editing) {
-					self.contentView = self.validView;
-				} else {
-					self.contentView = self.newView;
-				}
-			}
-			break;
-		case CItemStateInvalid:
-			self.contentView = self.item.fresh ? self.newView : self.invalidView;
-			break;
-	}
+- (UIView *)contentViewForState:(CItemState)state {
+    UIView *resultView = nil;
+    switch(state) {
+        case CItemStateNeedsValidation:
+            resultView = self.needsValidationView;
+            break;
+        case CItemStateValidating:
+            resultView = self.validatingView;
+            break;
+        case CItemStateValid:
+            if(self.item.fresh) {
+                resultView = self.newView;
+            } else {
+                if(self.item.editing) {
+                    resultView = self.validView;
+                } else {
+                    resultView = self.newView;
+                }
+            }
+            break;
+        case CItemStateInvalid:
+            resultView = self.item.fresh ? self.newView : self.invalidView;
+            break;
+    }
+    return resultView;
 }
 
-- (void)armSyncToState
+- (void)syncToState
 {
-	[NSThread performBlockOnMainThread:^{
-		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncToState) object:nil];
-		[self performSelector:@selector(syncToState) withObject:nil afterDelay:0.2];
-	}];
+    self.contentView = [self contentViewForState:self.item.state];
+}
+
+- (void)armSyncToStateWithOldState:(CItemState)oldState
+{
+    CItemState newState = self.item.state;
+    if(oldState != newState) {
+        if(oldState != CItemStateValid && newState != CItemStateValid) {
+            self.contentView = self.newView;
+        }
+        BSELF;
+        [NSThread performBlockOnMainThread:^{
+            [NSObject cancelPreviousPerformRequestsWithTarget:bself selector:@selector(syncToState) object:nil];
+            NSTimeInterval duration;
+            if(newState == CItemStateValid) {
+                duration = 0.2;
+            } else {
+                duration = 2.5;
+            }
+            //CLogDebug(nil, @"%@ oldState:%d newState:%d duration:%f", bself, oldState, newState, duration);
+            [bself performSelector:@selector(syncToState) withObject:nil afterDelay:duration];
+        }];
+    }
 }
 
 - (CGSize)intrinsicContentSize {

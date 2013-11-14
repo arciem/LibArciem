@@ -41,7 +41,7 @@
 	CGColorRef clearColor = CreateColorWithGray(0, 0);
 	CGColorRef blackColor = CreateColorWithGray(0, 0.25);
     
-	self.shadowLayer = [[CAGradientLayer alloc] init];
+	self.shadowLayer = [CAGradientLayer new];
 	self.shadowLayer.needsDisplayOnBoundsChange = YES;
 	self.shadowLayer.colors = @[(__bridge_transfer id)blackColor, (__bridge_transfer id)clearColor];
 	[self.layer addSublayer:self.shadowLayer];

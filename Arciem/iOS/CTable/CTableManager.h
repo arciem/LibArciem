@@ -39,7 +39,7 @@
 
 @protocol CTableManagerDelegate;
 
-@interface CTableManager : NSObject<UITableViewDelegate, UITableViewDataSource, CTableItemDelegate>
+@interface CTableManager : NSObject<UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView* tableView;
 @property (nonatomic) CTableItem* model;

@@ -21,6 +21,7 @@
 #import "ObjectUtils.h"
 #import "UIColorUtils.h"
 #import "DateTimeUtils.h"
+#import "DeviceUtils.h"
 
 @interface CMonthAndYearPicker () <UIPickerViewDataSource, UIPickerViewDelegate>
 
@@ -94,7 +95,7 @@
 - (NSDateFormatter*)dateFormatter
 {
 	if(dateFormatter_ == nil) {
-		dateFormatter_ = [[NSDateFormatter alloc] init];
+		dateFormatter_ = [NSDateFormatter new];
 		dateFormatter_.locale = self.locale;
 		dateFormatter_.calendar = self.calendar;
 		NSString* format = [NSDateFormatter dateFormatFromTemplate:@"yMMMM" options:0 locale:self.locale];
@@ -249,7 +250,7 @@
 
 - (NSDate*)dateForMonth:(NSInteger)month year:(NSInteger)year
 {
-	NSDateComponents* comps = [[NSDateComponents alloc] init];
+	NSDateComponents* comps = [NSDateComponents new];
 	comps.month = month;
 	comps.year = year;
 	return [self.calendar dateFromComponents:comps];
@@ -270,7 +271,7 @@
 	UILabel* label = (UILabel*)view;
 	
 	if(label == nil) {
-		label = [[UILabel alloc] init];
+		label = [UILabel new];
 		label.font = [UIFont boldSystemFontOfSize:24.0];
 		label.opaque = NO;
 		label.backgroundColor = [UIColor clearColor];
@@ -318,7 +319,11 @@
 	}
 
 	if(highlighted) {
-		label.textColor = [UIColor systemHighlightBlue];
+        if(IsOSVersionAtLeast7()) {
+            label.textColor = self.tintColor;
+        } else {
+            label.textColor = [UIColor systemHighlightBlue];
+        }
 	} else {
 		if(disabled) {
 			label.textColor = [UIColor grayColor];

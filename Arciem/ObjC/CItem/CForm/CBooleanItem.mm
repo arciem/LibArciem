@@ -34,7 +34,7 @@ NSString* const CBooleanItemInterfaceSwitch = @"switch";
 
 + (CBooleanItem*)booleanItem
 {
-	return [[self alloc] init];
+	return [self new];
 }
 
 + (CBooleanItem*)booleanItemWithDictionary:(NSDictionary*)dict

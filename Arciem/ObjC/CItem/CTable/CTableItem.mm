@@ -54,7 +54,7 @@
 
 + (CTableItem*)tableItem
 {
-	return [[self alloc] init];
+	return [self new];
 }
 
 - (void)tableSectionItem:(CTableSectionItem*)tableSectionItem rowsDidChangeWithNew:(NSArray*)newItems old:(NSArray*)oldItems kind:(NSKeyValueChange)kind indexes:(NSIndexSet*)indexes
