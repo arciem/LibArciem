@@ -82,8 +82,8 @@ static UIImage* sInvalidImage = nil;
 {
 	UIImage* image = [UIImage imageNamed:imageName];
 	if(image != nil) {
-		image = [UIImage imageWithShapeImage:image tintColor:tintColor shadowColor:[UIColor clearColor] shadowOffset:CGSizeMake(0.0, 0.0) shadowBlur:0];
-//		image = [UIImage imageWithShapeImage:image tintColor:tintColor shadowColor:[UIColor colorWithWhite:0.0 alpha:0.8] shadowOffset:CGSizeMake(0.0, -1.0) shadowBlur:0];
+		image = [UIImage newImageWithShapeImage:image tintColor:tintColor shadowColor:[UIColor clearColor] shadowOffset:CGSizeMake(0.0, 0.0) shadowBlur:0];
+//		image = [UIImage newImageWithShapeImage:image tintColor:tintColor shadowColor:[UIColor colorWithWhite:0.0 alpha:0.8] shadowOffset:CGSizeMake(0.0, -1.0) shadowBlur:0];
 	}
 	return image;
 }

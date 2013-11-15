@@ -122,21 +122,21 @@
 
 - (UIImage *)noFollowImage {
     if(_noFollowImage == nil) {
-		_noFollowImage = [UIImage imageWithShapeImage:[UIImage imageNamed:@"Tracking~iPad"] tintColor:self.offColor shadowColor:self.shadowColor shadowOffset:self.shadowOffset shadowBlur:0.0];
+		_noFollowImage = [UIImage newImageWithShapeImage:[UIImage imageNamed:@"Tracking~iPad"] tintColor:self.offColor shadowColor:self.shadowColor shadowOffset:self.shadowOffset shadowBlur:0.0];
     }
     return _noFollowImage;
 }
 
 - (UIImage *)followImage {
     if(_followImage == nil) {
-		_followImage = [UIImage imageWithShapeImage:[UIImage imageNamed:@"Tracking~iPad"] tintColor:self.onColor shadowColor:self.shadowColor shadowOffset:self.shadowOffset shadowBlur:0.0];
+		_followImage = [UIImage newImageWithShapeImage:[UIImage imageNamed:@"Tracking~iPad"] tintColor:self.onColor shadowColor:self.shadowColor shadowOffset:self.shadowOffset shadowBlur:0.0];
     }
     return _followImage;
 }
 
 - (UIImage *)followWithHeadingImage {
     if(_followWithHeadingImage == nil) {
-		_followWithHeadingImage = [UIImage imageWithShapeImage:[UIImage imageNamed:@"TrackingWithHeading~iPad"] tintColor:self.onColor shadowColor:nil shadowOffset:self.shadowOffset shadowBlur:0.0];
+		_followWithHeadingImage = [UIImage newImageWithShapeImage:[UIImage imageNamed:@"TrackingWithHeading~iPad"] tintColor:self.onColor shadowColor:nil shadowOffset:self.shadowOffset shadowBlur:0.0];
     }
     return _followWithHeadingImage;
 }

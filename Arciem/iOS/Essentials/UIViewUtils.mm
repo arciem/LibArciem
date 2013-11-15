@@ -26,6 +26,7 @@
 #import "ObjectUtils.h"
 #import "CView.h"
 #import "ThreadUtils.h"
+#import "UIImageUtils.h"
 
 NSString* const sTapInBackgroundNotification = @"TapInBackground";
 static const NSTimeInterval kAnimationDuration = 0.4;
@@ -58,20 +59,17 @@ static const NSTimeInterval kAnimationDuration = 0.4;
     
     CGRect r = [self bounds];
 
-    UIGraphicsBeginImageContextWithOptions(r.size, NO, 0.0);
+    CGContextRef ctx = [UIImage beginImageContextWithSize:r.size opaque:NO scale:0.0 flipped:NO];
 
 //    if(IsOSVersionAtLeast7()) {
 //        [self drawViewHierarchyInRect:r afterScreenUpdates:NO];
 //    } else {
-        CGContextRef ctx = UIGraphicsGetCurrentContext();
         [[UIColor clearColor] set];
         CGContextFillRect(ctx, r);
         [self.layer renderInContext:ctx];
 //    }
 
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
- 
+    image = [UIImage endImageContext];
     return image;
 }
 

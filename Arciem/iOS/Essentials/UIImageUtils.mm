@@ -25,23 +25,22 @@
 
 @implementation UIImage (UIImageUtils)
 
-+ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor*)backgroundColor
++ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor
 {
 	UIImage* resultImage = nil;
 	
-	CGRect bounds = {CGPointZero, size};
-	
-	UIGraphicsBeginImageContextWithOptions(size, NO, scale);
-	CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef context = [UIImage beginImageContextWithSize:size opaque:NO scale:scale flipped:NO];
+    
 	CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
+	CGRect bounds = {CGPointZero, size};
 	CGContextFillRect(context, bounds);
-	resultImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+	
+    resultImage = [UIImage endImageContext];
 	
 	return resultImage;
 }
 
-+ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor*)backgroundColor textColor:(UIColor*)textColor text:(NSString*)text
++ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor textColor:(UIColor *)textColor text:(NSString*)text
 {
 	UIImage* uiImage = nil;
 	
@@ -77,7 +76,7 @@
 	return uiImage;
 }
 
-+ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor*)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier
++ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier
 {
 	UIImage* uiImage = nil;
 	
@@ -142,18 +141,18 @@
 	return uiImage;
 }
 
-+ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor*)innerShadowColor
++ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor
 {
-	return [self imageWithSize:size scale:scale backgroundColor:backgroundColor cornerRadius:cornerRadius innerShadowColor:innerShadowColor shadowVerticalMultiplier:1];
+	return [self newImageWithSize:size scale:scale backgroundColor:backgroundColor cornerRadius:cornerRadius innerShadowColor:innerShadowColor shadowVerticalMultiplier:1];
 }
 
-+ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius
++ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius
 {
 	UIColor* innerShadowColor = [[UIColor blackColor] colorWithAlphaComponent:1.0 / 3.0];
-	return [self imageWithSize:size scale:scale backgroundColor:backgroundColor cornerRadius:cornerRadius innerShadowColor:innerShadowColor];
+	return [self newImageWithSize:size scale:scale backgroundColor:backgroundColor cornerRadius:cornerRadius innerShadowColor:innerShadowColor];
 }
 
-- (UIImage*)reflectedImageWithHeight:(NSUInteger)height
+- (UIImage *)newReflectedImageWithHeight:(NSUInteger)height
 {
 	CGImageRef reflectionImage = ReflectedImageCreate(self.CGImage, height);
 	UIImage *image = [UIImage imageWithCGImage:reflectionImage];
@@ -162,7 +161,7 @@
 	return image;
 }
 
-- (UIImage *)imageByMaskingWithImage:(UIImage*)shapeImage
+- (UIImage *)newImageByMaskingWithImage:(UIImage *)shapeImage
 {
     UIImage* image = nil;
     
@@ -182,15 +181,11 @@
     return image;
 }
 
-- (UIImage *)imageByColorizing:(UIColor *)theColor
+- (UIImage *)newImageByColorizing:(UIColor *)theColor
 {
-    UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
-    
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextRef ctx = [UIImage beginImageContextWithSize:self.size opaque:NO scale:self.scale flipped:YES];
+
     CGRect area = CGRectMake(0, 0, self.size.width, self.size.height);
-    
-    CGContextScaleCTM(ctx, 1, -1);
-    CGContextTranslateCTM(ctx, 0, -area.size.height);
     
     CGContextSaveGState(ctx);
     CGContextClipToMask(ctx, area, self.CGImage);
@@ -204,14 +199,11 @@
     
     CGContextDrawImage(ctx, area, self.CGImage);
  
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
+    UIImage *newImage = [UIImage endImageContext];
     return newImage;
 }
 
-- (UIImage *)imageByDesaturating:(CGFloat)desaturation
+- (UIImage *)newImageByDesaturating:(CGFloat)desaturation
 {
     CIContext *context = [CIContext contextWithOptions:nil];
     CIImage *ciimage = [CIImage imageWithCGImage:self.CGImage];
@@ -225,7 +217,7 @@
     return image;
 }
 
-- (UIImage*)imageByScalingToSize:(CGSize)size
+- (UIImage *)newImageByScalingToSize:(CGSize)size
 {
 	UIImage* result = nil;
 	
@@ -237,54 +229,52 @@
 	return result;
 }
 
-- (UIImage*)imageByScalingToSize:(CGSize)inSize centeredWithinImageOfSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor
+- (UIImage *)newImageByScalingToSize:(CGSize)inSize centeredWithinImageOfSize:(CGSize)imageSize backgroundColor:(UIColor *)backgroundColor
 {
 	UIImage* result = nil;
 	
-	UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0.0);
+    CGContextRef context = [UIImage beginImageContextWithSize:imageSize opaque:NO scale:0.0 flipped:NO];
+    
+    CGRect bounds;
+    bounds.origin = CGPointZero;
+    bounds.size = imageSize;
+    
+    if(backgroundColor != nil) {
+        CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
+        CGContextFillRect(context, bounds);
+    }
+    
+    CGRect frame;
+    frame.origin = CGPointZero;
+    frame.size = inSize;
+    frame = [Geom alignRectMid:frame toRectMid:bounds];
 
-		CGContextRef context = UIGraphicsGetCurrentContext();
-		CGRect bounds;
-		bounds.origin = CGPointZero;
-		bounds.size = imageSize;
-		
-		if(backgroundColor != nil) {
-			CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
-			CGContextFillRect(context, bounds);
-		}
-		
-		CGRect frame;
-		frame.origin = CGPointZero;
-		frame.size = inSize;
-		frame = [Geom alignRectMid:frame toRectMid:bounds];
-
-		[self drawInRect:frame];
-		result = UIGraphicsGetImageFromCurrentImageContext();
-		
-	UIGraphicsEndImageContext();
+    [self drawInRect:frame];
+    
+    result = [UIImage endImageContext];
 	
 	return result;
 }
 
-- (UIImage*)imageByAspectFitToSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor
+- (UIImage *)newImageByAspectFitToSize:(CGSize)imageSize backgroundColor:(UIColor *)backgroundColor
 {
 	CGSize inSize = [Geom aspectFitSize:self.size withinSize:imageSize];
-	return [self imageByScalingToSize:inSize centeredWithinImageOfSize:imageSize backgroundColor:backgroundColor];
+	return [self newImageByScalingToSize:inSize centeredWithinImageOfSize:imageSize backgroundColor:backgroundColor];
 }
 
-- (UIImage*)imageByAspectFitToSize:(CGSize)imageSize
+- (UIImage *)newImageByAspectFitToSize:(CGSize)imageSize
 {
 	CGSize inSize = [Geom aspectFitSize:self.size withinSize:imageSize];
-	return [self imageByScalingToSize:inSize];
+	return [self newImageByScalingToSize:inSize];
 }
 
-- (UIImage*)imageByAspectFillToSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor
+- (UIImage *)newImageByAspectFillToSize:(CGSize)imageSize backgroundColor:(UIColor *)backgroundColor
 {
 	CGSize inSize = [Geom aspectFillSize:self.size withinSize:imageSize];
-	return [self imageByScalingToSize:inSize centeredWithinImageOfSize:imageSize backgroundColor:backgroundColor];
+	return [self newImageByScalingToSize:inSize centeredWithinImageOfSize:imageSize backgroundColor:backgroundColor];
 }
 
-- (UIImage*)imageWithRoundedCornerRadius:(CGFloat)radius
+- (UIImage *)newImageWithRoundedCornerRadius:(CGFloat)radius
 {
 	UIImage* result = nil;
 
@@ -314,7 +304,7 @@
 	return result;
 }
 
-- (UIImage*)imageAtScreenScale
+- (UIImage *)newImageAtScreenScale
 {
 	UIImage* image = self;
 	CGFloat scale = ScreenScale();
@@ -324,36 +314,35 @@
 	return image;
 }
 
-- (UIImage*)flattenShapeImage
+- (UIImage *)flattenShapeImage
 {
 	// Draw the shape image on a white background to get rid of any alpha channel
 	UIImage* flatShapeImage = nil;
-	CGContextRef context = nil;
 	CGRect bounds = {CGPointZero, self.size};
 
-	UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
-	context = UIGraphicsGetCurrentContext();
+    CGContextRef context = [UIImage beginImageContextWithSize:self.size opaque:NO scale:self.scale flipped:NO];
+    
 	CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
 	CGContextFillRect(context, bounds);
 	[self drawAtPoint:CGPointZero];
-	flatShapeImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+	
+    flatShapeImage = [UIImage endImageContext];
 	
 	return flatShapeImage;
 }
 
-+ (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor
++ (UIImage *)newImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor
 {
-	return [self imageWithShapeImage:shapeImage tintColor:tintColor shadowColor:nil shadowOffset:CGSizeMake(0, 0) shadowBlur:0];
+	return [self newImageWithShapeImage:shapeImage tintColor:tintColor shadowColor:nil shadowOffset:CGSizeMake(0, 0) shadowBlur:0];
 }
 
-+ (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor shadowColor:(UIColor*)shadowColor shadowOffset:(CGSize)shadowOffset shadowBlur:(CGFloat)shadowBlur
++ (UIImage *)newImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor shadowColor:(UIColor *)shadowColor shadowOffset:(CGSize)shadowOffset shadowBlur:(CGFloat)shadowBlur
 {
 	UIImage* resultImage = nil;
 	CGContextRef context = nil;
 	CGRect bounds = {CGPointZero, shapeImage.size};
 	
-	UIImage* backgroundImage = [self imageWithSize:shapeImage.size scale:shapeImage.scale backgroundColor:tintColor];
+	UIImage* backgroundImage = [self newImageWithSize:shapeImage.size scale:shapeImage.scale backgroundColor:tintColor];
 	
 	// Draw the shape image on a white background to get rid of any alpha channel
 	UIImage* flatShapeImage = [shapeImage flattenShapeImage];
@@ -362,35 +351,27 @@
 	CGImageRef shapeStencil = CGImageMaskCreate(CGImageGetWidth(flatShapeImage.CGImage), CGImageGetHeight(flatShapeImage.CGImage), CGImageGetBitsPerComponent(flatShapeImage.CGImage), CGImageGetBitsPerPixel(flatShapeImage.CGImage), CGImageGetBytesPerRow(flatShapeImage.CGImage), CGImageGetDataProvider(flatShapeImage.CGImage), NULL, false);
 	
 	// Create the context we'll be painting into for the tinted image
-	UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
-	context = UIGraphicsGetCurrentContext();
-	CGContextTranslateCTM(context, 0.0, bounds.size.height);
-	CGContextScaleCTM(context, 1.0, -1.0);
-	
+    context = [UIImage beginImageContextWithSize:shapeImage.size opaque:NO scale:shapeImage.scale flipped:YES];
+    
 	// Paint the tinted shape
 	CGContextClipToMask(context, bounds, shapeStencil);
 	CGContextDrawImage(context, bounds, backgroundImage.CGImage);
 	
 	// Retrieve the tinted image
-	UIImage* tintedImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+    UIImage *tintedImage = [UIImage endImageContext];
 
 	if(shadowColor == nil) {
 		resultImage = tintedImage;
 	} else {
 		// Create the main context we'll be painting into
-		UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
-		context = UIGraphicsGetCurrentContext();
-		CGContextTranslateCTM(context, 0.0, bounds.size.height);
-		CGContextScaleCTM(context, 1.0, -1.0);
+        context = [UIImage beginImageContextWithSize:shapeImage.size opaque:NO scale:shapeImage.scale flipped:YES];
 
 		// Paint the tinted shape with a shadow
 		CGContextSetShadowWithColor(context, shadowOffset, shadowBlur, shadowColor.CGColor);
 		CGContextDrawImage(context, bounds, tintedImage.CGImage);
 
 		// Retrieve the shadowed, tinted image
-		resultImage = UIGraphicsGetImageFromCurrentImageContext();
-		UIGraphicsEndImageContext();
+        resultImage = [UIImage endImageContext];
 	}
 
 	// Clean up
@@ -399,7 +380,7 @@
 	return resultImage;
 }
 
-+ (UIImage*)etchedImageWithShapeImage:(UIImage*)shapeImage backgroundImage:(UIImage*)backgroundImage glossAlpha:(CGFloat)glossAlpha
++ (UIImage *)newEtchedImageWithShapeImage:(UIImage *)shapeImage backgroundImage:(UIImage *)backgroundImage glossAlpha:(CGFloat)glossAlpha
 {
 	UIImage* resultImage = nil;
 	CGContextRef context = nil;
@@ -417,39 +398,30 @@
 	
 	// To create an inner shadow, first paint a black rectangle through the inverted stencil, to create a frisket
 	UIImage* innerShadowFrisketImage = nil;
-	UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
-	context = UIGraphicsGetCurrentContext();
+    context = [UIImage beginImageContextWithSize:shapeImage.size opaque:NO scale:shapeImage.scale flipped:NO];
 	CGContextClipToMask(context, bounds, invertedShapeStencil);
 	CGContextSetFillColorWithColor(context, [UIColor blackColor].CGColor);
 	CGContextFillRect(context, bounds);
-	innerShadowFrisketImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+    innerShadowFrisketImage = [UIImage endImageContext];
 	
 	// Now draw the frisket with shadow into a new transparent image, resulting in an inner shadow
 	UIImage* innerShadowImage = nil;
-	UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
-	context = UIGraphicsGetCurrentContext();
+    context = [UIImage beginImageContextWithSize:shapeImage.size opaque:NO scale:shapeImage.scale flipped:NO];
 	CGContextSetShadowWithColor(context, CGSizeZero, 1.0, [UIColor blackColor].CGColor);
 	[innerShadowFrisketImage drawAtPoint:CGPointZero];
-	innerShadowImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+    innerShadowImage = [UIImage endImageContext];
 	
 	// Create a border image by repeatedly striking the inner shadow image with the darken blend mode
 	UIImage* borderImage = nil;
-	UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
-	context = UIGraphicsGetCurrentContext();
+    context = [UIImage beginImageContextWithSize:shapeImage.size opaque:NO scale:shapeImage.scale flipped:NO];
 	CGContextSetBlendMode(context, kCGBlendModeDarken);
 	for(int i = 0; i < 10; i++) {
 		[innerShadowImage drawAtPoint:CGPointZero];
 	}
-	borderImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+    borderImage = [UIImage endImageContext];
 	
 	// Create the main context we'll be painting into
-	UIGraphicsBeginImageContextWithOptions(shapeImage.size, NO, shapeImage.scale);
-	context = UIGraphicsGetCurrentContext();
-	CGContextTranslateCTM(context, 0.0, bounds.size.height);
-	CGContextScaleCTM(context, 1.0, -1.0);
+    context = [UIImage beginImageContextWithSize:shapeImage.size opaque:NO scale:shapeImage.scale flipped:YES];
 	
 	// Paint the light, lower etching
 	CGContextSaveGState(context);
@@ -489,8 +461,7 @@
 	[borderImage drawInRect:bounds blendMode:kCGBlendModeDarken alpha:0.2];
 	
 	// Retrieve the finished image
-	resultImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+    resultImage = [UIImage endImageContext];
 	
 	// Clean up
 	CGImageRelease(shapeStencil);
@@ -499,19 +470,19 @@
 	return resultImage;
 }
 
-+ (UIImage*)etchedImageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor glossAlpha:(CGFloat)glossAlpha
++ (UIImage *)newEtchedImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor glossAlpha:(CGFloat)glossAlpha
 {
 	UIImage* resultImage = nil;
 	
-	UIImage* backgroundImage = [self imageWithSize:shapeImage.size scale:shapeImage.scale backgroundColor:tintColor];
-	resultImage = [self etchedImageWithShapeImage:shapeImage backgroundImage:backgroundImage glossAlpha:glossAlpha];
+	UIImage* backgroundImage = [self newImageWithSize:shapeImage.size scale:shapeImage.scale backgroundColor:tintColor];
+	resultImage = [self newEtchedImageWithShapeImage:shapeImage backgroundImage:backgroundImage glossAlpha:glossAlpha];
 
 	return resultImage;
 }
 
 // CLogDebug(nil, @"image:%@ scale:%f image2:%@ scale:%f", NSStringFromCGSize(image.size), image.scale, NSStringFromCGSize(image2.size), image2.scale);
 
-+ (UIImage*)etchedButtonWithBackgroundImage:(UIImage*)backgroundImage cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha
++ (UIImage *)newEtchedButtonWithBackgroundImage:(UIImage *)backgroundImage cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha
 {
 	UIImage* resultImage = nil;
 	
@@ -520,18 +491,16 @@
 	CGRect innerBounds = CGRectInset(outerBounds, 1, 1);
 	
 	UIImage* shapeImage = nil;
-	UIGraphicsBeginImageContextWithOptions(size, YES, backgroundImage.scale);
-	CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef context = [UIImage beginImageContextWithSize:size opaque:YES scale:backgroundImage.scale flipped:NO];
 	CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
 	CGContextFillRect(context, outerBounds);
 	UIBezierPath* path = [UIBezierPath bezierPathWithRoundedRect:innerBounds cornerRadius:cornerRadius];
 	CGContextSetFillColorWithColor(context, [UIColor blackColor].CGColor);
 	CGContextAddPath(context, path.CGPath);
 	CGContextFillPath(context);
-	shapeImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+    shapeImage = [UIImage endImageContext];
 	
-	UIImage* etchedImage = [self etchedImageWithShapeImage:shapeImage backgroundImage:backgroundImage glossAlpha:glossAlpha];
+	UIImage* etchedImage = [self newEtchedImageWithShapeImage:shapeImage backgroundImage:backgroundImage glossAlpha:glossAlpha];
 	
 	if([etchedImage respondsToSelector:@selector(resizableImageWithCapInsets:)]) {
 		// iOS 5 and later only
@@ -546,17 +515,17 @@
 	return resultImage;
 }
 
-+ (UIImage*)etchedButtonImageWithSize:(CGSize)size scale:(CGFloat)scale tintColor:(UIColor*)tintColor cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha
++ (UIImage *)newEtchedButtonImageWithSize:(CGSize)size scale:(CGFloat)scale tintColor:(UIColor *)tintColor cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha
 {
 	UIImage* resultImage = nil;
 
-	UIImage* backgroundImage = [self imageWithSize:size scale:scale backgroundColor:tintColor];
-	resultImage = [self etchedButtonWithBackgroundImage:backgroundImage cornerRadius:cornerRadius glossAlpha:glossAlpha];
+	UIImage* backgroundImage = [self newImageWithSize:size scale:scale backgroundColor:tintColor];
+	resultImage = [self newEtchedButtonWithBackgroundImage:backgroundImage cornerRadius:cornerRadius glossAlpha:glossAlpha];
 
 	return resultImage;
 }
 
-- (UIImage*)imageForDarkBar:(BOOL)darkBar
+- (UIImage *)newImageForDarkBar:(BOOL)darkBar
 {
 	UIImage* resultImage;
 
@@ -566,32 +535,31 @@
     
     // Make room for the shadow
     CGSize size = CGSizeMake(self.size.width + 2, self.size.height + 2);
-    UIImage *image = [self imageByScalingToSize:self.size centeredWithinImageOfSize:size backgroundColor:[UIColor clearColor]];
+    UIImage *image = [self newImageByScalingToSize:self.size centeredWithinImageOfSize:size backgroundColor:[UIColor clearColor]];
 
 	if(darkBar) {
 		tintColor = [UIColor whiteColor];
 		shadowOffset = CGSizeMake(0, -1);
 		shadowColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
 
-		resultImage = [UIImage imageWithShapeImage:image tintColor:tintColor shadowColor:shadowColor shadowOffset:shadowOffset shadowBlur:0.0];
+		resultImage = [UIImage newImageWithShapeImage:image tintColor:tintColor shadowColor:shadowColor shadowOffset:shadowOffset shadowBlur:0.0];
 	} else {
 		tintColor = [UIColor colorWithHue:0.600 saturation:0.173 brightness:0.423 alpha:1.000];
 		shadowOffset = CGSizeMake(0, 1);
 		shadowColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
 		
-		resultImage = [UIImage imageWithShapeImage:image tintColor:tintColor shadowColor:shadowColor shadowOffset:shadowOffset shadowBlur:0.0];
+		resultImage = [UIImage newImageWithShapeImage:image tintColor:tintColor shadowColor:shadowColor shadowOffset:shadowOffset shadowBlur:0.0];
 	}
 	
 	return resultImage;
 }
 
-+ (UIImage*)barImageWithBackgroundPatternImage:(UIImage*)patternImage glossAlpha:(CGFloat)glossAlpha edgeTreatments:(void (^)(CGContextRef,CGRect))block
++ (UIImage *)barImageWithBackgroundPatternImage:(UIImage *)patternImage glossAlpha:(CGFloat)glossAlpha edgeTreatments:(void (^)(CGContextRef,CGRect))block
 {
 	UIImage* image = nil;
 	
 	CGRect bounds = {{0, 0}, {320, 44}};
-	UIGraphicsBeginImageContextWithOptions(bounds.size, YES, 0.0);
-	CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef context = [UIImage beginImageContextWithSize:bounds.size opaque:YES scale:0.0 flipped:NO];
 	
 	ContextDrawSavingState(context, ^{
 		CGFloat screenScale = ScreenScale();
@@ -623,13 +591,11 @@
 		block(context, bounds);
 	}
 	
-	image = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
+    image = [UIImage endImageContext];
 	return image;
 }
 
-+ (UIImage*)navigationBarImageWithBackgroundPatternImage:(UIImage*)patternImage glossAlpha:(CGFloat)glossAlpha
++ (UIImage *)newNavigationBarImageWithBackgroundPatternImage:(UIImage *)patternImage glossAlpha:(CGFloat)glossAlpha
 {
 	UIImage* result = [self barImageWithBackgroundPatternImage:patternImage glossAlpha:glossAlpha edgeTreatments:^(CGContextRef context, CGRect bounds) {
 		
@@ -654,12 +620,12 @@
 	return result;
 }
 
-+ (UIImage*)navigationBarImageWithBackgroundPatternImage:(UIImage*)patternImage
++ (UIImage *)newNavigationBarImageWithBackgroundPatternImage:(UIImage *)patternImage
 {
-	return [self navigationBarImageWithBackgroundPatternImage:patternImage glossAlpha:0.4];
+	return [self newNavigationBarImageWithBackgroundPatternImage:patternImage glossAlpha:0.4];
 }
 
-+ (UIImage*)toolbarImageWithBackgroundPatternImage:(UIImage*)patternImage toolbarPosition:(UIToolbarPosition)position glossAlpha:(CGFloat)glossAlpha
++ (UIImage *)newToolbarImageWithBackgroundPatternImage:(UIImage *)patternImage toolbarPosition:(UIToolbarPosition)position glossAlpha:(CGFloat)glossAlpha
 {
 	UIImage* result = [self barImageWithBackgroundPatternImage:patternImage glossAlpha:glossAlpha edgeTreatments:^(CGContextRef context, CGRect bounds) {
 		CGRect r = bounds;
@@ -684,9 +650,9 @@
 	return result;
 }
 
-+ (UIImage*)toolbarImageWithBackgroundPatternImage:(UIImage*)patternImage toolbarPosition:(UIToolbarPosition)position
++ (UIImage *)newToolbarImageWithBackgroundPatternImage:(UIImage *)patternImage toolbarPosition:(UIToolbarPosition)position
 {
-	return [self toolbarImageWithBackgroundPatternImage:patternImage toolbarPosition:position glossAlpha:0.4];
+	return [self newToolbarImageWithBackgroundPatternImage:patternImage toolbarPosition:position glossAlpha:0.4];
 }
 
 + (CGContextRef)beginImageContextWithSize:(CGSize)size opaque:(BOOL)opaque scale:(CGFloat)scale flipped:(BOOL)flipped
@@ -700,7 +666,7 @@
     return context;
 }
 
-+ (UIImage*)endImageContext
++ (UIImage *)endImageContext NS_RETURNS_RETAINED
 {
     UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

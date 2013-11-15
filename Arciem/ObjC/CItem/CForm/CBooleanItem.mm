@@ -103,10 +103,10 @@ NSString* const CBooleanItemInterfaceSwitch = @"switch";
 - (NSArray*)tableRowItems
 {
 	CTableRowItem* item;
-    if([self.interface isEqualToString:CBooleanItemInterfaceCheckbox]) {
-        item = [CCheckboxTableRowItem itemWithKey:self.key title:self.title booleanItem:self];
-    } else if([self.interface isEqualToString:CBooleanItemInterfaceSwitch]) {
+    if([self.interface isEqualToString:CBooleanItemInterfaceSwitch]) {
         item = [CSwitchTableRowItem itemWithKey:self.key title:self.title booleanItem:self];
+    } else { // if([self.interface isEqualToString:CBooleanItemInterfaceCheckbox]) {
+        item = [CCheckboxTableRowItem itemWithKey:self.key title:self.title booleanItem:self];
     }
 	return @[item];
 }

@@ -55,7 +55,7 @@
     NSString* imageName = [NSString stringWithFormat:@"CC_%@", cardType];
     UIImage* highlightedImage = [UIImage imageNamed:imageName];
     NSAssert1(highlightedImage != nil, @"no image found for name:%@", imageName);
-    UIImage* image = [highlightedImage imageByDesaturating:0.0];
+    UIImage* image = [highlightedImage newImageByDesaturating:0.0];
     [self setImage:image];
     [self setHighlightedImage:highlightedImage];
     [self invalidateIntrinsicContentSize];

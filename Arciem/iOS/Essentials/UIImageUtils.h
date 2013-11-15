@@ -21,43 +21,36 @@
 
 @interface UIImage (UIImageUtils)
 
-+ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor*)backgroundColor;
-+ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor*)backgroundColor textColor:(UIColor*)textColor text:(NSString*)text;
-+ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius;
-+ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor*)innerShadowColor;
-+ (UIImage*)imageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor*)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier;
-+ (UIImage*)etchedImageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor glossAlpha:(CGFloat)glossAlpha;
-+ (UIImage*)etchedImageWithShapeImage:(UIImage*)shapeImage backgroundImage:(UIImage*)backgroundImage glossAlpha:(CGFloat)glossAlpha;
-+ (UIImage*)etchedButtonImageWithSize:(CGSize)size scale:(CGFloat)scale tintColor:(UIColor*)tintColor cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;
-+ (UIImage*)etchedButtonWithBackgroundImage:(UIImage*)backgroundImage cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;
-+ (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor shadowColor:(UIColor*)shadowColor shadowOffset:(CGSize)shadowOffset shadowBlur:(CGFloat)shadowBlur;
-+ (UIImage*)imageWithShapeImage:(UIImage*)shapeImage tintColor:(UIColor*)tintColor;
-+ (UIImage*)navigationBarImageWithBackgroundPatternImage:(UIImage*)patternImage glossAlpha:(CGFloat)glossAlpha;
-+ (UIImage*)navigationBarImageWithBackgroundPatternImage:(UIImage*)patternImage;
-+ (UIImage*)toolbarImageWithBackgroundPatternImage:(UIImage*)patternImage toolbarPosition:(UIToolbarPosition)position glossAlpha:(CGFloat)glossAlpha;
-+ (UIImage*)toolbarImageWithBackgroundPatternImage:(UIImage*)patternImage toolbarPosition:(UIToolbarPosition)position;
-
 + (CGContextRef)beginImageContextWithSize:(CGSize)size opaque:(BOOL)opaque scale:(CGFloat)scale flipped:(BOOL)flipped;
-+ (UIImage*)endImageContext;
++ (UIImage *)endImageContext NS_RETURNS_RETAINED;
 
-- (UIImage*)reflectedImageWithHeight:(NSUInteger)height;
++ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor;
++ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor textColor:(UIColor *)textColor text:(NSString*)text;
++ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius;
++ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor;
++ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier;
++ (UIImage *)newEtchedImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor glossAlpha:(CGFloat)glossAlpha;
++ (UIImage *)newEtchedImageWithShapeImage:(UIImage *)shapeImage backgroundImage:(UIImage *)backgroundImage glossAlpha:(CGFloat)glossAlpha;
++ (UIImage *)newEtchedButtonImageWithSize:(CGSize)size scale:(CGFloat)scale tintColor:(UIColor *)tintColor cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;
++ (UIImage *)newEtchedButtonWithBackgroundImage:(UIImage *)backgroundImage cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;
++ (UIImage *)newImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor shadowColor:(UIColor *)shadowColor shadowOffset:(CGSize)shadowOffset shadowBlur:(CGFloat)shadowBlur;
++ (UIImage *)newImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor;
++ (UIImage *)newNavigationBarImageWithBackgroundPatternImage:(UIImage *)patternImage glossAlpha:(CGFloat)glossAlpha;
++ (UIImage *)newNavigationBarImageWithBackgroundPatternImage:(UIImage *)patternImage;
++ (UIImage *)newToolbarImageWithBackgroundPatternImage:(UIImage *)patternImage toolbarPosition:(UIToolbarPosition)position glossAlpha:(CGFloat)glossAlpha;
++ (UIImage *)newToolbarImageWithBackgroundPatternImage:(UIImage *)patternImage toolbarPosition:(UIToolbarPosition)position;
 
-- (UIImage *)imageByColorizing:(UIColor*)theColor;
-- (UIImage *)imageByDesaturating:(CGFloat)desaturation;
-
-- (UIImage *)imageByMaskingWithImage:(UIImage*)shapeImage;
-
-- (UIImage *)imageByScalingToSize:(CGSize)size;
-
-- (UIImage *)imageByScalingToSize:(CGSize)inSize centeredWithinImageOfSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor;
-- (UIImage *)imageByAspectFitToSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor;
-- (UIImage *)imageByAspectFitToSize:(CGSize)imageSize;
-- (UIImage *)imageByAspectFillToSize:(CGSize)imageSize backgroundColor:(UIColor*)backgroundColor;
-
-- (UIImage*)imageWithRoundedCornerRadius:(CGFloat)radius;
-
-- (UIImage*)imageAtScreenScale;
-
-- (UIImage*)imageForDarkBar:(BOOL)darkBar;
+- (UIImage *)newReflectedImageWithHeight:(NSUInteger)height;
+- (UIImage *)newImageByColorizing:(UIColor *)theColor;
+- (UIImage *)newImageByDesaturating:(CGFloat)desaturation;
+- (UIImage *)newImageByMaskingWithImage:(UIImage *)shapeImage;
+- (UIImage *)newImageByScalingToSize:(CGSize)size;
+- (UIImage *)newImageByScalingToSize:(CGSize)inSize centeredWithinImageOfSize:(CGSize)imageSize backgroundColor:(UIColor *)backgroundColor;
+- (UIImage *)newImageByAspectFitToSize:(CGSize)imageSize backgroundColor:(UIColor *)backgroundColor;
+- (UIImage *)newImageByAspectFitToSize:(CGSize)imageSize;
+- (UIImage *)newImageByAspectFillToSize:(CGSize)imageSize backgroundColor:(UIColor *)backgroundColor;
+- (UIImage *)newImageWithRoundedCornerRadius:(CGFloat)radius;
+- (UIImage *)newImageAtScreenScale;
+- (UIImage *)newImageForDarkBar:(BOOL)darkBar;
 
 @end

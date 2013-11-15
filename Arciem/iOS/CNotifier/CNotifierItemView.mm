@@ -22,6 +22,7 @@
 #import "CGUtils.h"
 #import "UIImageUtils.h"
 #import "DeviceUtils.h"
+#import "UIImageUtils.h"
 
 @interface CNotifierItemView ()
 
@@ -149,9 +150,8 @@
 //        color2 = [tintColor colorByDarkeningFraction:0.3];
 //    }
 
-	UIGraphicsBeginImageContextWithOptions(imageBounds.size, YES, 0.0);
+    CGContextRef context = [UIImage beginImageContextWithSize:imageBounds.size opaque:YES scale:0.0 flipped:NO];
     
-	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGGradientRef gradient = GradientCreateWith2Colors(color1.CGColor, color2.CGColor, SharedColorSpaceDeviceRGB());
 	ContextFillRectGradientVertical(context, imageBounds, gradient);
 	CGGradientRelease(gradient);
@@ -162,8 +162,7 @@
 	[bottomColor set];
 	UIRectFill(bottomEdge);
 
-	UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+    UIImage *image = [UIImage endImageContext];
 	return image;
 }
 
@@ -192,7 +191,7 @@
 	if(self.item.tapHandler != NULL) {
 		UIImage* rightAccessoryImage = [UIImage imageNamed:@"DisclosureIndicator"];
 		if(rightAccessoryImage != nil) {
-			rightAccessoryImage = [UIImage imageWithShapeImage:rightAccessoryImage tintColor:self.label.textColor shadowColor:self.label.shadowColor shadowOffset:self.label.shadowOffset shadowBlur:0.0];
+			rightAccessoryImage = [UIImage newImageWithShapeImage:rightAccessoryImage tintColor:self.label.textColor shadowColor:self.label.shadowColor shadowOffset:self.label.shadowOffset shadowBlur:0.0];
 			rightAccessoryView = [[UIImageView alloc] initWithImage:rightAccessoryImage];
 			rightAccessoryView.contentMode = UIViewContentModeCenter;
 		}
