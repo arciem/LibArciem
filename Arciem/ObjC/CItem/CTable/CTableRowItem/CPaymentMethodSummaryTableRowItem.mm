@@ -17,7 +17,7 @@
     return self;
 }
 
-+ (CPaymentMethodSummaryTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title paymentMethodSummaryItem:(CPaymentMethodSummaryItem*)paymentMethodSummaryItem
++ (CPaymentMethodSummaryTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title paymentMethodSummaryItem:(CPaymentMethodSummaryItem*)paymentMethodSummaryItem
 {
 	return [[self alloc] initWithKey:key title:title model:paymentMethodSummaryItem];
 }

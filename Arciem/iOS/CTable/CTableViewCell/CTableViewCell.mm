@@ -111,7 +111,7 @@
     return group;
 }
 
-+ (UIButton *)createCheckboxButton {
++ (UIButton *)newCheckboxButton {
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];

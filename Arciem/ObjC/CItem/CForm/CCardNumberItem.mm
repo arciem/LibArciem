@@ -203,7 +203,7 @@ static NSString* const kJCBMinimalRegularExpression = @"^(?:2131|1800|35)";
     return dict;
 }
 
-+ (NSString *)generateSampleForCardType:(NSString *)cardType {
++ (NSString *)newSampleNumberForCardType:(NSString *)cardType {
     NSString *result;
     NSString *(^generator)(void) = ([self cardTypeNumberGenerators])[cardType];
     if(generator != NULL) {
@@ -301,7 +301,7 @@ static NSString* const kJCBMinimalRegularExpression = @"^(?:2131|1800|35)";
 
 - (NSArray*)tableRowItems
 {
-	CCardNumberTableRowItem* rowItem = [CCardNumberTableRowItem itemWithKey:self.key title:self.title cardNumberItem:self];
+	CCardNumberTableRowItem* rowItem = [CCardNumberTableRowItem newItemWithKey:self.key title:self.title cardNumberItem:self];
 	return @[rowItem];
 }
 

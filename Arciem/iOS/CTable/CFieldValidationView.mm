@@ -62,13 +62,13 @@ static UIImage* sInvalidImage = nil;
 	self.invalidMarkTintColor = [[UIColor redColor] colorByDarkeningFraction:0.1];
     
     BSELF;
-	self.itemStateObserver = [CObserver observerWithKeyPath:@"state" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.itemStateObserver = [CObserver newObserverWithKeyPath:@"state" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
 	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
 	}];
 	
-	self.itemEditingObserver = [CObserver observerWithKeyPath:@"editing" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.itemEditingObserver = [CObserver newObserverWithKeyPath:@"editing" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
 	}];
 }

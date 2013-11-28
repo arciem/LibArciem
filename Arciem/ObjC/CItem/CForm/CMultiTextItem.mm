@@ -21,19 +21,19 @@
 
 @implementation CMultiTextItem
 
-+ (CMultiTextItem *)multiTextItemWithDictionary:(NSDictionary*)dict
++ (CMultiTextItem *)newMultiTextItemWithDictionary:(NSDictionary*)dict
 {
 	return [[self alloc] initWithDictionary:dict];
 }
 
-+ (CMultiTextItem *)multiTextItem
++ (CMultiTextItem *)newMultiTextItem
 {
-	return [self multiTextItemWithDictionary:nil];
+	return [self newMultiTextItemWithDictionary:nil];
 }
 
-+ (CMultiTextItem *)multiTextItemWithTitle:(NSString*)title key:(NSString*)key
++ (CMultiTextItem *)newMultiTextItemWithTitle:(NSString*)title key:(NSString*)key
 {
-	return [self multiTextItemWithDictionary:@{@"title": title,
+	return [self newMultiTextItemWithDictionary:@{@"title": title,
                                             @"key": key
                                                }];
 }
@@ -43,7 +43,7 @@
 - (NSArray*)tableRowItems
 {
 	NSAssert1(self.subitems.count == 2, @"count of %d not supported.", self.subitems.count);
-	CTextFieldTableRowItem* rowItem = [CTextFieldTableRowItem itemWithKey:self.key title:self.title multiTextItem:self];
+	CTextFieldTableRowItem* rowItem = [CTextFieldTableRowItem newItemWithKey:self.key title:self.title multiTextItem:self];
 	return @[rowItem];
 }
 

@@ -78,12 +78,12 @@ typedef NSUInteger CItemState;
 
 - (id)initWithDictionary:(NSDictionary*)dict;
 - (id)initWithJSONRepresentation:(NSString*)json;
-+ (CItem*)item;
-+ (CItem*)itemWithDictionary:(NSDictionary*)dict;
-+ (CItem*)itemWithJSONRepresentation:(NSString*)json;
-+ (CItem*)itemForResourceName:(NSString*)resourceName withExtension:(NSString*)extension;
-+ (CItem*)itemForResourceName:(NSString*)resourceName;
-+ (CItem*)itemWithTitle:(NSString*)title key:(NSString*)key value:(id)value;
++ (CItem*)newItem;
++ (CItem*)newItemWithDictionary:(NSDictionary*)dict;
++ (CItem*)newItemWithJSONRepresentation:(NSString*)json;
++ (CItem*)newItemForResourceName:(NSString*)resourceName withExtension:(NSString*)extension;
++ (CItem*)newItemForResourceName:(NSString*)resourceName;
++ (CItem*)newItemWithTitle:(NSString*)title key:(NSString*)key value:(id)value;
 
 // Override in subclasses.
 - (void)setup;

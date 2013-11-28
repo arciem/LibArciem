@@ -40,8 +40,8 @@
 
 - (id)initWithRootItem:(CItem*)rootItem;
 
-+ (CForm*)formForResourceName:(NSString*)resourceName withExtension:(NSString*)extension;
-+ (CForm*)formForResourceName:(NSString*)resourceName;
-+ (CForm*)formWithRootItem:(CItem*)rootItem;
++ (CForm*)newFormForResourceName:(NSString*)resourceName withExtension:(NSString*)extension;
++ (CForm*)newFormForResourceName:(NSString*)resourceName;
++ (CForm*)newFormWithRootItem:(CItem*)rootItem;
 
 @end

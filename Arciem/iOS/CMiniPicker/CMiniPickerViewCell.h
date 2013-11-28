@@ -43,7 +43,7 @@
 
 @required
 
-@property (readonly, nonatomic) NSString* text;
+@property (readonly, nonatomic) NSAttributedString* text;
 @property (readonly, nonatomic) NSUInteger lines;
 @property (readonly, nonatomic) NSTextAlignment alignment;
 
@@ -51,9 +51,9 @@
 
 @interface CMiniPickerViewCellColumn : NSObject <CMiniPickerViewCellColumn>
 
-- (id)initWithText:(NSString*)text lines:(NSUInteger)lines alignment:(NSTextAlignment)alignment;
+- (id)initWithText:(NSAttributedString*)text lines:(NSUInteger)lines alignment:(NSTextAlignment)alignment;
 
-@property (readonly, nonatomic) NSString* text;
+@property (readonly, nonatomic) NSAttributedString* text;
 @property (readonly, nonatomic) NSUInteger lines;
 @property (readonly, nonatomic) NSTextAlignment alignment;
 

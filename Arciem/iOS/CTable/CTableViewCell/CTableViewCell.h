@@ -32,6 +32,6 @@
 
 - (CLayoutConstraintsGroup *)resetConstraintsGroupForKey:(NSString *)key owner:(id)owner;
 
-+ (UIButton *)createCheckboxButton;
++ (UIButton *)newCheckboxButton;
 
 @end

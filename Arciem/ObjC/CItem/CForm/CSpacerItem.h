@@ -20,6 +20,6 @@
 
 @interface CSpacerItem : CItem
 
-+ (CSpacerItem*)spacerItem;
++ (CSpacerItem*)newSpacerItem;
 
 @end

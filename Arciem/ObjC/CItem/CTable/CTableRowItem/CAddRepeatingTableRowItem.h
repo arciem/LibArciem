@@ -21,6 +21,6 @@
 
 @interface CAddRepeatingTableRowItem : CTableRowItem
 
-+ (CAddRepeatingTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title repeatingItem:(CRepeatingItem*)repeatingItem;
++ (CAddRepeatingTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title repeatingItem:(CRepeatingItem*)repeatingItem;
 
 @end

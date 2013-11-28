@@ -41,7 +41,7 @@
 	self.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 
     BSELF;
-	self.modelValueObserver = [CObserver observerWithKeyPath:@"value" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.modelValueObserver = [CObserver newObserverWithKeyPath:@"value" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[bself syncToModelValue:newValue];
 	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[bself syncToModelValue:newValue];

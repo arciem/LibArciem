@@ -14,7 +14,7 @@
 @synthesize tapHandler = _tapHandler;
 @synthesize cardType = _cardType;
 
-+ (CPaymentMethodTypeImageView *)viewForCardType:(NSString *)cardType {
++ (CPaymentMethodTypeImageView *)newViewForCardType:(NSString *)cardType {
     CPaymentMethodTypeImageView *view = [CPaymentMethodTypeImageView new];
     view.contentMode = UIViewContentModeTopLeft;
     view.cardType = cardType;

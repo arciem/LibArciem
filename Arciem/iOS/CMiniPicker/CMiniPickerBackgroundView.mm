@@ -19,6 +19,7 @@
 #import "CMiniPickerBackgroundView.h"
 #import "CGUtils.h"
 #import "UIColorUtils.h"
+#import "DeviceUtils.h"
 
 @interface CMiniPickerBackgroundView ()
 
@@ -33,7 +34,11 @@
     [super setup];
     self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.contentMode = UIViewContentModeRedraw;
-    self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+    if(IsOSVersionAtLeast7()) {
+        self.backgroundColor = [UIColor whiteColor];
+    } else {
+        self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
+    }
 }
 
 - (CGRect)underlayRect
@@ -72,16 +77,18 @@
 {
     [super drawRect:rect];
     
-    CGContextRef context = UIGraphicsGetCurrentContext();
-//    ContextFillRectColor(context, self.bounds, SharedBlackColor());
-    ContextFillRectColor(context, self.bounds, [UIColor colorWithWhite:0.95 alpha:1.0].CGColor);
-
-    CGRect bounds = UIEdgeInsetsInsetRect(self.bounds, self.margins);
-    [self context:context drawSlotAtX:CGRectGetMinX(bounds) leftSide:YES];
-    [self context:context drawSlotAtX:CGRectGetMaxX(bounds) leftSide:NO];
-
-    CGContextSetBlendMode(context, kCGBlendModeMultiply);
-    ContextFillRectColor(context, self.underlayRect, [UIColor colorWithRGBValue:0xa0aac5].CGColor);
+    if(!IsOSVersionAtLeast7()) {
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        //    ContextFillRectColor(context, self.bounds, SharedBlackColor());
+        ContextFillRectColor(context, self.bounds, self.backgroundColor.CGColor);
+        
+        CGRect bounds = UIEdgeInsetsInsetRect(self.bounds, self.margins);
+        [self context:context drawSlotAtX:CGRectGetMinX(bounds) leftSide:YES];
+        [self context:context drawSlotAtX:CGRectGetMaxX(bounds) leftSide:NO];
+        
+        CGContextSetBlendMode(context, kCGBlendModeMultiply);
+        ContextFillRectColor(context, self.underlayRect, [UIColor colorWithRGBValue:0xa0aac5].CGColor);
+    }
 }
 
 @end

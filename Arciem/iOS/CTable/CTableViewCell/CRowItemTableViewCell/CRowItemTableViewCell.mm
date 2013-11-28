@@ -56,7 +56,7 @@ static BOOL sTestingMode;
 	self.indentationWidth = IsPad() ? 30 : 10;
 
 	BSELF;
-	self.rowItemObserver = [CObserver observerWithKeyPath:@"rowItem" ofObject:self action:^(id object, CTableRowItem* newRowItem, CTableRowItem* oldRowItem, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.rowItemObserver = [CObserver newObserverWithKeyPath:@"rowItem" ofObject:self action:^(id object, CTableRowItem* newRowItem, CTableRowItem* oldRowItem, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[bself rowItemDidChangeFrom:oldRowItem to:newRowItem];
 	}];
 
@@ -314,14 +314,14 @@ static BOOL sTestingMode;
 		self.modelValueObservers = [NSMutableArray array];
 		BSELF;
         [newRowItem.models enumerateObjectsUsingBlock:^(CItem *newModel, NSUInteger idx, BOOL *stop) {
-			CObserver* modelValueObserver = [CObserver observerWithKeyPath:@"value" ofObject:newModel action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+			CObserver* modelValueObserver = [CObserver newObserverWithKeyPath:@"value" ofObject:newModel action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 				[bself model:newModel valueDidChangeFrom:oldValue to:newValue];
 			} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 				[bself model:newModel valueDidChangeFrom:oldValue to:newValue];
 			}];
 			[bself.modelValueObservers addObject:modelValueObserver];
         }];
-        self.rowItemDisabledObserver = [CObserver observerWithKeyPath:@"disabled" ofObject:newRowItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+        self.rowItemDisabledObserver = [CObserver newObserverWithKeyPath:@"disabled" ofObject:newRowItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
             [bself syncToRowItem];
         }];
 	}

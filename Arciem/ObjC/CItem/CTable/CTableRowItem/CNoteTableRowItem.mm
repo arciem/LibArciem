@@ -20,7 +20,7 @@
 
 @implementation CNoteTableRowItem
 
-+ (CNoteTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title item:(CNoteItem*)item
++ (CNoteTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title item:(CNoteItem*)item
 {
 	return [[self alloc] initWithKey:key title:title model:item];
 }

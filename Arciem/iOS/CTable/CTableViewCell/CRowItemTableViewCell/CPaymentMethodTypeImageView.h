@@ -14,6 +14,6 @@
 @property (nonatomic) UITapGestureRecognizer *tapRecognizer;
 @property (nonatomic) NSString *cardType;
 
-+ (CPaymentMethodTypeImageView *)viewForCardType:(NSString *)cardType;
++ (CPaymentMethodTypeImageView *)newViewForCardType:(NSString *)cardType;
 
 @end

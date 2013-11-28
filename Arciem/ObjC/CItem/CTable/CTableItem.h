@@ -37,7 +37,7 @@
 @property (copy, nonatomic) NSDictionary* textLabelAttributes;
 @property (weak, nonatomic) id<CTableItemDelegate> delegate;
 
-+ (CTableItem*)tableItem;
++ (CTableItem*)newTableItem;
 
 - (void)tableSectionItem:(CTableSectionItem*)tableSectionItem rowsDidChangeWithNew:(NSArray*)newItems old:(NSArray*)oldItems kind:(NSKeyValueChange)kind indexes:(NSIndexSet*)indexes;
 - (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden;

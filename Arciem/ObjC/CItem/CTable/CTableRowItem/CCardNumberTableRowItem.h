@@ -21,6 +21,6 @@
 
 @interface CCardNumberTableRowItem : CTableRowItem
 
-+ (CCardNumberTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title cardNumberItem:(CCardNumberItem*)item;
++ (CCardNumberTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title cardNumberItem:(CCardNumberItem*)item;
 
 @end

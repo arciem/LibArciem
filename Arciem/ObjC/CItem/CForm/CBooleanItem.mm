@@ -32,17 +32,17 @@ NSString* const CBooleanItemInterfaceSwitch = @"switch";
 
 @dynamic booleanValue;
 
-+ (CBooleanItem*)booleanItem
++ (CBooleanItem*)newBooleanItem
 {
 	return [self new];
 }
 
-+ (CBooleanItem*)booleanItemWithDictionary:(NSDictionary*)dict
++ (CBooleanItem*)newBooleanItemWithDictionary:(NSDictionary*)dict
 {
 	return [[self alloc] initWithDictionary:dict];
 }
 
-+ (CBooleanItem*)booleanItemWithTitle:(NSString*)title key:(NSString*)key boolValue:(BOOL)boolValue
++ (CBooleanItem*)newBooleanItemWithTitle:(NSString*)title key:(NSString*)key boolValue:(BOOL)boolValue
 {
 	NSNumber* value = @(boolValue);
 	return [[self alloc] initWithDictionary:@{@"title": title,
@@ -104,9 +104,9 @@ NSString* const CBooleanItemInterfaceSwitch = @"switch";
 {
 	CTableRowItem* item;
     if([self.interface isEqualToString:CBooleanItemInterfaceSwitch]) {
-        item = [CSwitchTableRowItem itemWithKey:self.key title:self.title booleanItem:self];
+        item = [CSwitchTableRowItem newItemWithKey:self.key title:self.title booleanItem:self];
     } else { // if([self.interface isEqualToString:CBooleanItemInterfaceCheckbox]) {
-        item = [CCheckboxTableRowItem itemWithKey:self.key title:self.title booleanItem:self];
+        item = [CCheckboxTableRowItem newItemWithKey:self.key title:self.title booleanItem:self];
     }
 	return @[item];
 }

@@ -345,7 +345,7 @@
 - (CSlowCall*)scrollToRowSlowCall
 {
 	if(_scrollToRowSlowCall == nil) {
-		_scrollToRowSlowCall = [CSlowCall slowCallWithDelay:0.5 target:self selector:@selector(scrollToRowAtIndexPath:)];
+		_scrollToRowSlowCall = [CSlowCall newSlowCallWithDelay:0.5 target:self selector:@selector(scrollToRowAtIndexPath:)];
 	}
 	
 	return _scrollToRowSlowCall;
@@ -380,7 +380,7 @@
 - (CRowItemTableViewCell*)createCellWithCellType:(NSString*)cellType reuseIdentifier:(NSString*)reuseIdentifier
 {
 	CRowItemTableViewCell *cell = nil;
-	cell = (CRowItemTableViewCell*)ClassAlloc(cellType);
+	cell = (CRowItemTableViewCell*)[NSObject newInstanceOfClassNamed:cellType];
 	cell = [cell initWithReuseIdentifier:reuseIdentifier];
 	cell.delegate = self;
     if([self.delegate respondsToSelector:@selector(tableManager:prepareCell:)]) {

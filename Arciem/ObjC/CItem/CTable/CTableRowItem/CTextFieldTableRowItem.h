@@ -22,7 +22,7 @@
 
 @interface CTextFieldTableRowItem : CTableRowItem
 
-+ (CTextFieldTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title stringItem:(CStringItem*)item;
-+ (CTextFieldTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title multiTextItem:(CMultiTextItem*)item;
++ (CTextFieldTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title stringItem:(CStringItem*)item;
++ (CTextFieldTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title multiTextItem:(CMultiTextItem*)item;
 
 @end

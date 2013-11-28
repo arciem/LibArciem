@@ -22,6 +22,7 @@
 #import "CObserver.h"
 #import "CSlowCall.h"
 #import "ObjectUtils.h"
+#import "DeviceUtils.h"
 
 @interface CButtonTableViewCell ()
 
@@ -47,11 +48,8 @@
 {
 	[super setup];
 
-//    self.contentView.backgroundColor = [UIColor blueColor];
-
     self.button = [UIButton buttonWithType:UIButtonTypeSystem];
     self.button.translatesAutoresizingMaskIntoConstraints = NO;
-	self.button.backgroundColor = [UIColor redColor];
 	[self.button addTarget:self action:@selector(tapped) forControlEvents:UIControlEventTouchUpInside];
 	[self.contentView addSubview:self.button];
 
@@ -73,19 +71,13 @@
 {
 	if(syncStateSlowCall_ == nil) {
 		BSELF;
-		syncStateSlowCall_ = [CSlowCall slowCallWithDelay:0.2 block:^(id object) {
+		syncStateSlowCall_ = [CSlowCall newSlowCallWithDelay:0.2 block:^(id object) {
 			[bself syncToState];
 		}];
 	}
 	
 	return syncStateSlowCall_;
 }
-
-//- (CGSize)sizeThatFits:(CGSize)size
-//{
-//	size.height = roundf(size.height * 1.2);
-//	return size;
-//}
 
 - (NSUInteger)validationViewsNeeded
 {
@@ -101,6 +93,18 @@
 {
 	[self.syncStateSlowCall disarm];
 	self.button.enabled = self.isButtonEnabled;
+
+    if([self.rowItem.model isKindOfClass:[CSubmitItem class]]) {
+        if(IsOSVersionAtLeast7()) {
+            if(self.isButtonEnabled) {
+                self.button.backgroundColor = self.tintColor;
+                self.button.alpha = 1.0;
+            } else {
+                self.button.backgroundColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+                self.button.alpha = 0.3;
+            }
+        }
+    }
 }
 
 - (void)setNeedsSyncToState
@@ -119,6 +123,12 @@
 		
         if([self.rowItem.model isKindOfClass:[CSubmitItem class]]) {
             self.button.titleLabel.font = [UIFont boldSystemFontOfSize:self.button.titleLabel.font.pointSize];
+            
+            if(IsOSVersionAtLeast7()) {
+                [self.button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [self.button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+                self.button.contentEdgeInsets = UIEdgeInsetsMake(5, 15, 5, 15);
+            }
         }
         
 		BSELF;
@@ -126,7 +136,7 @@
 			[bself setNeedsSyncToState];
 		};
 		
-		self.modelDisabledObserver = [CObserver observerWithKeyPath:@"disabled" ofObject:self.rowItem.model action:action initial:action];
+		self.modelDisabledObserver = [CObserver newObserverWithKeyPath:@"disabled" ofObject:self.rowItem.model action:action initial:action];
 	}
 }
 

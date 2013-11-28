@@ -20,6 +20,6 @@
 
 @interface CButtonTableRowItem : CTableRowItem
 
-+ (CButtonTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title item:(CItem*)item;
++ (CButtonTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title item:(CItem*)item;
 
 @end

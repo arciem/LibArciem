@@ -21,6 +21,6 @@
 
 @interface CMultiChoiceSummaryTableRowItem : CSummaryTableRowItem
 
-+ (CMultiChoiceSummaryTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item;
++ (CMultiChoiceSummaryTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item;
 
 @end

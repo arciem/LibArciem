@@ -44,9 +44,9 @@ enum {
 @property (nonatomic) NSString *keyboardType; // default, emailAddress, phonePad, asciiCapable
 @property (nonatomic) BOOL secureTextEntry;
 
-+ (CStringItem*)stringItem;
-+ (CStringItem*)stringItemWithDictionary:(NSDictionary*)dict;
-+ (CStringItem*)stringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue;
++ (CStringItem*)newStringItem;
++ (CStringItem*)newStringItemWithDictionary:(NSDictionary*)dict;
++ (CStringItem*)newStringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue;
 
 - (BOOL)string:(NSString*)string matchesRegularExpression:(NSString*)regex;
 

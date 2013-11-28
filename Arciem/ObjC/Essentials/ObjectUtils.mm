@@ -56,7 +56,9 @@ BOOL IsEmpty(id a)
 	return [Denull(a) count] == 0;
 }
 
-id<NSObject> ClassAlloc(NSString* className)
+@implementation NSObject (ObjectUtils)
+
++ (id)newInstanceOfClassNamed:(NSString *)className
 {
 	id instance = nil;
 	
@@ -66,8 +68,6 @@ id<NSObject> ClassAlloc(NSString* className)
 	
 	return instance;
 }
-
-@implementation NSObject (ObjectUtils)
 
 - (NSString*)formatKey:(NSString*)key value:(id)value compact:(BOOL)compact
 {

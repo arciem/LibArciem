@@ -55,19 +55,19 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	[self syncToValidCharacters];
 }
 
-+ (CStringItem*)stringItemWithDictionary:(NSDictionary*)dict
++ (CStringItem*)newStringItemWithDictionary:(NSDictionary*)dict
 {
 	return [[self alloc] initWithDictionary:dict];
 }
 
-+ (CStringItem*)stringItem
++ (CStringItem*)newStringItem
 {
-	return [self stringItemWithDictionary:nil];
+	return [self newStringItemWithDictionary:nil];
 }
 
-+ (CStringItem*)stringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue
++ (CStringItem*)newStringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue
 {
-	return [self stringItemWithDictionary:@{@"title": title,
+	return [self newStringItemWithDictionary:@{@"title": title,
 											 @"key": key,
 											 @"value": stringValue}];
 }
@@ -386,7 +386,7 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 - (NSArray*)tableRowItems
 {
-	CTextFieldTableRowItem* rowItem = [CTextFieldTableRowItem itemWithKey:self.key title:self.title stringItem:self];
+	CTextFieldTableRowItem* rowItem = [CTextFieldTableRowItem newItemWithKey:self.key title:self.title stringItem:self];
 	return @[rowItem];
 }
 

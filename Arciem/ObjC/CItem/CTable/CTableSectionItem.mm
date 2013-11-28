@@ -41,15 +41,15 @@
 		}
 	};
 	
-	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
+	self.subitemsObserver = [CObserver newObserverWithKeyPath:@"subitems" ofObject:self action:action initial:action];
 }
 
-+ (CTableSectionItem*)tableSectionItem
++ (CTableSectionItem*)newTableSectionItem
 {
 	return [self new];
 }
 
-+ (CTableSectionItem *)tableSectionItemWithTitle:(NSString*)title key:(NSString*)key {
++ (CTableSectionItem *)newTableSectionItemWithTitle:(NSString*)title key:(NSString*)key {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     if(!IsEmptyString(title)) {
         dict[@"title"] = title;

@@ -20,11 +20,11 @@
 
 @implementation CTextFieldTableRowItem
 
-+ (CTextFieldTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title stringItem:(CStringItem*)item {
++ (CTextFieldTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title stringItem:(CStringItem*)item {
 	return [[self alloc] initWithKey:key title:title model:item];
 }
 
-+ (CTextFieldTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title multiTextItem:(CMultiTextItem*)item {
++ (CTextFieldTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title multiTextItem:(CMultiTextItem*)item {
 	return [[self alloc] initWithKey:key title:title model:item];
 }
 

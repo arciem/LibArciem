@@ -152,7 +152,7 @@
 }
 
 - (void)setupForm {
-    self.form = [CForm formForResourceName:@"SetupConfig"];
+    self.form = [CForm newFormForResourceName:@"SetupConfig"];
 //		[self.form.rootItem printHierarchy];
     NSMutableDictionary* defaults = [@{
                                        @"baseURL": [NSKeyedArchiver archivedDataWithRootObject:self.defaultServer.baseURL],
@@ -269,7 +269,7 @@
 	
 	self.observers = [NSMutableArray array];
 	for(CItem* optionItem in self.options) {
-		CObserver* observer = [CObserver observerWithKeyPath:@"value" ofObject:optionItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		CObserver* observer = [CObserver newObserverWithKeyPath:@"value" ofObject:optionItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 			NSString* key = optionItem.key;
 //			CLogDebug(nil, @"newValue:%@ key:%@", newValue, key);
 			[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:key];

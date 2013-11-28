@@ -27,9 +27,9 @@ BOOL Same(id a, id b);
 BOOL Different(id a, id b);
 BOOL IsEmpty(id a);
 
-id<NSObject> ClassAlloc(NSString* className);
-
 @interface NSObject (ObjectUtils)
+
++ (id)newInstanceOfClassNamed:(NSString *)className;
 
 - (NSString*)formatValueForKey:(NSString*)key compact:(BOOL)compact;
 - (NSString*)formatKey:(NSString*)key value:(id)value compact:(BOOL)compact;

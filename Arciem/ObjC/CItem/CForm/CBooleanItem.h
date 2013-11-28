@@ -29,9 +29,9 @@ enum {
 
 @interface CBooleanItem : CItem
 
-+ (CBooleanItem*)booleanItem;
-+ (CBooleanItem*)booleanItemWithDictionary:(NSDictionary*)dict;
-+ (CBooleanItem*)booleanItemWithTitle:(NSString*)title key:(NSString*)key boolValue:(BOOL)boolValue;
++ (CBooleanItem*)newBooleanItem;
++ (CBooleanItem*)newBooleanItemWithDictionary:(NSDictionary*)dict;
++ (CBooleanItem*)newBooleanItemWithTitle:(NSString*)title key:(NSString*)key boolValue:(BOOL)boolValue;
 
 @property (nonatomic) BOOL booleanValue;
 @property (nonatomic) NSNumber *validValue;

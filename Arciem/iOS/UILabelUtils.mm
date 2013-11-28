@@ -19,6 +19,7 @@
 #import "UILabelUtils.h"
 #import "Geom.h"
 #import <algorithm>
+#import <cmath>
 
 @implementation UILabel (UILabelUtils)
 
@@ -42,12 +43,20 @@
 	self.font = font;
 }
 
-+ (CGSize)maxSizeOfStrings:(NSArray*)strings withFont:(UIFont*)font forWidth:(CGFloat)width lineBreakMode:(NSLineBreakMode)lineBreakMode
++ (CGSize)maxSizeOfStrings:(NSArray*)strings withFont:(UIFont*)font forWidth:(CGFloat)width
 {
     __block CGSize maxSize = CGSizeZero;
     
-    [strings enumerateObjectsUsingBlock:^(NSString* string, NSUInteger idx, BOOL *stop) {
-        CGSize size = [string sizeWithFont:font forWidth:width lineBreakMode:lineBreakMode];
+    [strings enumerateObjectsUsingBlock:^(id str, NSUInteger idx, BOOL *stop) {
+        NSMutableAttributedString *string;
+        if([str isKindOfClass:[NSAttributedString class]]) {
+            string = [str mutableCopy];
+        } else {
+            string = [[NSMutableAttributedString alloc] initWithString:str];
+        }
+        [string addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, string.length)];
+        CGRect rect = [string boundingRectWithSize:CGSizeMake(width, 1000) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+        CGSize size = CGSizeMake(std::ceilf(rect.size.width), std::ceilf(rect.size.height));
         maxSize.width = std::max(maxSize.width, size.width);
         maxSize.height = std::max(maxSize.height, size.height);
     }];

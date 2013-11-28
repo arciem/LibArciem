@@ -47,7 +47,7 @@
 	[self.layer addSublayer:self.shadowLayer];
 
     BSELF;
-    self.edgeObserver = [CObserver observerWithKeyPath:@"edge" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+    self.edgeObserver = [CObserver newObserverWithKeyPath:@"edge" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
         [bself syncToEdge];
     }];
 }

@@ -22,7 +22,7 @@
 
 @interface CSubmitItem ()
 
-@property (weak, nonatomic) CButtonTableRowItem* tableButtonItem;
+@property (nonatomic) CButtonTableRowItem* tableButtonItem;
 @property (nonatomic) CObserver* rootStateObserver;
 @property (nonatomic) CObserver* editingObserver;
 @property (nonatomic) CObserver* hiddenObserver;
@@ -53,9 +53,9 @@
 		[bself syncState];
 	};
 	
-	self.rootStateObserver = [CObserver observerWithKeyPath:@"state" ofObject:self.rootItem action:action initial:action];
-	self.editingObserver = [CObserver observerWithKeyPath:@"editing" ofObject:self action:action];
-	self.hiddenObserver = [CObserver observerWithKeyPath:@"hidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.rootStateObserver = [CObserver newObserverWithKeyPath:@"state" ofObject:self.rootItem action:action initial:action];
+	self.editingObserver = [CObserver newObserverWithKeyPath:@"editing" ofObject:self action:action];
+	self.hiddenObserver = [CObserver newObserverWithKeyPath:@"hidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		bself.tableButtonItem.hidden = [newValue boolValue];
 	}];
 }
@@ -78,7 +78,7 @@
 
 - (NSArray*)tableRowItems
 {
-	self.tableButtonItem = [CButtonTableRowItem itemWithKey:self.key title:self.title item:self];
+	self.tableButtonItem = [CButtonTableRowItem newItemWithKey:self.key title:self.title item:self];
 	return @[self.tableButtonItem];
 }
 

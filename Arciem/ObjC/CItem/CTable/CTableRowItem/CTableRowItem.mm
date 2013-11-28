@@ -74,7 +74,7 @@
 	[super activate];
 //	CLogDebug(nil, @"%@ activate", self);
     BSELF;
-	self.hiddenObserver = [CObserver observerWithKeyPath:@"hidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.hiddenObserver = [CObserver newObserverWithKeyPath:@"hidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[(CTableSectionItem*)bself.superitem tableRowItem:bself didChangeHiddenFrom:[oldValue boolValue] to:[newValue boolValue]];
 	}];
 }

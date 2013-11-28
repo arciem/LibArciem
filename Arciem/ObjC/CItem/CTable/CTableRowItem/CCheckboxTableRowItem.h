@@ -21,6 +21,6 @@
 
 @interface CCheckboxTableRowItem : CTableRowItem
 
-+ (CCheckboxTableRowItem *)itemWithKey:(NSString *)key title:(NSString *)title booleanItem:(CBooleanItem *)booleanItem;
++ (CCheckboxTableRowItem *)newItemWithKey:(NSString *)key title:(NSString *)title booleanItem:(CBooleanItem *)booleanItem;
 
 @end

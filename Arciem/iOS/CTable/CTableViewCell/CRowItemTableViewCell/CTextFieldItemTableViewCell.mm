@@ -221,6 +221,8 @@ NSString *const CAdvanceToNextKeyViewNotification = @"CAdvanceToNextKeyViewNotif
 		result = UIKeyboardTypeNumberPad;
 	} else if([keyboardType isEqualToString:@"asciiCapable"]) {
 		result = UIKeyboardTypeASCIICapable;
+	} else if([keyboardType isEqualToString:@"numbersAndPunctuation"]) {
+		result = UIKeyboardTypeNumbersAndPunctuation;
 	} else if(IsEmptyString(keyboardType) || [keyboardType isEqualToString:@"default"]) {
 		// no action
 	} else {
@@ -295,7 +297,7 @@ NSString *const CAdvanceToNextKeyViewNotification = @"CAdvanceToNextKeyViewNotif
 - (void)syncToSelectable {
     if(self.needsCheckbox) {
         if(self.checkboxButton == nil) {
-            self.checkboxButton = [[self class] createCheckboxButton];
+            self.checkboxButton = [[self class] newCheckboxButton];
             self.checkboxButton.userInteractionEnabled = NO;
             [self.contentView addSubview:self.checkboxButton];
             [self setNeedsUpdateConstraints];
@@ -319,13 +321,13 @@ NSString *const CAdvanceToNextKeyViewNotification = @"CAdvanceToNextKeyViewNotif
 
 	[self setNumberOfTextFieldsTo:self.models.count];
 
-    self.selectableObserver = [CObserver observerWithKeyPath:@"selectable" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+    self.selectableObserver = [CObserver newObserverWithKeyPath:@"selectable" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
         [self syncToSelectable];
     }];
     
     [self syncToSelectable];
     
-    self.selectedObserver = [CObserver observerWithKeyPath:@"selected" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+    self.selectedObserver = [CObserver newObserverWithKeyPath:@"selected" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
         [self syncToSelected];
     }];
     
@@ -350,14 +352,14 @@ NSString *const CAdvanceToNextKeyViewNotification = @"CAdvanceToNextKeyViewNotif
         if([model isKindOfClass:[CStringItem class]]) {
             CStringItem *stringItem = (CStringItem *)model;
             textField.text = stringItem.stringValue;
-            CObserver *observer = [CObserver observerWithKeyPath:@"stringValue" ofObject:model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+            CObserver *observer = [CObserver newObserverWithKeyPath:@"stringValue" ofObject:model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
                 textField.text = stringItem.stringValue;
             }];
             [bself.modelObservers addObject:observer];
         } else if([model isKindOfClass:[CDateItem class]]) {
             CDateItem *dateItem = (CDateItem *)model;
             textField.text = dateItem.formattedDateValue;
-            CObserver *observer = [CObserver observerWithKeyPath:@"dateValue" ofObject:model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+            CObserver *observer = [CObserver newObserverWithKeyPath:@"dateValue" ofObject:model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
                 textField.text = dateItem.formattedDateValue;
             }];
             [bself.modelObservers addObject:observer];

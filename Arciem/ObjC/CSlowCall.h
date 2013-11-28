@@ -32,8 +32,8 @@
 - (id)initWithDelay:(NSTimeInterval)delay target:(id)target selector:(SEL)selector;
 - (id)initWithDelay:(NSTimeInterval)delay block:(void (^)(id object))block;
 
-+ (CSlowCall*)slowCallWithDelay:(NSTimeInterval)delay target:(id)target selector:(SEL)selector;
-+ (CSlowCall*)slowCallWithDelay:(NSTimeInterval)delay block:(void (^)(id object))block;
++ (CSlowCall*)newSlowCallWithDelay:(NSTimeInterval)delay target:(id)target selector:(SEL)selector;
++ (CSlowCall*)newSlowCallWithDelay:(NSTimeInterval)delay block:(void (^)(id object))block;
 
 - (void)disarm;
 - (void)armWithObject:(id)object;

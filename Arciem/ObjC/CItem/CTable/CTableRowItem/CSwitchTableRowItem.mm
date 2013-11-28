@@ -20,7 +20,7 @@
 
 @implementation CSwitchTableRowItem
 
-+ (CSwitchTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title booleanItem:(CBooleanItem*)booleanItem
++ (CSwitchTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title booleanItem:(CBooleanItem*)booleanItem
 {
 	return [[self alloc] initWithKey:key title:title model:booleanItem];
 }

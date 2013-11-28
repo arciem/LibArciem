@@ -76,7 +76,7 @@
 - (UIButton*)checkboxButton
 {
 	if(_checkboxButton == nil) {
-		self.checkboxButton = [[self class] createCheckboxButton];
+		self.checkboxButton = [[self class] newCheckboxButton];
 	}
 	
 	return _checkboxButton;

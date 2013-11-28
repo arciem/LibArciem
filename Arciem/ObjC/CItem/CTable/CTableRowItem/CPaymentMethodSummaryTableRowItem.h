@@ -11,6 +11,6 @@
 
 @interface CPaymentMethodSummaryTableRowItem : CSummaryTableRowItem
 
-+ (CPaymentMethodSummaryTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title paymentMethodSummaryItem:(CPaymentMethodSummaryItem*)paymentMethodSummaryItem;
++ (CPaymentMethodSummaryTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title paymentMethodSummaryItem:(CPaymentMethodSummaryItem*)paymentMethodSummaryItem;
 
 @end

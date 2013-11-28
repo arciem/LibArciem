@@ -61,7 +61,7 @@
 {
 	[super syncToRowItem];
 
-	self.modelSubitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self.repeatingItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.modelSubitemsObserver = [CObserver newObserverWithKeyPath:@"subitems" ofObject:self.repeatingItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
         [self syncPrompt];
     }];
     [self syncPrompt];

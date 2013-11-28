@@ -45,7 +45,7 @@
 
 - (NSArray*)tableRowItems
 {
-	CPaymentMethodSummaryTableRowItem* rowItem = [CPaymentMethodSummaryTableRowItem itemWithKey:self.key title:self.title paymentMethodSummaryItem:self];
+	CPaymentMethodSummaryTableRowItem* rowItem = [CPaymentMethodSummaryTableRowItem newItemWithKey:self.key title:self.title paymentMethodSummaryItem:self];
 	return @[rowItem];
 }
 

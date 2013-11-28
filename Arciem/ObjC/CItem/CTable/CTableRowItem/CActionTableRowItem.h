@@ -21,7 +21,7 @@
 
 @interface CActionTableRowItem : CTableRowItem
 
-+ (CActionTableRowItem *)tableActionItemWithKey:(NSString *)key title:(NSString *)title actionItem:(CActionItem *)actionItem;
++ (CActionTableRowItem *)newTableActionItemWithKey:(NSString *)key title:(NSString *)title actionItem:(CActionItem *)actionItem;
 
 @property (readonly, nonatomic) CActionItem* actionItem;
 

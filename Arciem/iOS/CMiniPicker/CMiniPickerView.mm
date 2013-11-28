@@ -26,23 +26,25 @@
 #import "UIViewUtils.h"
 #import "DateTimeUtils.h"
 #import "ObjectUtils.h"
+#import "DeviceUtils.h"
 #import "math_utils.hpp"
 
-static __strong CSystemSound* sDetentSound = nil;
+static __strong CSystemSound *sDetentSound = nil;
 
 @interface CMiniPickerView () <UIScrollViewDelegate, CMiniPickerViewCellDelegate>
 
-@property (nonatomic) CMiniPickerBackgroundView* backgroundView;
+@property (nonatomic) CMiniPickerBackgroundView *backgroundView;
 @property (nonatomic) UIScrollView *scrollView;
-@property (nonatomic) CView* scrollContentView;
+@property (nonatomic) CView *scrollContentView;
 @property (nonatomic) NSMutableArray *contentViews;
 @property (nonatomic) CMiniPickerFrameView *frameView;
 @property (nonatomic) CMiniPickerOverlayView *overlayView;
 @property (nonatomic) NSUInteger lastSelectedIndex;
 @property (nonatomic) CGFloat lastSelectedIndexOffsetFraction;
-@property (nonatomic) CObserver* modelObserver;
-@property (nonatomic) NSDate* suppressSoundUntilDate;
-@property (nonatomic) NSMutableArray* columnWidths;
+@property (nonatomic) CObserver *modelObserver;
+@property (nonatomic) CObserver *fontObserver;
+@property (nonatomic) NSDate *suppressSoundUntilDate;
+@property (nonatomic) NSMutableArray *columnWidths;
 
 @end
 
@@ -63,7 +65,10 @@ static __strong CSystemSound* sDetentSound = nil;
     self.columnWidths = [NSMutableArray new];
 
     BSELF;
-    self.modelObserver = [CObserver observerWithKeyPath:@"model" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+    self.modelObserver = [CObserver newObserverWithKeyPath:@"model" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[bself syncToModel];
+	}];
+    self.fontObserver = [CObserver newObserverWithKeyPath:@"font" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		[bself syncToModel];
 	}];
 
@@ -101,7 +106,9 @@ static __strong CSystemSound* sDetentSound = nil;
     [self addSubview:self.backgroundView];
     [self addSubview:self.scrollView];
     [self addSubview:self.overlayView];
-    [self addSubview:self.frameView];
+    if(!IsOSVersionAtLeast7()) {
+        [self addSubview:self.frameView];
+    }
 }
 
 - (void)layoutSubviews
@@ -110,17 +117,17 @@ static __strong CSystemSound* sDetentSound = nil;
     
     self.columnWidths = [NSMutableArray new];
     
-    CFrame* scrollContentViewFrame = self.scrollContentView.cframe;
+    CFrame *scrollContentViewFrame = self.scrollContentView.cframe;
     self.scrollView.frame = UIEdgeInsetsInsetRect(self.bounds, self.frameView.margins);
     scrollContentViewFrame.frame = self.scrollView.bounds;
     
-    UIView* lastView = nil;
+    UIView *lastView = nil;
     for(NSUInteger index = 0; index < self.contentViews.count; index++) {
         CMiniPickerViewCell *cellView = self.contentViews[index];
         // have to directly set width before sizeToFit will work
         cellView.cframe.width = scrollContentViewFrame.width;
         
-        CFrame* cellFrame = cellView.cframe;
+        CFrame *cellFrame = cellView.cframe;
         [cellFrame sizeToFit];
         
         cellFrame.left = 0;
@@ -164,16 +171,16 @@ static __strong CSystemSound* sDetentSound = nil;
             selectedIndexOffsetFraction = arciem::map(clampedOffset, viewTopOffset, viewBottomOffset, -0.5f, 0.5f);
             CGFloat overlayHeight = view.height;
             if(selectedIndexOffsetFraction < 0.0 && index > 0) {
-                UIView* previousView = self.contentViews[index - 1];
+                UIView *previousView = self.contentViews[index - 1];
                 overlayHeight = arciem::denormalize(-selectedIndexOffsetFraction, overlayHeight, previousView.height);
             } else if(selectedIndexOffsetFraction > 0.0 && index < (self.contentViews.count - 1)) {
-                UIView* nextView = self.contentViews[index + 1];
+                UIView *nextView = self.contentViews[index + 1];
                 overlayHeight = arciem::denormalize(selectedIndexOffsetFraction, overlayHeight, nextView.height);
             }
             
             overlayHeight -= 4.0;
 
-            CFrame* cframe = [CFrame new];
+            CFrame *cframe = [CFrame new];
             cframe.left = self.scrollView.left;
             cframe.width = self.scrollView.width;
             cframe.height = overlayHeight;
@@ -186,7 +193,7 @@ static __strong CSystemSound* sDetentSound = nil;
         viewTopOffset = viewBottomOffset;
     }
     
-    if(selectedIndex != self.lastSelectedIndex) {
+    if(selectedIndex != NSNotFound && selectedIndex != self.lastSelectedIndex) {
         [self.model selectSubitem:self.model.subitems[selectedIndex]];
     }
 
@@ -205,6 +212,7 @@ static __strong CSystemSound* sDetentSound = nil;
     self.lastSelectedIndex = selectedIndex;
     self.lastSelectedIndexOffsetFraction = selectedIndexOffsetFraction;
 
+
 //    CLogDebug(nil, @"scrollViewDidScroll: %@, maxOffset:%f clampedOffset:%f selectedIndex:%d selectedIndexOffsetFraction:%f", self.scrollView, maxOffset, clampedOffset, selectedIndex, selectedIndexOffsetFraction);
 //    CLogDebug(nil, @"scrollViewDidScroll contentOffset:%@", NSStringFromCGPoint(self.scrollView.contentOffset));
 }
@@ -214,7 +222,7 @@ static __strong CSystemSound* sDetentSound = nil;
     if(self.suppressSoundUntilDate == nil) {
         [sDetentSound play];
     } else {
-        NSDate* currentDate = [NSDate date];
+        NSDate *currentDate = [NSDate date];
         if([currentDate isLaterThanDate:self.suppressSoundUntilDate]) {
             [sDetentSound play];
         }
@@ -225,7 +233,7 @@ static __strong CSystemSound* sDetentSound = nil;
 {
     self.suppressSoundUntilDate = [NSDate dateWithTimeIntervalSinceNow:0.1];
     [self.scrollView setContentOffset:CGPointZero];
-    for(UIView* view in self.contentViews) {
+    for(UIView *view in self.contentViews) {
         [view removeFromSuperview];
     }
     [self.contentViews removeAllObjects];
@@ -234,9 +242,9 @@ static __strong CSystemSound* sDetentSound = nil;
 
     BOOL singleChoice = self.model.subitems.count <= 1;
 
-    for(CBooleanItem* choiceItem in self.model.subitems) {
+    for(CBooleanItem *choiceItem in self.model.subitems) {
         NSAssert1([choiceItem isKindOfClass:[CBooleanItem class]], @"Subitem is not CBooleanItem: %@", choiceItem);
-        CMiniPickerViewCell* cellView = [CMiniPickerViewCell new];
+        CMiniPickerViewCell *cellView = [CMiniPickerViewCell new];
         UIEdgeInsets cellViewMargins = cellView.margins;
         cellViewMargins.left = cellViewMargins.left + self.frameView.margins.left;
         cellViewMargins.right = cellViewMargins.right + self.frameView.margins.right;

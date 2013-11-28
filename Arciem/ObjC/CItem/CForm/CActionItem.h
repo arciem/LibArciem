@@ -12,6 +12,6 @@
 
 @property (nonatomic) NSString *actionValue;
 
-+ (CActionItem*)actionItemWithTitle:(NSString*)title key:(NSString*)key actionValue:(NSString *)actionValue;
++ (CActionItem*)newActionItemWithTitle:(NSString*)title key:(NSString*)key actionValue:(NSString *)actionValue;
 
 @end

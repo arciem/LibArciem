@@ -11,7 +11,7 @@
 
 @implementation CActionItem
 
-+ (CActionItem*)actionItemWithTitle:(NSString*)title key:(NSString*)key actionValue:(NSString *)actionValue {
++ (CActionItem*)newActionItemWithTitle:(NSString*)title key:(NSString*)key actionValue:(NSString *)actionValue {
 	return [[self alloc] initWithDictionary:@{@"title": title,
                                               @"key": key,
                                               @"value": actionValue,
@@ -20,7 +20,7 @@
 
 - (NSArray*)tableRowItems
 {
-	CActionTableRowItem* item = [CActionTableRowItem tableActionItemWithKey:self.key title:self.title actionItem:self];
+	CActionTableRowItem* item = [CActionTableRowItem newTableActionItemWithKey:self.key title:self.title actionItem:self];
 	return @[item];
 }
 

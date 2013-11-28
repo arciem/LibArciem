@@ -21,6 +21,6 @@
 
 @interface CSwitchTableRowItem : CTableRowItem
 
-+ (CSwitchTableRowItem *)itemWithKey:(NSString *)key title:(NSString *)title booleanItem:(CBooleanItem *)booleanItem;
++ (CSwitchTableRowItem *)newItemWithKey:(NSString *)key title:(NSString *)title booleanItem:(CBooleanItem *)booleanItem;
 
 @end

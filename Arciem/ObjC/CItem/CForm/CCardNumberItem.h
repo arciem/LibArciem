@@ -39,6 +39,6 @@ enum {
 @property (nonatomic) NSArray* validCardTypes;
 @property (readonly, nonatomic) NSString* cardType;
 
-+ (NSString *)generateSampleForCardType:(NSString *)cardType;
++ (NSString *)newSampleNumberForCardType:(NSString *)cardType;
 
 @end

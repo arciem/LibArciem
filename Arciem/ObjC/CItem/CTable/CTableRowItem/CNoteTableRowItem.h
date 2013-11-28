@@ -21,6 +21,6 @@
 
 @interface CNoteTableRowItem : CTableRowItem
 
-+ (CNoteTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title item:(CNoteItem*)item;
++ (CNoteTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title item:(CNoteItem*)item;
 
 @end

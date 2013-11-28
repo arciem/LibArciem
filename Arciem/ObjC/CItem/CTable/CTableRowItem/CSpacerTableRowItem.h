@@ -21,6 +21,6 @@
 
 @interface CSpacerTableRowItem : CTableRowItem
 
-+ (CSpacerTableRowItem*)spacerItemWithKey:(NSString*)key title:(NSString*)title model:(CSpacerItem*)spacerItem;
++ (CSpacerTableRowItem*)newSpacerItemWithKey:(NSString*)key title:(NSString*)title model:(CSpacerItem*)spacerItem;
 
 @end

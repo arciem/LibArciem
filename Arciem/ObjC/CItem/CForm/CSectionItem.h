@@ -10,6 +10,6 @@
 
 @interface CSectionItem : CItem
 
-+ (CSectionItem*)sectionItemWithTitle:(NSString*)title key:(NSString*)key;
++ (CSectionItem*)newSectionItemWithTitle:(NSString*)title key:(NSString*)key;
 
 @end

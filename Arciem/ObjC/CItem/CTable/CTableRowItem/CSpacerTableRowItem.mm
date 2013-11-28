@@ -20,7 +20,7 @@
 
 @implementation CSpacerTableRowItem
 
-+ (CSpacerTableRowItem*)spacerItemWithKey:(NSString*)key title:(NSString*)title model:(CSpacerItem*)spacerItem
++ (CSpacerTableRowItem*)newSpacerItemWithKey:(NSString*)key title:(NSString*)title model:(CSpacerItem*)spacerItem
 {
 	return [[self alloc] initWithKey:key title:title model:spacerItem];
 }

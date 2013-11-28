@@ -43,7 +43,7 @@
 	return !self.disabled;
 }
 
-+ (instancetype)tableActionItemWithKey:(NSString *)key title:(NSString *)title actionItem:(CActionItem *)actionItem {
++ (instancetype)newTableActionItemWithKey:(NSString *)key title:(NSString *)title actionItem:(CActionItem *)actionItem {
 	return [[self alloc] initWithKey:key title:title model:actionItem];
 }
 

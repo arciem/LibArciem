@@ -26,7 +26,7 @@
 
 @interface CRepeatingItem ()
 
-@property (weak, nonatomic) CAddRepeatingTableRowItem *endRepeatRowItem;
+@property (nonatomic) CAddRepeatingTableRowItem *endRepeatRowItem;
 @property (nonatomic) CObserver *subitemsObserver;
 @property (nonatomic) CObserver *hiddenObserver;
 
@@ -46,12 +46,12 @@
 	(self.dict)[@"template"] = templateDict;
 }
 
-- (CItem *)createItemFromTemplate {
-	return [CItem itemWithDictionary:self.templateDict];
+- (CItem *)newItemFromTemplate {
+	return [CItem newItemWithDictionary:self.templateDict];
 }
 
-- (CItem*)addSubitemFromTemplate {
-	CItem *item = [self createItemFromTemplate];
+- (CItem*)newSubitemFromTemplate {
+	CItem *item = [self newItemFromTemplate];
 	[self addSubitem:item];
 	return item;
 }
@@ -120,7 +120,7 @@
 	[super activate];
 
     while(self.subitems.count < self.startRepeats) {
-		[self addSubitemFromTemplate];
+		[self newSubitemFromTemplate];
 	}
 
     BSELF;
@@ -164,8 +164,8 @@
 			}
 		}
 	};
-	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action];
-	self.hiddenObserver = [CObserver observerWithKeyPath:@"hidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.subitemsObserver = [CObserver newObserverWithKeyPath:@"subitems" ofObject:self action:action];
+	self.hiddenObserver = [CObserver newObserverWithKeyPath:@"hidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		bself.endRepeatRowItem.hidden = [newValue boolValue];
 	}];
 }
@@ -180,7 +180,7 @@
     [super setValuesFromDummyValuesHierarchical:hierarchical];
     if(self.hasDummyStartRepeats) {
         for(NSUInteger i = self.startRepeats; i < self.dummyStartRepeats; i++) {
-            [self addSubitemFromTemplate];
+            [self newSubitemFromTemplate];
         }
         self.startRepeats = self.dummyStartRepeats;
         [self.subitems enumerateObjectsUsingBlock:^(CItem *subitem, NSUInteger idx1, BOOL *stop) {
@@ -207,7 +207,7 @@
 			[rowItems addObject:rowItem];
 		}
 	}
-	self.endRepeatRowItem = [CAddRepeatingTableRowItem itemWithKey:self.key title:self.title repeatingItem:self];
+	self.endRepeatRowItem = [CAddRepeatingTableRowItem newItemWithKey:self.key title:self.title repeatingItem:self];
 	[rowItems addObject:self.endRepeatRowItem];
 	
 	return rowItems;

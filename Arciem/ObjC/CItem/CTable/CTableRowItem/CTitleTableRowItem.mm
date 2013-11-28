@@ -20,7 +20,7 @@
 
 @implementation CTitleTableRowItem
 
-+ (CTitleTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title item:(CItem*)item
++ (CTitleTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title item:(CItem*)item
 {
 	return [[self alloc] initWithKey:key title:title model:item];
 }

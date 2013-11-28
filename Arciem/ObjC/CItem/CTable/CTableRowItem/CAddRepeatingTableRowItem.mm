@@ -20,7 +20,7 @@
 
 @implementation CAddRepeatingTableRowItem
 
-+ (CAddRepeatingTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title repeatingItem:(CRepeatingItem*)repeatingItem
++ (CAddRepeatingTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title repeatingItem:(CRepeatingItem*)repeatingItem
 {
 	return [[self alloc] initWithKey:key title:title model:repeatingItem];
 }

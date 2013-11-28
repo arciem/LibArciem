@@ -28,18 +28,19 @@ typedef void(^CObserverBlock)(id object, id newValue, id oldValue, NSKeyValueCha
 - (id)initWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
 
 
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action;
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial;
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action;
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial;
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
 
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action;
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial;
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action;
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial;
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
 
 - (void)addObject:(id)object;
 - (void)removeObject:(id)object;
 - (void)addObjects:(NSArray*)array;
 - (void)removeObjects:(NSArray*)array;
+- (void)removeAllObjects;
 
 @property (copy, nonatomic) NSArray* objects;
 

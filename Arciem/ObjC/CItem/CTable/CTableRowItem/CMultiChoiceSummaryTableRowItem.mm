@@ -30,7 +30,7 @@
 	return self;
 }
 
-+ (CMultiChoiceSummaryTableRowItem*)itemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
++ (CMultiChoiceSummaryTableRowItem*)newItemWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
 {
 	return [[self alloc] initWithKey:key title:title multiChoiceItem:item];
 }

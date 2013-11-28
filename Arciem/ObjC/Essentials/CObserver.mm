@@ -65,17 +65,17 @@
 	return self;
 }
 
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action
 {
-	return [self observerWithKeyPath:keyPath action:action initial:NULL prior:NULL];
+	return [self newObserverWithKeyPath:keyPath action:action initial:NULL prior:NULL];
 }
 
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial
 {
-	return [self observerWithKeyPath:keyPath action:action initial:initial prior:NULL];
+	return [self newObserverWithKeyPath:keyPath action:action initial:initial prior:NULL];
 }
 
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior
 {
 	return [[self alloc] initWithKeyPath:keyPath action:action initial:initial prior:prior];
 }
@@ -138,6 +138,10 @@
 	}
 }
 
+- (void)removeAllObjects {
+    [self removeObjects:self.objects];
+}
+
 - (NSArray*)objects
 {
 	return [self.mutableObjects allObjects];
@@ -192,19 +196,19 @@
     self.prior = nil;
 }
 
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior
 {
 	return [[self alloc] initWithKeyPath:keyPath ofObject:object action:action initial:initial prior:prior];
 }
 
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action
 {
-	return [self observerWithKeyPath:keyPath ofObject:object action:action initial:NULL prior:NULL];
+	return [self newObserverWithKeyPath:keyPath ofObject:object action:action initial:NULL prior:NULL];
 }
 
-+ (CObserver*)observerWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial
++ (CObserver*)newObserverWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial
 {
-	return [self observerWithKeyPath:keyPath ofObject:object action:action initial:initial prior:NULL];
+	return [self newObserverWithKeyPath:keyPath ofObject:object action:action initial:initial prior:NULL];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

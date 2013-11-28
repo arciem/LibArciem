@@ -69,10 +69,10 @@
 		self.cardTypeObserver = nil;
 	} else {
 		BSELF;
-        self.cardTypeObserver = [CObserver observerWithKeyPath:@"cardType" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+        self.cardTypeObserver = [CObserver newObserverWithKeyPath:@"cardType" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
             [bself syncCardTypeAnimated:YES];
         }];
-        self.validCardTypesObserver = [CObserver observerWithKeyPath:@"validCardTypes" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+        self.validCardTypesObserver = [CObserver newObserverWithKeyPath:@"validCardTypes" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
             [self syncToValidCardTypes];
         } initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
             [self syncToValidCardTypes];
@@ -83,7 +83,7 @@
 - (CPaymentMethodTypeImageView *)viewForCardType:(NSString *)cardType {
     CPaymentMethodTypeImageView *view = (self.cardTypeViewsByType)[cardType];
     if(view == nil) {
-        view = [CPaymentMethodTypeImageView viewForCardType:cardType];
+        view = [CPaymentMethodTypeImageView newViewForCardType:cardType];
         view.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:view];
         [self.cardTypeViews addObject:view];
@@ -219,7 +219,7 @@
             CPaymentMethodTypeImageView *thisCardView = [bself viewForCardType:cardType];
             thisCardView.tapHandler = ^{
                 CCardNumberItem *model = bself.models[0];
-                model.stringValue = [CCardNumberItem generateSampleForCardType:cardType];
+                model.stringValue = [CCardNumberItem newSampleNumberForCardType:cardType];
             };
         }];
         

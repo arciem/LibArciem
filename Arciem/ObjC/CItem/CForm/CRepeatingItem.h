@@ -32,7 +32,7 @@
 @property (nonatomic) BOOL isReordering;
 @property (nonatomic) BOOL addRequiresDrillDown;
 
-- (CItem *)createItemFromTemplate;
-- (CItem *)addSubitemFromTemplate;
+- (CItem *)newItemFromTemplate;
+- (CItem *)newSubitemFromTemplate;
 
 @end

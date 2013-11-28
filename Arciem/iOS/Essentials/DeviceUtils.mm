@@ -121,7 +121,7 @@ NSString* StringByAppendingDeviceSuffix(NSString* s)
 id<NSObject> DeviceClassAlloc(NSString* className)
 {
 	className = StringByAppendingDeviceSuffix(className);
-	id instance = ClassAlloc(className);
+	id instance = [NSObject newInstanceOfClassNamed:className];
 	
 	return instance;
 }

@@ -85,7 +85,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		NSString* firstChar = [[type substringToIndex:1] uppercaseString];
 		NSString* remainingChars = [type substringFromIndex:1];
 		NSString* className = [NSString stringWithFormat:@"C%@%@Item", firstChar, remainingChars];
-		self = (CItem*)ClassAlloc(className);
+		self = (CItem*)[NSObject newInstanceOfClassNamed:className];
 		NSAssert1(self != nil, @"Attempt to instantiate undefined class:%@", className);
 		CLogTrace(@"C_ITEM", @"%@ alloc", self);
 	}
@@ -104,7 +104,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		NSArray* subdicts = _dict[@"subitems"];
 		subitems__ = [NSMutableArray array];
 		for(NSDictionary *subdict in subdicts) {
-            CItem *subitem = [CItem itemWithDictionary:subdict];
+            CItem *subitem = [CItem newItemWithDictionary:subdict];
 			[self addSubitem:subitem];
             CLogTrace(@"C_ITEM", @"%@ added as subitem of %@", subitem, self);
 		}
@@ -126,16 +126,16 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	return self;
 }
 
-+ (CItem*)itemForResourceName:(NSString*)resourceName withExtension:(NSString*)extension {
++ (CItem*)newItemForResourceName:(NSString*)resourceName withExtension:(NSString*)extension {
 	NSURL* url = [[NSBundle mainBundle] URLForResource:resourceName withExtension:extension];
 	NSData* data = [NSData dataWithContentsOfURL:url];
 	NSString* json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	CItem* item = [CItem itemWithJSONRepresentation:json];
+	CItem* item = [CItem newItemWithJSONRepresentation:json];
 	return item;
 }
 
-+ (CItem*)itemForResourceName:(NSString*)resourceName {
-	return [self itemForResourceName:resourceName withExtension:@"json"];
++ (CItem*)newItemForResourceName:(NSString*)resourceName {
+	return [self newItemForResourceName:resourceName withExtension:@"json"];
 }
 
 - (id)init {
@@ -149,11 +149,11 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	CLogTrace(@"C_ITEM", @"%@ dealloc", [self formatObjectWithValues:nil]);
 }
 
-+ (CItem*)itemWithDictionary:(NSDictionary*)dict {
++ (CItem*)newItemWithDictionary:(NSDictionary*)dict {
 	return [[self alloc] initWithDictionary:dict];
 }
 
-+ (CItem*)itemWithJSONRepresentation:(NSString*)json {
++ (CItem*)newItemWithJSONRepresentation:(NSString*)json {
 	return [[self alloc] initWithJSONRepresentation:json];
 }
 
@@ -183,12 +183,12 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	return item;
 }
 
-+ (CItem*)item {
-	return [self itemWithDictionary:nil];
++ (CItem*)newItem {
+	return [self newItemWithDictionary:nil];
 }
 
-+ (CItem*)itemWithTitle:(NSString*)title key:(NSString*)key value:(id)value {
-	return [self itemWithDictionary:@{@"title": title,
++ (CItem*)newItemWithTitle:(NSString*)title key:(NSString*)key value:(id)value {
+	return [self newItemWithDictionary:@{@"title": title,
 											  @"key": key,
 											  @"value": value}];
 }
@@ -200,7 +200,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	NSAssert1(self.active == NO, @"Attempt to activate item that is already active:%@", self);
 	self.active = YES;
 	BSELF;
-	self.valueObserver = [CObserver observerWithKeyPath:@"value" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.valueObserver = [CObserver newObserverWithKeyPath:@"value" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
 		bself.needsValidation = YES;
 	}];
 }
@@ -565,7 +565,9 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		}
 		for(NSString* keyPath in self.dependentKeyPaths) {
 			CItem* otherItem = [self.rootItem valueForKeyPath:keyPath];
-			otherItem.needsValidation = YES;
+            if(!otherItem.fresh) {
+                otherItem.needsValidation = YES;
+            }
 		}
 		
 	} else {

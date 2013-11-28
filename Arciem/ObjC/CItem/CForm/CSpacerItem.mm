@@ -21,14 +21,14 @@
 
 @implementation CSpacerItem
 
-+ (CSpacerItem*)spacerItem
++ (CSpacerItem*)newSpacerItem
 {
 	return [self new];
 }
 
 - (NSArray*)tableRowItems
 {
-	CSpacerTableRowItem* item = [CSpacerTableRowItem spacerItemWithKey:self.key title:self.title model:self];
+	CSpacerTableRowItem* item = [CSpacerTableRowItem newSpacerItemWithKey:self.key title:self.title model:self];
 	return @[item];
 }
 
