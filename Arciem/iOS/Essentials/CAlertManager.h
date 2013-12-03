@@ -23,13 +23,13 @@ extern const NSUInteger kOKButtonIndex;
 
 @interface CAlertManager : NSObject
 
-+ (CAlertManager*)sharedAlertManager;
++ (CAlertManager *)sharedAlertManager;
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message buttonTitles:(NSArray*)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion;
-- (void)showCancelAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion;
-- (void)showCancelAlertWithTitle:(NSString*)title message:(NSString*)message;
-- (void)showConfirmAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion;
-- (void)showOKAlertWithTitle:(NSString*)title message:(NSString*)message;
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion;
+- (void)showCancelAlertWithTitle:(NSString *)title message:(NSString *)message completion:(void (^)(NSUInteger buttonIndex))completion;
+- (void)showCancelAlertWithTitle:(NSString *)title message:(NSString *)message;
+- (void)showConfirmAlertWithTitle:(NSString *)title message:(NSString *)message completion:(void (^)(NSUInteger buttonIndex))completion;
+- (void)showOKAlertWithTitle:(NSString *)title message:(NSString *)message;
 
 @end

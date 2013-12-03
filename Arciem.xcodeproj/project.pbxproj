@@ -336,6 +336,8 @@
 		039DC39716CCA44000B52A7F /* WhiteLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC39316CCA44000B52A7F /* WhiteLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC39816CCA44000B52A7F /* WhiteLabel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC39416CCA44000B52A7F /* WhiteLabel.mm */; };
 		039DC3A416CCAA4900B52A7F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC34416CC987E00B52A7F /* CoreFoundation.framework */; };
+		039EC2EB184D38E50030AA50 /* CActionSheetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 039EC2E9184D38E50030AA50 /* CActionSheetManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		039EC2EC184D38E50030AA50 /* CActionSheetManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039EC2EA184D38E50030AA50 /* CActionSheetManager.mm */; };
 		03AC9081174E680700781374 /* UIViewControllerUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC907F174E680700781374 /* UIViewControllerUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03AC9082174E680700781374 /* UIViewControllerUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9080174E680700781374 /* UIViewControllerUtils.mm */; };
 		03AC908C174EC5B800781374 /* CDebugAnnotation.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC9084174EC5B800781374 /* CDebugAnnotation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -706,6 +708,8 @@
 		039DC39216CCA43F00B52A7F /* UILabelUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UILabelUtils.mm; sourceTree = "<group>"; };
 		039DC39316CCA44000B52A7F /* WhiteLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhiteLabel.h; sourceTree = "<group>"; };
 		039DC39416CCA44000B52A7F /* WhiteLabel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = WhiteLabel.mm; sourceTree = "<group>"; };
+		039EC2E9184D38E50030AA50 /* CActionSheetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CActionSheetManager.h; sourceTree = "<group>"; };
+		039EC2EA184D38E50030AA50 /* CActionSheetManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CActionSheetManager.mm; sourceTree = "<group>"; };
 		03AC907F174E680700781374 /* UIViewControllerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewControllerUtils.h; sourceTree = "<group>"; };
 		03AC9080174E680700781374 /* UIViewControllerUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UIViewControllerUtils.mm; sourceTree = "<group>"; };
 		03AC9084174EC5B800781374 /* CDebugAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDebugAnnotation.h; sourceTree = "<group>"; };
@@ -1116,6 +1120,8 @@
 				039DC26D16CB662100B52A7F /* CActivityShieldView.mm */,
 				039DC26E16CB662100B52A7F /* CAlertManager.h */,
 				039DC26F16CB662100B52A7F /* CAlertManager.mm */,
+				039EC2E9184D38E50030AA50 /* CActionSheetManager.h */,
+				039EC2EA184D38E50030AA50 /* CActionSheetManager.mm */,
 				039DC27016CB662100B52A7F /* CGradientView.h */,
 				039DC27116CB662100B52A7F /* CGradientView.mm */,
 				039DC27216CB662100B52A7F /* CGUtils.h */,
@@ -1406,6 +1412,7 @@
 				039DC21A16CB4C4400B52A7F /* CMultiChoiceItem.h in Headers */,
 				039DC21C16CB4C4400B52A7F /* CMultiTextItem.h in Headers */,
 				030F11FD181688AD0098DC59 /* CActionItem.h in Headers */,
+				039EC2EB184D38E50030AA50 /* CActionSheetManager.h in Headers */,
 				039DC21E16CB4C4400B52A7F /* CNoteItem.h in Headers */,
 				039DC22016CB4C4400B52A7F /* CPasswordItem.h in Headers */,
 				039DC22216CB4C4400B52A7F /* CPhoneItem.h in Headers */,
@@ -1757,6 +1764,7 @@
 				039DC30016CB689900B52A7F /* CTextFieldItemTableViewCell.mm in Sources */,
 				039DC30216CB689900B52A7F /* CTitleTableViewCell.mm in Sources */,
 				039DC30416CB689900B52A7F /* CTableViewCell.mm in Sources */,
+				039EC2EC184D38E50030AA50 /* CActionSheetManager.mm in Sources */,
 				039DC32016CB693700B52A7F /* CDebugOverlayView.mm in Sources */,
 				039DC32216CB693700B52A7F /* CSetup.mm in Sources */,
 				039DC32416CB693700B52A7F /* CSetupBoolOptionTableViewCell.mm in Sources */,

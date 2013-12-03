@@ -112,6 +112,7 @@
 #import "CShieldView.h"
 #import "CActivityShieldView.h"
 #import "CAlertManager.h"
+#import "CActionSheetManager.h"
 #import "CGradientView.h"
 #import "CGUtils.h"
 #import "CImageView.h"
