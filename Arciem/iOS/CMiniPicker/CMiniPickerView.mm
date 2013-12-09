@@ -238,7 +238,7 @@ static __strong CSystemSound *sDetentSound = nil;
     }
     [self.contentViews removeAllObjects];
     
-    NSAssert1([self.model isKindOfClass:[CMultiChoiceItem class]], @"Model is not CMultiChoiceItem: %@", self.model);
+    NSAssert1(self.model == nil || [self.model isKindOfClass:[CMultiChoiceItem class]], @"Model is not CMultiChoiceItem: %@", self.model);
 
     BOOL singleChoice = self.model.subitems.count <= 1;
 

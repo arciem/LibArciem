@@ -22,6 +22,7 @@
 #import "CSwitchTableRowItem.h"
 #import "ObjectUtils.h"
 #import "ErrorUtils.h"
+#import "StringUtils.h"
 
 NSString* const CBooleanItemErrorDomain = @"CBooleanItemErrorDomain";
 
@@ -45,10 +46,10 @@ NSString* const CBooleanItemInterfaceSwitch = @"switch";
 + (CBooleanItem*)newBooleanItemWithTitle:(NSString*)title key:(NSString*)key boolValue:(BOOL)boolValue
 {
 	NSNumber* value = @(boolValue);
-	return [[self alloc] initWithDictionary:@{@"title": title,
-											 @"key": key,
-											 @"value": value,
-											 @"type": @"boolean"}];
+	return [[self alloc] initWithDictionary:@{@"title": EnsureRealString(title),
+                                              @"key": EnsureRealString(key),
+                                              @"value": Denull(value) == nil ? @(NO) : value,
+                                              @"type": @"boolean"}];
 }
 
 - (BOOL)booleanValue

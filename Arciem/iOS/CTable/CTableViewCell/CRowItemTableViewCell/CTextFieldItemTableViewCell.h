@@ -19,6 +19,8 @@
 #import "CRowItemTableViewCell.h"
 
 extern NSString *const CAdvanceToNextKeyViewNotification;
+extern NSString *const CDidEnterTextFieldNotification;
+extern NSString *const CDidExitTextFieldNotification;
 
 @interface CTextFieldItemTableViewCell : CRowItemTableViewCell<UITextFieldDelegate>
 

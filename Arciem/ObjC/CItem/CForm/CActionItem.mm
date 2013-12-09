@@ -8,13 +8,15 @@
 
 #import "CActionItem.h"
 #import "CActionTableRowItem.h"
+#import "StringUtils.h"
+#import "ObjectUtils.h"
 
 @implementation CActionItem
 
 + (CActionItem*)newActionItemWithTitle:(NSString*)title key:(NSString*)key actionValue:(NSString *)actionValue {
-	return [[self alloc] initWithDictionary:@{@"title": title,
-                                              @"key": key,
-                                              @"value": actionValue,
+	return [[self alloc] initWithDictionary:@{@"title": EnsureRealString(title),
+                                              @"key": EnsureRealString(key),
+                                              @"value": Denull(actionValue),
                                               @"type": @"action"}];
 }
 

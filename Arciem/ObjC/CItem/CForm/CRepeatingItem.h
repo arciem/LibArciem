@@ -34,5 +34,6 @@
 
 - (CItem *)newItemFromTemplate;
 - (CItem *)newSubitemFromTemplate;
+- (CItem *)newSubitemFromTemplateAtIndex:(NSUInteger)index;
 
 @end

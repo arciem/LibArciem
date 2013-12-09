@@ -23,6 +23,9 @@
 #import "CSlowCall.h"
 #import "ObjectUtils.h"
 #import "DeviceUtils.h"
+#import "StringUtils.h"
+
+NSString *const CDidTapButtonNotification = @"CDidTapButtonNotification";
 
 @interface CButtonTableViewCell ()
 
@@ -140,18 +143,6 @@
 	}
 }
 
-//- (void)layoutSubviews
-//{
-//	[super layoutSubviews];
-//	
-//	UIFont* font = self.button.titleLabel.font;
-//	CGSize titleSize = [self.rowItem.model.title sizeWithFont:font];
-//	CFrame* buttonFrame = self.button.cframe;
-//	buttonFrame.width = roundf(titleSize.width / 2.0) * 2.0 + 20;
-//	buttonFrame.height = 28;
-//	buttonFrame.center = self.boundsCenter;
-//}
-
 - (IBAction)tapped
 {
 	CSubmitItem* item = (CSubmitItem*)self.rowItem.model;
@@ -159,6 +150,9 @@
 	if(action != NULL) {
 		action();
 	}
+    NSDictionary *userInfo = @{@"button": self,
+                               @"analyticsName": Ennull(item.analyticsName)};
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDidTapButtonNotification object:self userInfo:userInfo];
 }
 
 @end

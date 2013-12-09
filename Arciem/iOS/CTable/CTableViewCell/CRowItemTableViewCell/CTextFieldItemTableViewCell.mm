@@ -29,6 +29,8 @@
 #import "CObserver.h"
 
 NSString *const CAdvanceToNextKeyViewNotification = @"CAdvanceToNextKeyViewNotification";
+NSString *const CDidEnterTextFieldNotification = @"CDidEnterTextFieldNotification";
+NSString *const CDidExitTextFieldNotification = @"CDidExitTextFieldNotification";
 
 @interface CTextFieldItemTableViewCell ()
 
@@ -77,6 +79,9 @@ NSString *const CAdvanceToNextKeyViewNotification = @"CAdvanceToNextKeyViewNotif
 		[self.contentView addSubview:field];
 		field.delegate = self;
 		[self setNeedsUpdateConstraints];
+        
+        CItem *model = self.models[self.textFields.count - 1];
+        [field setAssociatedObject:model.analyticsName forKey:@"analyticsName"];
 	}
 	
 	return (self.textFields)[index];
@@ -372,7 +377,7 @@ NSString *const CAdvanceToNextKeyViewNotification = @"CAdvanceToNextKeyViewNotif
 			textField.autocapitalizationType = [bself autocapitalizationTypeForModel:stringItem];
 			textField.keyboardType = [bself keyboardTypeForModel:stringItem];
 			textField.secureTextEntry = stringItem.secureTextEntry;
-            textField.keyboardAppearance = stringItem.secureTextEntry ? UIKeyboardAppearanceDark : UIKeyboardAppearanceDefault;
+//            textField.keyboardAppearance = stringItem.secureTextEntry ? UIKeyboardAppearanceDark : UIKeyboardAppearanceDefault;
 		} else {
 			UIControl* control = [bself inputViewForModel:model];
 			textField.inputView = control;
@@ -492,12 +497,16 @@ NSString *const CAdvanceToNextKeyViewNotification = @"CAdvanceToNextKeyViewNotif
 	CStringItem* model = [self modelForTextField:textField];
 	self.activeItem = model;
 	model.editing = YES;
-
+    
 	if(textField.clearsOnBeginEditing) {
 		model.value = @"";
 	}
 	
 	[self.delegate rowItemTableViewCellDidGainFocus:self];
+    
+    NSDictionary *userInfo = @{@"textField": textField,
+                               @"analyticsName": Ennull([textField associatedObjectForKey:@"analyticsName"])};
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDidEnterTextFieldNotification object:self userInfo:userInfo];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -505,11 +514,19 @@ NSString *const CAdvanceToNextKeyViewNotification = @"CAdvanceToNextKeyViewNotif
     // KLUDGE: Prevents rogue animation of text in field the first time leaving it.
     [textField setNeedsLayout];
     [textField layoutIfNeeded];
-
+    
 	CStringItem* model = [self modelForTextField:textField];
 	[model validate];
 	model.editing = NO;
 	self.activeItem = nil;
+    
+    BOOL valid = model.valid;
+    
+    NSDictionary *userInfo = @{@"textField": textField,
+                               @"analyticsName": Ennull([textField associatedObjectForKey:@"analyticsName"]),
+                               @"valid": [NSNumber numberWithBool:valid]};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDidExitTextFieldNotification object:self userInfo:userInfo];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

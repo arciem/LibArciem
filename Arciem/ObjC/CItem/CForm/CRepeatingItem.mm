@@ -52,8 +52,15 @@
 
 - (CItem*)newSubitemFromTemplate {
 	CItem *item = [self newItemFromTemplate];
+//    [self insertSubitem:item atIndex:0];
 	[self addSubitem:item];
 	return item;
+}
+
+- (CItem *)newSubitemFromTemplateAtIndex:(NSUInteger)index {
+    CItem *item = [self newItemFromTemplate];
+    [self insertSubitem:item atIndex:index];
+    return item;
 }
 
 - (NSUInteger)minValidRepeats {

@@ -12,8 +12,8 @@
 @implementation CSectionItem
 
 + (CSectionItem*)newSectionItemWithTitle:(NSString*)title key:(NSString*)key {
-	return [[self alloc] initWithDictionary:@{@"title": title,
-                                              @"key": key,
+	return [[self alloc] initWithDictionary:@{@"title": EnsureRealString(title),
+                                              @"key": EnsureRealString(key),
                                               @"type": @"section"}];
 }
 

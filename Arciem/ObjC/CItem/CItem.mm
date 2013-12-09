@@ -23,22 +23,22 @@
 #import "CObserver.h"
 #import "random.hpp"
 
-NSString* const CItemErrorDomain = @"CItemErrorDomain";
+NSString *const CItemErrorDomain = @"CItemErrorDomain";
 
 @interface CItem () {
-	NSMutableArray* subitems__;
+	NSMutableArray *subitems__;
 }
 
-@property (weak, readwrite, nonatomic) CItem* superitem;
-@property (readonly, nonatomic) NSMutableArray* subitems_;
+@property (weak, readwrite, nonatomic) CItem *superitem;
+@property (readonly, nonatomic) NSMutableArray *subitems_;
 @property (nonatomic) NSUInteger currentRevision;
 @property (nonatomic) NSUInteger lastValidatedRevision;
 @property (readonly, nonatomic) NSUInteger validationsInProgress;
-@property (nonatomic) NSMutableArray* subitemErrors;
+@property (nonatomic) NSMutableArray *subitemErrors;
 @property (readwrite, nonatomic) BOOL validating;
-@property (nonatomic) CObserver* valueObserver;
+@property (nonatomic) CObserver *valueObserver;
 @property (readwrite, nonatomic) BOOL active;
-@property (copy, readwrite, nonatomic) NSMutableDictionary* dict;
+@property (copy, readwrite, nonatomic) NSMutableDictionary *dict;
 
 @end
 
@@ -73,18 +73,18 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (id)initWithDictionary:(NSDictionary*)dict {
-	NSMutableDictionary* mutableDict = nil;
+	NSMutableDictionary *mutableDict = nil;
 	if(dict == nil) {
 		mutableDict = [NSMutableDictionary dictionary];
 	} else {
 		mutableDict = [dict mutableCopy];
 	}
 	
-	NSString* type = mutableDict[@"type"];
+	NSString *type = mutableDict[@"type"];
 	if(!IsEmptyString(type)) {
-		NSString* firstChar = [[type substringToIndex:1] uppercaseString];
-		NSString* remainingChars = [type substringFromIndex:1];
-		NSString* className = [NSString stringWithFormat:@"C%@%@Item", firstChar, remainingChars];
+		NSString *firstChar = [[type substringToIndex:1] uppercaseString];
+		NSString *remainingChars = [type substringFromIndex:1];
+		NSString *className = [NSString stringWithFormat:@"C%@%@Item", firstChar, remainingChars];
 		self = (CItem*)[NSObject newInstanceOfClassNamed:className];
 		NSAssert1(self != nil, @"Attempt to instantiate undefined class:%@", className);
 		CLogTrace(@"C_ITEM", @"%@ alloc", self);
@@ -101,7 +101,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
         _selected = [_dict[@"selected"] boolValue];
 		_validatesAutomatically = [_dict[@"validatesAutomatically"] boolValue];
 		
-		NSArray* subdicts = _dict[@"subitems"];
+		NSArray *subdicts = _dict[@"subitems"];
 		subitems__ = [NSMutableArray array];
 		for(NSDictionary *subdict in subdicts) {
             CItem *subitem = [CItem newItemWithDictionary:subdict];
@@ -116,9 +116,9 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (id)initWithJSONRepresentation:(NSString *)json {
-	NSData* data = [json dataUsingEncoding:NSUTF8StringEncoding];
-	NSError* error = nil;
-	NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+	NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
+	NSError *error = nil;
+	NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
 	NSAssert1(error == nil, @"Parsing JSON:%@", error);
 	if(self = [self initWithDictionary:dict]) {
 		
@@ -127,10 +127,10 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 + (CItem*)newItemForResourceName:(NSString*)resourceName withExtension:(NSString*)extension {
-	NSURL* url = [[NSBundle mainBundle] URLForResource:resourceName withExtension:extension];
-	NSData* data = [NSData dataWithContentsOfURL:url];
-	NSString* json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	CItem* item = [CItem newItemWithJSONRepresentation:json];
+	NSURL *url = [[NSBundle mainBundle] URLForResource:resourceName withExtension:extension];
+	NSData *data = [NSData dataWithContentsOfURL:url];
+	NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	CItem *item = [CItem newItemWithJSONRepresentation:json];
 	return item;
 }
 
@@ -158,7 +158,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-	CItem* item = [[[self class] allocWithZone:zone] init];
+	CItem *item = [[[self class] allocWithZone:zone] init];
 	
 	item->_dict = [self.dict mutableCopy];
 	item->_error = [self.error copy];
@@ -175,8 +175,8 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
     item->_selectable = self.selectable;
     item->_selected = self.selected;
     
-	for(CItem* subitem in self.subitems) {
-		CItem* subitemCopy = [subitem copy];
+	for(CItem *subitem in self.subitems) {
+		CItem *subitemCopy = [subitem copy];
 		[item addSubitem:subitemCopy];
 	}
 	
@@ -206,7 +206,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (void)activateAll {
-	for(CItem* subitem in self.subitems) {
+	for(CItem *subitem in self.subitems) {
 		[subitem activateAll];
 	}
 	[self activate];
@@ -221,7 +221,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (void)deactivateAll {
-	for(CItem* subitem in self.subitems) {
+	for(CItem *subitem in self.subitems) {
 		[subitem deactivateAll];
 	}
 	[self deactivate];
@@ -229,8 +229,8 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 #pragma mark - Utilities
 
-- (void)enumerateItemsToRootUsingBlock:(void (^)(CItem* item, BOOL* stop))block {
-	CItem* item = self;
+- (void)enumerateItemsToRootUsingBlock:(void (^)(CItem *item, BOOL *stop))block {
+	CItem *item = self;
 	BOOL stop = NO;
 	while(!stop && item != nil) {
 		block(item, &stop);
@@ -239,7 +239,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (CItem*)rootItem {
-	__block CItem* result = nil;
+	__block CItem *result = nil;
 	
 	[self enumerateItemsToRootUsingBlock:^(CItem *item, BOOL *stop) {
 		result = item;
@@ -252,7 +252,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	NSUInteger result = NSNotFound;
 	
 	NSUInteger rowIndex = 0;
-	for(CItem* subitem in self.subitems) {
+	for(CItem *subitem in self.subitems) {
 		if([key isEqualToString:subitem.key]) {
 			result = rowIndex;
 			break;
@@ -275,7 +275,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (NSString*)keyPathRelativeToItem:(CItem*)ancestorItem {
-	NSMutableArray* components = [NSMutableArray array];
+	NSMutableArray *components = [NSMutableArray array];
 	[self enumerateItemsToRootUsingBlock:^(CItem *item, BOOL *stop) {
 		if([item.key isEqualToString:ancestorItem.key]) {
 			*stop = YES;
@@ -283,7 +283,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 			[components insertObject:item.key atIndex:0];
 		}
 	}];
-	NSString* keyPath = StringByJoiningNonemptyStringsWithString(components, @".");
+	NSString *keyPath = StringByJoiningNonemptyStringsWithString(components, @".");
 	return keyPath;
 }
 
@@ -306,6 +306,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 - (NSArray*)descriptionStringsCompact:(BOOL)compact {
 	return @[[self formatValueForKey:@"title" compact:compact],
              [self formatValueForKey:@"key" compact:compact],
+             [self formatValueForKey:@"analyticsName" compact:compact],
              [self formatValueForKey:@"value" compact:compact],
              [self formatBoolValueForKey:@"required" compact:compact hidingIf:NO],
              [self formatBoolValueForKey:@"hidden" compact:compact hidingIf:NO],
@@ -321,7 +322,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (NSString*)descriptionCompact:(BOOL)compact {
-	NSString* content = StringByJoiningNonemptyStringsWithString([self descriptionStringsCompact:compact], @" ");
+	NSString *content = StringByJoiningNonemptyStringsWithString([self descriptionStringsCompact:compact], @" ");
 	return [NSString stringWithFormat:@"%@ = { %@ }", [super description], content];
 }
 
@@ -330,8 +331,8 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (void)printHierarchy:(CItem*)item indent:(NSString*)indent level:(int)level {
-	NSString* activePrefix = self.active ? @"! " : @"  ";
-	NSString* statePrefix;
+	NSString *activePrefix = self.active ? @"! " : @"  ";
+	NSString *statePrefix;
 	switch(item.state) {
 		case CItemStateNeedsValidation:
 			statePrefix = @"?    ";
@@ -349,15 +350,15 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
             statePrefix = @"?????";
             break;
 	}
-	NSString* newPrefix = item.fresh ? @"FRS" : @"   ";
-	NSString* reqPrefix = item.required ? @"REQ" : @"   ";
+	NSString *newPrefix = item.fresh ? @"FRS" : @"   ";
+	NSString *reqPrefix = item.required ? @"REQ" : @"   ";
 	
-	NSArray* prefixes = @[activePrefix, statePrefix, newPrefix, reqPrefix];
-	NSString* prefix = [NSString stringWithComponents:prefixes separator:@" "];
+	NSArray *prefixes = @[activePrefix, statePrefix, newPrefix, reqPrefix];
+	NSString *prefix = [NSString stringWithComponents:prefixes separator:@" "];
 	CLogPrint(@"%@%@%3d %@", prefix, indent, level, [item descriptionCompact:YES]);
 	if(item.subitems.count > 0) {
 		indent = [indent stringByAppendingString:@"  |"];
-		for(CItem* subitem in item.subitems) {
+		for(CItem *subitem in item.subitems) {
 			[self printHierarchy:subitem indent:indent level:level+1];
 		}
 	}
@@ -438,7 +439,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexes forKey:@"subitems"];
 	[subitems__ insertObjects:array atIndexes:indexes];
     BSELF;
-	[array enumerateObjectsUsingBlock:^(CItem* item, NSUInteger idx, BOOL *stop) {
+	[array enumerateObjectsUsingBlock:^(CItem *item, NSUInteger idx, BOOL *stop) {
 		item.superitem = self;
 		if(bself.active) {
 			[item activateAll];
@@ -456,7 +457,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexes forKey:@"subitems"];
     BSELF;
 	[indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-		CItem* item = self->subitems__[idx];
+		CItem *item = self->subitems__[idx];
 		if(bself.active) {
 			[item deactivateAll];
 		}
@@ -475,6 +476,10 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 - (void)addSubitems:(NSArray*)items {
 	[self.subitems addObjectsFromArray:items];
+}
+
+- (void)insertSubitem:(CItem *)item atIndex:(NSUInteger)index {
+    [self.subitems insertObject:item atIndex:index];
 }
 
 - (void)removeFromSuperitem {
@@ -563,8 +568,8 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		} else {
 			self.superitem.needsValidation = YES;
 		}
-		for(NSString* keyPath in self.dependentKeyPaths) {
-			CItem* otherItem = [self.rootItem valueForKeyPath:keyPath];
+		for(NSString *keyPath in self.dependentKeyPaths) {
+			CItem *otherItem = [self.rootItem valueForKeyPath:keyPath];
             if(!otherItem.fresh) {
                 otherItem.needsValidation = YES;
             }
@@ -706,6 +711,16 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	(self.dict)[@"key"] = Ennull(key);
 }
 
+#pragma mark - @property analyticsName
+
+- (NSString*)analyticsName {
+	return Denull((self.dict)[@"analyticsName"]);
+}
+
+- (void)setAnalyticsName:(NSString *)analyticsName {
+	(self.dict)[@"analyticsName"] = Ennull(analyticsName);
+}
+
 #pragma mark - @property value
 
 + (BOOL)automaticallyNotifiesObserversOfValue {
@@ -790,12 +805,12 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 - (id)transformDummyValue:(id)dummyValue {
     if([dummyValue isKindOfClass:[NSString class]]) {
         NSString *originalDummyValue = (NSString *)dummyValue;
-        NSMutableString* modifiedDummyValue = [originalDummyValue mutableCopy];
+        NSMutableString *modifiedDummyValue = [originalDummyValue mutableCopy];
         for(NSUInteger i = 0; i < originalDummyValue.length; i++) {
             NSRange r = NSMakeRange(i, 1);
-            NSString* c = [originalDummyValue substringWithRange:r];
+            NSString *c = [originalDummyValue substringWithRange:r];
             if([c isEqualToString:@"#"]) {
-                NSString* s = [NSString stringWithFormat:@"%d", (int)arciem::random_range(0, 10)];
+                NSString *s = [NSString stringWithFormat:@"%d", (int)arciem::random_range(0, 10)];
                 [modifiedDummyValue replaceCharactersInRange:r withString:s];
             }
         }
@@ -851,7 +866,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 
 // may be overridden
 - (NSError*)validate {
-	NSError* error = nil;
+	NSError *error = nil;
 	
 	if(self.required && self.empty) {
 		error = [NSError errorWithDomain:CItemErrorDomain code:CItemErrorRequired localizedFormat:@"%@ is required.", self.title];
@@ -859,7 +874,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 	
 	if(error == nil) {
 		if(!IsEmptyString(self.mustEqualKeyPath)) {
-			CItem* otherItem = [self.rootItem valueForKeyPath:self.mustEqualKeyPath];
+			CItem *otherItem = [self.rootItem valueForKeyPath:self.mustEqualKeyPath];
 			if(!Same(self.value, otherItem.value)) {
 				error = [NSError errorWithDomain:CItemErrorDomain code:CItemErrorNotEqualToOtherItem localizedFormat:@"Must be the same as %@.", otherItem.title];
 			}
@@ -869,8 +884,8 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 // may be overridden
-- (void)validateWithCompletion:(void (^)(NSError* error))completion {
-	NSError* error = [self validate];
+- (void)validateWithCompletion:(void (^)(NSError *error))completion {
+	NSError *error = [self validate];
 	completion(error);
 }
 
@@ -892,11 +907,11 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		[self incrementValidationsInProgress];
 		self.error = nil;
 		self.subitemErrors = nil;
-		for(CItem* subitem in self.subitems) {
+		for(CItem *subitem in self.subitems) {
 			[subitem validateSubtree];
 		}
 		BSELF;
-		[self validateWithCompletion:^(NSError* error) {
+		[self validateWithCompletion:^(NSError *error) {
 			if(error != nil) {
 				bself.error = error;
 				[bself.superitem addSubitemError:error];
@@ -909,7 +924,7 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 		}];
 	} else {
 		[self.superitem addSubitemError:self.error];
-		for(NSError* subitemError in self.subitemErrors) {
+		for(NSError *subitemError in self.subitemErrors) {
 			[self.superitem addSubitemError:subitemError];
 		}
 	}
@@ -959,9 +974,9 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (NSArray*)visibleSubitems {
-	NSMutableArray* result = [NSMutableArray array];
+	NSMutableArray *result = [NSMutableArray array];
 	
-	for(CItem* subitem in self.subitems) {
+	for(CItem *subitem in self.subitems) {
 		if(!subitem.hidden) {
 			[result addObject:subitem];
 		}
@@ -1027,19 +1042,19 @@ NSString* const CItemErrorDomain = @"CItemErrorDomain";
 #pragma mark - @property jsonRepresentation
 
 - (NSString*)jsonRepresentation {
-	NSMutableDictionary* outDict = [NSMutableDictionary dictionary];
+	NSMutableDictionary *outDict = [NSMutableDictionary dictionary];
 	
-	for(NSString* key in self.dict) {
+	for(NSString *key in self.dict) {
 		id obj = (self.dict)[key];
 		if([obj respondsToSelector:@selector(jsonRepresentation)]) {
 			obj = [obj jsonRepresentation];
 		}
 		outDict[key] = obj;
 	}
-	NSError* error = nil;
-	NSData* outData = [NSJSONSerialization dataWithJSONObject:outDict options:0 error:&error];
+	NSError *error = nil;
+	NSData *outData = [NSJSONSerialization dataWithJSONObject:outDict options:0 error:&error];
 	NSAssert2(error == nil, @"Creating JSON Representation of %@: %@", self, error);
-	NSString* outString = [NSString stringWithData:outData encoding:NSUTF8StringEncoding];
+	NSString *outString = [NSString stringWithData:outData encoding:NSUTF8StringEncoding];
 	return outString;
 }
 
