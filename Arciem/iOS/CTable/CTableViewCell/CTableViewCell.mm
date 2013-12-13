@@ -70,7 +70,7 @@
 }
 
 - (UILabel *)textLabel {
-    CLogWarn(nil, @"%@ Don't use -textLabel, use -titleLabel");
+    CLogWarn(nil, @"%@ Don't use -textLabel, use -titleLabel", self);
     return [super textLabel];
 }
 
