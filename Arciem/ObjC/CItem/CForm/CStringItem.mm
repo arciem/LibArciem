@@ -316,7 +316,8 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 - (BOOL)shouldChangeCharactersInRange:(NSRange)range inString:(NSString*)fromString toReplacementString:(NSString*)string resultString:(NSString**)resultString
 {
-	NSString* toString = [EnsureRealString(fromString) stringByReplacingCharactersInRange:range withString:string];
+    NSString *realFromString = EnsureRealString(fromString);
+	NSString *toString = [realFromString stringByReplacingCharactersInRange:ClampRangeWithinString(range, realFromString) withString:string];
 	if(resultString != nil) {
 		if([self.autocapitalizationType isEqualToString:@"all"]) {
 			toString = [toString uppercaseString];

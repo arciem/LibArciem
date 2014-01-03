@@ -23,6 +23,20 @@
 using namespace std;
 #endif
 
+NSRange ClampRangeWithinString(NSRange range, NSString *s) {
+    NSRange resultRange = range;
+    
+    if(s.length == 0) {
+        resultRange = NSMakeRange(0, 0);
+    } else if(range.location >= s.length) {
+        resultRange = NSMakeRange(s.length, 0);
+    } else if(range.location + range.length > s.length) {
+        resultRange = NSMakeRange(range.location, s.length - range.location);
+    }
+
+    return resultRange;
+}
+
 NSString* EnsureRealString(NSString* s)
 {
 	return Denull(s) == nil ? @"" : s;

@@ -27,6 +27,8 @@ NSString* EnsureRealString(NSString* s);
 NSString* AllowStringToBeNil(NSString* s);
 BOOL IsEmptyString(NSString* s);
 
+NSRange ClampRangeWithinString(NSRange range, NSString *s);
+
 NSString* TrimWhitespaceFromStart(NSString* str);
 NSString* TrimWhitespaceFromEnd(NSString* str);
 NSString* TrimWhitespaceFromStartAndEnd(NSString* str);

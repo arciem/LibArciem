@@ -136,8 +136,20 @@ static const CGFloat kNotifierBarHeight = 30.0;
 #pragma mark - CNotifierBarDelegate
 
 - (void)notifierBar:(CNotifierBar *)notifierBar willChangeFrame:(CGRect)newFrame animated:(BOOL)animated {
+
+#if 1
+    UIView *view = self.bodyViewController.view;
+    CGFloat top = CGRectGetMaxY(newFrame);
+    CGFloat delta = top - view.top;
+	CGRect frame = self.bodyViewController.view.frame;
+	frame.origin.y = top;
+	frame.size.height -= delta;
+	view.frame = frame;
+#else
+    // KLUDGE: This causes a crash occasionally due to memory deallocation of cframe. Trying it manually above as a workaround.
     CFrame *bodyViewControllerFrame = self.bodyViewController.view.cframe;
     bodyViewControllerFrame.flexibleTop = CGRectGetMaxY(newFrame);
+#endif
 }
 
 - (void)notifierBar:(CNotifierBar *)notifierBar wantsStatusBarStyle:(UIStatusBarStyle)statusBarStyle animated:(BOOL)animated {
