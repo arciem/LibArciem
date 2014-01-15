@@ -76,13 +76,10 @@ static NSTimeInterval sLastRemoveTime = 0;
 			if(self.hasIndicator) {
 				[[CNetworkActivityIndicator sharedIndicator] addActivity];
 			}
-			UIApplication* app = [UIApplication sharedApplication];
-			// avoid retain cycle on self
-			NSValue* val = [NSValue valueWithNonretainedObject:self];
-			self.backgroundTaskIdentifier = [app beginBackgroundTaskWithExpirationHandler:^{
-				CNetworkActivity* s = (CNetworkActivity*)[val nonretainedObjectValue];
-				[app endBackgroundTask:s.backgroundTaskIdentifier];
-				s.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+            BSELF;
+			self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+				[[UIApplication sharedApplication] endBackgroundTask:bself.backgroundTaskIdentifier];
+				bself.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
 			}];
 		}
 	}
