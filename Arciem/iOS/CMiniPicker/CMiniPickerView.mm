@@ -292,6 +292,14 @@ static __strong CSystemSound *sDetentSound = nil;
     return width;
 }
 
+- (CGFloat)maxHeightForMiniPickerViewCell:(CMiniPickerViewCell *)cell {
+    CGFloat maxHeight = 0.0;
+    if(self.model.subitems.count <= 1) {
+        maxHeight = self.height;
+    }
+    return maxHeight;
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

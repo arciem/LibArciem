@@ -36,6 +36,7 @@
 @required
 
 - (CGFloat)miniPickerViewCell:(CMiniPickerViewCell*)cell widthForColumnIndex:(NSUInteger)index;
+- (CGFloat)maxHeightForMiniPickerViewCell:(CMiniPickerViewCell *)cell;
 
 @end
 

@@ -27,16 +27,17 @@
 {
 	UIFont* font = nil;
 	CGFloat maxHeight = self.bounds.size.height;
-	CGFloat maxWidth = self.bounds.size.width;
+//	CGFloat maxWidth = self.bounds.size.width;
+    CGSize constraintSize = CGSizeMake(self.bounds.size.width, MAXFLOAT);
 	for(CGFloat fontSize = largeFontSize; fontSize >= self.font.pointSize * self.minimumScaleFactor; --fontSize) {
 		font = [self.font fontWithSize:fontSize];
-		CGSize size = [self.text sizeWithFont:font constrainedToSize:self.bounds.size lineBreakMode:self.lineBreakMode];
+		CGSize size = [self.text sizeWithFont:font constrainedToSize:constraintSize lineBreakMode:self.lineBreakMode];
 		CGFloat lines = size.height / font.leading;
-		if(lines > self.numberOfLines) {
+		if(self.numberOfLines != 0 && lines > self.numberOfLines) {
 			continue;
 		}
 		size.height -= font.descender;
-		if(size.height < maxHeight && size.width < maxWidth) {
+		if(size.height <= maxHeight) {
 			break;
 		}
 	}

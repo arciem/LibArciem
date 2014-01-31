@@ -22,6 +22,7 @@
 #import "CGUtils.h"
 #import "DeviceUtils.h"
 #import "ObjectUtils.h"
+#import "UILabelUtils.h"
 #include <cmath>
 #include <algorithm>
 
@@ -45,7 +46,7 @@
     label.backgroundColor = [UIColor clearColor];
 #if 0
 #warning DEBUG ONLY
-    label.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.25];
+    label.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.25];
 #endif
     if(self.onDarkBackground) {
         label.textColor = [UIColor whiteColor];
@@ -77,7 +78,10 @@
     self.columnLabels = [NSMutableArray new];
     
     self.userInteractionEnabled = NO;
-//    self.debugColor = [UIColor redColor];
+#if 0
+#warning DEBUG ONLY
+    self.debugColor = [UIColor redColor];
+#endif
     self.margins = UIEdgeInsetsMake(5, 10, 5, 10);
 }
 
@@ -86,16 +90,18 @@
     [super layoutSubviews];
     
     CGFloat usableWidth = self.width - self.margins.left - self.margins.right;
+    CGFloat maxHeight = [self.delegate maxHeightForMiniPickerViewCell:self];
 
     __block CGFloat columnRight = self.width - self.margins.right;
     __block CGFloat remainingWidth = usableWidth;
+    BSELF;
     [self.columnLabels enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UILabel* label, NSUInteger idx, BOOL *stop) {
         CGFloat columnWidth;
         if(idx == 0) {
             columnWidth = remainingWidth;
         } else {
             const CGFloat kGutter = 20;
-            columnWidth = [self.delegate miniPickerViewCell:self widthForColumnIndex:idx];
+            columnWidth = [bself.delegate miniPickerViewCell:bself widthForColumnIndex:idx];
             if(columnWidth == 0.0) {
                 CGRect rect = [label.attributedText boundingRectWithSize:CGSizeMake(remainingWidth, 1000) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
                 CGSize size = CGSizeMake(std::ceilf(rect.size.width), std::ceilf(rect.size.height));
@@ -108,13 +114,22 @@
                 columnWidth = remainingWidth;
             }
         }
-        CFrame* cframe = label.cframe;
-        cframe.right = columnRight;
-        cframe.top = self.margins.top;
-        cframe.width = columnWidth;
-        cframe.height = 1000;
-        [cframe sizeToFit];
-        cframe.width = columnWidth;
+        
+        {
+            CFrame* cframe = label.cframe;
+            cframe.right = columnRight;
+            cframe.top = bself.margins.top;
+            cframe.width = columnWidth;
+            cframe.height = 5000;
+            [cframe sizeToFit];
+            cframe.width = columnWidth;
+        }
+        if(maxHeight > 0.0 && label.height > maxHeight) {
+            label.cframe.height = maxHeight;
+            label.font = bself.font;
+            [label adjustFontSizeToFit:bself.font.pointSize];
+        }
+        
         columnRight -= columnWidth;
         remainingWidth -= columnWidth;
     }];
@@ -138,6 +153,10 @@
         NSAttributedString *string = column.text;
         if(self.font != nil) {
             NSMutableAttributedString *mstring = [string mutableCopy];
+#if 0
+#warning DEBUG ONLY
+            [mstring appendAttributedString:mstring];
+#endif
             [mstring addAttribute:NSFontAttributeName value:self.font range:NSMakeRange(0, mstring.length)];
             string = [mstring copy];
         }
