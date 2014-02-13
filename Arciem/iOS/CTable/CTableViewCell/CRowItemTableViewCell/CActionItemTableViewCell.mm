@@ -21,8 +21,7 @@
 
 @implementation CActionItemTableViewCell
 
-- (void)syncToRowItem
-{
+- (void)syncToRowItem {
 	[super syncToRowItem];
 
     [self syncTitleLabelToRowItem];
@@ -31,13 +30,11 @@
 //    self.accessoryView.hidden = self.rowItem.disabled;
 }
 
-- (CActionTableRowItem*)tableActionItem
-{
+- (CActionTableRowItem*)tableActionItem {
 	return (CActionTableRowItem*)self.rowItem;
 }
 
-- (void)setTableActionItem:(CActionTableRowItem *)tableActionItem
-{
+- (void)setTableActionItem:(CActionTableRowItem *)tableActionItem {
 	self.rowItem = tableActionItem;
 }
 
@@ -52,6 +49,10 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.accessoryView.alpha = self.rowItem.disabled ? 0.5 : 1.0;
+}
+
+- (NSUInteger)validationViewsNeeded {
+	return 0;
 }
 
 @end

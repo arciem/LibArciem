@@ -64,6 +64,8 @@
 		0374652C17449CA70007F56D /* CDisclosureIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0374652A17449CA70007F56D /* CDisclosureIndicator.mm */; };
 		0378B89517EA9A6E0073D97E /* CShieldView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0378B89317EA9A6E0073D97E /* CShieldView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0378B89617EA9A6E0073D97E /* CShieldView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0378B89417EA9A6E0073D97E /* CShieldView.mm */; };
+		0383E97318A19CF4003A6BF5 /* CButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 0383E97118A19CF4003A6BF5 /* CButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0383E97418A19CF4003A6BF5 /* CButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0383E97218A19CF4003A6BF5 /* CButton.mm */; };
 		039DC11316CB300D00B52A7F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC11216CB300D00B52A7F /* Foundation.framework */; };
 		039DC12116CB32B000B52A7F /* Arciem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC11716CB300D00B52A7F /* Arciem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC13E16CB398A00B52A7F /* CLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12416CB398A00B52A7F /* CLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -429,6 +431,8 @@
 		0374652A17449CA70007F56D /* CDisclosureIndicator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDisclosureIndicator.mm; sourceTree = "<group>"; };
 		0378B89317EA9A6E0073D97E /* CShieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShieldView.h; sourceTree = "<group>"; };
 		0378B89417EA9A6E0073D97E /* CShieldView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CShieldView.mm; sourceTree = "<group>"; };
+		0383E97118A19CF4003A6BF5 /* CButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CButton.h; sourceTree = "<group>"; };
+		0383E97218A19CF4003A6BF5 /* CButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CButton.mm; sourceTree = "<group>"; };
 		039DC10F16CB300D00B52A7F /* libArciem.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libArciem.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		039DC11216CB300D00B52A7F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		039DC11616CB300D00B52A7F /* Arciem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Arciem-Prefix.pch"; path = "Arciem/Arciem-Prefix.pch"; sourceTree = "<group>"; };
@@ -1159,6 +1163,8 @@
 				03AC9080174E680700781374 /* UIViewControllerUtils.mm */,
 				034305EF180938380091133D /* CTextFieldTableViewCell.h */,
 				034305F0180938380091133D /* CTextFieldTableViewCell.mm */,
+				0383E97118A19CF4003A6BF5 /* CButton.h */,
+				0383E97218A19CF4003A6BF5 /* CButton.mm */,
 			);
 			path = Essentials;
 			sourceTree = "<group>";
@@ -1376,6 +1382,7 @@
 				039DC1BB16CB3DF700B52A7F /* stringstreams.hpp in Headers */,
 				039DC12116CB32B000B52A7F /* Arciem.h in Headers */,
 				030F12011816A1660098DC59 /* CSectionItem.h in Headers */,
+				0383E97318A19CF4003A6BF5 /* CButton.h in Headers */,
 				039DC13E16CB398A00B52A7F /* CLog.h in Headers */,
 				039DC14016CB398A00B52A7F /* CObserver.h in Headers */,
 				039DC14216CB398A00B52A7F /* CSwitch.h in Headers */,
@@ -1730,6 +1737,7 @@
 				039DC29416CB662100B52A7F /* CGradientView.mm in Sources */,
 				039DC29616CB662100B52A7F /* CGUtils.mm in Sources */,
 				039DC29816CB662100B52A7F /* CImageView.mm in Sources */,
+				0383E97418A19CF4003A6BF5 /* CButton.mm in Sources */,
 				039DC29A16CB662100B52A7F /* CNavigationBar.mm in Sources */,
 				039DC29C16CB662100B52A7F /* CNavigationController.mm in Sources */,
 				039DC29E16CB662100B52A7F /* CTapToDismissKeyboardManager.mm in Sources */,

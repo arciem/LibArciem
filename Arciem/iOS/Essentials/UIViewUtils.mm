@@ -117,13 +117,33 @@ static const NSTimeInterval kAnimationDuration = 0.4;
     } repeatInterval:1.0];
 }
 
-- (void)printViewHierarchy:(UIView*)view indent:(NSString*)indent level:(int)level
-{
-    NSString *scrollViewPrefix = [view isKindOfClass:[UIScrollView class]] ? @"*" : @" ";
-    NSString *translatesPrefix = view.translatesAutoresizingMaskIntoConstraints ? @">" : @" ";
-    NSString *ambiguousPrefix = view.hasAmbiguousLayout ? @"?" : @" ";
+- (void)walkViewHierarchyWithLevel:(NSUInteger)level block:(void (^)(UIView *view, NSUInteger level, NSUInteger idx, BOOL *stop))block {
+    [self.subviews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
+        block(view, level, idx, stop);
+        if(!(*stop)) {
+            [view walkViewHierarchyWithLevel:(level + 1) block:block];
+        }
+    }];
+}
 
-    NSString* prefix = [NSString stringWithFormat:@"%@%@%@", scrollViewPrefix, translatesPrefix, ambiguousPrefix];
+- (void)walkViewHierarchyWithBlock:(void (^)(UIView *view, NSUInteger level, NSUInteger idx, BOOL *stop))block {
+    [self walkViewHierarchyWithLevel:0 block:block];
+}
+
+- (void)printViewHierarchy:(UIView*)view indent:(NSString*)indent level:(NSUInteger)level
+{
+    NSString *scrollViewPrefix = @"⬜️";
+    if([view isKindOfClass:[UIScrollView class]]) {
+        scrollViewPrefix = @"🔃";
+        UIScrollView *scrollView = (UIScrollView *)view;
+        if(scrollView.scrollsToTop) {
+            scrollViewPrefix = @"🔝";
+        }
+    }
+    NSString *translatesPrefix = view.translatesAutoresizingMaskIntoConstraints ? @"⬜️" : @"✅";
+    NSString *ambiguousPrefix = view.hasAmbiguousLayout ? @"❓" : @"⬜️";
+
+    NSString* prefix = [NSString stringWithFormat:@"%@ %@ %@", scrollViewPrefix, translatesPrefix, ambiguousPrefix];
 
     NSString *tintColorString = @"";
     if(IsOSVersionAtLeast7()) {
@@ -138,7 +158,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
     NSString *debugNameString = IsEmptyString(debugName) ? @"" : [NSString stringWithFormat:@"%@: ", debugName];
 	CLogPrint(@"%@%@%3d %@%@ %@ %@ %@", prefix, indent, level, debugNameString, view, opaqueString, backgroundColorString, tintColorString);
     
-	indent = [indent stringByAppendingString:@"  |"];
+	indent = [indent stringByAppendingString:@"  │"];
 	for(UIView* subview in view.subviews) {
 		[self printViewHierarchy:subview indent:indent level:level+1];
 	}
@@ -150,20 +170,20 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (void)printConstraintsHierarchy:(UIView*)view indent:(NSString*)indent level:(int)level
 {
-    NSString *translatesPrefix = view.translatesAutoresizingMaskIntoConstraints ? @">" : @" ";
-    NSString *ambiguousPrefix = view.hasAmbiguousLayout ? @"?" : @" ";
-    NSString* prefix = [NSString stringWithFormat:@"%@%@", translatesPrefix, ambiguousPrefix];
+    NSString *translatesPrefix = view.translatesAutoresizingMaskIntoConstraints ? @"⬜️" : @"✅";
+    NSString *ambiguousPrefix = view.hasAmbiguousLayout ? @"❓" : @"⬜️";
+    NSString* prefix = [NSString stringWithFormat:@"%@ %@ ", translatesPrefix, ambiguousPrefix];
     NSString *debugName = view.debugName;
     NSString *debugNameString = IsEmptyString(debugName) ? @"" : [NSString stringWithFormat:@"%@: ", debugName];
     NSString *viewString = [NSString stringWithFormat:@"%@<%p>", NSStringFromClass([view class]), view];
     NSString *frameString = [NSString stringWithFormat:@"(%g %g; %g %g)", view.left, view.top, view.width, view.height];
-	CLogPrint(@"%@%@%3d %@%@ %@", prefix, indent, level, debugNameString, viewString, frameString);
+	CLogPrint(@"%@⬜️ %@%3d %@%@ %@", prefix, indent, level, debugNameString, viewString, frameString);
     for(NSLayoutConstraint *constraint in view.constraints) {
         NSString *layoutGroupName = constraint.layoutGroupName;
         NSString *layoutGroupNameString = IsEmptyString(layoutGroupName) ? @"" : [NSString stringWithFormat:@"%@: ", layoutGroupName];
-        CLogPrint(@"  %@  |    %@%@", indent, layoutGroupNameString, constraint);
+        CLogPrint(@"⬜️ ⬜️ 🔵 %@  │    %@%@", indent, layoutGroupNameString, constraint);
     }
-	indent = [indent stringByAppendingString:@"  |"];
+	indent = [indent stringByAppendingString:@"  │"];
 	for(UIView* subview in view.subviews) {
 		[self printConstraintsHierarchy:subview indent:indent level:level+1];
 	}

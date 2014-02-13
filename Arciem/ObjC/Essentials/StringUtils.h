@@ -65,6 +65,9 @@ NSString* StringByTruncatingString(NSString* string, NSUInteger maxCharacters);
 NSString* StringByDuplicatingCharacter(unichar character, NSUInteger length);
 NSString* BulletStringForString(NSString* string);
 
+NSString* StringByNormalizingToSearchableCharacters(NSString *s);
+NSRegularExpression* RegularExpressionForMatchingAllTokens(NSString *s);
+
 NSString* StringFromBool(BOOL b, BOOL cStyle = NO);
 NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle = NO);
 NSString* StringByUnescapingEntitiesInString(NSString* s);
@@ -128,7 +131,7 @@ NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* 
 
 @interface NSRegularExpression (CRegularExpressionAdditions)
 
-+ (NSRegularExpression*)regularExpressionWithPattern:(NSString *)pattern;
++ (NSRegularExpression*)newRegularExpressionWithPattern:(NSString *)pattern;
 
 @end
 

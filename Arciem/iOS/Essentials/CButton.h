@@ -18,11 +18,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CTextFieldTableViewCell : UITableViewCell
+@interface CButton : UIButton
 
-- (id)initWithReuseIdentifier:(NSString*)reuseIdentifier;
-
-@property(readonly, nonatomic) UITextField* textField;
-@property(nonatomic) CGFloat textFieldLeft;
+@property (nonatomic) UIImage *tintedImage;
+@property (nonatomic) UIColor *defaultTintColor;
 
 @end

@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import "DateTimeUtils.h"
+#import "StringUtils.h"
 
 double TimeIntervalMinutes(NSTimeInterval t)
 {
@@ -322,7 +323,7 @@ static NSDateFormatter *ascTimeDateFormatter = nil;
 	NSError* error = nil;
 	static NSRegularExpression* regex = nil;
 	if(regex == nil) {
-		regex = [NSRegularExpression regularExpressionWithPattern:@"^P(?=\\w*\\d)(?:(\\d+)Y|Y)?(?:(\\d+)M|M)?(?:(\\d+)D|D)?(?:T(?:(\\d+)H|H)?(?:(\\d+)M|M)?(?:((?:\\d+)(?:\\.\\d{1,2})?)?S|S)?)?$" options:0 error:&error];	
+		regex = [NSRegularExpression newRegularExpressionWithPattern:@"^P(?=\\w*\\d)(?:(\\d+)Y|Y)?(?:(\\d+)M|M)?(?:(\\d+)D|D)?(?:T(?:(\\d+)H|H)?(?:(\\d+)M|M)?(?:((?:\\d+)(?:\\.\\d{1,2})?)?S|S)?)?$"];
 	}
 	NSAssert1(error == nil, @"Error:%@", error);
 	NSTextCheckingResult* match = [regex firstMatchInString:str options:0 range:NSMakeRange(0, str.length)];

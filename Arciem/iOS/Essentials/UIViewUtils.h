@@ -42,6 +42,8 @@ extern NSString* const sTapInBackgroundNotification;
 - (void)bringSubview:(UIView*)view aboveSubview:(UIView*)siblingSubview;
 - (void)sendSubview:(UIView*)view belowSubview:(UIView*)siblingSubview;
 
+- (void)walkViewHierarchyWithBlock:(void (^)(UIView *view, NSUInteger level, NSUInteger idx, BOOL *stop))block;
+
 - (void)printViewHierarchy;
 - (void)printConstraintsHierarchy;
 - (void)printResponderChain;
