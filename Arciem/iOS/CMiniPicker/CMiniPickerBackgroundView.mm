@@ -78,7 +78,7 @@
     [super drawRect:rect];
     
     if(!IsOSVersionAtLeast7()) {
-        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextRef context = UIGraphicsGetCurrentContextChecked();
         //    ContextFillRectColor(context, self.bounds, SharedBlackColor());
         ContextFillRectColor(context, self.bounds, self.backgroundColor.CGColor);
         

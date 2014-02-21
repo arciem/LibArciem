@@ -66,7 +66,7 @@ static const CGFloat kFrameWidth = 8.0;
 {
     [super drawRect:rect];
     
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef context = UIGraphicsGetCurrentContextChecked();
     UIGraphicsPushContext(context);
     
     CGRect boundsRect = self.bounds;

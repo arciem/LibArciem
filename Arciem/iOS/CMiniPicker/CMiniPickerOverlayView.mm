@@ -136,7 +136,7 @@
 {
     [super drawRect:rect];
     
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef context = UIGraphicsGetCurrentContextChecked();
     
     CGRect glossRect = self.overlayRect;
     CGRect bevelRectTop1, bevelRectTop2, bevelRectBottom;

@@ -57,7 +57,7 @@ static NSString* const kClassLogTag = @"SHIELD_VIEW";
 - (void)drawRect:(CGRect)rect {
 	[super drawRect:rect];
     
-	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextRef context = UIGraphicsGetCurrentContextChecked();
 	
 	CGContextSaveGState(context);
     ContextFillShieldGradient(context, self.bounds);

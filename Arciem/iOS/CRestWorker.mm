@@ -32,7 +32,7 @@ NSString *const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 
 NSString *const CRestJSONMIMEType = @"application/json";
 
-@interface CRestWorker ()
+@interface CRestWorker () <NSURLSessionTaskDelegate>
 
 @property (nonatomic) NSURLConnection *connection;
 @property (readonly, nonatomic) NSURLSession *session;
@@ -169,7 +169,7 @@ NSString *const CRestJSONMIMEType = @"application/json";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-        _session = [NSURLSession sessionWithConfiguration:config delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+        _session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     });
     return _session;
 }
@@ -350,6 +350,35 @@ NSString *const CRestJSONMIMEType = @"application/json";
         
         [self stopWorkerWaitLoop];
 	}
+}
+
+#pragma mark - NSURLSessionTaskDelegate
+
+// The x-redirect-auth header gives the server the chance to tell the client what credentials to use to authenticate to the redirected URL. This may frequently (but not necessarily) be the same credentials that were used for the first URL.
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest *))completionHandler
+{
+    NSString *authToken = response.allHeaderFields[@"x-redirect-auth"];
+    if(authToken != nil) {
+        NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc] initWithURL:request.URL cachePolicy:request.cachePolicy timeoutInterval:request.timeoutInterval];
+        [request.allHTTPHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString *name, NSString *value, BOOL *stop) {
+            if(![name isEqualToString:@"x-redirect-auth"]) {
+                [mutableRequest addValue:value forHTTPHeaderField:name];
+            }
+        }];
+        [mutableRequest addValue:authToken forHTTPHeaderField:@"Authorization"];
+
+        request = mutableRequest;
+    }
+
+#if 0
+#warning DEBUG ONLY
+    CLogDebug(nil, @"old URL:%@", task.originalRequest.URL);
+    CLogDebug(nil, @"new URL:%@", request.URL);
+    CLogDebug(nil, @"old request headers:%@", task.originalRequest.allHTTPHeaderFields);
+    CLogDebug(nil, @"new request headers:%@", request.allHTTPHeaderFields);
+#endif
+    
+    completionHandler(request);
 }
 
 @end

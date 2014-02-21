@@ -959,3 +959,9 @@ CGPathRef CreatePathReversed(CGPathRef path)
     CGPathRelease(mutableReversedPath);
     return reversedPath;
 }
+
+CGContextRef UIGraphicsGetCurrentContextChecked() {
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    NSCAssert(context != nil, @"Graphics context is nil.");
+    return context;
+}

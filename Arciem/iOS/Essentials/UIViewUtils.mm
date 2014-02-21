@@ -35,17 +35,17 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (void)fillRect:(CGRect)rect color:(UIColor*)color
 {
-	ContextFillRectColor(UIGraphicsGetCurrentContext(), rect, color.CGColor);
+	ContextFillRectColor(UIGraphicsGetCurrentContextChecked(), rect, color.CGColor);
 }
 
 - (void)drawCrossedBox:(CGRect)rect color:(UIColor*)color lineWidth:(float)lineWidth originIndicators:(BOOL)originIndicators
 {
-	ContextDrawCrossedBox(UIGraphicsGetCurrentContext(), rect, color.CGColor, lineWidth, originIndicators);
+	ContextDrawCrossedBox(UIGraphicsGetCurrentContextChecked(), rect, color.CGColor, lineWidth, originIndicators);
 }
 
 - (void)drawCrossedBox:(CGRect)rect color:(UIColor*)color lineWidth:(float)lineWidth
 {
-	ContextDrawCrossedBox(UIGraphicsGetCurrentContext(), rect, color.CGColor, lineWidth, NO);
+	ContextDrawCrossedBox(UIGraphicsGetCurrentContextChecked(), rect, color.CGColor, lineWidth, NO);
 }
 
 - (void)sendTapInBackgroundNotification
@@ -533,7 +533,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (void)tableHeaderFillWithTintColor:(UIColor*)tintColor
 {
-	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextRef context = UIGraphicsGetCurrentContextChecked();
 
 	CGColorRef tintColorRGB = CreateColorByConvertingToRGB(tintColor.CGColor);
 	CGColorRef darkColor = CreateColorByDarkening(tintColorRGB, 0.1);

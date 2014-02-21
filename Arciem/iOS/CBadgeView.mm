@@ -20,6 +20,7 @@
 #import "ObjectUtils.h"
 #import "StringUtils.h"
 #import "DeviceUtils.h"
+#import "CGUtils.h"
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
@@ -310,7 +311,7 @@ static const CGFloat kFontSize = 14.0;
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
 
-	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextRef context = UIGraphicsGetCurrentContextChecked();
 
     CGContextSaveGState(context);
     CGSize offset = self.imageOffset;

@@ -285,7 +285,7 @@
 
 	UIGraphicsBeginImageContext( self.size );
 
-		CGContextRef context = UIGraphicsGetCurrentContext();
+		CGContextRef context = UIGraphicsGetCurrentContextChecked();
 
 		CGContextSaveGState(context);
 
@@ -658,7 +658,7 @@
 + (CGContextRef)beginImageContextWithSize:(CGSize)size opaque:(BOOL)opaque scale:(CGFloat)scale flipped:(BOOL)flipped
 {
     UIGraphicsBeginImageContextWithOptions(size, opaque, scale);
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef context = UIGraphicsGetCurrentContextChecked();
     if(flipped) {
         CGContextTranslateCTM(context, 0.0, size.height);
         CGContextScaleCTM(context, 1.0, -1.0);

@@ -18,6 +18,8 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 
+CGContextRef UIGraphicsGetCurrentContextChecked();
+
 CGColorSpaceRef SharedColorSpaceDeviceRGB();
 CGColorSpaceRef SharedColorSpaceDeviceGray();
 
