@@ -334,10 +334,35 @@ NSString *const CRestJSONMIMEType = @"application/json";
 	}
 }
 
-- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
+- (NSURLRequest *)handleRedirectReponse:(NSHTTPURLResponse *)redirectResponse withProposedRequest:(NSURLRequest *)request {
+    NSString *authToken = redirectResponse.allHeaderFields[@"x-redirect-auth"];
+    if(authToken != nil) {
+        NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc] initWithURL:request.URL cachePolicy:request.cachePolicy timeoutInterval:request.timeoutInterval];
+        [request.allHTTPHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString *name, NSString *value, BOOL *stop) {
+            if(![name isEqualToString:@"x-redirect-auth"]) {
+                [mutableRequest addValue:value forHTTPHeaderField:name];
+            }
+        }];
+        [mutableRequest addValue:authToken forHTTPHeaderField:@"Authorization"];
+        
+        request = mutableRequest;
+    }
+    
+#if 0
+#warning DEBUG ONLY
+    CLogDebug(nil, @"old URL:%@", task.originalRequest.URL);
+    CLogDebug(nil, @"new URL:%@", request.URL);
+    CLogDebug(nil, @"old request headers:%@", task.originalRequest.allHTTPHeaderFields);
+    CLogDebug(nil, @"new request headers:%@", request.allHTTPHeaderFields);
+#endif
+
+    return request;
+}
+
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSHTTPURLResponse *)redirectResponse
 {
     CLogTrace(@"C_REST_WORKER", @"%@ connection:%@ willSendRequest:%@ redirectResponse:%@ redirectResponseURL:%@", self, connection, request, redirectResponse, redirectResponse.URL);
-    return request;
+    return [self handleRedirectReponse:redirectResponse withProposedRequest:request];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -355,29 +380,9 @@ NSString *const CRestJSONMIMEType = @"application/json";
 #pragma mark - NSURLSessionTaskDelegate
 
 // The x-redirect-auth header gives the server the chance to tell the client what credentials to use to authenticate to the redirected URL. This may frequently (but not necessarily) be the same credentials that were used for the first URL.
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest *))completionHandler
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)redirectResponse newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest *))completionHandler
 {
-    NSString *authToken = response.allHeaderFields[@"x-redirect-auth"];
-    if(authToken != nil) {
-        NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc] initWithURL:request.URL cachePolicy:request.cachePolicy timeoutInterval:request.timeoutInterval];
-        [request.allHTTPHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString *name, NSString *value, BOOL *stop) {
-            if(![name isEqualToString:@"x-redirect-auth"]) {
-                [mutableRequest addValue:value forHTTPHeaderField:name];
-            }
-        }];
-        [mutableRequest addValue:authToken forHTTPHeaderField:@"Authorization"];
-
-        request = mutableRequest;
-    }
-
-#if 0
-#warning DEBUG ONLY
-    CLogDebug(nil, @"old URL:%@", task.originalRequest.URL);
-    CLogDebug(nil, @"new URL:%@", request.URL);
-    CLogDebug(nil, @"old request headers:%@", task.originalRequest.allHTTPHeaderFields);
-    CLogDebug(nil, @"new request headers:%@", request.allHTTPHeaderFields);
-#endif
-    
+    request = [self handleRedirectReponse:redirectResponse withProposedRequest:request];
     completionHandler(request);
 }
 
