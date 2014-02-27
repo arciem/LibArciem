@@ -458,7 +458,7 @@
 			}
 		}
 		cell.rowItem = rowItem;
-	}
+    }
 	
 	return cell;
 }

@@ -145,18 +145,26 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
     NSString* prefix = [NSString stringWithFormat:@"%@ %@ %@", scrollViewPrefix, translatesPrefix, ambiguousPrefix];
 
-    NSString *tintColorString = @"";
-    if(IsOSVersionAtLeast7()) {
-        tintColorString = [NSString stringWithFormat:@"tintColor:%@", view.tintColor];
+    NSMutableArray *auxInfoStrings = [NSMutableArray new];
+
+    [auxInfoStrings addObject:[NSString stringWithFormat:@"opaque:%@", StringFromBool(view.opaque)]];
+
+    [auxInfoStrings addObject:[NSString stringWithFormat:@"backgroundColor:%@", view.backgroundColor]];
+    
+    if([view isKindOfClass:[UILabel class]]) {
+        [auxInfoStrings addObject:[NSString stringWithFormat:@"textColor:%@", ((UILabel *)view).textColor]];
     }
     
-    NSString *opaqueString = [NSString stringWithFormat:@"opaque:%@", StringFromBool(view.opaque)];
-    
-    NSString *backgroundColorString = [NSString stringWithFormat:@"backgroundColor:%@", view.backgroundColor];
-    
+    if(IsOSVersionAtLeast7()) {
+        [auxInfoStrings addObject:[NSString stringWithFormat:@"tintColor:%@", view.tintColor]];
+    }
+
+    [auxInfoStrings addObject:[NSString stringWithFormat:@"alpha:%f", view.alpha]];
+
     NSString *debugName = view.debugName;
     NSString *debugNameString = IsEmptyString(debugName) ? @"" : [NSString stringWithFormat:@"%@: ", debugName];
-	CLogPrint(@"%@%@%3d %@%@ %@ %@ %@", prefix, indent, level, debugNameString, view, opaqueString, backgroundColorString, tintColorString);
+    NSString *auxInfoString = StringByJoiningNonemptyStringsWithString(auxInfoStrings, @" ");
+	CLogPrint(@"%@%@%3d %@%@ %@", prefix, indent, level, debugNameString, view, auxInfoString);
     
 	indent = [indent stringByAppendingString:@"  │"];
 	for(UIView* subview in view.subviews) {

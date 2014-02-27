@@ -249,7 +249,7 @@ static BOOL sTestingMode;
 	
 	[self syncValidationViews];
 
-	[self setNeedsLayout];
+	[self setNeedsUpdateConstraints];
 
 //	CLogDebug(nil, @"%@ synced", rowItem);
 }
