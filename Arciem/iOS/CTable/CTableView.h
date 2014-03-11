@@ -16,8 +16,12 @@
  
  *******************************************************************************/
 
-#import "CRowItemTableViewCell.h"
+#import <UIKit/UIKit.h>
 
-@interface CSwitchTableViewCell : CRowItemTableViewCell
+
+@interface CTableView : UITableView {
+}
+
+- (void)reloadDataDeferred;
 
 @end

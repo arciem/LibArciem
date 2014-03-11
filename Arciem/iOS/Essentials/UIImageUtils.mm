@@ -221,7 +221,7 @@
 {
 	UIImage* result = nil;
 	
-	UIGraphicsBeginImageContext( size );
+	UIGraphicsBeginImageContextWithOptions( size, NO, self.scale );
 		[self drawInRect:CGRectMake( 0, 0, size.width, size.height )];
 		result = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();

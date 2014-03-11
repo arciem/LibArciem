@@ -58,6 +58,8 @@
 #import "CWorker.h"
 #import "CWorkerManager.h"
 #import "URLRequestUtils.h"
+#import "CFixedDate.h"
+#import "XMLUtils.h"
 
 // Essentials
 #import "CLog.h"
@@ -133,8 +135,13 @@
 #import "CTextFieldTableViewCell.h"
 #import "CButton.h"
 
-// CTableManager
+// CTable
 #import "CTableManager.h"
+#import "CTableView.h"
+#import "CTableViewCell.h"
+#import "CTextFieldTableViewCell.h"
+#import "CTextFieldItemTableViewCell.h"
+#import "CSwitchTableViewCell.h"
 
 // Dev
 #import "CDebugOverlayView.h"
