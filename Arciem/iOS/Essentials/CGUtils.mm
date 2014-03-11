@@ -360,7 +360,7 @@ CGGradientRef GradientCreateEaseOut(CGColorRef color1, CGColorRef color2, CGColo
 {
     CGColorRef *colorValues = new CGColorRef[steps];
     for(NSUInteger step = 0; step < steps; step++) {
-        CGFloat t = arciem::normalize((CGFloat)step, 0.0f, (CGFloat)steps - 1);
+        CGFloat t = arciem::normalize((CGFloat)step, (CGFloat)0.0, (CGFloat)steps - 1);
         CGFloat phi = std::powf(arciem::ease_out(t), 0.5);
         //        CLogDebug(nil, @"step:%d t:%f phi:%f", step, t, phi);
         colorValues[step] = CreateColorByInterpolatingColors(color1, color2, phi);
@@ -382,7 +382,7 @@ CGGradientRef GradientCreateSine(CGColorRef color1, CGColorRef color2, CGColorSp
 {
     CGColorRef *colorValues = new CGColorRef[steps];
     for(NSUInteger step = 0; step < steps; step++) {
-        CGFloat t = arciem::normalize((CGFloat)step, 0.0f, (CGFloat)steps - 1);
+        CGFloat t = arciem::normalize((CGFloat)step, (CGFloat)0.0, (CGFloat)steps - 1);
         CGFloat phi = std::powf(std::fabsf(std::sinf(t * M_PI)), exponent);
 //        CLogDebug(nil, @"step:%d t:%f phi:%f", step, t, phi);
         colorValues[step] = CreateColorByInterpolatingColors(color1, color2, phi);

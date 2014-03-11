@@ -398,7 +398,7 @@
     
     BOOL done = NO;
     do {
-        value = arciem::denormalize(0.5f, minValue, maxValue);
+        value = arciem::denormalize((CGFloat)0.5, minValue, maxValue);
         NSComparisonResult result = test(value);
         switch (result) {
             case NSOrderedAscending:

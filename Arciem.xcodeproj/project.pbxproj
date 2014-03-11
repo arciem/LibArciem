@@ -32,6 +32,16 @@
 		033A75F517274B8F0045933D /* AppUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033A75F317274B8F0045933D /* AppUtils.mm */; };
 		033A75FE172754ED0045933D /* CKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 033A75FC172754ED0045933D /* CKeychainUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		033A75FF172754ED0045933D /* CKeychainUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033A75FD172754ED0045933D /* CKeychainUtils.mm */; };
+		034408461791074A005FF2D3 /* CFixedDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 034408441791074A005FF2D3 /* CFixedDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		034408471791074A005FF2D3 /* CFixedDate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 034408451791074A005FF2D3 /* CFixedDate.mm */; };
+		0344084A1791197D005FF2D3 /* CTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 034408481791197D005FF2D3 /* CTableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0344084B1791197D005FF2D3 /* CTableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 034408491791197D005FF2D3 /* CTableView.mm */; };
+		0344084F17911AD4005FF2D3 /* CTextFieldTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0344084D17911AD4005FF2D3 /* CTextFieldTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0344085017911AD4005FF2D3 /* CTextFieldTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0344084E17911AD4005FF2D3 /* CTextFieldTableViewCell.mm */; };
+		034408531791288C005FF2D3 /* CSwitchTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 034408511791288C005FF2D3 /* CSwitchTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		034408541791288C005FF2D3 /* CSwitchTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 034408521791288C005FF2D3 /* CSwitchTableViewCell.mm */; };
+		0344085717912DF0005FF2D3 /* XMLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 0344085517912DF0005FF2D3 /* XMLUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0344085817912DF0005FF2D3 /* XMLUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0344085617912DF0005FF2D3 /* XMLUtils.mm */; };
 		0362A8F5174FF48C005AA5ED /* CWorkerDebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0362A8F1174FF48C005AA5ED /* CWorkerDebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0362A8F6174FF48C005AA5ED /* CWorkerDebugView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */; };
 		0362A8F7174FF48C005AA5ED /* CWorkerManagerDebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -372,6 +382,16 @@
 		033A75F317274B8F0045933D /* AppUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppUtils.mm; sourceTree = "<group>"; };
 		033A75FC172754ED0045933D /* CKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKeychainUtils.h; sourceTree = "<group>"; };
 		033A75FD172754ED0045933D /* CKeychainUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CKeychainUtils.mm; sourceTree = "<group>"; };
+		034408441791074A005FF2D3 /* CFixedDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFixedDate.h; sourceTree = "<group>"; };
+		034408451791074A005FF2D3 /* CFixedDate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CFixedDate.mm; sourceTree = "<group>"; };
+		034408481791197D005FF2D3 /* CTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTableView.h; sourceTree = "<group>"; };
+		034408491791197D005FF2D3 /* CTableView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableView.mm; sourceTree = "<group>"; };
+		0344084D17911AD4005FF2D3 /* CTextFieldTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextFieldTableViewCell.h; sourceTree = "<group>"; };
+		0344084E17911AD4005FF2D3 /* CTextFieldTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTextFieldTableViewCell.mm; sourceTree = "<group>"; };
+		034408511791288C005FF2D3 /* CSwitchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSwitchTableViewCell.h; sourceTree = "<group>"; };
+		034408521791288C005FF2D3 /* CSwitchTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSwitchTableViewCell.mm; sourceTree = "<group>"; };
+		0344085517912DF0005FF2D3 /* XMLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLUtils.h; sourceTree = "<group>"; };
+		0344085617912DF0005FF2D3 /* XMLUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = XMLUtils.mm; sourceTree = "<group>"; };
 		0362A8F1174FF48C005AA5ED /* CWorkerDebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CWorkerDebugView.h; path = CWorker/CWorkerDebugView.h; sourceTree = "<group>"; };
 		0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CWorkerDebugView.mm; path = CWorker/CWorkerDebugView.mm; sourceTree = "<group>"; };
 		0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CWorkerManagerDebugView.h; path = CWorker/CWorkerManagerDebugView.h; sourceTree = "<group>"; };
@@ -805,6 +825,10 @@
 				039DC1C416CB4B1500B52A7F /* CSlowCall.mm */,
 				039DC1C516CB4B1600B52A7F /* NSIndexPathUtils.h */,
 				039DC1C616CB4B1600B52A7F /* NSIndexPathUtils.mm */,
+				034408441791074A005FF2D3 /* CFixedDate.h */,
+				034408451791074A005FF2D3 /* CFixedDate.mm */,
+				0344085517912DF0005FF2D3 /* XMLUtils.h */,
+				0344085617912DF0005FF2D3 /* XMLUtils.mm */,
 			);
 			name = ObjC;
 			path = Arciem/ObjC;
@@ -1121,6 +1145,8 @@
 				039DC2C616CB689900B52A7F /* CMonthAndYearPicker.mm */,
 				039DC2C716CB689900B52A7F /* CTableManager.h */,
 				039DC2C816CB689900B52A7F /* CTableManager.mm */,
+				034408481791197D005FF2D3 /* CTableView.h */,
+				034408491791197D005FF2D3 /* CTableView.mm */,
 				039DC2C916CB689900B52A7F /* CTableViewCell */,
 			);
 			path = CTable;
@@ -1132,6 +1158,10 @@
 				039DC2CA16CB689900B52A7F /* CRowItemTableViewCell */,
 				039DC2E316CB689900B52A7F /* CTableViewCell.h */,
 				039DC2E416CB689900B52A7F /* CTableViewCell.mm */,
+				0344084D17911AD4005FF2D3 /* CTextFieldTableViewCell.h */,
+				0344084E17911AD4005FF2D3 /* CTextFieldTableViewCell.mm */,
+				034408511791288C005FF2D3 /* CSwitchTableViewCell.h */,
+				034408521791288C005FF2D3 /* CSwitchTableViewCell.mm */,
 			);
 			path = CTableViewCell;
 			sourceTree = "<group>";
@@ -1280,7 +1310,9 @@
 			files = (
 				039DC19416CB3DF700B52A7F /* align.hpp in Headers */,
 				039DC19616CB3DF700B52A7F /* arc2.hpp in Headers */,
+				0344084F17911AD4005FF2D3 /* CTextFieldTableViewCell.h in Headers */,
 				039DC19816CB3DF700B52A7F /* area.hpp in Headers */,
+				034408531791288C005FF2D3 /* CSwitchTableViewCell.h in Headers */,
 				039DC19A16CB3DF700B52A7F /* areai.hpp in Headers */,
 				039DC19C16CB3DF700B52A7F /* bezier2.hpp in Headers */,
 				039DC19E16CB3DF700B52A7F /* bezier2_list.hpp in Headers */,
@@ -1302,6 +1334,7 @@
 				039DC14016CB398A00B52A7F /* CObserver.h in Headers */,
 				039DC14216CB398A00B52A7F /* CSwitch.h in Headers */,
 				039DC14416CB398A00B52A7F /* DateTimeUtils.h in Headers */,
+				0344085717912DF0005FF2D3 /* XMLUtils.h in Headers */,
 				039DC14616CB398A00B52A7F /* ErrorUtils.h in Headers */,
 				039DC14816CB398A00B52A7F /* Geom.h in Headers */,
 				039DC14A16CB398A00B52A7F /* I18nUtils.h in Headers */,
@@ -1329,6 +1362,7 @@
 				039DC21416CB4C4400B52A7F /* CDateItem.h in Headers */,
 				039DC21616CB4C4400B52A7F /* CEmailItem.h in Headers */,
 				039DC21816CB4C4400B52A7F /* CForm.h in Headers */,
+				034408461791074A005FF2D3 /* CFixedDate.h in Headers */,
 				039DC21A16CB4C4400B52A7F /* CMultiChoiceItem.h in Headers */,
 				039DC21C16CB4C4400B52A7F /* CMultiTextItem.h in Headers */,
 				039DC21E16CB4C4400B52A7F /* CNoteItem.h in Headers */,
@@ -1384,6 +1418,7 @@
 				039DC2E516CB689900B52A7F /* CFieldValidationView.h in Headers */,
 				039DC2E716CB689900B52A7F /* CMonthAndYearPicker.h in Headers */,
 				039DC2E916CB689900B52A7F /* CTableManager.h in Headers */,
+				0344084A1791197D005FF2D3 /* CTableView.h in Headers */,
 				039DC2EB16CB689900B52A7F /* CActionItemTableViewCell.h in Headers */,
 				039DC2ED16CB689900B52A7F /* CAddRepeatingItemTableViewCell.h in Headers */,
 				039DC2EF16CB689900B52A7F /* CBooleanTableViewCell.h in Headers */,
@@ -1566,6 +1601,7 @@
 				039DC14F16CB398A00B52A7F /* JSONUtils.mm in Sources */,
 				039DC15116CB398A00B52A7F /* ObjectUtils.mm in Sources */,
 				039DC15316CB398A00B52A7F /* PropertyUtils.mm in Sources */,
+				0344085817912DF0005FF2D3 /* XMLUtils.mm in Sources */,
 				039DC15516CB398A00B52A7F /* StringUtils.mm in Sources */,
 				039DC15716CB398A00B52A7F /* ThreadUtils.mm in Sources */,
 				039DC18F16CB3DF700B52A7F /* random.cpp in Sources */,
@@ -1584,6 +1620,7 @@
 				039DC1AB16CB3DF700B52A7F /* point2.cpp in Sources */,
 				039DC1AD16CB3DF700B52A7F /* point2_list.cpp in Sources */,
 				039DC1AF16CB3DF700B52A7F /* point2i.cpp in Sources */,
+				0344084B1791197D005FF2D3 /* CTableView.mm in Sources */,
 				039DC1B116CB3DF700B52A7F /* point3.cpp in Sources */,
 				039DC1B316CB3DF700B52A7F /* volume.cpp in Sources */,
 				039DC1B516CB3DF700B52A7F /* wedge2.cpp in Sources */,
@@ -1606,9 +1643,11 @@
 				039DC22316CB4C4400B52A7F /* CPhoneItem.mm in Sources */,
 				039DC22516CB4C4400B52A7F /* CRepeatingItem.mm in Sources */,
 				039DC22716CB4C4400B52A7F /* CSpacerItem.mm in Sources */,
+				0344085017911AD4005FF2D3 /* CTextFieldTableViewCell.mm in Sources */,
 				039DC22916CB4C4400B52A7F /* CStringItem.mm in Sources */,
 				039DC22B16CB4C4400B52A7F /* CSubmitItem.mm in Sources */,
 				039DC22D16CB4C4400B52A7F /* CItem.mm in Sources */,
+				034408471791074A005FF2D3 /* CFixedDate.mm in Sources */,
 				039DC22F16CB4C4400B52A7F /* CTableItem.mm in Sources */,
 				039DC23116CB4C4400B52A7F /* CTableActionItem.mm in Sources */,
 				039DC23316CB4C4400B52A7F /* CTableAddRepeatingItem.mm in Sources */,
@@ -1691,6 +1730,7 @@
 				03F9446916E9735D00F9FEF3 /* CMiniPickerView.mm in Sources */,
 				03F9446B16E9735D00F9FEF3 /* CMiniPickerViewCell.mm in Sources */,
 				03258715171CA8F800AE084E /* CNetworkController.mm in Sources */,
+				034408541791288C005FF2D3 /* CSwitchTableViewCell.mm in Sources */,
 				033A75F517274B8F0045933D /* AppUtils.mm in Sources */,
 				033A75FF172754ED0045933D /* CKeychainUtils.mm in Sources */,
 				03F263241734D99D0078F41D /* CSidebarContainerViewController.mm in Sources */,
@@ -1756,6 +1796,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1788,6 +1829,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

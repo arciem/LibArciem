@@ -215,7 +215,7 @@
 {
 	UIImage* result = nil;
 	
-	UIGraphicsBeginImageContext( size );
+	UIGraphicsBeginImageContextWithOptions( size, NO, self.scale );
 		[self drawInRect:CGRectMake( 0, 0, size.width, size.height )];
 		result = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
@@ -227,7 +227,7 @@
 {
 	UIImage* result = nil;
 	
-	UIGraphicsBeginImageContext( imageSize );
+	UIGraphicsBeginImageContextWithOptions( imageSize, NO, self.scale );
 
 		CGContextRef context = UIGraphicsGetCurrentContext();
 		CGRect bounds;
