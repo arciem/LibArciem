@@ -34,7 +34,7 @@ public:
 	delta3() : dx(0.0), dy(0.0), dz(0.0) { }
 	delta3(double d) : dx(d), dy(d), dz(d) { }
 	delta3(double dx, double dy, double dz) : dx(dx), dy(dy), dz(dz) { }
-	delta3(delta3 const& d) : dx(d.dx), dy(d.dy), dz(d.dz) { }
+//	delta3(delta3 const& d) : dx(d.dx), dy(d.dy), dz(d.dz) { }
 
 	//
 	// mutators

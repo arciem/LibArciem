@@ -61,6 +61,7 @@ static const CGFloat kShadowWidth = 15.0;
 @synthesize rightSwipeRightRecognizer = _rightSwipeRightRecognizer;
 @synthesize leftSwipeLeftRecognizer = _leftSwipeLeftRecognizer;
 @synthesize shieldView = _shieldView;
+@dynamic swipeSensitiveWidth;
 
 - (void)setup
 {

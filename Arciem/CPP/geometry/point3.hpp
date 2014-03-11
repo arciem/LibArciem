@@ -39,7 +39,7 @@ public:
 	//
 	point3() : x(0.0), y(0.0), z(0.0) { }
 	point3(double x, double y, double z) : x(x), y(y), z(z) { }
-	point3(point3 const& p) : x(p.x), y(p.y), z(p.z) { }
+//	point3(point3 const& p) : x(p.x), y(p.y), z(p.z) { }
 	point3(point2 const& p);
 
 	//
