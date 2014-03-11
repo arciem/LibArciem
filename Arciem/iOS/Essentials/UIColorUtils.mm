@@ -21,6 +21,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Geom.h"
 #import "StringUtils.h"
+#import "UIImageUtils.h"
 
 @implementation UIColor(UIColorUtils)
 
@@ -422,9 +423,7 @@
 	CGRect imageBounds = CGRectZero;
 	imageBounds.size = size;
 	
-	UIGraphicsBeginImageContextWithOptions(size, YES, scale);
-	
-	CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef context = [UIImage beginImageContextWithSize:size opaque:YES scale:scale flipped:NO];
 	
 	[color1 set];
 	CGContextFillRect(context, imageBounds);
@@ -441,7 +440,7 @@
 		arciem::swap(minX, maxX);
 	}
 	
-	UIBezierPath* path = [[UIBezierPath alloc] init];
+	UIBezierPath* path = [UIBezierPath new];
 	[path moveToPoint:CGPointMake(minX, minY)];
 	[path addLineToPoint:CGPointMake(midX, minY)];
 	[path addLineToPoint:CGPointMake(minX, midY)];
@@ -454,8 +453,8 @@
 	[color2 set];
 	[path fill];
 	
-	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+    UIImage *image = [UIImage endImageContext];
+    
 	return image;
 }
 

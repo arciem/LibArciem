@@ -16,14 +16,9 @@
  
  *******************************************************************************/
 
-#import "CView.h"
+#import "CShieldView.h"
 
 
-@interface CActivityShieldView : CView
-
-- (id)initWithParentView:(UIView *)parentView;
-- (void)addToParent;
-- (void)addToParentDelayed;
-- (void)removeFromParent;
+@interface CActivityShieldView : CShieldView
 
 @end

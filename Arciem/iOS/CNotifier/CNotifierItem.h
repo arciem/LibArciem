@@ -20,16 +20,20 @@
 
 @interface CNotifierItem : NSObject
 
-- (id)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler;
-+ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(void (^)(void))tapHandler;
+- (id)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(dispatch_block_t)tapHandler;
++ (CNotifierItem*)itemWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(dispatch_block_t)tapHandler;
 
 @property (copy, readonly, nonatomic) NSString* message;
 @property (readonly, nonatomic) NSInteger priority;
-@property (strong, readonly, nonatomic) NSDate* date;
-@property (strong, nonatomic) UIColor* tintColor;
+@property (readonly, nonatomic) NSDate* date;
+@property (nonatomic) UIColor* tintColor;
 @property (nonatomic) BOOL whiteText;
-@property (strong, nonatomic) UIFont* font;
+@property (nonatomic) UIFont* font;
 @property (nonatomic) NSTimeInterval duration;
 @property (copy, nonatomic) void (^tapHandler)(void);
+@property (readonly, nonatomic) BOOL visible; // KVC-compliant
+
+- (void)incrementVisible;
+- (void)decrementVisible;
 
 @end

@@ -22,31 +22,21 @@
 @interface CNetworkController ()
 
 @property (copy, readwrite, nonatomic) NSString* hostName;
-@property (strong, nonatomic) CReachability* networkReachability;
-@property (strong, nonatomic) CReachability* hostReachability;
-@property (strong, nonatomic) CNotifierItem* networkReachabilityNotifierItem;
-@property (strong, nonatomic) CNotifierItem* hostReachabilityNotifierItem;
-@property (strong, nonatomic) CNotifierItem* networkReachableNotifierItem;
-@property (strong, nonatomic) CNotifierItem* offlineNotifierItem;
+@property (nonatomic) CReachability* networkReachability;
+@property (nonatomic) CReachability* hostReachability;
+@property (nonatomic) CNotifierItem* networkReachabilityNotifierItem;
+@property (nonatomic) CNotifierItem* hostReachabilityNotifierItem;
+@property (nonatomic) CNotifierItem* networkReachableNotifierItem;
+@property (nonatomic) CNotifierItem* offlineNotifierItem;
 @property (strong, readwrite, nonatomic) CNotifier* notifier;
 @property (readwrite, nonatomic) BOOL isReachable;
-
-- (void)updateReachability;
 
 @end
 
 @implementation CNetworkController
 
-@synthesize hostName = hostName_;
-@synthesize networkReachability = networkReachability_;
-@synthesize hostReachability = hostReachability_;
-@synthesize networkReachabilityNotifierItem = networkReachabilityNotifierItem_;
-@synthesize hostReachabilityNotifierItem = hostReachabilityNotifierItem_;
-@synthesize networkReachableNotifierItem = networkReachableNotifierItem_;
-@synthesize offlineNotifierItem = offlineNotifierItem_;
-@synthesize notifier = notifier_;
-@synthesize isReachable = isReachable_;
-@dynamic isOffline;
+@synthesize hostName = _hostName;
+@synthesize isReachable = _isReachable;
 
 + (CNetworkController*)sharedNetworkController
 {
@@ -61,7 +51,7 @@
 - (id)init
 {
 	if(self = [super init]) {
-		self.notifier = [[CNotifier alloc] init];
+		self.notifier = [CNotifier new];
 		self.notifier.name = @"CNetworkController";
 
 		self.networkReachability = [CReachability reachabilityForInternetConnection];
@@ -74,14 +64,14 @@
 
 - (NSString*)hostName
 {
-	return hostName_;
+	return _hostName;
 }
 
 - (void)setHostName:(NSString *)hostName
 {
-	NSAssert1(hostName_ == nil, @"hostName already set to %@", hostName_);
-	hostName_ = hostName;
-	self.hostReachability = [CReachability reachabilityWithHostName:hostName_];
+	NSAssert1(_hostName == nil, @"hostName already set to %@", _hostName);
+	_hostName = hostName;
+	self.hostReachability = [CReachability reachabilityWithHostName:_hostName];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hostReachabilityChanged:) name:kReachabilityChangedNotification object:self.hostReachability];
 	[self.hostReachability startNotifier];
 }
@@ -154,14 +144,14 @@
 
 - (BOOL)isReachable
 {
-	return isReachable_;
+	return _isReachable;
 }
 
 - (void)setIsReachable:(BOOL)isReachable
 {
-	if(isReachable_ != isReachable) {
+	if(_isReachable != isReachable) {
 		[self willChangeValueForKey:@"isReachable"];
-		isReachable_ = isReachable;
+		_isReachable = isReachable;
 		[self didChangeValueForKey:@"isReachable"];
 	}
 }

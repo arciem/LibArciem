@@ -18,161 +18,203 @@
 
 #import "CRepeatingItem.h"
 #import "CTableRowItem.h"
-#import "CTableAddRepeatingItem.h"
+#import "CAddRepeatingTableRowItem.h"
+#import "CMultiTextItem.h"
+#import "CStringItem.h"
 #import "CObserver.h"
+#import "ObjectUtils.h"
 
 @interface CRepeatingItem ()
 
-@property (weak, nonatomic) CTableAddRepeatingItem* endRepeatRowItem;
-@property (strong, nonatomic) CObserver* subitemsObserver;
-@property (strong, nonatomic) CObserver* isHiddenObserver;
+@property (nonatomic) CAddRepeatingTableRowItem *endRepeatRowItem;
+@property (nonatomic) CObserver *subitemsObserver;
+@property (nonatomic) CObserver *hiddenObserver;
 
 @end
 
 @implementation CRepeatingItem
 
-@synthesize endRepeatRowItem = endRepeatRowItem_;
-@synthesize subitemsObserver = subitemsObserver_;
-@synthesize isHiddenObserver = isHiddenObserver_;
-@synthesize isReordering = isReordering_;
-
-- (void)setup
-{
+- (void)setup {
 	[super setup];
-	for(NSInteger i = 0; i < self.startRepeats; i++) {
-		[self addSubitemFromTemplate];
-	}
 }
 
-- (NSDictionary*)templateDict
-{
+- (NSDictionary*)templateDict {
 	return (self.dict)[@"template"];
 }
 
-- (void)setTemplateDict:(NSDictionary *)templateDict
-{
+- (void)setTemplateDict:(NSDictionary *)templateDict {
 	(self.dict)[@"template"] = templateDict;
 }
 
-- (CItem*)addSubitemFromTemplate
-{
-	CItem* item = [CItem itemWithDictionary:self.templateDict];
+- (CItem *)newItemFromTemplate {
+	return [CItem newItemWithDictionary:self.templateDict];
+}
+
+- (CItem*)newSubitemFromTemplate {
+	CItem *item = [self newItemFromTemplate];
+//    [self insertSubitem:item atIndex:0];
 	[self addSubitem:item];
 	return item;
 }
 
-- (NSUInteger)minValidRepeats
-{
+- (CItem *)newSubitemFromTemplateAtIndex:(NSUInteger)index {
+    CItem *item = [self newItemFromTemplate];
+    [self insertSubitem:item atIndex:index];
+    return item;
+}
+
+- (NSUInteger)minValidRepeats {
 	return [(self.dict)[@"minValidRepeats"] unsignedIntegerValue];
 }
 
-- (void)setMinValidRepeats:(NSUInteger)minValidRepeats
-{
+- (void)setMinValidRepeats:(NSUInteger)minValidRepeats {
 	(self.dict)[@"minValidRepeats"] = @(minValidRepeats);
 }
 
-- (NSUInteger)maxValidRepeats
-{
+- (NSUInteger)maxValidRepeats {
 	return [(self.dict)[@"maxValidRepeats"] unsignedIntegerValue];
 }
 
-- (void)setMaxValidRepeats:(NSUInteger)maxValidRepeats
-{
+- (void)setMaxValidRepeats:(NSUInteger)maxValidRepeats {
 	(self.dict)[@"maxValidRepeats"] = @(maxValidRepeats);
 }
 
-- (NSUInteger)startRepeats
-{
+- (NSUInteger)startRepeats {
 	return [(self.dict)[@"startRepeats"] unsignedIntegerValue];
 }
 
-- (void)setStartRepeats:(NSUInteger)startRepeats
-{
+- (void)setStartRepeats:(NSUInteger)startRepeats {
 	(self.dict)[@"startRepeats"] = @(startRepeats);
 }
 
-- (NSString*)addAnotherPrompt
-{
+- (NSUInteger)dummyStartRepeats {
+    return [(self.dict)[@"dummyStartRepeats"] unsignedIntegerValue];
+}
+
+- (void)setDummyStartRepeats:(NSUInteger)dummyStartRepeats {
+	(self.dict)[@"dummyStartRepeats"] = @(dummyStartRepeats);
+}
+
+- (BOOL)hasDummyStartRepeats {
+    return (self.dict)[@"dummyStartRepeats"] != nil;
+}
+
+- (NSString*)addAnotherPrompt {
 	return (self.dict)[@"addAnotherPrompt"];
 }
 
-- (void)setAddAnotherPrompt:(NSString *)addAnotherPrompt
-{
+- (void)setAddAnotherPrompt:(NSString *)addAnotherPrompt {
 	(self.dict)[@"addAnotherPrompt"] = [addAnotherPrompt copy]; 
 }
 
-- (void)activate
-{
+- (NSString*)addFirstPrompt {
+	return (self.dict)[@"addFirstPrompt"];
+}
+
+- (void)setAddFirstPrompt:(NSString *)addFirstPrompt {
+	(self.dict)[@"addFirstPrompt"] = [addFirstPrompt copy];
+}
+
+- (BOOL)addRequiresDrillDown {
+    return [(self.dict)[@"addRequiresDrillDown"] boolValue];
+}
+
+- (void)setAddRequiresDrillDown:(BOOL)addRequiresDrillDown {
+    (self.dict)[@"addRequiresDrillDown"] = @(addRequiresDrillDown);
+}
+
+- (void)activate {
 	[super activate];
 
+    while(self.subitems.count < self.startRepeats) {
+		[self newSubitemFromTemplate];
+	}
+
+    BSELF;
 	CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		if(!self.isReordering) {
+		if(!bself.isReordering) {
 			if(kind == NSKeyValueChangeSetting) {
-				[self.endRepeatRowItem.superitem.subitems removeAllObjects];
+				[bself.endRepeatRowItem.superitem.subitems removeAllObjects];
 			}
 			if(kind == NSKeyValueChangeInsertion || kind == NSKeyValueChangeSetting) {
-				NSArray* newModels = (NSArray*)newValue;
-				NSUInteger endRepeatRowItemIndex = [self.endRepeatRowItem.superitem.subitems indexOfObject:self.endRepeatRowItem];
+				NSArray *newModels = (NSArray*)newValue;
+				NSUInteger endRepeatRowItemIndex = [bself.endRepeatRowItem.superitem.subitems indexOfObject:bself.endRepeatRowItem];
 				NSAssert(endRepeatRowItemIndex != NSNotFound, @"Couldn't find endRepeatRowItem.");
 				NSAssert(newModels.count == 1, @"Only adding one at a time supported.");
-				for(CItem* item in newModels) {
-					NSArray* newRowItems = [item tableRowItems];
+				for(CItem *item in newModels) {
+					NSArray *newRowItems = [item tableRowItems];
 					NSAssert(newRowItems.count == 1, @"Only one item per row supported.");
-					CTableRowItem* newRowItem = newRowItems[0];
-					newRowItem.isDeletable = YES;
-					newRowItem.isReorderable = YES;
+					CTableRowItem *newRowItem = newRowItems[0];
+					newRowItem.deletable = YES;
+					newRowItem.reorderable = YES;
 					
 					NSUInteger indexInRepeatingItem = indexes.firstIndex;
-					NSUInteger indexInTable = endRepeatRowItemIndex - self.subitems.count + indexInRepeatingItem + 1;
-					NSIndexSet* newIndexes = [NSIndexSet indexSetWithIndex:indexInTable];
-					[self.endRepeatRowItem.superitem.subitems insertObjects:newRowItems atIndexes:newIndexes];
+					NSUInteger indexInTable = endRepeatRowItemIndex - bself.subitems.count + indexInRepeatingItem + 1;
+					NSIndexSet *newIndexes = [NSIndexSet indexSetWithIndex:indexInTable];
+					[bself.endRepeatRowItem.superitem.subitems insertObjects:newRowItems atIndexes:newIndexes];
 				}
 			} else if(kind == NSKeyValueChangeRemoval) {
-				NSArray* oldRowItems = (NSArray*)oldValue;
-				NSUInteger endRepeatRowItemIndex = [self.endRepeatRowItem.superitem.subitems indexOfObject:self.endRepeatRowItem];
+				NSArray *oldRowItems = (NSArray*)oldValue;
+				NSUInteger endRepeatRowItemIndex = [bself.endRepeatRowItem.superitem.subitems indexOfObject:bself.endRepeatRowItem];
 				NSAssert(endRepeatRowItemIndex != NSNotFound, @"Couldn't find endRepeatRowItem.");
 				
-				NSUInteger count = self.subitems.count + oldRowItems.count;
+				NSUInteger count = bself.subitems.count + oldRowItems.count;
 				
-				NSMutableIndexSet* adjustedIndexes = [NSMutableIndexSet indexSet];
+				NSMutableIndexSet *adjustedIndexes = [NSMutableIndexSet indexSet];
 				[indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 					NSUInteger index = endRepeatRowItemIndex - count + idx;
 					[adjustedIndexes addIndex:index];
 				}];
-				[self.endRepeatRowItem.superitem.subitems removeObjectsAtIndexes:adjustedIndexes];
+				[bself.endRepeatRowItem.superitem.subitems removeObjectsAtIndexes:adjustedIndexes];
 			} else {
 				NSAssert1(false, @"Unimplemented change kind:%d", kind);
 			}
 		}
 	};
-	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action];
-	self.isHiddenObserver = [CObserver observerWithKeyPath:@"isHidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		self.endRepeatRowItem.isHidden = [newValue boolValue];
+	self.subitemsObserver = [CObserver newObserverWithKeyPath:@"subitems" ofObject:self action:action];
+	self.hiddenObserver = [CObserver newObserverWithKeyPath:@"hidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		bself.endRepeatRowItem.hidden = [newValue boolValue];
 	}];
 }
 
-- (void)deactivate
-{
+- (void)deactivate {
 	self.subitemsObserver = nil;
-	self.isHiddenObserver = nil;
+	self.hiddenObserver = nil;
 	[super deactivate];
+}
+
+- (void)setValuesFromDummyValuesHierarchical:(BOOL)hierarchical {
+    [super setValuesFromDummyValuesHierarchical:hierarchical];
+    if(self.hasDummyStartRepeats) {
+        for(NSUInteger i = self.startRepeats; i < self.dummyStartRepeats; i++) {
+            [self newSubitemFromTemplate];
+        }
+        self.startRepeats = self.dummyStartRepeats;
+        [self.subitems enumerateObjectsUsingBlock:^(CItem *subitem, NSUInteger idx1, BOOL *stop) {
+            if([subitem isKindOfClass:[CMultiTextItem class]]) {
+                CMultiTextItem *multiTextItem = (CMultiTextItem *)subitem;
+                [multiTextItem.subitems enumerateObjectsUsingBlock:^(CStringItem *stringItem, NSUInteger idx2, BOOL *stop) {
+                    stringItem.stringValue = stringItem.dummyValues[idx1];
+                }];
+            }
+        }];
+    }
 }
 
 #pragma mark - Table Support
 
-- (NSArray*)tableRowItems
-{
-	NSMutableArray* rowItems = [NSMutableArray array];
+- (NSArray*)tableRowItems {
+	NSMutableArray *rowItems = [NSMutableArray array];
 	
-	for(CItem* initialItem in self.subitems) {
-		NSArray* newRowItems = [initialItem tableRowItems];
-		for(CTableRowItem* rowItem in newRowItems) {
-			rowItem.isDeletable = YES;
-			rowItem.isReorderable = YES;
+	for(CItem *initialItem in self.subitems) {
+		NSArray *newRowItems = [initialItem tableRowItems];
+		for(CTableRowItem *rowItem in newRowItems) {
+			rowItem.deletable = YES;
+			rowItem.reorderable = YES;
 			[rowItems addObject:rowItem];
 		}
 	}
-	self.endRepeatRowItem = [CTableAddRepeatingItem itemWithKey:self.key title:self.title repeatingItem:self];
+	self.endRepeatRowItem = [CAddRepeatingTableRowItem newItemWithKey:self.key title:self.title repeatingItem:self];
 	[rowItems addObject:self.endRepeatRowItem];
 	
 	return rowItems;

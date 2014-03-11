@@ -35,7 +35,7 @@ public:
     long nsec;
 };
 
-int xtime_get(struct xtime* xtp, int clock_type = TIME_UTC);
+int xtime_get(xtime* xtp, int clock_type = TIME_UTC);
 inline int xtime_cmp(const xtime& xt1, const xtime& xt2)
 {
     int res = (int)(xt1.sec - xt2.sec);

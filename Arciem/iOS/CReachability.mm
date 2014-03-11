@@ -80,12 +80,12 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	}
 }
 
-+ (CReachability*)reachabilityWithHostName: (NSString*) hostName;
++ (CReachability*)reachabilityWithHostName: (NSString*) hostName
 {
 	CReachability* retVal = NULL;
 	SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(NULL, [hostName UTF8String]);
 	if(reachability != NULL) {
-		retVal = [[self alloc] init];
+		retVal = [self new];
 		if(retVal != NULL) {
 			retVal.reachabilityRef = reachability;
 			retVal.localWiFiRef = NO;
@@ -94,12 +94,12 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	return retVal;
 }
 
-+ (CReachability*)reachabilityWithAddress: (const struct sockaddr_in*) hostAddress;
++ (CReachability*)reachabilityWithAddress: (const struct sockaddr_in*) hostAddress
 {
 	SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr*)hostAddress);
 	CReachability* retVal = NULL;
 	if(reachability != NULL) {
-		retVal = [[self alloc] init];
+		retVal = [self new];
 		if(retVal != NULL) {
 			retVal.reachabilityRef = reachability;
 			retVal.localWiFiRef = NO;
@@ -108,7 +108,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	return retVal;
 }
 
-+ (CReachability*)reachabilityForInternetConnection;
++ (CReachability*)reachabilityForInternetConnection
 {
 	struct sockaddr_in zeroAddress;
 	bzero(&zeroAddress, sizeof(zeroAddress));
@@ -117,7 +117,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	return [self reachabilityWithAddress:&zeroAddress];
 }
 
-+ (CReachability*)reachabilityForLocalWiFi;
++ (CReachability*)reachabilityForLocalWiFi
 {
 	struct sockaddr_in localWifiAddress;
 	bzero(&localWifiAddress, sizeof(localWifiAddress));
@@ -181,7 +181,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	return retVal;
 }
 
-- (BOOL)connectionRequired;
+- (BOOL)connectionRequired
 {
 	NSAssert(self.reachabilityRef != NULL, @"connectionRequired called with NULL reachabilityRef");
 	SCNetworkReachabilityFlags flags;

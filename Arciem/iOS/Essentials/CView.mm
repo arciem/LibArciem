@@ -25,18 +25,15 @@
 @interface CView ()
 
 @property (nonatomic) BOOL observingKeyboard;
-@property (strong, nonatomic) CTapToDismissKeyboardManager* tapToDismissKeyboardManager;
+@property (nonatomic) CTapToDismissKeyboardManager* tapToDismissKeyboardManager;
 
 @end
 
 @implementation CView
 
-@synthesize debugColor = debugColor_;
-@synthesize keyboardAdjustmentType = keyboardAdjustmentType_;
-@dynamic tapResignsFirstResponder;
-@synthesize tapToDismissKeyboardManager = tapToDismissKeyboardManager_;
-@synthesize layoutDelegate = layoutDelegate_;
-@synthesize observingKeyboard;
+@synthesize debugColor = _debugColor;
+@synthesize keyboardAdjustmentType = _keyboardAdjustmentType;
+@synthesize layoutView = _layoutView;
 
 #pragma mark - Lifecycle
 
@@ -44,10 +41,10 @@
 {
 //	CLogSetTagActive(@"C_VIEW", YES);
 }
+
 - (void)setup
 {
-	self.opaque = NO;
-	self.backgroundColor = [UIColor clearColor];
+    [self syncToLayoutView];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -72,12 +69,28 @@
 	self.keyboardAdjustmentType = kViewKeyboardAdjustmentTypeNone;
 }
 
+- (void)syncToLayoutView {
+    if(self.layoutView) {
+        self.opaque = NO;
+        self.backgroundColor = [UIColor clearColor];
+    }
+}
+
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
 	if([self.layoutDelegate respondsToSelector:@selector(viewLayoutSubviews:)]) {
 		[self.layoutDelegate viewLayoutSubviews:self];
 	}
+}
+
+- (BOOL)layoutView {
+    return _layoutView;
+}
+
+- (void)setLayoutView:(BOOL)layoutView {
+    _layoutView = layoutView;
+    [self syncToLayoutView];
 }
 
 #pragma mark - Drawing
@@ -92,8 +105,8 @@
 
 - (void)setDebugColor:(UIColor *)color
 {
-	if(debugColor_ != color) {
-		debugColor_ = color;
+	if(_debugColor != color) {
+		_debugColor = color;
 		[self setNeedsDisplay];
 	}
 }
@@ -120,13 +133,16 @@
 
 - (void)setKeyboardAdjustmentType:(CViewKeyboardAdjustmentType)aType
 {
-	if(keyboardAdjustmentType_ != aType) {
-		keyboardAdjustmentType_ = aType;
-		switch(keyboardAdjustmentType_) {
+	if(_keyboardAdjustmentType != aType) {
+		_keyboardAdjustmentType = aType;
+		switch(_keyboardAdjustmentType) {
 			case kViewKeyboardAdjustmentTypeNone:
 				[self stopObservingKeyboard];
 				break;
 			case kViewKeyboardAdjustmentTypeShrink:
+				[self startObservingKeyboard];
+				break;
+			case kViewKeyboardAdjustmentTypeBottomConstraint:
 				[self startObservingKeyboard];
 				break;
 		}
@@ -143,7 +159,7 @@
 
 - (void)keyboardWillMove:(NSNotification*)notification
 {
-	if(self.keyboardAdjustmentType == kViewKeyboardAdjustmentTypeShrink) {
+	if(self.keyboardAdjustmentType != kViewKeyboardAdjustmentTypeNone) {
 		CGRect endKeyboardRectangle = [self endKeyboardRectangleFromNotification:notification];
 		// The keyboard doesn't just move up and down-- when pushing a new UIViewController on a UINavigationController's stack, the keyboard can actually animate sideways out of the frame without moving down at all. So instead of merely following the top of the keyboard, we actually need to see whether it's final position intersects the receiver's superview at all. If not, then the bottom of the receiver should be at the maximum position, regardless of the vertical position of the keyboard.
 		CGFloat newMaxY = self.superview.boundsBottom;
@@ -154,28 +170,30 @@
 
 		CGFloat duration = [(notification.userInfo)[UIKeyboardAnimationDurationUserInfoKey] floatValue];
 		UIViewAnimationCurve curve = (UIViewAnimationCurve)[(notification.userInfo)[UIKeyboardAnimationCurveUserInfoKey] intValue];
-		UIViewAnimationOptions options = 0;
-		switch(curve) {
-			case UIViewAnimationCurveEaseInOut:
-				options |= UIViewAnimationOptionCurveEaseInOut;
-				break;
-			case UIViewAnimationCurveEaseIn:
-				options |= UIViewAnimationOptionCurveEaseIn;
-				break;
-			case UIViewAnimationCurveEaseOut:
-				options |= UIViewAnimationOptionCurveEaseOut;
-				break;
-			case UIViewAnimationCurveLinear:
-				options |= UIViewAnimationOptionCurveLinear;
-				break;
-		}
+        UIViewAnimationOptions options = curve << 16;
+        
+        if(self.keyboardAdjustmentType == kViewKeyboardAdjustmentTypeBottomConstraint) {
+            NSAssert1(self.bottomConstraint != nil, @"%@ bottomConstraint not set.", self);
+//            CLogDebug(nil, @"%@ BEFORE newMaxY: %f boundsBottom:%f", self, newMaxY, self.superview.boundsBottom);
+//            self.bottomConstraint.constant = newMaxY - self.superview.boundsBottom;
+            self.bottomConstraint.constant = self.superview.boundsBottom - newMaxY;
+            [self setNeedsUpdateConstraints];
+        }
+        
 		[UIView animateWithDuration:duration delay:0 options:options animations:^{
-			self.cframe.flexibleBottom = newMaxY;
-		} completion:NULL];
-		[UIView commitAnimations];
+            if(self.keyboardAdjustmentType == kViewKeyboardAdjustmentTypeBottomConstraint) {
+                [self layoutIfNeeded];
+            } else {
+                self.cframe.flexibleBottom = newMaxY;
+            }
+		} completion:^(BOOL finished) {
+//            CLogDebug(nil, @"%@ AFTER newMaxY: %f boundsBottom:%f", self, newMaxY, self.superview.boundsBottom);
+//            [self printViewHierarchy];
+        }];
 	}
 }
 
+#if 0
 - (BOOL)tapResignsFirstResponder
 {
 	return self.tapToDismissKeyboardManager != nil;
@@ -191,6 +209,7 @@
 		}
 	}
 }
+#endif
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {

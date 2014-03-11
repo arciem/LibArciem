@@ -27,6 +27,8 @@ NSString* EnsureRealString(NSString* s);
 NSString* AllowStringToBeNil(NSString* s);
 BOOL IsEmptyString(NSString* s);
 
+NSRange ClampRangeWithinString(NSRange range, NSString *s);
+
 NSString* TrimWhitespaceFromStart(NSString* str);
 NSString* TrimWhitespaceFromEnd(NSString* str);
 NSString* TrimWhitespaceFromStartAndEnd(NSString* str);
@@ -62,6 +64,9 @@ NSString* StringByTruncatingString(NSString* string, NSUInteger maxCharacters);
 
 NSString* StringByDuplicatingCharacter(unichar character, NSUInteger length);
 NSString* BulletStringForString(NSString* string);
+
+NSString* StringByNormalizingToSearchableCharacters(NSString *s);
+NSRegularExpression* RegularExpressionForMatchingAllTokens(NSString *s);
 
 NSString* StringFromBool(BOOL b, BOOL cStyle = NO);
 NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle = NO);
@@ -110,16 +115,23 @@ NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* 
 - (NSString*)stringByReplacingPercentEscapes;
 - (NSString*)stringByReplacingTemplatesWithReplacements:(NSDictionary*)replacementsDict;
 
-- (NSArray*)allCharacters;
-- (NSArray*)allCapturesFromAllMatchesOfRegularExpression:(NSRegularExpression*)regex;
-- (NSArray*)allCapturesFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex;
-- (NSString*)firstCaptureFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex;
+- (NSArray *)allCharacters;
+- (NSArray *)allCapturesFromAllMatchesOfRegularExpression:(NSRegularExpression *)regex;
+- (NSArray *)allCapturesFromFirstMatchOfRegularExpression:(NSRegularExpression *)regex;
+- (NSString *)firstCaptureFromFirstMatchOfRegularExpression:(NSRegularExpression *)regex;
+- (BOOL)matchesRegularExpression:(NSRegularExpression *)regex;
+
+@end
+
+@interface NSAttributedString (CStringAdditions)
+
+- (NSAttributedString *)stringByReplacingTemplatesWithReplacements:(NSDictionary*)replacementsDict attributes:(NSDictionary *)attributesDict;
 
 @end
 
 @interface NSRegularExpression (CRegularExpressionAdditions)
 
-+ (NSRegularExpression*)regularExpressionWithPattern:(NSString *)pattern;
++ (NSRegularExpression*)newRegularExpressionWithPattern:(NSString *)pattern;
 
 @end
 

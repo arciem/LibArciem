@@ -19,10 +19,11 @@
 #import "CTableSectionItem.h"
 #import "CObserver.h"
 #import "CTableItem.h"
+#import "StringUtils.h"
 
 @interface CTableSectionItem ()
 
-@property (strong, nonatomic) CObserver* subitemsObserver;
+@property (nonatomic) CObserver* subitemsObserver;
 
 @end
 
@@ -33,18 +34,31 @@
 
 - (void)setup
 {
+    BSELF;
 	CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		if(!self.isReordering) {
-			[(CTableItem*)self.superitem tableSectionItem:self rowsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
+		if(!bself.isReordering) {
+			[(CTableItem*)bself.superitem tableSectionItem:bself rowsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
 		}
 	};
 	
-	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
+	self.subitemsObserver = [CObserver newObserverWithKeyPath:@"subitems" ofObject:self action:action initial:action];
 }
 
-+ (CTableSectionItem*)item
++ (CTableSectionItem*)newTableSectionItem
 {
-	return [[self alloc] init];
+	return [self new];
+}
+
++ (CTableSectionItem *)newTableSectionItemWithTitle:(NSString*)title key:(NSString*)key {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    if(!IsEmptyString(title)) {
+        dict[@"title"] = title;
+    }
+    if(!IsEmptyString(key)) {
+        dict[@"key"] = key;
+    }
+    dict[@"type"] = @"section";
+	return [[self alloc] initWithDictionary:dict];
 }
 
 - (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden

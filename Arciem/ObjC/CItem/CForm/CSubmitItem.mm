@@ -18,19 +18,21 @@
 
 #import "CSubmitItem.h"
 #import "CObserver.h"
-#import "CTableButtonItem.h"
+#import "CButtonTableRowItem.h"
 
 @interface CSubmitItem ()
 
-@property (strong, nonatomic) CObserver* rootStateObserver;
-@property (strong, nonatomic) CObserver* isEditingObserver;
+@property (nonatomic) CButtonTableRowItem* tableButtonItem;
+@property (nonatomic) CObserver* rootStateObserver;
+@property (nonatomic) CObserver* editingObserver;
+@property (nonatomic) CObserver* hiddenObserver;
 
 @end
 
 @implementation CSubmitItem
 
 @synthesize rootStateObserver = rootStateObserver_;
-@synthesize isEditingObserver = isEditingObserver_;
+@synthesize editingObserver = editingObserver_;
 @synthesize action = action_;
 
 - (id)copyWithZone:(NSZone *)zone
@@ -46,47 +48,52 @@
 {
 	[super activate];
 	
+    BSELF;
 	CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self syncState];
+		[bself syncState];
 	};
 	
-	self.rootStateObserver = [CObserver observerWithKeyPath:@"state" ofObject:self.rootItem action:action initial:action];
-	self.isEditingObserver = [CObserver observerWithKeyPath:@"isEditing" ofObject:self action:action];
+	self.rootStateObserver = [CObserver newObserverWithKeyPath:@"state" ofObject:self.rootItem action:action initial:action];
+	self.editingObserver = [CObserver newObserverWithKeyPath:@"editing" ofObject:self action:action];
+	self.hiddenObserver = [CObserver newObserverWithKeyPath:@"hidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		bself.tableButtonItem.hidden = [newValue boolValue];
+	}];
 }
 
 - (void)deactivate
 {
-	[super deactivate];
 	self.rootStateObserver = nil;
-	self.isEditingObserver = nil;
+	self.editingObserver = nil;
+	self.hiddenObserver = nil;
+	[super deactivate];
 }
 
 - (void)syncState
 {
-	BOOL isValid = self.rootItem.isValid && !self.isEditing;
-	self.isDisabled = !isValid;
+	BOOL valid = self.rootItem.valid && !self.editing;
+	self.disabled = !valid;
 }
 
 #pragma mark - Table Support
 
 - (NSArray*)tableRowItems
 {
-	CTableButtonItem* rowItem = [CTableButtonItem itemWithKey:self.key title:self.title item:self];
-	return @[rowItem];
+	self.tableButtonItem = [CButtonTableRowItem newItemWithKey:self.key title:self.title item:self];
+	return @[self.tableButtonItem];
 }
 
-#pragma mark - @property isEditing
+#pragma mark - @property editing
 
 - (BOOL)isEditing
 {
-	return [(self.dict)[@"isEditing"] boolValue];
+	return [(self.dict)[@"editing"] boolValue];
 }
 
-- (void)setEditing:(BOOL)isEditing
+- (void)setEditing:(BOOL)editing
 {
-	[self willChangeValueForKey:@"isEditing"];
-	(self.dict)[@"isEditing"] = @(isEditing);
-	[self didChangeValueForKey:@"isEditing"];
+	[self willChangeValueForKey:@"editing"];
+	(self.dict)[@"editing"] = @(editing);
+	[self didChangeValueForKey:@"editing"];
 }
 
 @end

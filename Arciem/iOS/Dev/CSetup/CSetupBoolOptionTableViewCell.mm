@@ -21,7 +21,7 @@
 
 @interface CSetupBoolOptionTableViewCell ()
 
-@property (strong, nonatomic) UISwitch* switchView;
+@property (nonatomic) UISwitch* switchView;
 @property (readonly, nonatomic) CBooleanItem* boolOption;
 
 @end
@@ -35,7 +35,7 @@
 {
 	if(self = [super initWithReuseIdentifier:reuseIdentifier]) {
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
-		self.switchView = [[UISwitch alloc] init];
+		self.switchView = [UISwitch new];
 		[self.switchView addTarget:self action:@selector(switchStateChanged) forControlEvents:UIControlEventValueChanged];
 		self.accessoryView = self.switchView;
 		self.textLabel.font = [UIFont boldSystemFontOfSize:12];

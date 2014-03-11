@@ -18,9 +18,11 @@
 
 #import "CRowItemTableViewCell.h"
 
+extern NSString *const CDidTapButtonNotification;
+
 @interface CButtonTableViewCell : CRowItemTableViewCell
 
-@property (strong, readonly, nonatomic) UIButton* button;
+@property (readonly, nonatomic) UIButton* button;
 @property (readonly, nonatomic) BOOL isButtonEnabled;
 
 - (void)syncToState;

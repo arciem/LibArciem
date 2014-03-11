@@ -49,7 +49,7 @@
 {
 	CLogTrace(@"C_DUMMY_WORKER", @"%@ entering performOperationWork", self);
 	NSDate* endDate = [NSDate dateWithTimeIntervalSinceNow:self.workTimeInterval];
-	while(!self.isCancelled && [(NSDate*)[NSDate date] compare:endDate] == NSOrderedAscending) {
+	while(!self.cancelled && [(NSDate*)[NSDate date] compare:endDate] == NSOrderedAscending) {
 		[NSThread sleepForTimeInterval:0.1];
 	}
 	if(arciem::random_flat() < 0.9) {
@@ -141,7 +141,7 @@
 	@synchronized(self) {
 		if(!hasReaper) {
 			hasReaper = YES;
-			[NSThread performBlockInBackground:^ {
+			[NSThread performBlockInBackground:^ __attribute__((noreturn)) {
 				while(YES) {
 					[NSThread sleepForTimeInterval:10.0];
 					@synchronized(workerManager) {

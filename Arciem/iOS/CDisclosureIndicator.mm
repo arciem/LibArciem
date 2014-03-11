@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import "CDisclosureIndicator.h"
+#import "CGUtils.h"
 
 @interface CDisclosureIndicator ()
 
@@ -50,7 +51,7 @@
 	CGFloat x = CGRectGetMaxX(self.bounds)-3.0;
 	CGFloat y = CGRectGetMidY(self.bounds);
 	const CGFloat R = 4.5;
-	CGContextRef ctxt = UIGraphicsGetCurrentContext();
+	CGContextRef ctxt = UIGraphicsGetCurrentContextChecked();
     CGContextClearRect(ctxt, self.bounds);
 	CGContextMoveToPoint(ctxt, x-R, y-R);
 	CGContextAddLineToPoint(ctxt, x, y);

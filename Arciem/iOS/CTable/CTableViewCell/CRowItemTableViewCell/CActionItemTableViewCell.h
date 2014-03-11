@@ -17,10 +17,10 @@
  *******************************************************************************/
 
 #import "CRowItemTableViewCell.h"
-#import "CTableActionItem.h"
+#import "CActionTableRowItem.h"
 
 @interface CActionItemTableViewCell : CRowItemTableViewCell
 
-@property (strong, nonatomic) CTableActionItem* actionItem;
+@property (nonatomic) CActionTableRowItem* tableActionItem;
 
 @end

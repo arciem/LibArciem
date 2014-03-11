@@ -20,23 +20,28 @@
 #import "ThreadUtils.h"
 #import "CNetworkActivity.h"
 #import "CLog.h"
+#import "ErrorUtils.h"
+#import "DeviceUtils.h"
+#import "ObjectUtils.h"
 
-NSString* const CRestErrorDomain = @"CRestErrorDomain";
+NSString *const CRestErrorDomain = @"CRestErrorDomain";
 
-NSString* const CRestErrorFailingURLErrorKey = @"CRestErrorFailingURLErrorKey";
-NSString* const CRestErrorWorkerErrorKey = @"CRestErrorWorkerErrorKey";
-NSString* const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
+NSString *const CRestErrorFailingURLErrorKey = @"CRestErrorFailingURLErrorKey";
+NSString *const CRestErrorWorkerErrorKey = @"CRestErrorWorkerErrorKey";
+NSString *const CRestErrorOfflineErrorKey = @"CRestErrorOfflineErrorKey";
 
-NSString* const CRestJSONMIMEType = @"application/json";
+NSString *const CRestJSONMIMEType = @"application/json";
 
-@interface CRestWorker ()
+@interface CRestWorker () <NSURLSessionTaskDelegate>
 
-@property (strong, nonatomic) NSURLConnection* connection;
-@property (strong, readwrite, nonatomic) NSURLResponse* response;
-@property (strong, nonatomic) NSMutableData* mutableData;
-@property (strong, nonatomic) CNetworkActivity* activity;
-@property (weak, nonatomic) NSThread* workerThread;
+@property (nonatomic) NSURLConnection *connection;
+@property (readonly, nonatomic) NSURLSession *session;
+@property (strong, readwrite, nonatomic) NSURLResponse *response;
+@property (nonatomic) NSMutableData *mutableData;
+@property (nonatomic) CNetworkActivity *activity;
+@property (weak, nonatomic) NSThread *workerThread;
 @property (nonatomic) BOOL workerWaitLoopStopped;
+@property (nonatomic) UIBackgroundTaskIdentifier backgroundTaskIdentifier;
 
 @end
 
@@ -102,7 +107,7 @@ NSString* const CRestJSONMIMEType = @"application/json";
 
 - (NSHTTPURLResponse*)httpResponse
 {
-	NSHTTPURLResponse* httpResponse = nil;
+	NSHTTPURLResponse *httpResponse = nil;
 	if([self.response isKindOfClass:[NSHTTPURLResponse class]]) {
 		httpResponse = (NSHTTPURLResponse*)self.response;
 	}
@@ -119,26 +124,87 @@ NSString* const CRestJSONMIMEType = @"application/json";
 {
 	[super operationDidBegin];
 	self.activity = [CNetworkActivity activityWithIndicator:self.showsNetworkActivityIndicator];
+    BSELF;
+    void (^expirationHandler)(void) = ^{
+        NSString *message = [NSString stringWithFormat:@"Background task expired: %@", bself.title];
+        NSError *error = [NSError errorWithDomain:CRestErrorDomain code:CRestBackgroundTaskExpiredError localizedDescription:message];
+        [bself operationFailedWithError:error];
+    };
+    if(!IsOSVersionAtLeast7()) {
+        self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:expirationHandler];
+        CLogTrace(@"C_REST_WORKER_BACKGROUND", @"%@ starting background task: %d", self, self.backgroundTaskIdentifier);
+    }
 }
 
 - (void)operationWillEnd
 {
 	[super operationWillEnd];
 	self.activity = nil;
+    if(!IsOSVersionAtLeast7()) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+        CLogTrace(@"C_REST_WORKER_BACKGROUND", @"%@ ended background task: %d", self, self.backgroundTaskIdentifier);
+    }
 }
 
-- (BOOL)isOffline
-{
+- (BOOL)isOffline {
 	return NO;
 }
 
-- (void)performOperationWork
-{
+- (void)performOperationWork {
+	if(self.isOffline) {
+		CLogTrace(@"C_REST_WORKER", @"%@ failing because offline", self);
+        self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
+		[self connection:self.connection didFailWithError:[NSError errorWithDomain:CRestErrorDomain code:CRestOfflineError userInfo:nil]];
+	} else {
+        if(IsOSVersionAtLeast7()) {
+            [self performOperationWorkWithNSURLSession];
+        } else {
+            [self performOperationWorkWithNSURLConnection];
+        }
+    }
+}
+
+- (NSURLSession *)session {
+    static NSURLSession *_session;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSURLSessionConfiguration *config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+        _session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    });
+    return _session;
+}
+
+- (void)performOperationWorkWithNSURLSession {
+	CLogTrace(@"C_REST_WORKER", @"%@ starting NSURLSession: %@", self, self.request);
+    
+    [self.mutableData setLength:0];
+    BSELF;
+    NSURLSessionDataTask *task = [self.session dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        @synchronized(bself) {
+            if(!self.cancelled) {
+                if(data != nil) {
+                    [bself.mutableData appendData:data];
+                }
+                if(response != nil) {
+                    bself.response = response;
+                }
+                if(error != nil) {
+                    [bself handleError:error];
+                } else {
+                    [bself handleResponse];
+                }
+            }
+        }
+    }];
+    [task resume];
+}
+
+- (void)performOperationWorkWithNSURLConnection {
 	CLogTrace(@"C_REST_WORKER", @"%@ starting NSURLConnection: %@", self, self.request);
 	
     self.workerThread = [NSThread currentThread];
     
-    NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 	if(self.isOffline) {
 		CLogTrace(@"C_REST_WORKER", @"%@ failing because offline", self);
         self.connection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
@@ -152,7 +218,7 @@ NSString* const CRestJSONMIMEType = @"application/json";
 	// So run the run loop until it is out of sources, at which point the callbacks will all be done.
     CLogTrace(@"C_REST_WORKER", @"%@ entering worker wait loop", self);
     while(YES) {
-        if(self.isCancelled) {
+        if(self.cancelled) {
             CLogTrace(@"C_REST_WORKER", @"%@ aborting aborting worker wait loop due to cancel", self);
             break;
         }
@@ -201,6 +267,37 @@ NSString* const CRestJSONMIMEType = @"application/json";
 	}
 }
 
+- (void)handleResponse {
+    NSHTTPURLResponse *httpResponse = self.httpResponse;
+    if(httpResponse != nil) {
+        NSInteger statusCode = httpResponse.statusCode;
+        if([self.successStatusCodes containsIndex:statusCode]) {
+            NSError *parseError = nil;
+            if([self.expectedMIMEType isEqualToString:CRestJSONMIMEType]) {
+                [self dataAsJSONWithError:&parseError];
+            }
+            
+            if(parseError == nil) {
+                [self operationSucceeded];
+            } else {
+                [self operationFailedWithError:parseError];
+            }
+        } else {
+            NSDictionary *userInfo = @{NSLocalizedDescriptionKey: [NSHTTPURLResponse localizedStringForStatusCode:statusCode],
+                                       CRestErrorFailingURLErrorKey: self.request.URL,
+                                       CRestErrorWorkerErrorKey: self};
+            NSError *error = [NSError errorWithDomain:CRestErrorDomain code:statusCode userInfo:userInfo];
+            [self operationFailedWithError:error];
+        }
+    } else {
+        [self operationSucceeded];
+    }
+}
+
+- (void)handleError:(NSError *)error {
+    [self operationFailedWithError:error];
+}
+
 #pragma mark - NSURLConnectionDelegate
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -208,7 +305,7 @@ NSString* const CRestJSONMIMEType = @"application/json";
 	@synchronized(self) {
 		CLogTrace(@"C_REST_WORKER", @"%@ connection:didReceiveResponse:", self);
 		
-		if(!self.isCancelled) {
+		if(!self.cancelled) {
 			self.response = response;
 			[self.mutableData setLength:0];
 		}
@@ -220,7 +317,7 @@ NSString* const CRestJSONMIMEType = @"application/json";
 	@synchronized(self) {
 		CLogTrace(@"C_REST_WORKER", @"%@ connection:didReceiveData:", self);
 
-		if(!self.isCancelled) {
+		if(!self.cancelled) {
 			[self.mutableData appendData:data];
 		}
 	}
@@ -230,15 +327,42 @@ NSString* const CRestJSONMIMEType = @"application/json";
 {
 	@synchronized(self) {
 		self.connection = nil;
-		[self operationFailedWithError:error];
+        
+        [self handleError:error];
+
         [self stopWorkerWaitLoop];
 	}
 }
 
-- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse
+- (NSURLRequest *)handleRedirectReponse:(NSHTTPURLResponse *)redirectResponse withProposedRequest:(NSURLRequest *)request {
+    NSString *authToken = redirectResponse.allHeaderFields[@"x-redirect-auth"];
+    if(authToken != nil) {
+        NSMutableURLRequest *mutableRequest = [[NSMutableURLRequest alloc] initWithURL:request.URL cachePolicy:request.cachePolicy timeoutInterval:request.timeoutInterval];
+        [request.allHTTPHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString *name, NSString *value, BOOL *stop) {
+            if(![name isEqualToString:@"x-redirect-auth"]) {
+                [mutableRequest addValue:value forHTTPHeaderField:name];
+            }
+        }];
+        [mutableRequest addValue:authToken forHTTPHeaderField:@"Authorization"];
+        
+        request = mutableRequest;
+    }
+    
+#if 0
+#warning DEBUG ONLY
+    CLogDebug(nil, @"old URL:%@", task.originalRequest.URL);
+    CLogDebug(nil, @"new URL:%@", request.URL);
+    CLogDebug(nil, @"old request headers:%@", task.originalRequest.allHTTPHeaderFields);
+    CLogDebug(nil, @"new request headers:%@", request.allHTTPHeaderFields);
+#endif
+
+    return request;
+}
+
+- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSHTTPURLResponse *)redirectResponse
 {
     CLogTrace(@"C_REST_WORKER", @"%@ connection:%@ willSendRequest:%@ redirectResponse:%@ redirectResponseURL:%@", self, connection, request, redirectResponse, redirectResponse.URL);
-    return request;
+    return [self handleRedirectReponse:redirectResponse withProposedRequest:request];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -247,32 +371,19 @@ NSString* const CRestJSONMIMEType = @"application/json";
 		CLogTrace(@"C_REST_WORKER", @"%@ connectionDidFinishLoading:", self);
 		self.connection = nil;
 
-		NSHTTPURLResponse* httpResponse = self.httpResponse;
-		if(httpResponse != nil) {
-			NSInteger statusCode = httpResponse.statusCode;
-			if([self.successStatusCodes containsIndex:statusCode]) {
-                NSError* parseError = nil;
-                if([self.expectedMIMEType isEqualToString:CRestJSONMIMEType]) {
-                    [self dataAsJSONWithError:&parseError];
-                }
-                
-                if(parseError == nil) {
-                    [self operationSucceeded];
-                } else {
-                    [self operationFailedWithError:parseError];
-                }
-			} else {
-				NSDictionary* userInfo = @{NSLocalizedDescriptionKey: [NSHTTPURLResponse localizedStringForStatusCode:statusCode],
-										  CRestErrorFailingURLErrorKey: self.request.URL,
-										  CRestErrorWorkerErrorKey: self};
-				NSError* error = [NSError errorWithDomain:CRestErrorDomain code:statusCode userInfo:userInfo];
-				[self operationFailedWithError:error];
-			}
-		} else {
-			[self operationSucceeded];
-		}
+        [self handleResponse];
+        
         [self stopWorkerWaitLoop];
 	}
+}
+
+#pragma mark - NSURLSessionTaskDelegate
+
+// The x-redirect-auth header gives the server the chance to tell the client what credentials to use to authenticate to the redirected URL. This may frequently (but not necessarily) be the same credentials that were used for the first URL.
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)redirectResponse newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest *))completionHandler
+{
+    request = [self handleRedirectReponse:redirectResponse withProposedRequest:request];
+    completionHandler(request);
 }
 
 @end

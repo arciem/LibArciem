@@ -33,7 +33,7 @@
 		UIColor* color2 = [[[UIColor yellowColor] colorByDarkeningFraction:0.05] colorByColorBurnFraction:0.1];
 //		UIColor* color2 = [[UIColor blueColor] colorByLighteningFraction:0.8];
 		UIImage* patternImage = [UIColor diagonalRight:YES patternImageWithColor1:color1 color2:color2 size:CGSizeMake(64, 64) scale:0.0];
-		UIImage* image = [UIImage navigationBarImageWithBackgroundPatternImage:patternImage];
+		UIImage* image = [UIImage newNavigationBarImageWithBackgroundPatternImage:patternImage];
 	
 		self.navigationBar.titleTextAttributes = @{UITextAttributeFont: [UIFont boldSystemFontOfSize:0.0],
 												  UITextAttributeTextColor: [UIColor blackColor],
@@ -47,15 +47,6 @@
 {
 	[super viewDidLoad];
 	[self customizeNavigationBar];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-	BOOL should = YES;
-	if(IsPhone()) {
-		should = toInterfaceOrientation == UIInterfaceOrientationPortrait;
-	}
-	return should;
 }
 
 @end

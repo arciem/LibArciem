@@ -19,26 +19,34 @@
 #import "CTableViewCell.h"
 #import "CTableRowItem.h"
 #import "CFieldValidationView.h"
+#import "UIViewUtils.h"
 
 @protocol CRowItemTableViewCellDelegate;
 
 @interface CRowItemTableViewCell : CTableViewCell
 
-@property (strong, nonatomic) CTableRowItem* rowItem;
+@property (nonatomic) CTableRowItem* rowItem;
 @property (readonly, nonatomic) CFieldValidationView* validationView;
+@property (readonly, nonatomic) CLayoutConstraintsGroup *validationViewConstraints;
 @property (readonly, nonatomic) NSArray* validationViews;
+@property (readonly, nonatomic) NSArray* validationViewsConstraints;
 @property (readonly, nonatomic) NSUInteger validationViewsNeeded;
 @property (weak, nonatomic) CItem* activeItem;
 @property (weak, nonatomic) id<CRowItemTableViewCellDelegate> delegate;
 @property (readonly, nonatomic) NSArray* models;
 @property (readonly, nonatomic) CGFloat fontSize;
 @property (readonly, nonatomic) UIFont* font;
-@property (readonly, nonatomic) CGRect layoutFrame;
+@property (readonly, nonatomic) CGRect layoutFrame __attribute__((deprecated));
+@property (readonly, nonatomic) UIEdgeInsets contentInset;
+@property (readonly, nonatomic, getter = isTestingMode) BOOL testingMode;
+
++ (void)setTestingMode:(BOOL)testingMode;
 
 - (void)setNumberOfValidationViewsTo:(NSUInteger)count;
 
 // May be overridden by subclasses
 - (void)syncToRowItem;
+- (void)syncTitleLabelToRowItem;
 - (void)model:(CItem*)model valueDidChangeFrom:(id)oldValue to:(id)newValue;
 - (NSUInteger)validationViewsNeeded;
 - (void)syncValidationViews;

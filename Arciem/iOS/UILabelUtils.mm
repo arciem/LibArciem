@@ -19,6 +19,7 @@
 #import "UILabelUtils.h"
 #import "Geom.h"
 #import <algorithm>
+#import <cmath>
 
 @implementation UILabel (UILabelUtils)
 
@@ -26,28 +27,37 @@
 {
 	UIFont* font = nil;
 	CGFloat maxHeight = self.bounds.size.height;
-	CGFloat maxWidth = self.bounds.size.width;
-	for(CGFloat fontSize = largeFontSize; fontSize >= self.minimumFontSize; --fontSize) {
+//	CGFloat maxWidth = self.bounds.size.width;
+    CGSize constraintSize = CGSizeMake(self.bounds.size.width, MAXFLOAT);
+	for(CGFloat fontSize = largeFontSize; fontSize >= self.font.pointSize * self.minimumScaleFactor; --fontSize) {
 		font = [self.font fontWithSize:fontSize];
-		CGSize size = [self.text sizeWithFont:font constrainedToSize:self.bounds.size lineBreakMode:self.lineBreakMode];
+		CGSize size = [self.text sizeWithFont:font constrainedToSize:constraintSize lineBreakMode:self.lineBreakMode];
 		CGFloat lines = size.height / font.leading;
-		if(lines > self.numberOfLines) {
+		if(self.numberOfLines != 0 && lines > self.numberOfLines) {
 			continue;
 		}
 		size.height -= font.descender;
-		if(size.height < maxHeight && size.width < maxWidth) {
+		if(size.height <= maxHeight) {
 			break;
 		}
 	}
 	self.font = font;
 }
 
-+ (CGSize)maxSizeOfStrings:(NSArray*)strings withFont:(UIFont*)font forWidth:(CGFloat)width lineBreakMode:(NSLineBreakMode)lineBreakMode
++ (CGSize)maxSizeOfStrings:(NSArray*)strings withFont:(UIFont*)font forWidth:(CGFloat)width
 {
     __block CGSize maxSize = CGSizeZero;
     
-    [strings enumerateObjectsUsingBlock:^(NSString* string, NSUInteger idx, BOOL *stop) {
-        CGSize size = [string sizeWithFont:font forWidth:width lineBreakMode:lineBreakMode];
+    [strings enumerateObjectsUsingBlock:^(id str, NSUInteger idx, BOOL *stop) {
+        NSMutableAttributedString *string;
+        if([str isKindOfClass:[NSAttributedString class]]) {
+            string = [str mutableCopy];
+        } else {
+            string = [[NSMutableAttributedString alloc] initWithString:str];
+        }
+        [string addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, string.length)];
+        CGRect rect = [string boundingRectWithSize:CGSizeMake(width, 1000) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+        CGSize size = CGSizeMake(std::ceilf(rect.size.width), std::ceilf(rect.size.height));
         maxSize.width = std::max(maxSize.width, size.width);
         maxSize.height = std::max(maxSize.height, size.height);
     }];

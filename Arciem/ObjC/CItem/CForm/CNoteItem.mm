@@ -17,7 +17,7 @@
  *******************************************************************************/
 
 #import "CNoteItem.h"
-#import "CTableNoteItem.h"
+#import "CNoteTableRowItem.h"
 
 @implementation CNoteItem
 
@@ -25,7 +25,7 @@
 
 - (NSArray*)tableRowItems
 {
-	CTableNoteItem* rowItem = [CTableNoteItem itemWithKey:self.key title:self.title item:self];
+	CNoteTableRowItem* rowItem = [CNoteTableRowItem newItemWithKey:self.key title:self.title item:self];
 	return @[rowItem];
 }
 

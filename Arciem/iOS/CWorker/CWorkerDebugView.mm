@@ -23,22 +23,18 @@
 #import "UIColorUtils.h"
 
 const CGFloat kCWorkerDebugViewFontSize = 14;
-const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
+const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 
 @interface CWorkerDebugView ()
 
-//@property (strong, readwrite, nonatomic) CWorker* worker;
-@property (strong, nonatomic) UILabel* label;
+@property (nonatomic) UILabel* label;
+@property (nonatomic) CLayoutConstraintsGroup *myConstraintsGroup;
 
 @end
 
 @implementation CWorkerDebugView
 
-@synthesize worker = worker_;
-@synthesize label = label_;
-@synthesize row = row_;
-@dynamic fontSize;
-@dynamic minimumFontSize;
+@synthesize worker = _worker;
 
 + (void)initialize
 {
@@ -68,10 +64,13 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 - (void)setup
 {
 	[super setup];
+    
+    self.backgroundColor = [UIColor clearColor];
+    self.opaque = NO;
 	
-//	self.debugColor = [UIColor redColor];
+    //	self.debugColor = [UIColor redColor];
+    //	self.backgroundColor = [[UIColor blueColor] colorWithAlpha:0.5];
 
-//	self.backgroundColor = [[UIColor blueColor] colorWithAlpha:0.5];
 	self.userInteractionEnabled = NO;
 	self.layer.borderWidth = 0.5;
 
@@ -83,15 +82,27 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 #endif
 	
 	self.label = [[UILabel alloc] initWithFrame:CGRectInset(self.bounds, 10, 0)];
+    self.label.translatesAutoresizingMaskIntoConstraints = NO;
 	self.label.backgroundColor = [UIColor clearColor];
 	self.label.opaque = NO;
-	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	self.fontSize = kCWorkerDebugViewFontSize;
-	self.label.textAlignment = NSTextAlignmentCenter;
+//	self.label.textAlignment = NSTextAlignmentCenter;
 	self.label.adjustsFontSizeToFitWidth = YES;
-	self.label.minimumFontSize = kCWorkerDebugViewMinimumFontSize;
+	self.label.minimumScaleFactor = kCWorkerDebugViewMinimumScaleFactor;
 	self.label.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 	[self addSubview:self.label];
+}
+
+- (void)updateConstraints {
+    [super updateConstraints];
+    
+    self.myConstraintsGroup = [CLayoutConstraintsGroup groupWithOwner:self];
+    [self.myConstraintsGroup addConstraint:[self.label constrainTopEqualToTopOfItem:self]];
+    [self.myConstraintsGroup addConstraint:[self.label constrainBottomEqualToBottomOfItem:self]];
+    [self.myConstraintsGroup addConstraint:[self.label constrainLeadingGreaterThanOrEqualToLeadingOfItem:self offset:10]];
+    [self.myConstraintsGroup addConstraint:[self.label constrainTrailingLessThanOrEqualToTrailingOfItem:self offset:-10]];
+    [self.myConstraintsGroup addConstraint:[self.label constrainCenterXEqualToCenterXOfItem:self]];
 }
 
 - (void)syncToWorker
@@ -102,7 +113,7 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 		UIColor* backgroundColor = [UIColor grayColor];
 		UIColor* textColor = [UIColor whiteColor];
 		
-		if(self.worker.isFinished) {
+		if(self.worker.finished) {
 			status = @"FINISHED";
 			if(self.worker.error == nil) {
 				backgroundColor = [[UIColor greenColor] colorByDarkeningFraction:0.7];
@@ -110,31 +121,45 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 				backgroundColor = [[UIColor redColor] colorByDarkeningFraction:0.5];
 			}
 			textColor = [UIColor whiteColor];
-			if(self.worker.isCancelled) {
+			if(self.worker.cancelled) {
 				status = @"CANCELLED";
 				backgroundColor = [UIColor blackColor];
 				textColor = [UIColor whiteColor];
 			}
-		} else if(self.worker.isExecuting) {
+		} else if(self.worker.executing) {
 			status = @"EXECUTING";
 			backgroundColor = [[UIColor blueColor] colorByLighteningFraction:0.5];
 			textColor = [UIColor blackColor];
-			if(self.worker.isActive) {
+			if(self.worker.active) {
 				status = @"ACTIVE";
 				backgroundColor = [UIColor yellowColor];
 				textColor = [UIColor blackColor];
-			} else if(self.worker.isReady) {
+			} else if(self.worker.ready) {
 				status = @"READY";
 				backgroundColor = [UIColor orangeColor];
 				textColor = [UIColor blackColor];
 			}
 		}
+        
+        NSDictionary *userInfo = self.worker.userInfo;
+        if(userInfo != nil) {
+            UIColor *color = userInfo[@"backgroundColor"];
+            if(color != nil) {
+                backgroundColor = color;
+            }
+            color = userInfo[@"textColor"];
+            if(color != nil) {
+                textColor = color;
+            }
+        }
 		
 		self.label.textColor = textColor;
 		self.layer.backgroundColor = backgroundColor.CGColor;
 		self.layer.borderColor = [backgroundColor colorByDarkeningFraction:0.5].CGColor;
 	
-		CLogTrace(@"C_WORKER_DEBUG_VIEW", @"worker: %@ %@ isActive:%d", self.worker, status, self.worker.isActive);
+		CLogTrace(@"C_WORKER_DEBUG_VIEW", @"worker: %@ %@ active:%d", self.worker, status, self.worker.active);
+        
+        [self setNeedsUpdateConstraints];
 	}
 }
 
@@ -142,10 +167,10 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncToWorker) name:@"workerViewNeedsSync" object:self];
 	[self.worker addObserver:self forKeyPath:@"title" options:0 context:nil];
-	[self.worker addObserver:self forKeyPath:@"isFinished" options:0 context:nil];
-	[self.worker addObserver:self forKeyPath:@"isCancelled" options:0 context:nil];
-	[self.worker addObserver:self forKeyPath:@"isReady" options:0 context:nil];
-	[self.worker addObserver:self forKeyPath:@"isActive" options:0 context:nil];
+	[self.worker addObserver:self forKeyPath:@"finished" options:0 context:nil];
+	[self.worker addObserver:self forKeyPath:@"cancelled" options:0 context:nil];
+	[self.worker addObserver:self forKeyPath:@"ready" options:0 context:nil];
+	[self.worker addObserver:self forKeyPath:@"active" options:0 context:nil];
 	[self syncToWorker];
 }
 
@@ -153,10 +178,10 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"workerViewNeedsSync" object:self];
 	[self.worker removeObserver:self forKeyPath:@"title"];
-	[self.worker removeObserver:self forKeyPath:@"isFinished"];
-	[self.worker removeObserver:self forKeyPath:@"isCancelled"];
-	[self.worker removeObserver:self forKeyPath:@"isReady"];
-	[self.worker removeObserver:self forKeyPath:@"isActive"];
+	[self.worker removeObserver:self forKeyPath:@"finished"];
+	[self.worker removeObserver:self forKeyPath:@"cancelled"];
+	[self.worker removeObserver:self forKeyPath:@"ready"];
+	[self.worker removeObserver:self forKeyPath:@"active"];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -174,15 +199,15 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 
 - (CWorker*)worker
 {
-	return worker_;
+	return _worker;
 }
 
 - (void)setWorker:(CWorker *)worker
 {
-	if(worker_ != worker) {
+	if(_worker != worker) {
 		[self endObserving];
-		worker_ = worker;
-		if(worker_ != nil) {
+		_worker = worker;
+		if(_worker != nil) {
 			[self beginObserving];
 		}
 	}
@@ -204,14 +229,14 @@ const CGFloat kCWorkerDebugViewMinimumFontSize = 8;
 	self.label.font = [UIFont boldSystemFontOfSize:fontSize];
 }
 
-- (CGFloat)minimumFontSize
+- (CGFloat)minimumScaleFactor
 {
-	return self.label.minimumFontSize;
+	return self.label.minimumScaleFactor;
 }
 
-- (void)setMinimumFontSize:(CGFloat)minimumFontSize
+- (void)setMinimumScaleFactor:(CGFloat)minimumScaleFactor
 {
-	self.label.minimumFontSize = minimumFontSize;
+	self.label.minimumScaleFactor = minimumScaleFactor;
 }
 
 @end

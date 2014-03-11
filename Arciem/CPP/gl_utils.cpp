@@ -23,6 +23,8 @@ namespace arciem {
 
 	GLfloat circularInterpolate(GLfloat fraction, GLfloat a, GLfloat b);
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wglobal-constructors"
 	const vector2 vector2::zero (0, 0);
 	const vector2 vector2::one  (1, 1);
 	const vector2 vector2::right(1, 0);
@@ -33,6 +35,7 @@ namespace arciem {
 	const vector3 vector3::right  (1, 0, 0);
 	const vector3 vector3::up     (0, 1, 0);
 	const vector3 vector3::forward(0, 0, 1);
+#pragma clang diagnostic pop
 
 	vector3::vector3(vector4 const& v) : x(v.x), y(v.y), z(v.z) { }
 
@@ -52,8 +55,11 @@ namespace arciem {
 		);
 	}
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wglobal-constructors"
 	const vector4 vector4::zero(0, 0, 0, 0);
 	const vector4 vector4::one (1, 1, 1, 1);
+#pragma clang diagnostic pop
 
 	color::color(color_hsb const& c)
 	: a(c.a)
@@ -82,6 +88,8 @@ namespace arciem {
 		}
 	}
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wglobal-constructors"
 	const color color::red    (1, 0, 0, 1);
 	const color color::green  (0, 1, 0, 1);
 	const color color::blue   (0, 0, 1, 1);
@@ -93,6 +101,7 @@ namespace arciem {
 	const color color::gray   (0.5, 0.5, 0.5, 1);
 	const color color::grey   (0.5, 0.5, 0.5, 1);
 	const color color::clear  (0, 0, 0, 0);
+#pragma clang diagnostic pop
 
 	color_hsb::color_hsb(color const& c)
 	: a(c.a)
@@ -108,11 +117,11 @@ namespace arciem {
 			h = 0.0;
 		} else {
 			GLfloat cDelta = cMax - cMin;
-			if(c.r == cMax) {
+			if(c.r >= cMax) {
 				h = (c.g - c.b) / cDelta;
-			} else if(c.g == cMax) {
+			} else if(c.g >= cMax) {
 				h = 2.0 + (c.b - c.r) / cDelta;
-			} else if(c.b == cMax) {
+			} else if(c.b >= cMax) {
 				h = 4.0 + (c.r - c.g) / cDelta;
 			}
 			h /= 6.0;
@@ -155,6 +164,8 @@ namespace arciem {
 						 );
 	}
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wglobal-constructors"
 	const matrix4x4 matrix4x4::zero(0, 0, 0, 0,
 									0, 0, 0, 0,
 									0, 0, 0, 0,
@@ -164,6 +175,7 @@ namespace arciem {
 										0, 1, 0, 0,
 										0, 0, 1, 0,
 										0, 0, 0, 1);
+#pragma clang diagnostic pop
 
 	matrix4x4::matrix4x4(GLfloat a, GLfloat b, GLfloat c, GLfloat d,
 						 GLfloat e, GLfloat f, GLfloat g, GLfloat h,
@@ -401,6 +413,8 @@ namespace arciem {
 		p = 1;
 	}
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wglobal-constructors"
 	const matrix3x3 matrix3x3::zero(0, 0, 0,
 									0, 0, 0,
 									0, 0, 0);
@@ -408,6 +422,7 @@ namespace arciem {
 	const matrix3x3 matrix3x3::identity(1, 0, 0,
 										0, 1, 0,
 										0, 0, 1);
+#pragma clang diagnostic pop
 	
 	matrix3x3::matrix3x3(GLfloat a, GLfloat b, GLfloat c,
 						 GLfloat d, GLfloat e, GLfloat f,

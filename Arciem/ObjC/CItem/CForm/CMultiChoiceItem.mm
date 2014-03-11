@@ -20,8 +20,8 @@
 #import "CObserver.h"
 #import "CBooleanItem.h"
 #import "ObjectUtils.h"
-#import "CTableMultiChoiceItem.h"
-#import "CTableBooleanItem.h"
+#import "CMultiChoiceSummaryTableRowItem.h"
+#import "CCheckboxTableRowItem.h"
 #import "CSpacerItem.h"
 #import "ErrorUtils.h"
 
@@ -29,17 +29,12 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 
 @interface CMultiChoiceItem ()
 
-@property (strong, nonatomic) CObserver* subitemsObserver;
-@property (strong, nonatomic) CObserver* subitemsValueObserver;
+@property (nonatomic) CObserver* subitemsObserver;
+@property (nonatomic) CObserver* subitemsValueObserver;
 
 @end
 
 @implementation CMultiChoiceItem
-
-@synthesize minValidChoices = minValidChoices_;
-@synthesize maxValidChoices = maxValidChoices_;
-@synthesize subitemsObserver = subitemsObserver_;
-@synthesize subitemsValueObserver = subitemsValueObserver_;
 
 @dynamic choicesCount;
 
@@ -48,33 +43,34 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 	[super setup];
 	[self setupChoices];
 
-	self.subitemsValueObserver = [CObserver observerWithKeyPath:@"value" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self updateValue];
+    BSELF;
+	self.subitemsValueObserver = [CObserver newObserverWithKeyPath:@"value" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[bself updateValue];
 	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self updateValue];
+		[bself updateValue];
 	}];
 
-	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:^(id object, NSArray* newSubitems, NSArray* oldSubitems, NSKeyValueChange kind, NSIndexSet *indexes) {
+	self.subitemsObserver = [CObserver newObserverWithKeyPath:@"subitems" ofObject:self action:^(id object, NSArray* newSubitems, NSArray* oldSubitems, NSKeyValueChange kind, NSIndexSet *indexes) {
 		NSAssert1(newSubitems == nil || [newSubitems isKindOfClass:[NSArray class]], @"newSubitems not of expected type:%@", newSubitems);
 		NSAssert1(oldSubitems == nil || [oldSubitems isKindOfClass:[NSArray class]], @"oldSubitems not of expected type:%@", oldSubitems);
 		switch(kind) {
 			case NSKeyValueChangeSetting:
-				self.subitemsValueObserver.objects = newSubitems;
+				bself.subitemsValueObserver.objects = newSubitems;
 				break;
 			case NSKeyValueChangeInsertion:
-				[self.subitemsValueObserver addObjects:newSubitems];
+				[bself.subitemsValueObserver addObjects:newSubitems];
 				break;
 			case NSKeyValueChangeRemoval:
-				[self.subitemsValueObserver removeObjects:oldSubitems];
+				[bself.subitemsValueObserver removeObjects:oldSubitems];
 				break;
 			case NSKeyValueChangeReplacement:
-				[self.subitemsValueObserver removeObjects:oldSubitems];
-				[self.subitemsValueObserver addObjects:newSubitems];
+				[bself.subitemsValueObserver removeObjects:oldSubitems];
+				[bself.subitemsValueObserver addObjects:newSubitems];
 				break;
 		}
 	} initial:^(id object, NSArray* newSubitems, NSArray* oldSubitems, NSKeyValueChange kind, NSIndexSet *indexes) {
 		NSAssert1(newSubitems == nil || [newSubitems isKindOfClass:[NSArray class]], @"newSubitems not of expected type:%@", newSubitems);
-		self.subitemsValueObserver.objects = newSubitems;
+		bself.subitemsValueObserver.objects = newSubitems;
 	}];
 }
 
@@ -198,7 +194,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 		CItem* item = nil;
 		
 		if([str isEqualToString:@"-"]) {
-			item = [CSpacerItem spacerItem];
+			item = [CSpacerItem newSpacerItem];
 		} else {
 			NSArray* comps = [str componentsSeparatedByString:@"/"];
 			NSString* key = comps[0];
@@ -209,13 +205,13 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 				key = [key substringFromIndex:1];
 			}
 			
-			item = [CBooleanItem booleanItemWithTitle:title key:key boolValue:value];
+			item = [CBooleanItem newBooleanItemWithTitle:title key:key boolValue:value];
 		}
 		
 		[self addSubitem:item];
 	}];
 	
-	self.isNew = YES;
+	self.fresh = YES;
 }
 
 #pragma mark - @property selectedSubitemIndexes
@@ -271,7 +267,7 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 - (NSArray*)tableRowItems
 {
 	NSMutableArray* rowItems = [NSMutableArray array];
-	CTableMultiChoiceItem* rowItem = [CTableMultiChoiceItem itemWithKey:self.key title:self.title multiChoiceItem:self];
+	CMultiChoiceSummaryTableRowItem* rowItem = [CMultiChoiceSummaryTableRowItem newItemWithKey:self.key title:self.title multiChoiceItem:self];
 	[rowItems addObject:rowItem];
 	if(!rowItem.requiresDrillDown) {
 		for(CItem* item in self.subitems) {

@@ -17,13 +17,25 @@
  *******************************************************************************/
 
 #import "CTableViewCell.h"
-#import "UIViewUtils.h"
 #import "CTableRowItem.h"
+
+@interface CTableViewCell ()
+
+@property (nonatomic) NSMutableDictionary *constraintsGroups;
+
+@end
 
 @implementation CTableViewCell
 
+@synthesize titleLabel = _titleLabel;
+
 - (void)setup
 {
+    self.contentView.backgroundColor = [UIColor clearColor];
+    self.contentView.opaque = NO;
+
+    self.backgroundColor = [UIColor clearColor];
+    self.opaque = NO;
 }
 
 - (void)awakeFromNib
@@ -55,11 +67,60 @@
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
-//	[self setNeedsDisplay];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
+- (UILabel *)textLabel {
+    CLogWarn(nil, @"%@ Don't use -textLabel, use -titleLabel", self);
+    return [super textLabel];
+}
+
+- (void)updateConstraints {
+    if(_titleLabel != nil) {
+        CLayoutConstraintsGroup *group = [self resetConstraintsGroupForKey:@"CTableViewCell_titleLabel" owner:self.contentView];
+        [group addConstraint:[_titleLabel constrainLeadingGreaterThanOrEqualToLeadingOfItem:self.contentView offset:20]];
+        [group addConstraint:[_titleLabel constrainTrailingLessThanOrEqualToTrailingOfItem:self.contentView offset:-20]];
+    }
+    [super updateConstraints];
+}
+
+- (UILabel *)titleLabel {
+    if(_titleLabel == nil) {
+        _titleLabel = [UILabel new];
+        _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _titleLabel.backgroundColor = [UIColor clearColor];
+        _titleLabel.opaque = NO;
+        _titleLabel.adjustsFontSizeToFitWidth = YES;
+        _titleLabel.minimumScaleFactor = 0.5;
+        _titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+        [self.contentView addSubview:_titleLabel];
+    }
+    return _titleLabel;
+}
+
+- (CLayoutConstraintsGroup *)resetConstraintsGroupForKey:(NSString *)key owner:(id)owner {
+    CLayoutConstraintsGroup *group = self.constraintsGroups[key];
+    if(group == nil) {
+        group = [CLayoutConstraintsGroup groupWithName:key owner:owner];
+        if(self.constraintsGroups == nil) {
+            self.constraintsGroups = [NSMutableDictionary new];
+        }
+        self.constraintsGroups[key] = group;
+    } else {
+        [group removeAllConstraints];
+    }
+    return group;
+}
+
++ (UIButton *)newCheckboxButton {
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [button setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    UIImage* selectedImage = [UIImage imageNamed:@"SurveyCheckYes"];
+    [button setImage:selectedImage forState:UIControlStateSelected];
+    UIImage* unselectedImage = [UIImage imageNamed:@"SurveyCheckNo"];
+    [button setImage:unselectedImage forState:UIControlStateNormal];
+    return button;
 }
 
 @end

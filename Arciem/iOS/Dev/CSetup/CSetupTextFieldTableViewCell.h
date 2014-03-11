@@ -16,13 +16,8 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#import "CTextFieldTableViewCell.h"
 
-@interface CSetupTextFieldTableViewCell : UITableViewCell
-
-- (id)initWithReuseIdentifier:(NSString*)reuseIdentifier;
-
-@property(strong, readonly, nonatomic) UITextField* textField;
-@property(nonatomic) CGFloat textFieldLeft;
+@interface CSetupTextFieldTableViewCell : CTextFieldTableViewCell
 
 @end

@@ -35,17 +35,15 @@ static NSCalendar* sCalendar = nil;
 
 @implementation CDateItem
 
-- (ISO8601DateFormatter*)formatter
-{
+- (ISO8601DateFormatter*)formatter {
 	if(sFormatter == nil) {
-		sFormatter = [[ISO8601DateFormatter alloc] init];
+		sFormatter = [ISO8601DateFormatter new];
 	}
 	
 	return sFormatter;
 }
 
-- (NSCalendar*)calendar
-{
+- (NSCalendar*)calendar {
 	if(sCalendar == nil) {
 		sCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	}
@@ -53,30 +51,35 @@ static NSCalendar* sCalendar = nil;
 	return sCalendar;
 }
 
-- (void)setup
-{
+- (NSDate*)dateForString:(NSString*)str {
+    NSDate* date;
+    if([str isEqualToString:@"now"]) {
+        date = [NSDate date];
+    } else if([str isEqualToString:@"currentMonth"]) {
+        NSDateComponents* comps = [self.calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit) fromDate:[NSDate date]];
+        date = [self.calendar dateFromComponents:comps];
+    } else if([str isEqualToString:@"currentMonthPlusOneYear"]) {
+        NSDateComponents* comps = [self.calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit) fromDate:[NSDate date]];
+        comps.year++;
+        date = [self.calendar dateFromComponents:comps];
+    } else {
+        date = [self.formatter dateFromString:str];
+    }
+    return date;
+}
+
+- (void)setup {
 	[super setup];
 	
 	if([self.value isKindOfClass:[NSString class]]) {
-		self.dateValue = [self.formatter dateFromString:self.value];
-	}
-	
-	if(self.value == nil) {
-		self.dateValue = [NSDate date];
+		NSString* str = (NSString*)self.value;
+		NSDate* date = [self dateForString:str];
+		self.dateValue = date;
 	}
 	
 	if([self.minDate isKindOfClass:[NSString class]]) {
 		NSString* str = (NSString*)self.minDate;
-		NSDate* date;
-		if([str isEqualToString:@"now"]) {
-			date = [NSDate date];
-		} else if([str isEqualToString:@"currentMonth"]) {
-			NSDateComponents* comps = [self.calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit) fromDate:[NSDate date]];
-			date = [self.calendar dateFromComponents:comps];
-		} else {
-			date = [self.formatter dateFromString:str];
-		}
-
+		NSDate* date = [self dateForString:str];
 		self.minDate = date;
 	}
 
@@ -99,66 +102,55 @@ static NSCalendar* sCalendar = nil;
 	}
 }
 
-- (BOOL)shouldChangeCharactersInRange:(NSRange)range inString:(NSString*)fromString toReplacementString:(NSString*)string resultString:(NSString**)resultString
-{
+- (BOOL)shouldChangeCharactersInRange:(NSRange)range inString:(NSString*)fromString toReplacementString:(NSString*)string resultString:(NSString**)resultString {
 	return NO;
 }
 
 #pragma mark - @property dateValue
 
-+ (NSSet*)keyPathsForValuesAffectingDateValue
-{
++ (NSSet*)keyPathsForValuesAffectingDateValue {
 	return [NSSet setWithObject:@"value"];
 }
 
-- (NSDate*)dateValue
-{
+- (NSDate*)dateValue {
 	return self.value;
 }
 
-- (void)setDateValue:(NSDate *)dateValue
-{
+- (void)setDateValue:(NSDate *)dateValue {
 	self.value = dateValue;
 }
 
 #pragma mark - @property minDate
 
-+ (BOOL)automaticallyNotifiesObserversOfMinDate
-{
++ (BOOL)automaticallyNotifiesObserversOfMinDate {
 	return NO;
 }
 
-- (NSDate*)minDate
-{
+- (NSDate*)minDate {
 	return (self.dict)[@"minDate"];
 }
 
-- (void)setMinDate:(NSDate *)minDate
-{
+- (void)setMinDate:(NSDate *)minDate {
 	(self.dict)[@"minDate"] = minDate;
 }
 
 #pragma mark - @property maxDate
 
-+ (BOOL)automaticallyNotifiesObserversOfMaxDate
-{
++ (BOOL)automaticallyNotifiesObserversOfMaxDate {
 	return NO;
 }
 
-- (NSDate*)maxDate
-{
+- (NSDate*)maxDate {
 	return (self.dict)[@"maxDate"];
 }
 
-- (void)setMaxDate:(NSDate *)maxDate
-{
+- (void)setMaxDate:(NSDate *)maxDate {
 	(self.dict)[@"maxDate"] = maxDate;
 }
 
 #pragma mark - Validation
 
-- (NSError*)validate
-{
+- (NSError*)validate {
 	NSError* error = [super validate];
 	
 	if(error == nil) {
@@ -178,53 +170,77 @@ static NSCalendar* sCalendar = nil;
 	return error;
 }
 
+#pragma mark - @property value
+
+- (void)setValue:(id)value {
+	if([value isKindOfClass:[NSString class]]) {
+		self.value = [self.formatter dateFromString:value];
+	} else {
+        [super setValue:value];
+    }
+}
+
 #pragma mark - @property stringValue
 
-- (NSString*)stringValue
-{
+- (NSString*)stringValue {
 	return self.dateValue.description;
 }
 
-- (void)setStringValue:(NSString *)stringValue
-{
-	NSAssert(false, @"unimplemented");
+- (void)setStringValue:(NSString *)stringValue {
+    self.dateValue = [self.formatter dateFromString:self.value];
 }
 
 #pragma mark - @property fieldWidthCharacters
 
-- (NSUInteger)fieldWidthCharacters
-{
+- (NSUInteger)fieldWidthCharacters {
 	return [(self.dict)[@"fieldWidthCharacters"] unsignedIntegerValue];
 }
 
-- (void)setFieldWidthCharacters:(NSUInteger)width
-{
+- (void)setFieldWidthCharacters:(NSUInteger)width {
 	(self.dict)[@"fieldWidthCharacters"] = @(width);
 }
 
 #pragma mark - @property datePickerMode
 
-- (NSString*)datePickerMode
-{
+- (NSString*)datePickerMode {
 	return (self.dict)[@"datePickerMode"];
 }
 
-- (void)setDatePickerMode:(NSString *)datePickerMode
-{
+- (void)setDatePickerMode:(NSString *)datePickerMode {
 	(self.dict)[@"datePickerMode"] = datePickerMode;
 }
 
 #pragma mark - @property formattedDateValue
 
-- (NSString*)formattedDateValue
-{
+- (NSString*)formattedDateValue {
 	NSString* result;
-	NSString* format = [NSDateFormatter dateFormatFromTemplate:@"yMMMM" options:0 locale:[NSLocale currentLocale]];
-	NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:format];
+    
+    static NSDateFormatter* dateFormatter;
+    if(dateFormatter == nil) {
+        NSString* format = [NSDateFormatter dateFormatFromTemplate:@"yMMMM" options:0 locale:[NSLocale currentLocale]];
+        dateFormatter = [NSDateFormatter new];
+        [dateFormatter setDateFormat:format];
+    }
 	
 	result = [dateFormatter stringFromDate:self.dateValue];
 
+	return result;
+}
+
+#pragma mark - @property yearAndMonthFormattedDateValue
+
+- (NSString *)yearAndMonthFormattedDateValue {
+	NSString* result;
+
+    static NSDateFormatter* dateFormatter;
+    if(dateFormatter == nil) {
+        NSString* format = [NSDateFormatter dateFormatFromTemplate:@"y-MM" options:0 locale:nil];
+        dateFormatter = [NSDateFormatter new];
+        [dateFormatter setDateFormat:format];
+    }
+	
+	result = [dateFormatter stringFromDate:self.dateValue];
+    
 	return result;
 }
 @end

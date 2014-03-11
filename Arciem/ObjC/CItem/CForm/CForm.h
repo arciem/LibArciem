@@ -18,7 +18,10 @@
 
 #import "CItem.h"
 #import "CBooleanItem.h"
-#import "CCreditCardItem.h"
+#import "CActionItem.h"
+#import "CSectionItem.h"
+#import "CCardNumberItem.h"
+#import "CPaymentMethodSummaryItem.h"
 #import "CDateItem.h"
 #import "CEmailItem.h"
 #import "CMultiChoiceItem.h"
@@ -33,12 +36,12 @@
 
 @interface CForm : NSObject
 
-@property (strong, nonatomic) CItem* rootItem;
+@property (nonatomic) CItem* rootItem;
 
 - (id)initWithRootItem:(CItem*)rootItem;
 
-+ (CForm*)formForResourceName:(NSString*)resourceName withExtension:(NSString*)extension;
-+ (CForm*)formForResourceName:(NSString*)resourceName;
-+ (CForm*)formWithRootItem:(CItem*)rootItem;
++ (CForm*)newFormForResourceName:(NSString*)resourceName withExtension:(NSString*)extension;
++ (CForm*)newFormForResourceName:(NSString*)resourceName;
++ (CForm*)newFormWithRootItem:(CItem*)rootItem;
 
 @end

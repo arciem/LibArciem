@@ -26,21 +26,32 @@
 #import "CDateItem.h"
 #import "ObjectUtils.h"
 #import "CMonthAndYearPicker.h"
+#import "CObserver.h"
+
+NSString *const CAdvanceToNextKeyViewNotification = @"CAdvanceToNextKeyViewNotification";
+NSString *const CDidEnterTextFieldNotification = @"CDidEnterTextFieldNotification";
+NSString *const CDidExitTextFieldNotification = @"CDidExitTextFieldNotification";
 
 @interface CTextFieldItemTableViewCell ()
 
-@property (strong, nonatomic) NSMutableArray* textFields;
+@property (nonatomic) NSMutableArray *textFields;
+@property (nonatomic) NSMutableArray *modelObservers;
+@property (nonatomic) CObserver *selectableObserver;
+@property (nonatomic) CObserver *selectedObserver;
+@property (readonly, nonatomic) BOOL needsCheckbox;
+@property (nonatomic) UIButton *checkboxButton;
 
 @end
 
 @implementation CTextFieldItemTableViewCell
 
-@synthesize textFields = textFields_;
-
 - (void)setup
 {
 	[super setup];
-	self.textLabel.hidden = YES;
+}
+
+- (BOOL)needsCheckbox {
+    return self.rowItem.model.selectable;
 }
 
 - (UITextField*)textField
@@ -56,14 +67,21 @@
 
 	while(self.textFields.count <= index) {
 		UITextField* field = [[UITextField alloc] initWithFrame:CGRectZero];
+        field.translatesAutoresizingMaskIntoConstraints = NO;
 		//		field.backgroundColor = [UIColor greenColor];
+        [field setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 		field.borderStyle = UITextBorderStyleRoundedRect;
 //		field.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		field.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 		field.contentMode = UIViewContentModeRedraw;
+        field.font = self.font;
 		[self.textFields addObject:field];
 		[self.contentView addSubview:field];
 		field.delegate = self;
+		[self setNeedsUpdateConstraints];
+        
+        CItem *model = self.models[self.textFields.count - 1];
+        [field setAssociatedObject:model.analyticsName forKey:@"analyticsName"];
 	}
 	
 	return (self.textFields)[index];
@@ -78,7 +96,7 @@
 		(self.textFields)[index] = textField;
 		[self.contentView addSubview:textField];
 		textField.delegate = self;
-		[self setNeedsLayout];
+		[self setNeedsUpdateConstraints];
 	}
 }
 
@@ -114,52 +132,85 @@
 	return result;
 }
 
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	
-//	CLogDebug(nil, @"%@ layoutSubviews", self);
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    [UIView animateWithDuration:0.4 animations:^{
+        if(editing) {
+            self.checkboxButton.alpha = 0.0;
+        } else {
+            self.checkboxButton.alpha = 1.0;
+        }
+    }];
+}
 
+- (void)updateConstraints {
+    [super updateConstraints];
+    
 	NSUInteger count = self.models.count;
 	
 	CGFloat gap = IsPad() ? 20 : 10;
-
-	CGRect layoutFrame = self.layoutFrame;
-	
-	__block CGRect fieldRect = layoutFrame;
 	if(count > 2) gap += 30;
-	fieldRect.size.width = layoutFrame.size.width / count - (gap / 2) * (count - 1);
-	
-	NSArray* validationViews = self.validationViews;
-	[self.textFields enumerateObjectsUsingBlock:^(UITextField* textField, NSUInteger idx, BOOL *stop) {
-		
-		textField.font = self.font;
+    
+    CLayoutConstraintsGroup *group = [self resetConstraintsGroupForKey:@"CTextFieldItemTableViewCell_contentView" owner:self.contentView];
 
-		CFrame* textFieldFrame = textField.cframe;
-		textFieldFrame.frame = fieldRect;
-		
-		CStringItem* model = (self.models)[idx];
-		NSUInteger fieldWidthCharacters = model.fieldWidthCharacters;
-		if(fieldWidthCharacters > 0) {
-			CGFloat characterWidthPoints = [@"0" sizeWithFont:self.font].width;
-			textFieldFrame.width = fieldWidthCharacters * characterWidthPoints + 20;
-			if(textField.clearButtonMode != UITextFieldViewModeNever) {
-				textFieldFrame.width += 50;
-			}
-		}
-		
-		CFieldValidationView* validationView = validationViews[idx];
-		CFrame* validationViewFrame = validationView.cframe;
-		validationViewFrame.centerY = textFieldFrame.centerY;
-		if(count == 2 && idx == self.textFields.count - 1) {
-			textFieldFrame.right = CGRectGetMaxX(self.layoutFrame);
-			validationViewFrame.left = textFieldFrame.right + 8;
-		} else {
-			validationViewFrame.right = textFieldFrame.left - 8;
-		}
-		
-		fieldRect.origin.x += textFieldFrame.width + gap;
-	}];
+    BOOL hasCheckbox = self.checkboxButton != nil;
+    BOOL checkboxVisible = hasCheckbox && !self.editing;
+    
+    if(hasCheckbox) {
+        [group addConstraint:[self.checkboxButton constrainCenterYEqualToCenterYOfItem:self.contentView]];
+        [group addConstraint:[self.checkboxButton constrainLeadingEqualToLeadingOfItem:self.contentView offset:15]];
+    }
+    
+    __block UITextField *lastField;
+    BSELF;
+    [self.textFields enumerateObjectsUsingBlock:^(UITextField* field, NSUInteger idx, BOOL *stop) {
+        
+        // If there was a previous field
+        if(lastField != nil) {
+            // Constrain the gap between this field and the previous field to a constant
+            [group addConstraint:[field constrainLeadingEqualToTrailingOfItem:lastField offset:gap]];
+            
+            // Constrain the width of this field to equal the width of the previous field.
+            [group addConstraint:[field constrainWidthEqualToItem:lastField]];
+        }
+
+        // If this is the first field
+        if(idx == 0) {
+            // If there is a checkbox
+            if(checkboxVisible) {
+                // Constrain its left side to the checkbox's right side
+                [group addConstraint:[field constrainLeadingEqualToTrailingOfItem:bself.checkboxButton offset:36]];
+            } else {
+                // Constrain its left side to the superview's left side
+                [group addConstraint:[field constrainLeadingEqualToLeadingOfItem:bself.contentView offset:bself.contentInset.left]];
+            }
+        }
+        
+        // If this is the last field
+        if(idx == count - 1) {
+            // Constrain its right side to the superview's right side
+            [group addConstraint:[field constrainTrailingEqualToTrailingOfItem:bself.contentView offset:-bself.contentInset.right]];
+        }
+
+        CFieldValidationView *validationView = bself.validationViews[idx];
+        
+        // If there's more than one field in this cell and this is the last field,
+        if(count > 1 && idx == count - 1) {
+            // put it's validation view on the right.
+            [group addConstraint:[validationView constrainLeadingEqualToTrailingOfItem:field offset:8]];
+        } else {
+            // put it's validation view on the left.
+            [group addConstraint:[field constrainLeadingEqualToTrailingOfItem:validationView offset:8]];
+            // If this is the first validation view and there is a checkbox
+            if(idx == 0 && checkboxVisible) {
+                [group addConstraint:[validationView constrainLeadingEqualToTrailingOfItem:bself.checkboxButton offset:8]];
+            }
+        }
+        
+        [group addConstraint:[validationView constrainCenterYEqualToCenterYOfItem:field]];
+        
+        lastField = field;
+    }];
 }
 
 - (UIKeyboardType)keyboardTypeForModel:(CStringItem*)model
@@ -175,6 +226,8 @@
 		result = UIKeyboardTypeNumberPad;
 	} else if([keyboardType isEqualToString:@"asciiCapable"]) {
 		result = UIKeyboardTypeASCIICapable;
+	} else if([keyboardType isEqualToString:@"numbersAndPunctuation"]) {
+		result = UIKeyboardTypeNumbersAndPunctuation;
 	} else if(IsEmptyString(keyboardType) || [keyboardType isEqualToString:@"default"]) {
 		// no action
 	} else {
@@ -212,7 +265,7 @@
 		CDateItem* dateItem = (CDateItem*)model;
 		
 		if([dateItem.datePickerMode isEqualToString:@"monthAndYear"]) {
-			CMonthAndYearPicker* picker = [[CMonthAndYearPicker alloc] init];
+			CMonthAndYearPicker* picker = [CMonthAndYearPicker new];
 			picker.minimumDate = dateItem.minDate;
 			picker.maximumDate = dateItem.maxDate;
 			picker.date = dateItem.dateValue;
@@ -231,7 +284,7 @@
 			} else {
 				NSAssert1(NO, @"Unknown date picker mode:%@", dateItem.datePickerMode);
 			}
-			UIDatePicker* picker = [[UIDatePicker alloc] init];
+			UIDatePicker* picker = [UIDatePicker new];
 			picker.date = dateItem.dateValue;
 			picker.datePickerMode = datePickerMode;
 			picker.minimumDate = dateItem.minDate;
@@ -246,29 +299,90 @@
 	return inputView;
 }
 
+- (void)syncToSelectable {
+    if(self.needsCheckbox) {
+        if(self.checkboxButton == nil) {
+            self.checkboxButton = [[self class] newCheckboxButton];
+            self.checkboxButton.userInteractionEnabled = NO;
+            [self.contentView addSubview:self.checkboxButton];
+            [self setNeedsUpdateConstraints];
+        }
+    } else {
+        if(self.checkboxButton != nil) {
+            [self.checkboxButton removeFromSuperview];
+            self.checkboxButton = nil;
+            [self setNeedsUpdateConstraints];
+        }
+    }
+}
+
+- (void)syncToSelected {
+    self.checkboxButton.selected = self.rowItem.model.selected;
+}
+
 - (void)syncToRowItem
 {
 	[super syncToRowItem];
 
 	[self setNumberOfTextFieldsTo:self.models.count];
 
+    self.selectableObserver = [CObserver newObserverWithKeyPath:@"selectable" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+        [self syncToSelectable];
+    }];
+    
+    [self syncToSelectable];
+    
+    self.selectedObserver = [CObserver newObserverWithKeyPath:@"selected" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+        [self syncToSelected];
+    }];
+    
+    [self syncToSelected];
+    
+    self.modelObservers = [NSMutableArray new];
+    BSELF;
 	[self.textFields enumerateObjectsUsingBlock:^(UITextField* textField, NSUInteger index, BOOL *stop) {
-		CItem* model = (self.models)[index];
+		CItem* model = (bself.models)[index];
 
 		textField.placeholder = model.title;
+        textField.returnKeyType = UIReturnKeyDefault;
+        
+        UIToolbar *toolbar = [UIToolbar new];
+        UIBarButtonItem *spacerItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIBarButtonItem *nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonTapped:)];
+        NSArray *items = @[spacerItem, nextButtonItem];
+        toolbar.items = items;
+        textField.inputAccessoryView = toolbar;
+        [toolbar sizeToFit];
+        
+        if([model isKindOfClass:[CStringItem class]]) {
+            CStringItem *stringItem = (CStringItem *)model;
+            textField.text = stringItem.stringValue;
+            CObserver *observer = [CObserver newObserverWithKeyPath:@"stringValue" ofObject:model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+                textField.text = stringItem.stringValue;
+            }];
+            [bself.modelObservers addObject:observer];
+        } else if([model isKindOfClass:[CDateItem class]]) {
+            CDateItem *dateItem = (CDateItem *)model;
+            textField.text = dateItem.formattedDateValue;
+            CObserver *observer = [CObserver newObserverWithKeyPath:@"dateValue" ofObject:model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+                textField.text = dateItem.formattedDateValue;
+            }];
+            [bself.modelObservers addObject:observer];
+        }
 
 		if([model isKindOfClass:[CStringItem class]]) {
 			CStringItem* stringItem = (CStringItem*)model;
 			textField.text = stringItem.stringValue;
 			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-			textField.autocapitalizationType = [self autocapitalizationTypeForModel:stringItem];
-			textField.keyboardType = [self keyboardTypeForModel:stringItem];
+			textField.autocapitalizationType = [bself autocapitalizationTypeForModel:stringItem];
+			textField.keyboardType = [bself keyboardTypeForModel:stringItem];
 			textField.secureTextEntry = stringItem.secureTextEntry;
+//            textField.keyboardAppearance = stringItem.secureTextEntry ? UIKeyboardAppearanceDark : UIKeyboardAppearanceDefault;
 		} else {
-			UIControl* control = [self inputViewForModel:model];
+			UIControl* control = [bself inputViewForModel:model];
 			textField.inputView = control;
 			textField.clearButtonMode = UITextFieldViewModeNever;
-			[control addTarget:self action:@selector(inputViewValueChanged:event:) forControlEvents:UIControlEventValueChanged];
+			[control addTarget:bself action:@selector(inputViewValueChanged:event:) forControlEvents:UIControlEventValueChanged];
 			[control setAssociatedObject:@(index) forKey:@"index"];
 		}
 	}];
@@ -330,6 +444,30 @@
 	return result;
 }
 
+- (void)willTransitionToState:(UITableViewCellStateMask)state {
+    [super willTransitionToState:state];
+    
+    BOOL enabled = YES;
+    if(state & UITableViewCellStateShowingEditControlMask || state & UITableViewCellStateShowingDeleteConfirmationMask) {
+        enabled = NO;
+    }
+    
+	[self.textFields enumerateObjectsUsingBlock:^(UITextField *field, NSUInteger idx, BOOL *stop) {
+        field.enabled = enabled;
+	}];
+    
+    [self setNeedsUpdateConstraints];
+}
+
+- (void)advanceToNextKeyViewFromKeyView:(UIView *)keyView {
+    [[NSNotificationCenter defaultCenter] postNotificationName:CAdvanceToNextKeyViewNotification object:keyView];
+}
+
+- (void)nextButtonTapped:(id)sender {
+    UIView *keyView = (UIView *)[self findFirstResponder];
+    [self advanceToNextKeyViewFromKeyView:keyView];
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -358,37 +496,42 @@
 {
 	CStringItem* model = [self modelForTextField:textField];
 	self.activeItem = model;
-	model.isEditing = YES;
-
+	model.editing = YES;
+    
 	if(textField.clearsOnBeginEditing) {
 		model.value = @"";
 	}
 	
 	[self.delegate rowItemTableViewCellDidGainFocus:self];
+    
+    NSDictionary *userInfo = @{@"textField": textField,
+                               @"analyticsName": Ennull([textField associatedObjectForKey:@"analyticsName"])};
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDidEnterTextFieldNotification object:self userInfo:userInfo];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    // KLUDGE: Prevents rogue animation of text in field the first time leaving it.
+    [textField setNeedsLayout];
+    [textField layoutIfNeeded];
+    
 	CStringItem* model = [self modelForTextField:textField];
 	[model validate];
-	model.isEditing = NO;
+	model.editing = NO;
 	self.activeItem = nil;
+    
+    BOOL valid = model.valid;
+    
+    NSDictionary *userInfo = @{@"textField": textField,
+                               @"analyticsName": Ennull([textField associatedObjectForKey:@"analyticsName"]),
+                               @"valid": [NSNumber numberWithBool:valid]};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDidExitTextFieldNotification object:self userInfo:userInfo];
 }
 
-#if 0
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-	if(textField == self.emailTextField) {
-		[self.passwordTextField becomeFirstResponder];
-	} else if(textField == self.passwordTextField) {
-		if(self.emailItem.isValid && self.passwordItem.isValid) {
-			[self login];
-		} else {
-			[self.emailTextField becomeFirstResponder];
-		}
-	}
-	return NO;
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self advanceToNextKeyViewFromKeyView:textField];
+    return NO;
 }
-#endif
 
 @end

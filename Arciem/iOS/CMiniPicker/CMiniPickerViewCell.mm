@@ -20,13 +20,16 @@
 #import "CObserver.h"
 #import "UIViewUtils.h"
 #import "CGUtils.h"
+#import "DeviceUtils.h"
+#import "ObjectUtils.h"
+#import "UILabelUtils.h"
 #include <cmath>
 #include <algorithm>
 
 @interface CMiniPickerViewCell ()
 
-@property (strong, nonatomic) NSMutableArray* columnLabels;
-@property (strong, nonatomic) CObserver* modelObserver;
+@property (nonatomic) NSMutableArray* columnLabels;
+@property (nonatomic) CObserver* modelObserver;
 
 @end
 
@@ -41,14 +44,22 @@
     label.numberOfLines = 0;
     label.opaque = NO;
     label.backgroundColor = [UIColor clearColor];
+#if 0
+#warning DEBUG ONLY
+    label.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.25];
+#endif
     if(self.onDarkBackground) {
         label.textColor = [UIColor whiteColor];
-        label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.6];
-        label.shadowOffset = CGSizeMake(0, -1);
+        if(!IsOSVersionAtLeast7()) {
+            label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.6];
+            label.shadowOffset = CGSizeMake(0, -1);
+        }
     } else {
         label.textColor = [UIColor blackColor];
-        label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.6];
-        label.shadowOffset = CGSizeMake(0, 1);
+        if(!IsOSVersionAtLeast7()) {
+            label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+            label.shadowOffset = CGSizeMake(0, 1);
+        }
     }
     return label;
 }
@@ -57,16 +68,20 @@
 {
     [super setup];
 
-    self.font = [UIFont boldSystemFontOfSize:14.0];
+    self.layoutView = YES;
 
-    self.modelObserver = [CObserver observerWithKeyPath:@"model" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self syncToModel];
+    BSELF;
+    self.modelObserver = [CObserver newObserverWithKeyPath:@"model" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[bself syncToModel];
 	}];
     
     self.columnLabels = [NSMutableArray new];
     
     self.userInteractionEnabled = NO;
-//    self.debugColor = [UIColor redColor];
+#if 0
+#warning DEBUG ONLY
+    self.debugColor = [UIColor redColor];
+#endif
     self.margins = UIEdgeInsetsMake(5, 10, 5, 10);
 }
 
@@ -74,30 +89,48 @@
 {
     [super layoutSubviews];
     
-    CGFloat totalWidth = self.width - self.margins.left - self.margins.right;
+    CGFloat usableWidth = self.width - self.margins.left - self.margins.right;
+    CGFloat maxHeight = [self.delegate maxHeightForMiniPickerViewCell:self];
 
-    __block CGFloat columnX = self.margins.left;
-    __block CGFloat remainingWidth = totalWidth;
-    [self.columnLabels enumerateObjectsUsingBlock:^(UILabel* label, NSUInteger idx, BOOL *stop) {
+    __block CGFloat columnRight = self.width - self.margins.right;
+    __block CGFloat remainingWidth = usableWidth;
+    BSELF;
+    [self.columnLabels enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UILabel* label, NSUInteger idx, BOOL *stop) {
         CGFloat columnWidth;
-        if(idx == self.columnLabels.count - 1) {
+        if(idx == 0) {
             columnWidth = remainingWidth;
         } else {
-            columnWidth = [self.delegate miniPickerViewCell:self widthForColumnIndex:idx];
+            const CGFloat kGutter = 20;
+            columnWidth = [bself.delegate miniPickerViewCell:bself widthForColumnIndex:idx];
             if(columnWidth == 0.0) {
-                CGSize size = [label.text sizeWithFont:label.font forWidth:remainingWidth lineBreakMode:label.lineBreakMode];
-                columnWidth = size.width;
-            } else if(columnWidth > remainingWidth) {
+                CGRect rect = [label.attributedText boundingRectWithSize:CGSizeMake(remainingWidth, 1000) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+                CGSize size = CGSizeMake(std::ceilf(rect.size.width), std::ceilf(rect.size.height));
+                columnWidth = size.width + kGutter;
+            } else {
+                columnWidth += kGutter;
+            }
+            
+            if(columnWidth > remainingWidth) {
                 columnWidth = remainingWidth;
             }
         }
-        CFrame* cframe = label.cframe;
-        cframe.left = columnX;
-        cframe.top = self.margins.top;
-        cframe.width = columnWidth;
-        [cframe sizeToFit];
-        cframe.width = columnWidth;
-        columnX += columnWidth;
+        
+        {
+            CFrame* cframe = label.cframe;
+            cframe.right = columnRight;
+            cframe.top = bself.margins.top;
+            cframe.width = columnWidth;
+            cframe.height = 5000;
+            [cframe sizeToFit];
+            cframe.width = columnWidth;
+        }
+        if(maxHeight > 0.0 && label.height > maxHeight) {
+            label.cframe.height = maxHeight;
+            label.font = bself.font;
+            [label adjustFontSizeToFit:bself.font.pointSize];
+        }
+        
+        columnRight -= columnWidth;
         remainingWidth -= columnWidth;
     }];
 }
@@ -111,15 +144,24 @@
     
     NSArray* columns = self.model.dict[@"columns"];
     if(columns == nil) {
-        NSString* title = self.model.title;
+        NSAttributedString* title = [[NSAttributedString alloc] initWithString:self.model.title];
         CMiniPickerViewCellColumn* column = [[CMiniPickerViewCellColumn alloc] initWithText:title lines:0 alignment:NSTextAlignmentLeft];
         columns = @[column];
     }
     for(id<CMiniPickerViewCellColumn> column in columns) {
         UILabel* label = [self createLabel];
-        label.font = self.font;
-        label.text = column.text;
-        label.numberOfLines = column.lines;
+        NSAttributedString *string = column.text;
+        if(self.font != nil) {
+            NSMutableAttributedString *mstring = [string mutableCopy];
+#if 0
+#warning DEBUG ONLY
+            [mstring appendAttributedString:mstring];
+#endif
+            [mstring addAttribute:NSFontAttributeName value:self.font range:NSMakeRange(0, mstring.length)];
+            string = [mstring copy];
+        }
+        label.attributedText = string;
+//        label.numberOfLines = column.lines;
         label.textAlignment = column.alignment;
         [self addSubview:label];
         [self.columnLabels addObject:label];
@@ -158,7 +200,7 @@
 
 @interface CMiniPickerViewCellColumn ()
 
-@property (strong, readwrite, nonatomic) NSString* text;
+@property (strong, readwrite, nonatomic) NSAttributedString* text;
 @property (readwrite, nonatomic) NSUInteger lines;
 @property (readwrite, nonatomic) NSTextAlignment alignment;
 
@@ -166,7 +208,7 @@
 
 @implementation CMiniPickerViewCellColumn
 
-- (id)initWithText:(NSString*)text lines:(NSUInteger)lines alignment:(NSTextAlignment)alignment
+- (id)initWithText:(NSAttributedString*)text lines:(NSUInteger)lines alignment:(NSTextAlignment)alignment
 {
     if(self = [super init]) {
         self.text = text;

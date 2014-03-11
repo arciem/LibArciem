@@ -22,6 +22,11 @@
 #import "UIColorUtils.h"
 #import "DeviceUtils.h"
 #import "Geom.h"
+#import "StringUtils.h"
+#import "ObjectUtils.h"
+#import "CView.h"
+#import "ThreadUtils.h"
+#import "UIImageUtils.h"
 
 NSString* const sTapInBackgroundNotification = @"TapInBackground";
 static const NSTimeInterval kAnimationDuration = 0.4;
@@ -30,17 +35,17 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (void)fillRect:(CGRect)rect color:(UIColor*)color
 {
-	ContextFillRectColor(UIGraphicsGetCurrentContext(), rect, color.CGColor);
+	ContextFillRectColor(UIGraphicsGetCurrentContextChecked(), rect, color.CGColor);
 }
 
 - (void)drawCrossedBox:(CGRect)rect color:(UIColor*)color lineWidth:(float)lineWidth originIndicators:(BOOL)originIndicators
 {
-	ContextDrawCrossedBox(UIGraphicsGetCurrentContext(), rect, color.CGColor, lineWidth, originIndicators);
+	ContextDrawCrossedBox(UIGraphicsGetCurrentContextChecked(), rect, color.CGColor, lineWidth, originIndicators);
 }
 
 - (void)drawCrossedBox:(CGRect)rect color:(UIColor*)color lineWidth:(float)lineWidth
 {
-	ContextDrawCrossedBox(UIGraphicsGetCurrentContext(), rect, color.CGColor, lineWidth, NO);
+	ContextDrawCrossedBox(UIGraphicsGetCurrentContextChecked(), rect, color.CGColor, lineWidth, NO);
 }
 
 - (void)sendTapInBackgroundNotification
@@ -50,22 +55,22 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (UIImage*)capture
 {
+    UIImage *image = nil;
+    
     CGRect r = [self bounds];
-    
-	CGFloat screenScale = ScreenScale();
-    UIGraphicsBeginImageContextWithOptions(r.size, NO, screenScale);
-    
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    [[UIColor clearColor] set];
-    CGContextFillRect(ctx, r);
-    
-	[self.layer renderInContext:ctx];
-    
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
- 
-    return newImage;
+
+    CGContextRef ctx = [UIImage beginImageContextWithSize:r.size opaque:NO scale:0.0 flipped:NO];
+
+//    if(IsOSVersionAtLeast7()) {
+//        [self drawViewHierarchyInRect:r afterScreenUpdates:NO];
+//    } else {
+        [[UIColor clearColor] set];
+        CGContextFillRect(ctx, r);
+        [self.layer renderInContext:ctx];
+//    }
+
+    image = [UIImage endImageContext];
+    return image;
 }
 
 - (void)bringSubview:(UIView*)view aboveSubview:(UIView*)siblingSubview
@@ -84,26 +89,119 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	}
 }
 
-- (void)printViewHierarchy:(UIView*)view indent:(NSString*)indent level:(int)level
-{
-	NSString* prefix = @"   ";
-	if([view isKindOfClass:[UIScrollView class]]) {
-		prefix = @"***";
+- (void)exerciseAmbiguityInViewHierarchy:(UIView *)view {
+    if(view.hasAmbiguousLayout) {
+        [view exerciseAmbiguityInLayout];
+    }
+	for(UIView* subview in view.subviews) {
+		[self exerciseAmbiguityInViewHierarchy:subview];
 	}
-	CLogPrint(@"%@%@%3d %@", prefix, indent, level, view);
-	indent = [indent stringByAppendingString:@"  |"];
+}
+
+- (void)exerciseAmbiguityInViewHierarchy {
+    [self exerciseAmbiguityInViewHierarchy:self];
+}
+
+- (void)animateAmbiguityInViewHierarchy {
+    BSELF;
+    [NSThread performBlockOnMainThread:^(BOOL *stop) {
+        [UIView animateWithDuration:0.2 animations:^{
+            if(bself == nil) {
+                *stop = YES;
+//                CLogDebug(nil, @"STOPPED");
+            } else {
+//                CLogDebug(nil, @"RUNNING");
+                [bself exerciseAmbiguityInViewHierarchy];
+            }
+        }];
+    } repeatInterval:1.0];
+}
+
+- (void)walkViewHierarchyWithLevel:(NSUInteger)level block:(void (^)(UIView *view, NSUInteger level, NSUInteger idx, BOOL *stop))block {
+    [self.subviews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
+        block(view, level, idx, stop);
+        if(!(*stop)) {
+            [view walkViewHierarchyWithLevel:(level + 1) block:block];
+        }
+    }];
+}
+
+- (void)walkViewHierarchyWithBlock:(void (^)(UIView *view, NSUInteger level, NSUInteger idx, BOOL *stop))block {
+    [self walkViewHierarchyWithLevel:0 block:block];
+}
+
+- (void)printViewHierarchy:(UIView*)view indent:(NSString*)indent level:(NSUInteger)level
+{
+    NSString *scrollViewPrefix = @"⬜️";
+    if([view isKindOfClass:[UIScrollView class]]) {
+        scrollViewPrefix = @"🔃";
+        UIScrollView *scrollView = (UIScrollView *)view;
+        if(scrollView.scrollsToTop) {
+            scrollViewPrefix = @"🔝";
+        }
+    }
+    NSString *translatesPrefix = view.translatesAutoresizingMaskIntoConstraints ? @"⬜️" : @"✅";
+    NSString *ambiguousPrefix = view.hasAmbiguousLayout ? @"❓" : @"⬜️";
+
+    NSString* prefix = [NSString stringWithFormat:@"%@ %@ %@", scrollViewPrefix, translatesPrefix, ambiguousPrefix];
+
+    NSMutableArray *auxInfoStrings = [NSMutableArray new];
+
+    [auxInfoStrings addObject:[NSString stringWithFormat:@"opaque:%@", StringFromBool(view.opaque)]];
+
+    [auxInfoStrings addObject:[NSString stringWithFormat:@"backgroundColor:%@", view.backgroundColor]];
+    
+    if([view isKindOfClass:[UILabel class]]) {
+        [auxInfoStrings addObject:[NSString stringWithFormat:@"textColor:%@", ((UILabel *)view).textColor]];
+    }
+    
+    if(IsOSVersionAtLeast7()) {
+        [auxInfoStrings addObject:[NSString stringWithFormat:@"tintColor:%@", view.tintColor]];
+    }
+
+    [auxInfoStrings addObject:[NSString stringWithFormat:@"alpha:%f", view.alpha]];
+
+    NSString *debugName = view.debugName;
+    NSString *debugNameString = IsEmptyString(debugName) ? @"" : [NSString stringWithFormat:@"%@: ", debugName];
+    NSString *auxInfoString = StringByJoiningNonemptyStringsWithString(auxInfoStrings, @" ");
+	CLogPrint(@"%@%@%3d %@%@ %@", prefix, indent, level, debugNameString, view, auxInfoString);
+    
+	indent = [indent stringByAppendingString:@"  │"];
 	for(UIView* subview in view.subviews) {
 		[self printViewHierarchy:subview indent:indent level:level+1];
 	}
 }
 
-- (void)printViewHierarchy
-{
+- (void)printViewHierarchy {
 	[self printViewHierarchy:self indent:@"" level:0];
 }
 
-- (void)printResponderChain
+- (void)printConstraintsHierarchy:(UIView*)view indent:(NSString*)indent level:(int)level
 {
+    NSString *translatesPrefix = view.translatesAutoresizingMaskIntoConstraints ? @"⬜️" : @"✅";
+    NSString *ambiguousPrefix = view.hasAmbiguousLayout ? @"❓" : @"⬜️";
+    NSString* prefix = [NSString stringWithFormat:@"%@ %@ ", translatesPrefix, ambiguousPrefix];
+    NSString *debugName = view.debugName;
+    NSString *debugNameString = IsEmptyString(debugName) ? @"" : [NSString stringWithFormat:@"%@: ", debugName];
+    NSString *viewString = [NSString stringWithFormat:@"%@<%p>", NSStringFromClass([view class]), view];
+    NSString *frameString = [NSString stringWithFormat:@"(%g %g; %g %g)", view.left, view.top, view.width, view.height];
+	CLogPrint(@"%@⬜️ %@%3d %@%@ %@", prefix, indent, level, debugNameString, viewString, frameString);
+    for(NSLayoutConstraint *constraint in view.constraints) {
+        NSString *layoutGroupName = constraint.layoutGroupName;
+        NSString *layoutGroupNameString = IsEmptyString(layoutGroupName) ? @"" : [NSString stringWithFormat:@"%@: ", layoutGroupName];
+        CLogPrint(@"⬜️ ⬜️ 🔵 %@  │    %@%@", indent, layoutGroupNameString, constraint);
+    }
+	indent = [indent stringByAppendingString:@"  │"];
+	for(UIView* subview in view.subviews) {
+		[self printConstraintsHierarchy:subview indent:indent level:level+1];
+	}
+}
+
+- (void)printConstraintsHierarchy {
+    [self printConstraintsHierarchy:self indent:@"" level:0];
+}
+
+- (void)printResponderChain {
 	UIResponder* r = self;
 	do {
 		r = r.nextResponder;
@@ -443,7 +541,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (void)tableHeaderFillWithTintColor:(UIColor*)tintColor
 {
-	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextRef context = UIGraphicsGetCurrentContextChecked();
 
 	CGColorRef tintColorRGB = CreateColorByConvertingToRGB(tintColor.CGColor);
 	CGColorRef darkColor = CreateColorByDarkening(tintColorRGB, 0.1);
@@ -539,42 +637,238 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	[self.superview exchangeSubviewAtIndex:self.indexInSubviews withSubviewAtIndex:swapView.indexInSubviews];
 }
 
-- (UIView*)addBevelViewAtY:(CGFloat)y top:(BOOL)top
-{
-	NSString* imageName = top ? @"BevelTop" : @"BevelBottom";
-	UIImage* bevelImage = [UIImage imageNamed:imageName];
-	UIImageView* bevelView = [[UIImageView alloc] initWithImage:bevelImage];
-	bevelView.contentStretch = CGRectMake(0.5, 0.5, 0, 0);
-	UIViewAutoresizing autoresizing = UIViewAutoresizingFlexibleWidth;
-	if(top) {
-		autoresizing |= UIViewAutoresizingFlexibleBottomMargin;
-	} else {
-		autoresizing |= UIViewAutoresizingFlexibleTopMargin;
-	}
-	bevelView.autoresizingMask = autoresizing;
-	bevelView.contentMode = UIViewContentModeScaleToFill;
-	CGRect bevelFrame = CGRectMake(self.boundsLeft, y, self.boundsWidth, bevelImage.size.height);
-	if(!top) {
-		bevelFrame.origin.y -= bevelImage.size.height;
-	}
-	bevelView.frame = bevelFrame;
-	[self addSubview:bevelView];
-	return bevelView;
-}
-
-- (UIView*)addTopBevelView
-{
-	return [self addBevelViewAtY:self.boundsTop top:YES];
-}
-
-- (UIView*)addBottomBevelView
-{
-	return [self addBevelViewAtY:self.boundsBottom top:NO];
-}
-
 - (CFrame*)cframe NS_RETURNS_RETAINED
 {
 	return [CFrame frameWithView:self];
+}
+
+- (BOOL)tapResignsFirstResponder {
+    return [[self associatedObjectForKey:@"tapResignsFirstResponder"] boolValue];
+}
+
+- (void)setTapResignsFirstResponder:(BOOL)tapResignsFirstResponder {
+    id obj = nil;
+    if(tapResignsFirstResponder) {
+        obj = [NSNumber numberWithBool:YES];
+    }
+    [self setAssociatedObject:obj forKey:@"tapResignsFirstResponder"];
+}
+
+- (NSLayoutConstraint *)constrainLeadingEqualToLeadingOfItem:(id)item {
+    return [self constrainLeadingEqualToLeadingOfItem:item offset:0.0];
+}
+
+- (NSLayoutConstraint *)constrainTrailingEqualToTrailingOfItem:(id)item {
+    return [self constrainTrailingEqualToTrailingOfItem:item offset:0.0];
+}
+
+- (NSLayoutConstraint *)constrainLeadingEqualToTrailingOfItem:(id)item {
+    return [self constrainLeadingEqualToTrailingOfItem:item offset:0.0];
+}
+
+- (NSLayoutConstraint *)constrainTopEqualToTopOfItem:(id)item {
+    return [self constrainTopEqualToTopOfItem:item offset:0.0];
+}
+
+- (NSLayoutConstraint *)constrainBottomEqualToBottomOfItem:(id)item {
+    return [self constrainBottomEqualToBottomOfItem:item offset:0.0];
+}
+
+- (NSLayoutConstraint *)constrainTopEqualToBottomOfItem:(id)item {
+    return [self constrainTopEqualToBottomOfItem:item offset:0.0];
+}
+
+- (NSLayoutConstraint *)constrainCenterXEqualToCenterXOfItem:(id)item {
+    return [self constrainCenterXEqualToCenterXOfItem:item offset:0.0];
+}
+
+- (NSLayoutConstraint *)constrainCenterYEqualToCenterYOfItem:(id)item {
+    return [self constrainCenterYEqualToCenterYOfItem:item offset:0.0];
+}
+
+- (NSArray *)constrainCenterEqualToCenterOfItem:(id)item {
+    return [self constrainCenterEqualToCenterOfItem:item offset:0.0];
+}
+
+- (NSLayoutConstraint *)constrainHeightEqualToItem:(id)item {
+    return [self constrainHeightEqualToItem:item offset:0.0];
+}
+
+- (NSLayoutConstraint *)constrainWidthEqualToItem:(id)item {
+    return [self constrainWidthEqualToItem:item offset:0.0];
+}
+
+- (NSLayoutConstraint *)constrainWidthEqualTo:(CGFloat)width {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:width];
+}
+
+- (NSLayoutConstraint *)constrainHeightEqualTo:(CGFloat)height {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:height];
+}
+
+- (NSLayoutConstraint *)constrainWidthEqualToItem:(id)item multiplier:(CGFloat)multiplier offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeWidth multiplier:multiplier constant:constant];
+}
+
+- (NSLayoutConstraint *)constrainHeightEqualToItem:(id)item multiplier:(CGFloat)multiplier offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeHeight multiplier:multiplier constant:constant];
+}
+
+- (NSArray *)constrainSizeEqualTo:(CGSize)size {
+    return @[
+             [self constrainWidthEqualTo:size.width],
+             [self constrainHeightEqualTo:size.height]
+             ];
+}
+
+
+
+- (NSLayoutConstraint *)constrainLeadingEqualToLeadingOfItem:(id)item offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeLeading multiplier:1.0 constant:constant];
+}
+
+- (NSLayoutConstraint *)constrainTrailingEqualToTrailingOfItem:(id)item offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:constant];
+}
+
+- (NSLayoutConstraint *)constrainLeadingGreaterThanOrEqualToLeadingOfItem:(id)item offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:item attribute:NSLayoutAttributeLeading multiplier:1.0 constant:constant];
+}
+
+- (NSLayoutConstraint *)constrainTrailingLessThanOrEqualToTrailingOfItem:(id)item offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationLessThanOrEqual toItem:item attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:constant];
+}
+
+- (NSLayoutConstraint *)constrainLeadingEqualToTrailingOfItem:(id)item offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:constant];
+}
+
+- (NSLayoutConstraint *)constrainTopEqualToTopOfItem:(id)item offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeTop multiplier:1.0 constant:constant];
+}
+
+- (NSLayoutConstraint *)constrainBottomEqualToBottomOfItem:(id)item offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeBottom multiplier:1.0 constant:constant];
+}
+
+- (NSLayoutConstraint *)constrainTopEqualToBottomOfItem:(id)item offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeBottom multiplier:1.0 constant:constant];
+}
+
+- (NSLayoutConstraint *)constrainCenterXEqualToCenterXOfItem:(id)item offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:constant];
+}
+
+- (NSLayoutConstraint *)constrainCenterYEqualToCenterYOfItem:(id)item offset:(CGFloat)constant {
+    return [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:item attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:constant];
+}
+
+- (NSLayoutConstraint *)constrainHeightEqualToItem:(id)item offset:(CGFloat)constant {
+    return [self constrainHeightEqualToItem:item multiplier:1.0 offset:constant];
+}
+
+- (NSLayoutConstraint *)constrainWidthEqualToItem:(id)item offset:(CGFloat)constant {
+    return [self constrainWidthEqualToItem:item multiplier:1.0 offset:constant];
+}
+
+
+- (NSArray *)constrainCenterEqualToCenterOfItem:(id)item offset:(CGFloat)constant {
+    return @[
+             [self constrainCenterXEqualToCenterXOfItem:item],
+             [self constrainCenterYEqualToCenterYOfItem:item]
+             ];
+}
+
+- (NSArray *)constrainSizeToSizeOfItem:(id)item {
+    return @[
+             [self constrainWidthEqualToItem:item],
+             [self constrainHeightEqualToItem:item]
+             ];
+}
+
+- (NSArray *)constrainFrameToFrameOfItem:(id)item {
+    return @[
+             [self constrainCenterEqualToCenterOfItem:item],
+             [self constrainSizeToSizeOfItem:item]
+             ];
+}
+
+- (NSArray *)constrainLeadingAndTrailingSpacingEqual {
+    CView *spacer1 = [CView new];
+    spacer1.translatesAutoresizingMaskIntoConstraints = NO;
+    spacer1.debugName = @"spacer1";
+    spacer1.layoutView = YES;
+    [self.superview insertSubview:spacer1 belowSubview:self];
+    CView *spacer2 = [CView new];
+    spacer2.translatesAutoresizingMaskIntoConstraints = NO;
+    spacer2.debugName = @"spacer2";
+    spacer2.layoutView = YES;
+    [self.superview insertSubview:spacer2 aboveSubview:self];
+
+    NSDictionary *views = @{@"self": self, @"spacer1": spacer1, @"spacer2": spacer2};
+
+    NSMutableArray *constraints = [NSMutableArray new];
+    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"|[spacer1][self][spacer2(==spacer1)]|" options:0 metrics:nil views:views]];
+//    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[self]-|" options:0 metrics:nil views:views]];
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:spacer1 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0]];
+    [constraints addObject:[NSLayoutConstraint constraintWithItem:spacer2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0]];
+    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[spacer1(==self)]" options:0 metrics:nil views:views]];
+    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[spacer2(==self)]" options:0 metrics:nil views:views]];
+
+    [self.superview addConstraints:constraints];
+    
+//    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0];
+    return constraints;
+}
+
+- (void)collectKeyViewsIntoArray:(NSMutableArray *)keyViews {
+    for(UIView *subview in self.subviews) {
+        if([subview conformsToProtocol:@protocol(UITextInputTraits)]) {
+            if([subview canBecomeFirstResponder]) {
+                if(!subview.hidden) {
+                    [keyViews addObject:subview];
+                }
+            }
+        } else {
+            [subview collectKeyViewsIntoArray:keyViews];
+        }
+    }
+}
+
+- (NSArray *)collectKeyViews {
+    NSMutableArray *keyViews = [NSMutableArray new];
+    [self collectKeyViewsIntoArray:keyViews];
+    return [keyViews copy];
+}
+
+- (NSArray *)subviewsSortedByReadingOrder:(NSArray *)subviews {
+    return [subviews sortedArrayWithOptions:0 usingComparator:^NSComparisonResult(UIView *subview1, UIView *subview2) {
+        CGRect rect1 = [self convertRect:subview1.frame fromView:subview1.superview];
+        CGRect rect2 = [self convertRect:subview2.frame fromView:subview2.superview];
+        
+        NSComparisonResult result = NSOrderedSame;
+        
+        if(rect1.origin.y > rect2.origin.y) {
+            result = NSOrderedDescending;
+        } else if(rect1.origin.y < rect2.origin.y) {
+            result = NSOrderedAscending;
+        } else {
+            if(rect1.origin.x > rect2.origin.x) {
+                result = NSOrderedDescending;
+            } else if(rect1.origin.x < rect2.origin.x) {
+                result = NSOrderedAscending;
+            }
+        }
+        
+        return result;
+    }];
+}
+
+- (void)visitAllDescendentViewsWithBlock:(view_block_t)block {
+    block(self);
+    [self.subviews enumerateObjectsUsingBlock:^(UIView *subview, NSUInteger idx, BOOL *stop) {
+        [subview visitAllDescendentViewsWithBlock:block];
+    }];
 }
 
 @end
@@ -820,6 +1114,135 @@ static const NSTimeInterval kAnimationDuration = 0.4;
     }
 
     return reversedPath;
+}
+
+@end
+
+@interface CLayoutConstraintsGroup ()
+
+@property(weak, nonatomic) id owner;
+@property(nonatomic) NSMutableArray *mutableConstraints;
+
+@end
+
+@implementation CLayoutConstraintsGroup
+
+@synthesize mutableConstraints = _mutableConstraints;
+@synthesize name = _name;
+
+- (instancetype)initWithName:(NSString*)name owner:(id)owner
+{
+    if(self = [super init]) {
+        _name = name;
+        _owner = owner;
+        _mutableConstraints = [NSMutableArray new];
+    }
+    return self;
+}
+
++ (instancetype)groupWithOwner:(id)owner NS_RETURNS_RETAINED
+{
+    return [self groupWithName:nil owner:owner];
+}
+
++ (instancetype)groupWithName:(NSString *)name owner:(id)owner NS_RETURNS_RETAINED
+{
+    return [[CLayoutConstraintsGroup alloc] initWithName:name owner:owner];
+}
+
+- (void)dealloc {
+    [self removeAllConstraints];
+}
+
+- (NSArray *)constraints {
+    return [_mutableConstraints copy];
+}
+
+- (void)addConstraint:(NSLayoutConstraint *)constraint withPriority:(UILayoutPriority)priority {
+    constraint.priority = priority;
+    [_mutableConstraints addObject:constraint];
+    [self.owner addConstraint:constraint];
+    constraint.layoutGroupName = self.name;
+    CLogDebug(@"LAYOUT_CONSTRAINTS_GROUP", @"ADDED   %@ %@", self.owner, constraint);
+}
+
+- (void)addConstraints:(NSArray *)constraints withPriority:(UILayoutPriority)priority {
+    for(NSLayoutConstraint *constraint in constraints) {
+        [self addConstraint:constraint withPriority:priority];
+    }
+}
+
+- (void)removeConstraint:(NSLayoutConstraint *)constraint {
+    [_mutableConstraints removeObject:constraint];
+    [self.owner removeConstraint:constraint];
+    constraint.layoutGroupName = nil;
+    CLogDebug(@"LAYOUT_CONSTRAINTS_GROUP", @"REMOVED %@ %@", self.owner, constraint);
+}
+
+- (void)addConstraint:(NSLayoutConstraint *)constraint {
+    [self addConstraint:constraint withPriority:constraint.priority];
+}
+
+- (void)addConstraints:(NSArray *)constraints {
+    for(NSLayoutConstraint *constraint in constraints) {
+        [self addConstraint:constraint withPriority:constraint.priority];
+    }
+}
+
+- (void)removeConstraints:(NSArray *)constraints {
+    for(NSLayoutConstraint *constraint in constraints) {
+        [self removeConstraint:constraint];
+    }
+}
+
+- (void)removeAllConstraints {
+    [self removeConstraints:self.constraints];
+}
+
+@end
+
+@implementation NSLayoutConstraint (UIViewUtils)
+
+- (NSString *)layoutGroupName {
+    return [self associatedObjectForKey:@"layoutGroupName"];
+}
+
+- (void)setLayoutGroupName:(NSString *)layoutGroupName {
+    [self setAssociatedObject:layoutGroupName forKey:@"layoutGroupName"];
+}
+
+@end
+
+@implementation CSpacerView
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    if(self = [super initWithFrame:frame]) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.layoutView = YES;
+//        self.debugColor = [UIColor redColor];
+        [self setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisHorizontal];
+        [self setContentCompressionResistancePriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisVertical];
+        [self setContentHuggingPriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisHorizontal];
+        [self setContentHuggingPriority:UILayoutPriorityFittingSizeLevel forAxis:UILayoutConstraintAxisVertical];
+    }
+    return self;
+}
+
+- (instancetype)init {
+    CGRect frame = {CGPointZero, self.intrinsicContentSize};
+    if(self = [self initWithFrame:frame]) {
+    }
+    return self;
+}
+
+- (CGSize)intrinsicContentSize {
+    return CGSizeMake(20, 20);
+}
+
++ (instancetype)addSpacerViewToSuperview:(UIView *)superview {
+    CSpacerView *view = [CSpacerView new];
+    [superview addSubview:view];
+    return view;
 }
 
 @end

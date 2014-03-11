@@ -20,4 +20,8 @@
 
 @interface CMultiTextItem : CItem
 
++ (CMultiTextItem *)newMultiTextItem;
++ (CMultiTextItem *)newMultiTextItemWithDictionary:(NSDictionary*)dict;
++ (CMultiTextItem *)newMultiTextItemWithTitle:(NSString*)title key:(NSString*)key;
+
 @end

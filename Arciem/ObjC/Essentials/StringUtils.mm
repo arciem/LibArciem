@@ -1,4 +1,4 @@
-/*******************************************************************************
+    /*******************************************************************************
  
  Copyright 2011 Arciem LLC
  
@@ -23,31 +23,40 @@
 using namespace std;
 #endif
 
-NSString* EnsureRealString(NSString* s)
-{
+NSRange ClampRangeWithinString(NSRange range, NSString *s) {
+    NSRange resultRange = range;
+    
+    if(s.length == 0) {
+        resultRange = NSMakeRange(0, 0);
+    } else if(range.location >= s.length) {
+        resultRange = NSMakeRange(s.length, 0);
+    } else if(range.location + range.length > s.length) {
+        resultRange = NSMakeRange(range.location, s.length - range.location);
+    }
+
+    return resultRange;
+}
+
+NSString* EnsureRealString(NSString* s) {
 	return Denull(s) == nil ? @"" : s;
 }
 
-NSString* AllowStringToBeNil(NSString* s)
-{
+NSString* AllowStringToBeNil(NSString* s) {
 	return IsEmptyString(s) ? nil : s;
 }
 
-BOOL IsEmptyString(NSString* s)
-{
+BOOL IsEmptyString(NSString* s) {
 	return EnsureRealString(s).length == 0;
 }
 
-NSString* TrimCharacterSetFromStart(NSCharacterSet* set, NSString* str)
-{
+NSString* TrimCharacterSetFromStart(NSCharacterSet* set, NSString* str) {
     NSScanner* scanner = [NSScanner scannerWithString:str];
     [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@""]];
     [scanner scanCharactersFromSet:set intoString:nil];
     return [str substringFromIndex:[scanner scanLocation]];
 }
 
-NSString* TrimCharacterSetFromEnd(NSCharacterSet* set, NSString* str)
-{
+NSString* TrimCharacterSetFromEnd(NSCharacterSet* set, NSString* str) {
     if([str length] == 0)
         return str;
         
@@ -62,8 +71,7 @@ NSString* TrimCharacterSetFromEnd(NSCharacterSet* set, NSString* str)
     return [NSString stringWithString:m];
 }
 
-NSString* StripCharactersInSet(NSString* str, NSCharacterSet* set)
-{
+NSString* StripCharactersInSet(NSString* str, NSCharacterSet* set) {
     NSMutableString* m = [NSMutableString stringWithString:str];
     for(int i = (int)[m length] - 1; i >= 0; --i) {
         if([set characterIsMember:[m characterAtIndex:i]]) {
@@ -74,48 +82,39 @@ NSString* StripCharactersInSet(NSString* str, NSCharacterSet* set)
     return [NSString stringWithString:m];
 }
 
-NSString* StripControlCharacters(NSString* str)
-{
+NSString* StripControlCharacters(NSString* str) {
 	return StripCharactersInSet(str, [NSCharacterSet controlCharacterSet]);
 }
 
-NSString* TrimCharacterSetFromStartAndEnd(NSCharacterSet* set, NSString* str)
-{
+NSString* TrimCharacterSetFromStartAndEnd(NSCharacterSet* set, NSString* str) {
     return TrimCharacterSetFromStart(set, TrimCharacterSetFromEnd(set, str));
 }
 
-NSString* TrimWhitespaceFromStart(NSString* str)
-{
+NSString* TrimWhitespaceFromStart(NSString* str) {
     return TrimCharacterSetFromStart([NSCharacterSet whitespaceCharacterSet], str);
 }
 
-NSString* TrimWhitespaceFromEnd(NSString* str)
-{
+NSString* TrimWhitespaceFromEnd(NSString* str) {
     return TrimCharacterSetFromEnd([NSCharacterSet whitespaceCharacterSet], str);
 }
 
-NSString* TrimWhitespaceFromStartAndEnd(NSString* str)
-{
+NSString* TrimWhitespaceFromStartAndEnd(NSString* str) {
     return TrimWhitespaceFromStart(TrimWhitespaceFromEnd(str));
 }
 
-NSString* TrimWhitespaceAndNewlineFromStart(NSString* str)
-{
+NSString* TrimWhitespaceAndNewlineFromStart(NSString* str) {
     return TrimCharacterSetFromStart([NSCharacterSet whitespaceAndNewlineCharacterSet], str);
 }
 
-NSString* TrimWhitespaceAndNewlineFromEnd(NSString* str)
-{
+NSString* TrimWhitespaceAndNewlineFromEnd(NSString* str) {
     return TrimCharacterSetFromEnd([NSCharacterSet whitespaceAndNewlineCharacterSet], str);
 }
 
-NSString* TrimWhitespaceAndNewlineFromStartAndEnd(NSString* str)
-{
+NSString* TrimWhitespaceAndNewlineFromStartAndEnd(NSString* str) {
     return TrimWhitespaceAndNewlineFromStart(TrimWhitespaceAndNewlineFromEnd(str));
 }
 
-BOOL ScanCharacters(NSScanner* scanner, int n, NSString** str)
-{
+BOOL ScanCharacters(NSScanner* scanner, int n, NSString** str) {
     NSUInteger loc = [scanner scanLocation];
     if(loc + n > [[scanner string] length]) {
         *str = nil;
@@ -126,8 +125,7 @@ BOOL ScanCharacters(NSScanner* scanner, int n, NSString** str)
     return YES;
 }
 
-BOOL StringContainsWhitespaceOrNewline(NSString* str, BOOL allowSpaces)
-{
+BOOL StringContainsWhitespaceOrNewline(NSString* str, BOOL allowSpaces) {
     NSCharacterSet* set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 	static NSMutableCharacterSet* mset = nil;
 	if(allowSpaces) {
@@ -141,15 +139,13 @@ BOOL StringContainsWhitespaceOrNewline(NSString* str, BOOL allowSpaces)
     return range.length > 0;
 }
 
-BOOL StringContainsOnlyDigits(NSString* str)
-{
+BOOL StringContainsOnlyDigits(NSString* str) {
     NSCharacterSet* set = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
     NSRange range = [str rangeOfCharacterFromSet:set];
     return range.length == 0;
 }
 
-BOOL IsVisibleString(NSString* str)
-{
+BOOL IsVisibleString(NSString* str) {
     NSUInteger strLen = [str length];
     if(strLen == 0) {
         return NO;
@@ -160,27 +156,26 @@ BOOL IsVisibleString(NSString* str)
     }
 }
 
-NSString* FormatInt(int i, int places, BOOL leadingZero)
-{
+NSString* FormatInt(int i, int places, BOOL leadingZero) {
     if(leadingZero) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
         return [NSString stringWithFormat:[@"%0" stringByAppendingString:[NSString stringWithFormat:@"%dd", places]], i];
+#pragma clang diagnostic pop
     } else {
         return [NSString stringWithFormat:@"%d", i];
     }
 }
 
-BOOL StringContainsString(NSString* str1, NSString* str2)
-{
+BOOL StringContainsString(NSString* str1, NSString* str2) {
     return [str1 rangeOfString:str2].location != NSNotFound;
 }
 
-BOOL StringBeginsWithString(NSString* str1, NSString* str2)
-{
+BOOL StringBeginsWithString(NSString* str1, NSString* str2) {
 	return [str1 rangeOfString:str2].location == 0;
 }
 
-BOOL CompleteString(NSString* partial, NSArray* completions, NSString** completed)
-{
+BOOL CompleteString(NSString* partial, NSArray* completions, NSString** completed) {
     BOOL found = NO;
     
     for(NSUInteger i = 0; i < [completions count]; ++i) {
@@ -197,8 +192,7 @@ BOOL CompleteString(NSString* partial, NSArray* completions, NSString** complete
     return found;
 }
 
-BOOL SearchAndReplace(NSString** destString, NSString* searchString, NSString* replaceString)
-{
+BOOL SearchAndReplace(NSString** destString, NSString* searchString, NSString* replaceString) {
     NSRange range = [*destString rangeOfString:searchString];
     if(range.length > 0) {
         *destString = [NSMutableString stringWithString:*destString];
@@ -209,8 +203,7 @@ BOOL SearchAndReplace(NSString** destString, NSString* searchString, NSString* r
     }
 }
 
-NSString* StringByDeletingRange(NSString* str, NSRange range)
-{
+NSString* StringByDeletingRange(NSString* str, NSRange range) {
     if(range.location == NSNotFound)
         return [NSString stringWithString:str];
     else {
@@ -223,19 +216,16 @@ NSString* StringByDeletingRange(NSString* str, NSRange range)
 
 // Needs to be moved: Not supported in iPhone OS
 #if 0
-NSString* StringFromOSType(OSType osType)
-{
+NSString* StringFromOSType(OSType osType) {
 	return NSFileTypeForHFSTypeCode(osType);
 }
 
-OSType OSTypeFromString(NSString* osTypeString)
-{
+OSType OSTypeFromString(NSString* osTypeString) {
 	return NSHFSTypeCodeFromFileType(osTypeString);
 }
 #endif
 
-NSString* StringByTruncatingString(NSString* string, NSUInteger maxCharacters)
-{
+NSString* StringByTruncatingString(NSString* string, NSUInteger maxCharacters) {
 	NSString* resultString;
 	if([string length] <= maxCharacters) {
 		resultString = [string copy];
@@ -245,8 +235,7 @@ NSString* StringByTruncatingString(NSString* string, NSUInteger maxCharacters)
 	return resultString;
 }
 
-NSString* StringByDuplicatingCharacter(unichar character, NSUInteger length)
-{
+NSString* StringByDuplicatingCharacter(unichar character, NSUInteger length) {
 	unichar* buffer = (unichar*)malloc(length * sizeof(unichar));
 	for(NSUInteger i = 0; i < length; ++i) {
 		buffer[i] = character;
@@ -256,20 +245,17 @@ NSString* StringByDuplicatingCharacter(unichar character, NSUInteger length)
 	return string;
 }
 
-NSString* BulletStringForString(NSString* string)
-{
+NSString* BulletStringForString(NSString* string) {
 	return StringByDuplicatingCharacter(0x2022 /* unicode bullet */, [string length]);
 }
 
 #ifdef __cplusplus
 
-NSString* ToCocoa(string const& s)
-{
+NSString* ToCocoa(string const& s) {
 	return @(s.c_str());
 }
 
-NSString* ToCocoa(string const* s, NSString* default_s)
-{
+NSString* ToCocoa(string const* s, NSString* default_s) {
 	if(s != NULL) {
 		return ToCocoa(*s);
 	} else {
@@ -277,8 +263,7 @@ NSString* ToCocoa(string const* s, NSString* default_s)
 	}
 }
 
-string ToStd(NSString* s)
-{
+string ToStd(NSString* s) {
 	if(s == nil) {
 		return string();
 	} else {
@@ -290,14 +275,12 @@ string ToStd(NSString* s)
 @implementation NSString (CStringAdditions)
 
 // From OmniFoundation
-+ (NSString *)stringWithCharacter:(unichar)aCharacter;
-{
++ (NSString *)stringWithCharacter:(unichar)aCharacter {
     return [[NSString alloc] initWithCharacters:&aCharacter length:1];
 }
 
 // From OmniFoundation
-+ (NSString *)horizontalEllipsisString;
-{
++ (NSString *)horizontalEllipsisString {
     static NSString *string = nil;
 
     if (!string)
@@ -308,8 +291,7 @@ string ToStd(NSString* s)
     return string;
 }
 
-+ (NSString*)stringWithUUID
-{
++ (NSString*)stringWithUUID {
 	NSString* string = nil;
 	
 	CFUUIDRef uuidObj = CFUUIDCreate(nil);
@@ -319,8 +301,7 @@ string ToStd(NSString* s)
 	return string;
 }
 
-+ (NSString*)stringWithBase64UUIDURLSafe:(BOOL)URLSafe
-{
++ (NSString*)stringWithBase64UUIDURLSafe:(BOOL)URLSafe {
 	NSString* result = nil;
 
 	CFUUIDRef uuidObj = CFUUIDCreate(nil);
@@ -335,23 +316,19 @@ string ToStd(NSString* s)
 	return result;
 }
 
-+ (NSString*)stringWithASCIIData:(NSData*)data
-{
++ (NSString*)stringWithASCIIData:(NSData*)data {
 	return [self stringWithData:data encoding:NSASCIIStringEncoding];
 }
 
-+ (NSString*)stringWithData:(NSData*)data encoding:(NSStringEncoding)encoding
-{
++ (NSString*)stringWithData:(NSData*)data encoding:(NSStringEncoding)encoding {
 	return [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:encoding];
 }
 
-+ (NSString*)stringWithCRLF
-{
++ (NSString*)stringWithCRLF {
 	return @"\r\n";
 }
 
-+ (NSString*)stringWithComponents:(NSArray*)components separator:(NSString*)separator
-{
++ (NSString*)stringWithComponents:(NSArray*)components separator:(NSString*)separator {
 	NSMutableString* str = [NSMutableString string];
 	
 	BOOL first = YES;
@@ -366,18 +343,15 @@ string ToStd(NSString* s)
 	return [NSString stringWithString:str];
 }
 
-- (NSData*)dataUsingASCIIEncoding
-{
+- (NSData*)dataUsingASCIIEncoding {
 	return [self dataUsingEncoding:NSASCIIStringEncoding];
 }
 
-- (NSData*)dataUsingUTF8Encoding
-{
+- (NSData*)dataUsingUTF8Encoding {
 	return [self dataUsingEncoding:NSUTF8StringEncoding];
 }
 
-- (NSArray*)tokenize
-{
+- (NSArray*)tokenize {
 	NSMutableArray* tokens = [NSMutableArray array];
 
 	NSScanner* scanner = [NSScanner scannerWithString:self];
@@ -392,8 +366,7 @@ string ToStd(NSString* s)
 	return tokens;
 }
 
-- (BOOL)matchesAllTokens:(NSArray*)tokens caseInsensitive:(BOOL)caseInsensitive
-{
+- (BOOL)matchesAllTokens:(NSArray*)tokens caseInsensitive:(BOOL)caseInsensitive {
 	BOOL result = YES;
 
 	NSUInteger tokenCount = [tokens count];
@@ -409,8 +382,7 @@ string ToStd(NSString* s)
 	return result;
 }
 
-- (BOOL)matchesAnyTokens:(NSArray*)tokens caseInsensitive:(BOOL)caseInsensitive
-{
+- (BOOL)matchesAnyTokens:(NSArray*)tokens caseInsensitive:(BOOL)caseInsensitive {
 	BOOL result = NO;
 
 	NSUInteger tokenCount = [tokens count];
@@ -426,18 +398,15 @@ string ToStd(NSString* s)
 	return result;
 }
 
-- (NSString*)lastCharacters:(NSInteger)count
-{
+- (NSString*)lastCharacters:(NSInteger)count {
 	return [self substringFromIndex:self.length - count];
 }
 
-- (NSString*)lastCharacter
-{
+- (NSString*)lastCharacter {
 	return [self lastCharacters:1];
 }
 
-- (NSString*)pathByRemovingLeadingSlash
-{
+- (NSString*)pathByRemovingLeadingSlash {
 	NSString* result = self;
 	
 	if(self.length > 0) {
@@ -449,8 +418,7 @@ string ToStd(NSString* s)
 	return result;
 }
 
-- (NSString*)stringByAddingPercentEscapes
-{
+- (NSString*)stringByAddingPercentEscapes {
 	NSString* s = nil;
 	
 	// KLUDGE: We pass a literal CFSTR for legalURLCharactersToBeEscaped to work around an Apple bug.
@@ -459,8 +427,7 @@ string ToStd(NSString* s)
 	return s;
 }
 
-- (NSString*)stringByReplacingPercentEscapes
-{
+- (NSString*)stringByReplacingPercentEscapes {
 	NSString* s = nil;
 	
 	s = (__bridge_transfer NSString*)CFURLCreateStringByReplacingPercentEscapes(NULL, (__bridge CFStringRef)self, NULL);
@@ -468,12 +435,14 @@ string ToStd(NSString* s)
 	return s;
 }
 
-- (NSString*)stringByReplacingTemplatesWithReplacements:(NSDictionary*)replacementsDict
-{
+- (NSString*)stringByReplacingTemplatesWithReplacements:(NSDictionary*)replacementsDict {
     NSMutableString* mutableStr = [self mutableCopy];
     
     NSError* error = nil;
-    NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"\\{(.*?)\\}" options:0 error:&error];
+    static NSRegularExpression *regex;
+    if(regex == nil) {
+        regex = [[NSRegularExpression alloc] initWithPattern:@"\\{(.*?)\\}" options:0 error:&error];
+    }
     NSInteger offset = 0;
     for(NSTextCheckingResult* result in [regex matchesInString:self options:0 range:NSMakeRange(0, self.length)]) {
         NSRange resultRange = result.range;
@@ -487,10 +456,10 @@ string ToStd(NSString* s)
     return [NSString stringWithString:mutableStr];
 }
 
-- (NSArray*)capturesFromMatchesOfRegularExpression:(NSRegularExpression*)regex stopAfterFirstMatch:(BOOL)stopAfterFirstMatch stopAfterFirstCapture:(BOOL)stopAfterFirstCapture
-{
+- (NSArray*)capturesFromMatchesOfRegularExpression:(NSRegularExpression*)regex stopAfterFirstMatch:(BOOL)stopAfterFirstMatch stopAfterFirstCapture:(BOOL)stopAfterFirstCapture {
     __block NSMutableArray* capturesArray = nil;
     
+    NSAssert1(regex.numberOfCaptureGroups > 0, @"Regular expression %@ must contain at least one capture group.", regex.pattern);
     [regex enumerateMatchesInString:self options:0 range:NSMakeRange(0, self.length) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
         
         if(capturesArray == nil) capturesArray = [NSMutableArray new];
@@ -511,26 +480,28 @@ string ToStd(NSString* s)
     return [capturesArray copy];
 }
 
-- (NSArray*)allCapturesFromAllMatchesOfRegularExpression:(NSRegularExpression*)regex
-{
+- (NSArray*)allCapturesFromAllMatchesOfRegularExpression:(NSRegularExpression*)regex {
     return [self capturesFromMatchesOfRegularExpression:regex stopAfterFirstMatch:NO stopAfterFirstCapture:NO];
 }
 
-- (NSArray*)allCapturesFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex
-{
+- (NSArray*)allCapturesFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex {
     return [self capturesFromMatchesOfRegularExpression:regex stopAfterFirstMatch:YES stopAfterFirstCapture:NO];
 }
 
-- (NSString*)firstCaptureFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex
-{
-    return [self capturesFromMatchesOfRegularExpression:regex stopAfterFirstMatch:YES stopAfterFirstCapture:YES][0];
+- (NSString*)firstCaptureFromFirstMatchOfRegularExpression:(NSRegularExpression*)regex {
+    NSArray* captures = [self capturesFromMatchesOfRegularExpression:regex stopAfterFirstMatch:YES stopAfterFirstCapture:YES];
+    return captures.count > 0 ? captures[0] : nil;
+}
+
+- (BOOL)matchesRegularExpression:(NSRegularExpression *)regex {
+    NSRange r = [regex rangeOfFirstMatchInString:self options:0 range:NSMakeRange(0, self.length)];
+    return r.location != NSNotFound;
 }
 
 
-- (NSArray*)allCharacters
-{
+- (NSArray*)allCharacters {
 	NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:self.length];
-	for (int i=0; i < self.length; i++) {
+	for (NSUInteger i=0; i < self.length; i++) {
 		NSString *ichar  = [NSString stringWithFormat:@"%c", [self characterAtIndex:i]];
 		[characters addObject:ichar];
 	}
@@ -538,8 +509,7 @@ string ToStd(NSString* s)
 	return [characters copy];
 }
 
-+ (NSString*)stringByBase64EncodingData:(NSData*)data URLSafe:(BOOL)URLSafe
-{
++ (NSString*)stringByBase64EncodingData:(NSData*)data URLSafe:(BOOL)URLSafe {
 	static unsigned char *alphabetStandard = (unsigned char *)"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 	static unsigned char *alphabetURLSafe = (unsigned char *)"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 	
@@ -549,7 +519,7 @@ string ToStd(NSString* s)
 	unsigned char *outputBuffer = (unsigned char *)malloc(encodedLength);
 	unsigned char *inputBuffer = (unsigned char *)data.bytes;
 	
-	NSInteger i;
+	NSUInteger i;
 	NSInteger j = 0;
 	int remain;
 	
@@ -580,31 +550,54 @@ string ToStd(NSString* s)
 	return result;
 }
 
-- (NSString*)stringUsingBase64EncodingURLSafe:(BOOL)URLSafe
-{
+- (NSString*)stringUsingBase64EncodingURLSafe:(BOOL)URLSafe {
 	NSData* data = [self dataUsingEncoding:NSUTF8StringEncoding];
 	NSString* result = [NSString stringByBase64EncodingData:data URLSafe:URLSafe];
     return result;  
 }
 
-- (NSString*)stringUsingBase64Encoding
-{
+- (NSString*)stringUsingBase64Encoding {
 	return [self stringUsingBase64EncodingURLSafe:NO];
+}
+
+@end
+
+@implementation NSAttributedString (CStringAdditions)
+
+- (NSAttributedString *)stringByReplacingTemplatesWithReplacements:(NSDictionary*)replacementsDict attributes:(NSDictionary *)attributesDict {
+    NSMutableAttributedString* mutableStr = [self mutableCopy];
+    
+    NSError* error = nil;
+    static NSRegularExpression *regex;
+    if(regex == nil) {
+        regex = [[NSRegularExpression alloc] initWithPattern:@"\\{(.*?)\\}" options:0 error:&error];
+    }
+    NSInteger offset = 0;
+    for(NSTextCheckingResult* result in [regex matchesInString:self.string options:0 range:NSMakeRange(0, self.length)]) {
+        NSRange resultRange = result.range;
+        resultRange.location += offset;
+        NSString* match = [regex replacementStringForResult:result inString:mutableStr.string offset:offset template:@"$1"];
+        NSString* replacement = replacementsDict[match];
+        NSDictionary *attributes = attributesDict[match];
+        NSAttributedString *attributedReplacement = [[NSAttributedString alloc] initWithString:replacement attributes:attributes];
+        [mutableStr replaceCharactersInRange:resultRange withAttributedString:attributedReplacement];
+        offset = offset + replacement.length - resultRange.length;
+    }
+    
+    return [mutableStr copy];
 }
 
 @end
 
 @implementation NSRegularExpression (CRegularExpressionAdditions)
 
-+ (NSRegularExpression*)regularExpressionWithPattern:(NSString *)pattern
-{
++ (NSRegularExpression*)newRegularExpressionWithPattern:(NSString *)pattern {
     return [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:nil];
 }
 
 @end
 
-NSString* StringFromBool(BOOL b, BOOL cStyle)
-{
+NSString* StringFromBool(BOOL b, BOOL cStyle) {
 	if(cStyle) {
 		return b ? @"true" : @"false";
 	} else {
@@ -612,8 +605,7 @@ NSString* StringFromBool(BOOL b, BOOL cStyle)
 	}
 }
 
-NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle)
-{
+NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle) {
 	NSString* str;
 	
 	if(obj == (id)kCFBooleanTrue)
@@ -628,7 +620,7 @@ NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle)
 
 @interface CEntitiesConverter : NSObject<NSXMLParserDelegate>
 
-@property (strong, nonatomic) NSMutableString* resultString;
+@property (nonatomic) NSMutableString* resultString;
 
 @end
 
@@ -637,8 +629,7 @@ NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle)
 
 @synthesize resultString;
 
-- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)s
-{
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)s {
         [self.resultString appendString:s];
 }
 
@@ -659,9 +650,45 @@ NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle)
 
 @end
 
-NSString* StringByUnescapingEntitiesInString(NSString* s)
-{
-	CEntitiesConverter* converter = [[CEntitiesConverter alloc] init];
+NSString* StringByNormalizingToSearchableCharacters(NSString *s) {
+    static NSCharacterSet *unacceptableCharacters;
+    if(unacceptableCharacters == nil) {
+        NSMutableCharacterSet *acceptedCharacters = [NSMutableCharacterSet new];
+        [acceptedCharacters formUnionWithCharacterSet:[NSCharacterSet letterCharacterSet]];
+        [acceptedCharacters formUnionWithCharacterSet:[NSCharacterSet decimalDigitCharacterSet]];
+        [acceptedCharacters addCharactersInString:@" -_!?."];
+        unacceptableCharacters = [[acceptedCharacters invertedSet] copy];
+    }
+
+    // Turn accented letters into normal letters
+    NSData *sanitizedData = [s dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    // Corrected back-conversion from NSData to NSString
+    NSString *sanitizedText = [[NSString alloc] initWithData:sanitizedData encoding:NSASCIIStringEncoding];
+    
+    // Remove unaccepted characters
+    NSString *acceptedCharacters = [[sanitizedText componentsSeparatedByCharactersInSet:unacceptableCharacters] componentsJoinedByString:@""];
+
+    NSString *result = [acceptedCharacters lowercaseString];
+    
+    return result;
+}
+
+NSRegularExpression* RegularExpressionForMatchingAllTokens(NSString *s) {
+    NSString *normalizedString = StringByNormalizingToSearchableCharacters(s);
+    NSArray *unfilteredTokens = [normalizedString componentsSeparatedByString:@" "];
+    NSMutableString *regexString = [NSMutableString new];
+    [unfilteredTokens enumerateObjectsUsingBlock:^(NSString *unescapedToken, NSUInteger idx, BOOL *stop) {
+        if(!IsEmptyString(unescapedToken)) {
+            NSString *token = [NSRegularExpression escapedPatternForString:unescapedToken];
+            [regexString appendString:[NSString stringWithFormat:@"(?=.*\\b%@)", token]];
+        }
+    }];
+    NSRegularExpression *regex = [NSRegularExpression newRegularExpressionWithPattern:regexString];
+    return regex;
+}
+
+NSString* StringByUnescapingEntitiesInString(NSString* s) {
+	CEntitiesConverter* converter = [CEntitiesConverter new];
 	
 	return [converter unescapeEntitiesInString:s];
 }
@@ -669,8 +696,7 @@ NSString* StringByUnescapingEntitiesInString(NSString* s)
 // This function only unescapes "&lt;", "&gt;" and "&amp;" and does not gag on a naked "&",
 // unlike StringByUnescapingEntitiesInString.
 
-NSString* StringByUnescapingMinimalEntitiesInUncleanString(NSString* s)
-{
+NSString* StringByUnescapingMinimalEntitiesInUncleanString(NSString* s) {
 	if ([s rangeOfString:@"&"].location == NSNotFound) return s;
 
 	s = [s stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
@@ -678,8 +704,7 @@ NSString* StringByUnescapingMinimalEntitiesInUncleanString(NSString* s)
 	return [s stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
 }
 
-NSString* StringByJoiningNonemptyStringsWithString(NSArray* strings, NSString* separator)
-{
+NSString* StringByJoiningNonemptyStringsWithString(NSArray* strings, NSString* separator) {
 	NSMutableArray* a = [NSMutableArray arrayWithCapacity:strings.count];
 	for(NSString* s in strings) {
 		if(!IsEmptyString(s)) {
@@ -689,8 +714,7 @@ NSString* StringByJoiningNonemptyStringsWithString(NSArray* strings, NSString* s
 	return [a componentsJoinedByString:separator];
 }
 
-NSString* StringByJoiningNonemptyDescriptionsWithString(NSArray* items, NSString* separator)
-{
+NSString* StringByJoiningNonemptyDescriptionsWithString(NSArray* items, NSString* separator) {
 	NSMutableArray* a = [NSMutableArray arrayWithCapacity:items.count];
 	for(NSString* s in items) {
 		NSString* d = [s description];
@@ -701,8 +725,7 @@ NSString* StringByJoiningNonemptyDescriptionsWithString(NSArray* items, NSString
 	return [a componentsJoinedByString:separator];
 }
 
-NSString* StringByCapitalizingFirstCharacter(NSString* s)
-{
+NSString* StringByCapitalizingFirstCharacter(NSString* s) {
 	if(s == nil) return nil;
 	else if(s.length == 0) return s;
 	else if(s.length == 1) return [s uppercaseString];
@@ -712,8 +735,7 @@ NSString* StringByCapitalizingFirstCharacter(NSString* s)
 }
 
 #if 0
-void StringByTrimmingWhitespaceFromEndTest()
-{
+void StringByTrimmingWhitespaceFromEndTest() {
 	NSCAssert([StringByTrimmingWhitespaceFromEnd(@"") isEqualToString:@""], @"Case 1");
 	NSCAssert([StringByTrimmingWhitespaceFromEnd(@"A") isEqualToString:@"A"], @"Case 2");
 	NSCAssert([StringByTrimmingWhitespaceFromEnd(@"A ") isEqualToString:@"A"], @"Case 3");
@@ -725,8 +747,7 @@ void StringByTrimmingWhitespaceFromEndTest()
 }
 #endif
 
-NSString* StringByTrimmingWhitespaceFromEnd(NSString* s)
-{
+NSString* StringByTrimmingWhitespaceFromEnd(NSString* s) {
 	NSString* result = s;
 	
 	NSRange r = [s rangeOfCharacterFromSet:[[NSCharacterSet whitespaceCharacterSet] invertedSet] options:NSBackwardsSearch];
@@ -737,8 +758,7 @@ NSString* StringByTrimmingWhitespaceFromEnd(NSString* s)
 	return result;
 }
 
-NSString* LastWordOfString(NSString* s)
-{
+NSString* LastWordOfString(NSString* s) {
 	NSString* result = nil;
 	
 	NSRange r = [s rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet] options:NSBackwardsSearch];
@@ -753,8 +773,7 @@ NSString* LastWordOfString(NSString* s)
 	return result;
 }
 
-NSString* StringByRemovingLastWordOfString(NSString* s)
-{
+NSString* StringByRemovingLastWordOfString(NSString* s) {
 	NSString* result = nil;
 
 //	StringByTrimmingWhitespaceFromEndTest();
@@ -771,8 +790,7 @@ NSString* StringByRemovingLastWordOfString(NSString* s)
 	return result;
 }
 
-NSString* StringByEscapingQuotesAndBackslashes(NSString* s)
-{
+NSString* StringByEscapingQuotesAndBackslashes(NSString* s) {
 	NSScanner* source = [NSScanner scannerWithString:s];
 	[source setCharactersToBeSkipped:nil];
 
@@ -785,7 +803,7 @@ NSString* StringByEscapingQuotesAndBackslashes(NSString* s)
 
 		if(scanningForCharactersToEscape) {
 			if([source scanCharactersFromSet:charactersToEscape intoString:&scannedCharacters]) {
-				for(int i = 0; i < scannedCharacters.length; i++) {
+				for(NSUInteger i = 0; i < scannedCharacters.length; i++) {
 					unichar c = [scannedCharacters characterAtIndex:i];
 					[sink appendFormat:@"\\%C", c];
 				}
@@ -802,8 +820,7 @@ NSString* StringByEscapingQuotesAndBackslashes(NSString* s)
 	return [NSString stringWithString:sink];
 }
 
-NSString* StringBySurroundingStringWithQuotes(NSString* s, BOOL onlyIfNecessary)
-{
+NSString* StringBySurroundingStringWithQuotes(NSString* s, BOOL onlyIfNecessary) {
 	NSString* result = s;
 
 	BOOL surround = !onlyIfNecessary;
@@ -825,15 +842,14 @@ NSString* StringBySurroundingStringWithQuotes(NSString* s, BOOL onlyIfNecessary)
 	return result;
 }
 
-NSString* StringByLimitingLengthOfString(NSString* s, NSUInteger maxLength, BOOL addEllipsis)
-{
+NSString* StringByLimitingLengthOfString(NSString* s, NSUInteger maxLength, BOOL addEllipsis) {
 	if(maxLength != NSUIntegerMax) {
 		NSInteger mLength = maxLength;
 		if(addEllipsis) {
 			mLength -= 3;
 			if(mLength < 0) mLength = 0;
 		}
-		if(s.length > mLength) {
+		if(s.length > (NSUInteger)mLength) {
 			s = [s substringToIndex:mLength];
 			if(addEllipsis) {
 				s = [s stringByAppendingString:@"..."];
@@ -843,13 +859,11 @@ NSString* StringByLimitingLengthOfString(NSString* s, NSUInteger maxLength, BOOL
 	return s;
 }
 
-NSString* StringByRemovingWhitespaceAndNewLines(NSString* string)
-{
+NSString* StringByRemovingWhitespaceAndNewLines(NSString* string) {
 	return [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];	
 }
 
-NSString* StringWithURLEscapedParamaters(NSDictionary* params)
-{
+NSString* StringWithURLEscapedParamaters(NSDictionary* params) {
 	NSArray* keyStrings = [params allKeys];
 	NSMutableArray* outParams = [NSMutableArray array];
 	for(NSString* keyString in keyStrings) {
@@ -862,8 +876,7 @@ NSString* StringWithURLEscapedParamaters(NSDictionary* params)
 	return [NSString stringWithComponents:outParams separator:@"&"];
 }
 
-NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* recordSeparator, NSString* keyValueSeparator)
-{
+NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* recordSeparator, NSString* keyValueSeparator) {
 	NSArray* records = [string componentsSeparatedByString:recordSeparator];
 	NSMutableDictionary* dict = [NSMutableDictionary dictionaryWithCapacity:records.count];
 	for(NSString* record in records) {

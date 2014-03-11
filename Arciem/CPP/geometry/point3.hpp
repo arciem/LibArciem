@@ -77,7 +77,10 @@ public:
 	point3 operator*(double n) const { return point3(x * n, y * n, z * n); }
 	point3 operator/(double n) const { return point3(x / n, y / n, z / n); }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 	bool operator==(point3 const& p) const { return x == p.x && y == p.y && z == p.z; }
+#pragma clang diagnostic pop
 	bool operator!=(point3 const& p) const { return !(*this == p); }
 
 	void multiply(double n, point3& dst) const { dst.x = x * n; dst.y = y * n; dst.z = z * n; }
@@ -86,7 +89,10 @@ public:
 	void add(delta3 const& d, point3& dst) const { dst.x = x + d.dx; dst.y = y + d.dy; dst.z = z + d.dz; }
 	void subtract(delta3 const& d, point3& dst) const { dst.x = x - d.dx; dst.y = y - d.dy; dst.z = z - d.dz; }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 	bool equals(point3 const& p) const { return x == p.x && y == p.y && z == p.z; }
+#pragma clang diagnostic pop
 	
 	point3 clamp_inside(volume const& v) const;
 

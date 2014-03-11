@@ -26,7 +26,7 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 
 @interface CViewController ()
 
-@property(strong, nonatomic) CActivityShieldView* activityShieldView;
+@property(nonatomic) CActivityShieldView* activityShieldView;
 
 @end
 
@@ -67,23 +67,6 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	}
 	
 	return self;
-}
-
-- (void)unload
-{
-	// behavior provided by subclasses
-}
-
-- (void)dealloc
-{
-	self.backButtonViewController = nil;
-	[self unload];
-}
-
-- (void)viewDidUnload
-{
-	[self unload];
-	[super viewDidUnload];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -164,25 +147,6 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	return YES;
 }
 
-#pragma mark - UIViewController
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	BOOL should = YES;
-	
-	if (IsPhone()) {
-		should = interfaceOrientation == UIInterfaceOrientationPortrait;
-	}
-	
-	return should;
-}
-
-#pragma mark - CViewLayoutDelegate
-
-- (void)viewLayoutSubviews:(UIView*)view
-{
-}
-
 #pragma mark - Shield view
 
 - (BOOL)activityShieldViewVisible
@@ -224,6 +188,24 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	}
 	
 	return disables;
+}
+
+- (UIModalPresentationStyle)effectiveModalPresentationStyle {
+    UIModalPresentationStyle style;
+    UIViewController *controller = self;
+    do {
+        style = controller.modalPresentationStyle;
+        controller = controller.parentViewController;
+    } while(style == UIModalPresentationCurrentContext);
+    return style;
+}
+
+- (void)setStatusBarStyleIfFullScreen:(UIStatusBarStyle)statusBarStyle {
+    if(IsOSVersionAtLeast7()) {
+        if(IsPhone() || self.effectiveModalPresentationStyle == UIModalPresentationFullScreen) {
+            [UIApplication sharedApplication].statusBarStyle = statusBarStyle;
+        }
+    }
 }
 
 @end

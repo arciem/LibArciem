@@ -41,6 +41,8 @@
 
 	namespace arciem {
 	
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wweak-vtables"
 	class inputstringstream : public std::istringstream {
 	public:
 		explicit inputstringstream(std::string const& s) : std::istringstream(s) { }
@@ -51,6 +53,7 @@
 		explicit outputstringstream() : std::ostringstream() { }
 		std::string extract() { return str(); }
 	};
+#pragma clang diagnostic pop
 	
 	} // namespace arciem
 #endif

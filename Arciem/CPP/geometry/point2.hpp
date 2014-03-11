@@ -67,7 +67,10 @@ public:
 	point2 operator*(double n) const { return point2(x * n, y * n); }
 	point2 operator/(double n) const { return point2(x / n, y / n); }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 	bool operator==(point2 const& p) const { return x == p.x && y == p.y; }
+#pragma clang diagnostic pop
 	bool operator!=(point2 const& p) const { return !(*this == p); }
 
 	point2 clamp_inside(area const& a) const;

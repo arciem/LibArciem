@@ -53,19 +53,22 @@ void CLogv(CLogLevel level, NSString *format, va_list args)
 			case kLogAll:
 				levelStr = @"ALL";
 				break;
-			default:
-				levelStr = [NSString stringWithFormat:@"%d", level];
-				break;
+//			default:
+//				levelStr = [NSString stringWithFormat:@"%d", level];
+//				break;
 		}
 		NSString* format2 = [NSString stringWithFormat:@"%@: %@", levelStr, format];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
 		NSLogv(format2, args);
+#pragma clang diagnostic pop
 	}
 }
 
 static NSMutableSet* getLogTags()
 {
 	if(sLogTags == nil) {
-		sLogTags = [[NSMutableSet alloc] init];
+		sLogTags = [NSMutableSet new];
 	}
 	
 	return sLogTags;
@@ -155,6 +158,9 @@ void CLogPrint(NSString* format, ...)
 {
 	va_list args;
 	va_start(args, format);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	NSString* str = [[NSString alloc] initWithFormat:format arguments:args];
+#pragma clang diagnostic pop
 	fprintf(stderr, "%s\n", [str UTF8String]);
 }

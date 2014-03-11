@@ -17,18 +17,18 @@
  *******************************************************************************/
 
 #import "CSpacerItem.h"
-#import "CTableSpacerItem.h"
+#import "CSpacerTableRowItem.h"
 
 @implementation CSpacerItem
 
-+ (CSpacerItem*)spacerItem
++ (CSpacerItem*)newSpacerItem
 {
-	return [[self alloc] init];
+	return [self new];
 }
 
 - (NSArray*)tableRowItems
 {
-	CTableSpacerItem* item = [CTableSpacerItem itemWithKey:self.key title:self.title spacerItem:self];
+	CSpacerTableRowItem* item = [CSpacerTableRowItem newSpacerItemWithKey:self.key title:self.title model:self];
 	return @[item];
 }
 

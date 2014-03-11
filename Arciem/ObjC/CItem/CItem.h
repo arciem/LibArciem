@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString* const CItemErrorDomain;
+extern NSString *const CItemErrorDomain;
 
 enum {
 	CItemErrorRequired = 1000,
@@ -35,56 +35,62 @@ typedef NSUInteger CItemState;
 
 @interface CItem : NSObject<NSCopying>
 
-@property (copy, readonly, nonatomic) NSMutableDictionary* dict;
+@property (copy, readonly, nonatomic) NSMutableDictionary *dict;
 
-@property (strong, nonatomic) NSString* title;			// localized, human-readable
-@property (strong, nonatomic) NSString* key;			// NSKeyValueCoding-compatible
-@property (readonly, nonatomic) NSString* keyPath;
-@property (strong, nonatomic) id value;
-@property (strong, nonatomic) id defaultValue;
-@property (strong, nonatomic) NSError* error;
-@property (nonatomic) BOOL isRequired;
+@property (nonatomic) NSString *title;			// localized, human-readable
+@property (nonatomic) NSString *key;			// NSKeyValueCoding-compatible
+@property (nonatomic) NSString *analyticsName;
+@property (readonly, nonatomic) NSString *keyPath;
+@property (nonatomic) id value;
+@property (nonatomic) id defaultValue;
+@property (nonatomic) NSArray *dummyValues;
+@property (nonatomic) NSError *error;
+@property (nonatomic, getter = isRequired) BOOL required;
 @property (readonly, nonatomic) CItemState state;
 @property (nonatomic) BOOL validatesAutomatically;
 @property (nonatomic) BOOL needsValidation;
 
-@property (readonly, nonatomic) BOOL isActive;
-@property (readonly, nonatomic) BOOL isValidating;
-@property (readonly, nonatomic) BOOL isEmpty;
-@property (readonly, nonatomic) BOOL isValid;
-@property (nonatomic, setter = setNew:) BOOL isNew;
-@property (nonatomic, setter = setEditing:) BOOL isEditing;
+@property (readonly, nonatomic, getter = isActive) BOOL active;
+@property (readonly, nonatomic, getter = isValidating) BOOL validating;
+@property (readonly, nonatomic, getter = isEmpty) BOOL empty;
+@property (readonly, nonatomic, getter = isValid) BOOL valid;
+@property (nonatomic, getter = isFresh) BOOL fresh;
+@property (nonatomic, getter = isEditing) BOOL editing;
 
-@property (nonatomic, setter = setHidden:) BOOL isHidden;
-@property (readonly, nonatomic) NSArray* visibleSubitems;
+@property (nonatomic, getter = isHidden) BOOL hidden;
+@property (readonly, nonatomic) NSArray *visibleSubitems;
 
-@property (nonatomic, setter = setDisabled:) BOOL isDisabled;
+@property (nonatomic, getter = isDisabled) BOOL disabled;
 
-//@property (readonly, nonatomic) NSString* keyPath;
+@property (nonatomic, getter = isSelectable) BOOL selectable;
+@property (nonatomic, getter = isSelected) BOOL selected;
 
-@property (weak, readonly, nonatomic) CItem* superitem;
-@property (strong, readonly, nonatomic) NSMutableArray* subitems;
-@property (copy, nonatomic) NSMutableArray* dependentKeyPaths;
-@property (copy, nonatomic) NSString* mustEqualKeyPath;
-@property (readonly, nonatomic) CItem* rootItem;
-@property (readonly, nonatomic) NSString* jsonRepresentation;
+@property (weak, readonly, nonatomic) CItem *superitem;
+@property (readonly, nonatomic) NSMutableArray *subitems;
+@property (copy, nonatomic) NSMutableArray *dependentKeyPaths;
+@property (copy, nonatomic) NSString *mustEqualKeyPath;
+@property (readonly, nonatomic) CItem *rootItem;
+@property (readonly, nonatomic) NSString *jsonRepresentation;
+
+@property (readonly, nonatomic) NSIndexSet *indexesOfSelectedSubitems;
+@property (readonly, nonatomic) NSArray *selectedSubitems;
 
 @property (nonatomic) BOOL printHierarchyAfterValidate;
 
 - (id)initWithDictionary:(NSDictionary*)dict;
 - (id)initWithJSONRepresentation:(NSString*)json;
-+ (CItem*)item;
-+ (CItem*)itemWithDictionary:(NSDictionary*)dict;
-+ (CItem*)itemWithJSONRepresentation:(NSString*)json;
-+ (CItem*)itemForResourceName:(NSString*)resourceName withExtension:(NSString*)extension;
-+ (CItem*)itemForResourceName:(NSString*)resourceName;
-+ (CItem*)itemWithTitle:(NSString*)title key:(NSString*)key value:(id)value;
++ (CItem*)newItem;
++ (CItem*)newItemWithDictionary:(NSDictionary*)dict;
++ (CItem*)newItemWithJSONRepresentation:(NSString*)json;
++ (CItem*)newItemForResourceName:(NSString*)resourceName withExtension:(NSString*)extension;
++ (CItem*)newItemForResourceName:(NSString*)resourceName;
++ (CItem*)newItemWithTitle:(NSString*)title key:(NSString*)key value:(id)value;
 
 // Override in subclasses.
 - (void)setup;
 - (BOOL)isEmpty;
 - (NSError*)validate;
-- (void)validateWithCompletion:(void (^)(NSError* error))completion;
+- (void)validateWithCompletion:(void (^)(NSError *error))completion;
 - (NSArray*)descriptionStringsCompact:(BOOL)compact;
 - (BOOL)didSelect; // return of YES (the default) indicates immediate deselection
 - (void)activate;
@@ -93,6 +99,7 @@ typedef NSUInteger CItemState;
 - (NSString*)keyPathRelativeToItem:(CItem*)ancestorItem;
 - (void)addSubitem:(CItem*)item;
 - (void)addSubitems:(NSArray*)items;
+- (void)insertSubitem:(CItem *)item atIndex:(NSUInteger)index;
 - (void)removeFromSuperitem;
 - (CItem*)subitemForKey:(NSString*)key;
 - (NSUInteger)indexOfSubitemForKey:(NSString*)key;
@@ -103,4 +110,8 @@ typedef NSUInteger CItemState;
 
 - (NSArray*)tableRowItems;
 
+- (void)setValuesFromDummyValuesHierarchical:(BOOL)hierarchical;
+
 @end
+
+typedef void (^citem_block_t)(CItem *);

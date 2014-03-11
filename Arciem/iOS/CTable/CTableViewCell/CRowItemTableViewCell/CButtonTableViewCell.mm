@@ -21,12 +21,18 @@
 #import "CSubmitItem.h"
 #import "CObserver.h"
 #import "CSlowCall.h"
+#import "ObjectUtils.h"
+#import "DeviceUtils.h"
+#import "StringUtils.h"
+
+NSString *const CDidTapButtonNotification = @"CDidTapButtonNotification";
 
 @interface CButtonTableViewCell ()
 
-@property (strong, nonatomic) CObserver* modelDisabledObserver;
-@property (strong, readwrite, nonatomic) UIButton* button;
-@property (strong, readonly, nonatomic) CSlowCall* syncStateSlowCall;
+@property (nonatomic) CObserver* modelDisabledObserver;
+@property (readwrite, nonatomic) UIButton* button;
+@property (readonly, nonatomic) CSlowCall* syncStateSlowCall;
+@property (nonatomic) CView *redView;
 
 @end
 
@@ -36,34 +42,44 @@
 @synthesize modelDisabledObserver = modelDisabledObserver_;
 @synthesize syncStateSlowCall = syncStateSlowCall_;
 
+
+- (UILabel *)textLabel {
+    return nil;
+}
+
 - (void)setup
 {
 	[super setup];
-	
-	self.button = [UIButton buttonWithType:UIButtonTypeCustom];
-	self.button.backgroundColor = [UIColor redColor];
-	[self.button addTarget:self action:@selector(tapped) forControlEvents:UIControlEventTouchUpInside];
-	[self addSubview:self.button];
 
-	self.textLabel.hidden = YES;
+    self.button = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.button.translatesAutoresizingMaskIntoConstraints = NO;
+	[self.button addTarget:self action:@selector(tapped) forControlEvents:UIControlEventTouchUpInside];
+	[self.contentView addSubview:self.button];
+
+#if 0
+    self.redView = [[CView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    self.redView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.redView.debugName = @"redView";
+    self.redView.backgroundColor = [UIColor redColor];
+    [self.redView addConstraint:[self.redView constrainWidthEqualTo:20]];
+    [self.redView addConstraint:[self.redView constrainHeightEqualTo:20]];
+    [self.contentView addSubview:self.redView];
+#endif
+
+    [self.contentView addConstraint:[self.button constrainCenterXEqualToCenterXOfItem:self.contentView]];
+    [self.contentView addConstraint:[self.button constrainCenterYEqualToCenterYOfItem:self.contentView]];
 }
 
 - (CSlowCall*)syncStateSlowCall
 {
 	if(syncStateSlowCall_ == nil) {
-		__weak CButtonTableViewCell* self__ = self;
-		syncStateSlowCall_ = [CSlowCall slowCallWithDelay:0.2 block:^(id object) {
-			[self__ syncToState];
+		BSELF;
+		syncStateSlowCall_ = [CSlowCall newSlowCallWithDelay:0.2 block:^(id object) {
+			[bself syncToState];
 		}];
 	}
 	
 	return syncStateSlowCall_;
-}
-
-- (CGSize)sizeThatFits:(CGSize)size
-{
-	size.height = roundf(size.height * 1.2);
-	return size;
 }
 
 - (NSUInteger)validationViewsNeeded
@@ -73,13 +89,25 @@
 
 - (BOOL)isButtonEnabled
 {
-	return !self.rowItem.model.isDisabled;
+	return !self.rowItem.model.disabled;
 }
 
 - (void)syncToState
 {
 	[self.syncStateSlowCall disarm];
 	self.button.enabled = self.isButtonEnabled;
+
+    if([self.rowItem.model isKindOfClass:[CSubmitItem class]]) {
+        if(IsOSVersionAtLeast7()) {
+            if(self.isButtonEnabled) {
+                self.button.backgroundColor = self.tintColor;
+                self.button.alpha = 1.0;
+            } else {
+                self.button.backgroundColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+                self.button.alpha = 0.3;
+            }
+        }
+    }
 }
 
 - (void)setNeedsSyncToState
@@ -96,25 +124,23 @@
 	} else {
 		[self.button setTitle:self.rowItem.model.title forState:UIControlStateNormal];
 		
-		__unsafe_unretained CButtonTableViewCell* self__ = self;
+        if([self.rowItem.model isKindOfClass:[CSubmitItem class]]) {
+            self.button.titleLabel.font = [UIFont boldSystemFontOfSize:self.button.titleLabel.font.pointSize];
+            
+            if(IsOSVersionAtLeast7()) {
+                [self.button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [self.button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+                self.button.contentEdgeInsets = UIEdgeInsetsMake(5, 15, 5, 15);
+            }
+        }
+        
+		BSELF;
 		CObserverBlock action = ^(id object, NSNumber* newValue, NSNumber* oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-			[self__ setNeedsSyncToState];
+			[bself setNeedsSyncToState];
 		};
 		
-		self.modelDisabledObserver = [CObserver observerWithKeyPath:@"isDisabled" ofObject:self.rowItem.model action:action initial:action];
+		self.modelDisabledObserver = [CObserver newObserverWithKeyPath:@"disabled" ofObject:self.rowItem.model action:action initial:action];
 	}
-}
-
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	
-	UIFont* font = self.button.titleLabel.font;
-	CGSize titleSize = [self.rowItem.model.title sizeWithFont:font];
-	CFrame* buttonFrame = self.button.cframe;
-	buttonFrame.width = roundf(titleSize.width / 2.0) * 2.0 + 20;
-	buttonFrame.height = 28;
-	buttonFrame.center = self.boundsCenter;
 }
 
 - (IBAction)tapped
@@ -124,6 +150,9 @@
 	if(action != NULL) {
 		action();
 	}
+    NSDictionary *userInfo = @{@"button": self,
+                               @"analyticsName": Ennull(item.analyticsName)};
+    [[NSNotificationCenter defaultCenter] postNotificationName:CDidTapButtonNotification object:self userInfo:userInfo];
 }
 
 @end

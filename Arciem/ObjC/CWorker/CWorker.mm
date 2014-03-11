@@ -29,8 +29,8 @@ static NSUInteger sNextSequenceNumber = 0;
 @property (readwrite, nonatomic) NSUInteger sequenceNumber;
 @property (readwrite, nonatomic) NSUInteger tryCount;
 @property (weak, nonatomic) NSOperation* operation; // zeroing weak reference, operation is owned by the NSOperationQueue
-@property (strong, nonatomic) NSMutableSet* mutableDependencies;
-@property (strong, nonatomic) NSMutableArray* _titleItems;
+@property (nonatomic) NSMutableSet* mutableDependencies;
+@property (nonatomic) NSMutableArray* _titleItems;
 @property (strong, readwrite, nonatomic) NSString* title;
 
 @end
@@ -153,8 +153,8 @@ static NSUInteger sNextSequenceNumber = 0;
 	@synchronized(self) {
 		BOOL added = NO;
 		
-		NSAssert1(!self.isExecuting, @"may not add dependencies to executing worker: %@", self);
-		NSAssert1(!self.isFinished, @"may not add dependencies to finished worker: %@", self);
+		NSAssert1(!self.executing, @"may not add dependencies to executing worker: %@", self);
+		NSAssert1(!self.finished, @"may not add dependencies to finished worker: %@", self);
 		if(![self.mutableDependencies containsObject:worker]) {
 			added = YES;
 			[self willChangeValueForKey:@"dependencies" withSetMutation:NSKeyValueUnionSetMutation usingObjects:[NSSet setWithObject:worker]];
@@ -169,8 +169,8 @@ static NSUInteger sNextSequenceNumber = 0;
 {
 	@synchronized(self) {
 		BOOL removed = NO;
-		NSAssert1(!self.isExecuting, @"may not remove dependencies from executing worker: %@", self);
-		NSAssert1(!self.isFinished, @"may not remove dependencies from finished worker: %@", self);
+		NSAssert1(!self.executing, @"may not remove dependencies from executing worker: %@", self);
+		NSAssert1(!self.finished, @"may not remove dependencies from finished worker: %@", self);
 		if([self.mutableDependencies containsObject:worker]) {
 			removed = YES;
 			[self willChangeValueForKey:@"dependencies" withSetMutation:NSKeyValueMinusSetMutation usingObjects:[NSSet setWithObject:worker]];
@@ -188,10 +188,10 @@ static NSUInteger sNextSequenceNumber = 0;
 
 - (void)performDelay:(NSTimeInterval)delay
 {
-	if(!self.isCancelled && delay > 0.0) {
+	if(!self.cancelled && delay > 0.0) {
 		CLogTrace(nil, @"%@ starting delay: %f sec", self, delay);
 		NSDate* endDate = [NSDate dateWithTimeIntervalSinceNow:delay];
-		while(!self.isCancelled && [endDate timeIntervalSinceNow] > 0.0) {
+		while(!self.cancelled && [endDate timeIntervalSinceNow] > 0.0) {
 			[NSThread sleepForTimeInterval:0.1];
 		}
 		CLogTrace(nil, @"%@ ending delay", self);
@@ -212,23 +212,23 @@ static NSUInteger sNextSequenceNumber = 0;
 	
 	if(self.canRetry) {
 		++self.tryCount;
-		__weak CWorker* worker_ = self;
+		BSELF;
 		self.operation = [NSBlockOperation blockOperationWithBlock:^{
-			CLogTrace(@"C_WORKER", @"%@ entered NSBlockOperation currentRunLoop:0x%08x", worker_, [NSRunLoop currentRunLoop]);
-			worker_.isActive = YES;
-			[worker_ operationDidBegin];
-			[worker_ performDelay:worker_.startDelay];
-			if(!worker_.isCancelled) {
-				if(worker_.tryCount > 1) {
-					[worker_ performRetryDelay];
+			CLogTrace(@"C_WORKER", @"%@ entered NSBlockOperation currentRunLoop:0x%08x", bself, [NSRunLoop currentRunLoop]);
+			bself.active = YES;
+			[bself operationDidBegin];
+			[bself performDelay:bself.startDelay];
+			if(!bself.cancelled) {
+				if(bself.tryCount > 1) {
+					[bself performRetryDelay];
 				}
-				if(!worker_.isCancelled) {
-					[worker_ performOperationWork];
+				if(!bself.cancelled) {
+					[bself performOperationWork];
 				}
 			}
-			[worker_ operationWillEnd];
-			worker_.isActive = NO;
-			CLogTrace(@"C_WORKER", @"%@ exiting NSBlockOperation", worker_);
+			[bself operationWillEnd];
+			bself.active = NO;
+			CLogTrace(@"C_WORKER", @"%@ exiting NSBlockOperation", bself);
 		}];
 		
 		[self.operation setQueuePriority:self.queuePriority];
@@ -241,8 +241,8 @@ static NSUInteger sNextSequenceNumber = 0;
 {
 	@synchronized(self) {
 		CLogTrace(@"C_WORKER", @"%@ cancel", self);
-		if(!self.isFinished && !self.isCancelled) {
-			self.isCancelled = YES;
+		if(!self.finished && !self.cancelled) {
+			self.cancelled = YES;
 			[self didCancel];
 			[self.operation cancel];
 			[self.callbackThread performBlock:^{
@@ -289,14 +289,14 @@ static NSUInteger sNextSequenceNumber = 0;
 		self.error = error;
 		[self updateTitleForError];
 		
-		__weak CWorker* worker_ = self;
+		BSELF;
 		
 		[self.callbackThread performBlock:^{
-			@synchronized(worker_) {
-				if(!worker_.isCancelled) {
-					worker_.failure(worker_, error);
+			@synchronized(bself) {
+				if(!bself.cancelled) {
+					bself.failure(bself, error);
 				}
-				worker_.finally(worker_);
+				bself.finally(bself);
 			}
 		}];
 	}
@@ -311,14 +311,14 @@ static NSUInteger sNextSequenceNumber = 0;
 		self.error = nil;
 		[self updateTitleForError];
 		
-		__weak CWorker* worker_ = self;
+		BSELF;
 		
 		[self.callbackThread performBlock:^{
-			@synchronized(worker_) {
-				if(!worker_.isCancelled) {
-					worker_.success(worker_);
+			@synchronized(bself) {
+				if(!bself.cancelled) {
+					bself.success(bself);
 				}
-				worker_.finally(worker_);
+				bself.finally(bself);
 			}
 		}];
 	}

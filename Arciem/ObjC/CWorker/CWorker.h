@@ -30,7 +30,7 @@
 @property (readonly, nonatomic) NSString* formattedDependencies;
 @property (readonly, nonatomic) NSString* formattedErrorCode;
 @property (copy, nonatomic) NSMutableArray* titleItems;
-@property (strong, readonly, nonatomic) NSString* title;
+@property (readonly, nonatomic) NSString* title;
 @property (nonatomic) NSTimeInterval startDelay; // extra thread sleep time before work done, default 0
 
 @property (nonatomic) NSUInteger tryLimit; // 0 -> no limit, default 3
@@ -45,12 +45,12 @@
 - (BOOL)removeDependency:(CWorker *)worker;
 
 // Status
-@property (nonatomic) BOOL isExecuting;
-@property (nonatomic) BOOL isReady;
-@property (nonatomic) BOOL isActive;
-@property (nonatomic) BOOL isFinished;
-@property (nonatomic) BOOL isCancelled;
-@property (strong, readonly, nonatomic) NSError* error;
+@property (nonatomic, getter = isExecuting) BOOL executing;
+@property (nonatomic, getter = isReady) BOOL ready;
+@property (nonatomic, getter = isActive) BOOL active;
+@property (nonatomic, getter = isFinished) BOOL finished;
+@property (nonatomic, getter = isCancelled) BOOL cancelled;
+@property (readonly, nonatomic) NSError* error;
 
 @property (readonly, nonatomic) NSUInteger tryCount; // initially 0, incremented for each call to -createOperation
 @property (readonly, nonatomic) BOOL canRetry;
@@ -58,6 +58,8 @@
 @property (copy, nonatomic) void (^success)(CWorker*);
 @property (copy, nonatomic) void (^failure)(CWorker*, NSError*);
 @property (copy, nonatomic) void (^finally)(CWorker*);
+
+@property (nonatomic) NSDictionary *userInfo;
 
 // May be called from subclasses for debugging purposes
 - (void)performDelay:(NSTimeInterval)delay;

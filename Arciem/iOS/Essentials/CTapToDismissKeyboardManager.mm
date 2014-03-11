@@ -18,23 +18,24 @@
 
 #import "CTapToDismissKeyboardManager.h"
 #import "UIViewUtils.h"
+#import "CView.h"
 
 @interface CTapToDismissKeyboardManager ()
 
-@property (strong, nonatomic) UITapGestureRecognizer* tapRecognizer;
+@property (nonatomic) UITapGestureRecognizer* tapRecognizer;
 
 @end
 
 @implementation CTapToDismissKeyboardManager
 
-@synthesize tapRecognizer = tapRecognizer_;
-
 - (id)initWithView:(UIView*)view
 {
 	if(self = [super init]) {
 		self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+        self.tapRecognizer.cancelsTouchesInView = NO;
 		self.tapRecognizer.delegate = self;
 		[view addGestureRecognizer:self.tapRecognizer];
+
 	}
 	return self;
 }
@@ -44,12 +45,23 @@
 	[self.tapRecognizer.view removeGestureRecognizer:self.tapRecognizer];
 }
 
+- (BOOL)isLayoutView:(UIView *)view {
+    BOOL result = NO;
+    if([view isKindOfClass:[CView class]]) {
+        CView *cview = (CView *)view;
+        if(cview.layoutView) {
+            result = YES;
+        }
+    }
+    return result;
+}
+
 - (void)tapped:(UIGestureRecognizer *)gestureRecognizer
 {
 	UIView* view = self.tapRecognizer.view;
 	CGPoint p = [self.tapRecognizer locationInView:view];
 	UIView* hitView = [view hitTest:p withEvent:nil];
-	if(hitView == view) {
+	if(hitView == view || [self isLayoutView:hitView]) {
 		[view.window resignAnyFirstResponder];
 	}
 }
@@ -74,6 +86,7 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
+//    CLogDebug(nil, @"gestureRecognizer:%@ otherGestureRecognizer:%@", gestureRecognizer, otherGestureRecognizer);
 	return NO;
 }
 

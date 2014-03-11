@@ -21,11 +21,12 @@
 #import "ObjectUtils.h"
 #import "UIColorUtils.h"
 #import "DateTimeUtils.h"
+#import "DeviceUtils.h"
 
 @interface CMonthAndYearPicker () <UIPickerViewDataSource, UIPickerViewDelegate>
 
-@property (strong, nonatomic) UIPickerView* pickerView;
-@property (strong, nonatomic) UIImageView* backgroundView;
+@property (nonatomic) UIPickerView* pickerView;
+@property (nonatomic) UIImageView* backgroundView;
 @property (readonly, nonatomic) NSLocale* locale;
 @property (readonly, nonatomic) NSCalendar* calendar;
 @property (readonly, nonatomic) NSDateFormatter* dateFormatter;
@@ -40,13 +41,10 @@
 @implementation CMonthAndYearPicker
 
 @synthesize pickerView = pickerView_;
-@synthesize backgroundView = backgroundView_;
 @synthesize date = date_;
 @synthesize locale = locale_;
 @synthesize calendar = calendar_;
 @synthesize dateFormatter = dateFormatter_;
-@synthesize minimumDate = minimumDate_;
-@synthesize maximumDate = maximumDate_;
 @synthesize currentDate = currentDate_;
 
 - (id)init
@@ -60,16 +58,12 @@
 - (id)initWithFrame:(CGRect)frame
 {
 	if(self = [super initWithFrame:CGRectMake(0, 0, 320, 216)]) {
-		self.date = [NSDate date];
+        self.date = [NSDate date];
 
-		UIImage* backgroundImage = [UIImage imageNamed:@"PickerBackground"];
-		backgroundView_ = [[UIImageView alloc] initWithImage:backgroundImage];
-		backgroundView_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		backgroundView_.contentMode = UIViewContentModeScaleToFill;
-		backgroundView_.frame = self.bounds;
-		[self addSubview:backgroundView_];
+        self.opaque = YES;
+        self.backgroundColor = [UIColor whiteColor];
 
-		pickerView_ = [[UIPickerView alloc] initWithFrame:CGRectZero];
+		pickerView_ = [[UIPickerView alloc] initWithFrame:self.bounds];
 		pickerView_.dataSource = self;
 		pickerView_.delegate = self;
 		pickerView_.showsSelectionIndicator = YES;
@@ -101,7 +95,7 @@
 - (NSDateFormatter*)dateFormatter
 {
 	if(dateFormatter_ == nil) {
-		dateFormatter_ = [[NSDateFormatter alloc] init];
+		dateFormatter_ = [NSDateFormatter new];
 		dateFormatter_.locale = self.locale;
 		dateFormatter_.calendar = self.calendar;
 		NSString* format = [NSDateFormatter dateFormatFromTemplate:@"yMMMM" options:0 locale:self.locale];
@@ -175,7 +169,11 @@
 
 - (void)syncToDateAnimated:(BOOL)animated
 {
-	NSDateComponents* comps = [self.calendar components:(NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:self.date];
+    NSDate *date = self.date;
+    if(date == nil) {
+        date = [NSDate date];
+    }
+	NSDateComponents* comps = [self.calendar components:(NSMonthCalendarUnit | NSYearCalendarUnit) fromDate:date];
 	NSInteger monthRow = comps.month - 1;
 	NSInteger yearRow = comps.year - self.minimumYear;
 	[self.pickerView selectRow:monthRow inComponent:0 animated:animated];
@@ -252,7 +250,7 @@
 
 - (NSDate*)dateForMonth:(NSInteger)month year:(NSInteger)year
 {
-	NSDateComponents* comps = [[NSDateComponents alloc] init];
+	NSDateComponents* comps = [NSDateComponents new];
 	comps.month = month;
 	comps.year = year;
 	return [self.calendar dateFromComponents:comps];
@@ -273,13 +271,13 @@
 	UILabel* label = (UILabel*)view;
 	
 	if(label == nil) {
-		label = [[UILabel alloc] init];
+		label = [UILabel new];
 		label.font = [UIFont boldSystemFontOfSize:24.0];
 		label.opaque = NO;
 		label.backgroundColor = [UIColor clearColor];
 //		label.backgroundColor = component == 0 ? [UIColor redColor] : [UIColor blueColor];
-		label.shadowOffset = CGSizeMake(0, 1);
-		label.shadowColor = [UIColor colorWithWhite:1.0 alpha:1.0];
+//		label.shadowOffset = CGSizeMake(0, 1);
+//		label.shadowColor = [UIColor colorWithWhite:1.0 alpha:1.0];
 	}
 
 	BOOL highlighted = NO;
@@ -293,7 +291,7 @@
 
 			NSString* monthString = (self.dateFormatter.standaloneMonthSymbols)[row];
 			
-			label.text = [NSString stringWithFormat:@"%@ %02d", monthString, month];
+			label.text = [NSString stringWithFormat:@"(%02d) %@", month, monthString];
 			label.textAlignment = NSTextAlignmentRight;
 			
 			highlighted = month == self.currentMonth;
@@ -321,7 +319,11 @@
 	}
 
 	if(highlighted) {
-		label.textColor = [UIColor systemHighlightBlue];
+        if(IsOSVersionAtLeast7()) {
+            label.textColor = self.tintColor;
+        } else {
+            label.textColor = [UIColor systemHighlightBlue];
+        }
 	} else {
 		if(disabled) {
 			label.textColor = [UIColor grayColor];

@@ -42,24 +42,24 @@
 	return self;
 }
 
-+ (CForm*)formWithRootItem:(CItem *)rootItem
++ (CForm*)newFormWithRootItem:(CItem *)rootItem
 {
 	return [[self alloc] initWithRootItem:rootItem];
 }
 
-+ (CForm*)formForResourceName:(NSString*)resourceName withExtension:(NSString*)extension
++ (CForm*)newFormForResourceName:(NSString*)resourceName withExtension:(NSString*)extension
 {
 	NSURL* url = [[NSBundle mainBundle] URLForResource:resourceName withExtension:extension];
 	NSData* data = [NSData dataWithContentsOfURL:url];
 	NSString* json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	CItem* item = [CItem itemWithJSONRepresentation:json];
-	CForm* form = [self formWithRootItem:item];
+	CItem* item = [CItem newItemWithJSONRepresentation:json];
+	CForm* form = [self newFormWithRootItem:item];
 	return form;
 }
 
-+ (CForm*)formForResourceName:(NSString*)resourceName
++ (CForm*)newFormForResourceName:(NSString*)resourceName
 {
-	return [self formForResourceName:resourceName withExtension:@"json"];
+	return [self newFormForResourceName:resourceName withExtension:@"json"];
 }
 
 - (void)dealloc

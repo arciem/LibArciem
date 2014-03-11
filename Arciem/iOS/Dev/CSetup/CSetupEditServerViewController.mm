@@ -24,28 +24,25 @@
 
 @interface CSetupEditServerViewController ()
 
-@property(strong, nonatomic) NSString* baseURLString;
+@property(nonatomic) NSString* baseURLString;
 
 @end
 
 @implementation CSetupEditServerViewController
 
-@synthesize server = server_;
-@synthesize baseURLString = baseURLString_;
-@synthesize delegate = delegate_;
-@synthesize addingNewServer = addingNewServer_;
+@synthesize server = _server;
 
 - (CSetupServerItem*)server
 {
-	if(server_ == nil) {
-		server_ = [[CSetupServerItem alloc] init];
+	if(_server == nil) {
+		_server = [CSetupServerItem new];
 	}
-	return server_;
+	return _server;
 }
 
 - (void)setServer:(CSetupServerItem *)server
 {
-	server_ = server;
+	_server = server;
 }
 
 - (void)viewDidLoad
@@ -53,8 +50,8 @@
     [super viewDidLoad];
 
 	self.navigationItem.title = self.addingNewServer ? @"Add Server" : @"Edit Server";
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancel)];
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(save)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
 	
 	self.baseURLString = [self.server.baseURL absoluteString];
 }
@@ -64,10 +61,14 @@
 	[self.view resignAnyFirstResponder];
 }
 
+- (void)dismiss {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)cancel
 {
 	[self.delegate setupEditServerViewController:self didFinishSaving:NO];
-	[self.navigationController dismissModalViewControllerAnimated:YES];
+    [self dismiss];
 }
 
 - (BOOL)validate
@@ -97,7 +98,7 @@
 
 	if([self validate]) {
 		[self.delegate setupEditServerViewController:self didFinishSaving:YES];
-		[self.navigationController dismissModalViewControllerAnimated:YES];
+        [self dismiss];
 	}
 }
 
@@ -186,10 +187,13 @@
 	} else if(textField.tag == 1) {
 		if(!IsEmptyString(textField.text)) {
 			self.baseURLString = textField.text;
+            NSURL *baseURL = [NSURL URLWithString:self.baseURLString];
+            if(baseURL != nil) {
+                self.server.baseURL = baseURL;
+            }
 		} else {
 			self.baseURLString = nil;
 		}
-		self.server.baseURL = [NSURL URLWithString:self.baseURLString];
 	}
 }
 

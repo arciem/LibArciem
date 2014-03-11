@@ -23,7 +23,7 @@
 
 @interface CTableItem ()
 
-@property (strong, nonatomic) CObserver* subitemsObserver;
+@property (nonatomic) CObserver* subitemsObserver;
 
 @end
 
@@ -34,26 +34,27 @@
 
 - (void)setup
 {
+    BSELF;
 	CObserverBlock action = ^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self.delegate tableItem:self sectionsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
+		[bself.delegate tableItem:bself sectionsDidChangeWithNew:newValue old:oldValue kind:kind indexes:indexes];
 	};
 	
-	self.subitemsObserver = [CObserver observerWithKeyPath:@"subitems" ofObject:self action:action initial:action];
+	self.subitemsObserver = [CObserver newObserverWithKeyPath:@"subitems" ofObject:self action:action initial:action];
 }
 
-- (NSMutableDictionary*)textLabelAttributes
+- (NSDictionary*)textLabelAttributes
 {
-	return (self.dict)[@"textLabelAttributes"];
+    return (self.dict)[@"textLabelAttributes"];
 }
 					   
-- (void)setTextLabelAttributes:(NSMutableDictionary *)textLabelAttributes
+- (void)setTextLabelAttributes:(NSDictionary *)textLabelAttributes
 {
-	(self.dict)[@"textLabelAttributes"] = [textLabelAttributes mutableCopy];
+	(self.dict)[@"textLabelAttributes"] = [textLabelAttributes copy];
 }
 
-+ (CTableItem*)item
++ (CTableItem*)newTableItem
 {
-	return [[self alloc] init];
+	return [self new];
 }
 
 - (void)tableSectionItem:(CTableSectionItem*)tableSectionItem rowsDidChangeWithNew:(NSArray*)newItems old:(NSArray*)oldItems kind:(NSKeyValueChange)kind indexes:(NSIndexSet*)indexes

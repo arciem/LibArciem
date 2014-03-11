@@ -23,7 +23,6 @@
 @interface CNoteTableViewCell ()
 
 @property (nonatomic) UIEdgeInsets labelInsets;
-
 @end
 
 @implementation CNoteTableViewCell
@@ -35,43 +34,46 @@
 	[super setup];
 	
 	if(IsPhone()) {
-		self.labelInsets = UIEdgeInsetsMake(8, 10, 8, 10);
+		self.labelInsets = UIEdgeInsetsMake(8, 20, 8, 20);
 	} else {
 		self.labelInsets = UIEdgeInsetsMake(8, 100, 8, 100);
 	}
 
-	UILabel* label = self.textLabel;
-	label.textColor = [UIColor grayColor];
-	label.shadowColor = [[UIColor whiteColor] colorWithAlphaComponent:1];
-	label.shadowOffset = CGSizeMake(0, 1);
-	label.font = [UIFont boldSystemFontOfSize:14];
-	label.textAlignment = NSTextAlignmentCenter;
-	label.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-	label.numberOfLines = 0;
+    self.titleLabel.text = @"Hello World";
+	self.titleLabel.textColor = [UIColor darkGrayColor];
+	self.titleLabel.font = [UIFont systemFontOfSize:14];
+	self.titleLabel.textAlignment = NSTextAlignmentCenter;
+	self.titleLabel.numberOfLines = 0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)size
-{
-	size.height = self.textLabel.bottom + self.labelInsets.bottom;
-	return size;
+- (void)updateConstraints {
+    [super updateConstraints];
+
+    CLayoutConstraintsGroup *group = [self resetConstraintsGroupForKey:@"CNoteTableViewCell_contentView" owner:self.contentView];
+    
+    [group addConstraint:[self.titleLabel constrainTopEqualToTopOfItem:self.contentView offset:self.labelInsets.top]];
+    [group addConstraint:[self.titleLabel constrainBottomEqualToBottomOfItem:self.contentView offset:-self.labelInsets.bottom]];
+    [group addConstraint:[self.titleLabel constrainCenterXEqualToCenterXOfItem:self.contentView]];
+    [group addConstraint:[self.titleLabel constrainLeadingEqualToLeadingOfItem:self.contentView offset:self.labelInsets.left]];
+    [group addConstraint:[self.titleLabel constrainTrailingEqualToTrailingOfItem:self.contentView offset:-self.labelInsets.right]];
 }
 
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
 
-	CGRect bounds = self.bounds;
-	CGRect insetBounds = UIEdgeInsetsInsetRect(bounds, self.labelInsets);
-	CFrame* textLabelFrame = self.textLabel.cframe;
-	textLabelFrame.frame = [self convertRect:insetBounds toView:self.contentView];
-	CGFloat originalWidth = textLabelFrame.width;
-	[textLabelFrame sizeToFit];
-	textLabelFrame.width = originalWidth;
+- (void)syncToRowItem {
+    [super syncToRowItem];
+    [self syncTitleLabelToRowItem];
+    [self setNeedsUpdateConstraints];
 }
 
-- (NSUInteger)validationViewsNeeded
-{
+- (NSUInteger)validationViewsNeeded {
 	return 0;
+}
+
+- (CGSize)sizeThatFits:(CGSize)size {
+    CGSize s = size;
+    self.titleLabel.cframe.height = 1000;
+    [self.titleLabel sizeToFit];
+    return CGSizeMake(s.width, self.titleLabel.height);
 }
 
 @end

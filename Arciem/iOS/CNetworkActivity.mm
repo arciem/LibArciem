@@ -39,7 +39,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 
 @interface CNetworkActivityIndicator : NSObject
 
-@property (strong, nonatomic) NSTimer* timer;
+@property (nonatomic) NSTimer* timer;
 @property (nonatomic) NSInteger activationsCount;
 
 + (CNetworkActivityIndicator*)sharedIndicator;
@@ -70,19 +70,16 @@ static NSTimeInterval sLastRemoveTime = 0;
 			self.indicator = indicator;
 			CLogDebug(@"NETWORK_ACTIVITY", @"%@ init", self);
 			if(sActivities == nil) {
-				sActivities = [[NSMutableArray alloc] init];
+				sActivities = [NSMutableArray new];
 			}
 			[sActivities addObject:[NSValue valueWithNonretainedObject:self]];
 			if(self.hasIndicator) {
 				[[CNetworkActivityIndicator sharedIndicator] addActivity];
 			}
-			UIApplication* app = [UIApplication sharedApplication];
-			// avoid retain cycle on self
-			NSValue* val = [NSValue valueWithNonretainedObject:self];
-			self.backgroundTaskIdentifier = [app beginBackgroundTaskWithExpirationHandler:^{
-				CNetworkActivity* s = (CNetworkActivity*)[val nonretainedObjectValue];
-				[app endBackgroundTask:s.backgroundTaskIdentifier];
-				s.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+            BSELF;
+			self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+				[[UIApplication sharedApplication] endBackgroundTask:bself.backgroundTaskIdentifier];
+				bself.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
 			}];
 		}
 	}
@@ -142,7 +139,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 + (CNetworkActivityIndicator*)sharedIndicator
 {
 	if(sSharedIndicator == nil) {
-		sSharedIndicator = [[CNetworkActivityIndicator alloc] init];
+		sSharedIndicator = [CNetworkActivityIndicator new];
 	}
 	
 	return sSharedIndicator;

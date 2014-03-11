@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import "CWorkerManager.h"
+#import "ObjectUtils.h"
 
 @interface CWorkerManager ()
 
@@ -49,7 +50,7 @@
 - (id)init
 {
 	if(self = [super init]) {
-		self.queue = [[NSOperationQueue alloc] init];
+		self.queue = [NSOperationQueue new];
 		self.queue.maxConcurrentOperationCount = 1;		// Make the framework user set it to something higher
 		
 		self.mutableWorkers = [NSMutableSet set];
@@ -117,15 +118,15 @@
 	@synchronized(worker) {
 		BOOL nowReady = YES;
 
-		if(!worker.isExecuting) {
+		if(!worker.executing) {
 			nowReady = NO;
-		} else if(worker.isFinished) {
+		} else if(worker.finished) {
 			nowReady = NO;
-		} else if(worker.isReady) {
+		} else if(worker.ready) {
 			nowReady = NO;
 		} else {
 			for(CWorker* predecessorWorker in worker.dependencies) {
-				if(!predecessorWorker.isFinished) {
+				if(!predecessorWorker.finished) {
 					nowReady = NO;
 					break;
 				}
@@ -142,29 +143,31 @@
 		for(CWorker* worker in self.workers) {
 			if([self workerIsNowReady:worker]) {
 				[self startWorker:worker];
-				worker.isReady = YES;
+				worker.ready = YES;
 			}
 		}
 	}
 }
 
+- (void)addWorker:(CWorker*)worker success:(void (^)(CWorker*))success failure:(void (^)(CWorker*, NSError*))failure finally:(void (^)(CWorker*))finally
+{
+    [self addWorker:worker success:success shouldRetry:NULL failure:failure finally:finally];
+}
+
 - (void)addWorker:(CWorker*)worker success:(void (^)(CWorker*))success shouldRetry:(BOOL (^)(CWorker*, NSError*))shouldRetry failure:(void (^)(CWorker*, NSError*))failure finally:(void (^)(CWorker*))finally
 {
-	NSAssert(success != nil, @"success may not be nil");
-	NSAssert(shouldRetry != nil, @"shouldRetry may not be nil");
-	NSAssert(failure != nil, @"failure may not be nil");
-	NSAssert(finally != nil, @"finally may not be nil");
-	
 	@synchronized(self) {
 		NSAssert1(!worker.isExecuting, @"worker already executing: %@", worker);
-		NSAssert1(!worker.isFinished, @"worker already finished: %@", worker);
+		NSAssert1(!worker.finished, @"worker already finished: %@", worker);
 		
-		__weak CWorkerManager* manager_ = self;
+		BSELF;
 		
 		worker.success = ^(CWorker* worker) {
 			@synchronized(worker) {
 				CLogTrace(@"C_WORKER_MANAGER", @"success:%@", worker);
-				success(worker);
+				if(success != NULL) {
+                    success(worker);
+                }
 			}
 		};
 		
@@ -173,12 +176,16 @@
 				CLogTrace(@"C_WORKER_MANAGER", @"failure:%@", error);
 				BOOL retry = NO;
 				if(worker.canRetry) {
-					retry = shouldRetry(worker, error);
+                    if(shouldRetry != NULL) {
+                        retry = shouldRetry(worker, error);
+                    }
 				}
 				if(retry) {
-					[manager_ startWorker:worker];
+					[bself startWorker:worker];
 				} else {
-					failure(worker, error);
+					if(failure != NULL) {
+                        failure(worker, error);
+                    }
 				}
 			}
 		};
@@ -186,20 +193,22 @@
 		worker.finally = ^(CWorker* worker) {
 			@synchronized(worker) {
 				CLogTrace(@"C_WORKER_MANAGER", @"finally:%@", worker);
-				worker.isFinished = YES;
-				if(!worker.isCancelled) {
-					finally(worker);
+				worker.finished = YES;
+				if(!worker.cancelled) {
+                    if(finally != NULL) {
+                        finally(worker);
+                    }
 				}
-				@synchronized(manager_) {
-					[manager_.workers removeObject:worker];
-					worker.isExecuting = NO;
-					[manager_ startReadyWorkers];
+				@synchronized(bself) {
+					[bself.workers removeObject:worker];
+					worker.executing = NO;
+					[bself startReadyWorkers];
 				}
 			}
 		};
 
 		[self.workers addObject:worker];
-		worker.isExecuting = YES;
+		worker.executing = YES;
         CLogTrace(@"C_WORKER_MANAGER", @"added:%@", worker);
 		
 		[self startReadyWorkers];

@@ -30,7 +30,10 @@
 
 - (id)initWithDomain:(NSString *)domain code:(NSInteger)code localizedFormat:(NSString *)localizedFormat arguments:(va_list)argList
 {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	NSString* localizedDescription = [[NSString alloc] initWithFormat:localizedFormat locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] arguments:argList];
+#pragma clang diagnostic pop
 	
 	return [self initWithDomain:domain code:code localizedDescription:localizedDescription];
 }

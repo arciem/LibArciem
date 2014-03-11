@@ -20,10 +20,10 @@
 
 @interface CBadgeView : CView
 
-@property(strong, nonatomic) NSString *text;
-@property(strong, nonatomic) UIColor *textColor;
-@property(strong, nonatomic) UIColor *fillColor;
-@property(strong, nonatomic) UIColor *strokeColor;
+@property(nonatomic) NSString *text;
+@property(nonatomic) UIColor *textColor;
+@property(nonatomic) UIColor *fillColor;
+@property(nonatomic) UIColor *strokeColor;
 
 @property(nonatomic) BOOL hasGloss;
 

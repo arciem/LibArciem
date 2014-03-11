@@ -24,7 +24,7 @@
 
 @property(nonatomic) CGPoint lastPointInsidePoint;
 @property(nonatomic) NSTimeInterval lastPointInsideTimestamp;
-@property (strong, readonly, nonatomic) CView *overlayView;
+@property (readonly, nonatomic) CView *overlayView;
 
 @end
 
@@ -115,6 +115,10 @@
     }
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+}
+
 - (UIView*)centerView
 {
     return _centerView;
@@ -139,7 +143,7 @@
     }
 }
 
-- (UIView*)rightView;
+- (UIView*)rightView
 {
     return _rightView;
 }

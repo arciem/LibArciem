@@ -21,14 +21,12 @@
 
 @implementation CSpacerTableViewCell
 
-- (CGSize)sizeThatFits:(CGSize)size
-{
+- (CGSize)sizeThatFits:(CGSize)size {
 	size.height = 20;
 	return size;
 }
 
-- (NSUInteger)validationViewsNeeded
-{
+- (NSUInteger)validationViewsNeeded {
 	return 0;
 }
 

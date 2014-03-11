@@ -53,7 +53,7 @@ static CSetup* sSetup = nil;
 
 - (void)start
 {
-	CSetupMainViewController* setupViewController = [[CSetupMainViewController alloc] init];
+	CSetupMainViewController* setupViewController = [CSetupMainViewController new];
 	setupViewController.delegate = self;
 	CSetupNavigationController* setupNavigationController = [[CSetupNavigationController alloc] initWithRootViewController:setupViewController];
 	

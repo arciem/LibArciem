@@ -21,7 +21,7 @@
 @interface CNetworkController : NSObject
 
 @property (copy, readonly, nonatomic) NSString* hostName;
-@property (strong, readonly, nonatomic) CNotifier* notifier;
+@property (readonly, nonatomic) CNotifier* notifier;
 @property (readonly, nonatomic) BOOL isReachable;
 @property (nonatomic, setter = setOffline:) BOOL isOffline;
 

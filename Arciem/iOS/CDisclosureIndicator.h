@@ -22,7 +22,7 @@
 
 + (CDisclosureIndicator *)disclosureIndicatorWithColor:(UIColor*)color highlightColor:(UIColor*)highlightColor;
 
-@property (strong, nonatomic) UIColor* color;
-@property (strong, nonatomic) UIColor* highlightColor;
+@property (nonatomic) UIColor* color;
+@property (nonatomic) UIColor* highlightColor;
 
 @end

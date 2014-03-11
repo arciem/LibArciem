@@ -58,12 +58,12 @@
 	return self;
 }
 
-+ (CSlowCall*)slowCallWithDelay:(NSTimeInterval)delay target:(id)target selector:(SEL)selector
++ (CSlowCall*)newSlowCallWithDelay:(NSTimeInterval)delay target:(id)target selector:(SEL)selector
 {
 	return [[self alloc] initWithDelay:delay target:target selector:selector];
 }
 
-+ (CSlowCall*)slowCallWithDelay:(NSTimeInterval)delay block:(void (^)(id object))block
++ (CSlowCall*)newSlowCallWithDelay:(NSTimeInterval)delay block:(void (^)(id object))block
 {
 	return [[self alloc] initWithDelay:delay block:block];
 }

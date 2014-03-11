@@ -70,8 +70,8 @@ double random_gaussian()
 
 #define a 16807		/* multiplier */
 #define m 2147483647L	/* 2**31 - 1 */
-#define q 127773L		/* m div a */
-#define r 2836		/* m mod a */
+//#define q 127773L		/* m div a */
+//#define r 2836		/* m mod a */
 
 long nextlongrand(long seed)
 {

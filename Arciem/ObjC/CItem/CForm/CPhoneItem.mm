@@ -29,8 +29,13 @@
 
 - (NSString*)formatCharacterCount:(NSUInteger)count
 {
-	NSString* format = count == 1 ? @"%d digit" : @"%d digits";
-	return [NSString stringWithFormat:format, count];
+    NSString* result;
+    if(count == 1) {
+        result = [NSString stringWithFormat:@"%d digit", count];
+    } else {
+        result = [NSString stringWithFormat:@"%d digits", count];
+    }
+    return result;
 }
 
 @end

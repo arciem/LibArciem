@@ -17,6 +17,7 @@
  *******************************************************************************/
 
 #import "DateTimeUtils.h"
+#import "StringUtils.h"
 
 double TimeIntervalMinutes(NSTimeInterval t)
 {
@@ -142,7 +143,7 @@ NSTimeInterval TimeIntervalFromDaysHoursMinutesSeconds(int days, int hours, int 
 @end
 
 //
-//  GHNSDate+Parsing.m
+//  GHNSDate+Parsing.mm
 //
 //  Created by Gabe on 3/18/08.
 //  Copyright 2008 Gabriel Handford
@@ -239,7 +240,7 @@ static NSDateFormatter *ascTimeDateFormatter = nil;
 */
 + (NSDateFormatter *)rfc822DateFormatter {  
   if (!rfc822DateFormatter) {
-    rfc822DateFormatter = [[NSDateFormatter alloc] init];     
+    rfc822DateFormatter = [NSDateFormatter new];     
     [rfc822DateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
     // Need to force US locale when generating otherwise it might not be 822 compatible
     [rfc822DateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];    
@@ -258,7 +259,7 @@ static NSDateFormatter *ascTimeDateFormatter = nil;
 + (NSDateFormatter *)iso8601DateFormatter {
   // Example: 2007-10-18T16:05:10.000Z  
   if (!is8601DateFormatter) {
-    is8601DateFormatter = [[NSDateFormatter alloc] init];
+    is8601DateFormatter = [NSDateFormatter new];
     [is8601DateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
     // Need to force US locale when generating otherwise it might not be 8601 compatible
     [is8601DateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];    
@@ -276,7 +277,7 @@ static NSDateFormatter *ascTimeDateFormatter = nil;
 + (NSDateFormatter *)rfc1123DateFormatter {
   // Example: "Wed, 01 Mar 2006 12:00:00 GMT"
   if (!rfc1123DateFormatter) {
-    rfc1123DateFormatter = [[NSDateFormatter alloc] init];     
+    rfc1123DateFormatter = [NSDateFormatter new];     
     [rfc1123DateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
     // Need to force US locale when generating otherwise it might not be 822 compatible
     [rfc1123DateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];    
@@ -290,7 +291,7 @@ static NSDateFormatter *ascTimeDateFormatter = nil;
 + (NSDateFormatter *)rfc850DateFormatter {
   // Example: Sunday, 06-Nov-94 08:49:37 GMT
   if (!rfc850DateFormatter) {
-    rfc850DateFormatter = [[NSDateFormatter alloc] init];
+    rfc850DateFormatter = [NSDateFormatter new];
     [rfc850DateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
     [rfc850DateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
     [rfc850DateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
@@ -303,7 +304,7 @@ static NSDateFormatter *ascTimeDateFormatter = nil;
   
   // Example: Sun Nov  6 08:49:37 1994
   if (!ascTimeDateFormatter) {
-    ascTimeDateFormatter = [[NSDateFormatter alloc] init];
+    ascTimeDateFormatter = [NSDateFormatter new];
     [ascTimeDateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
     [ascTimeDateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
     [ascTimeDateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
@@ -322,13 +323,13 @@ static NSDateFormatter *ascTimeDateFormatter = nil;
 	NSError* error = nil;
 	static NSRegularExpression* regex = nil;
 	if(regex == nil) {
-		regex = [NSRegularExpression regularExpressionWithPattern:@"^P(?=\\w*\\d)(?:(\\d+)Y|Y)?(?:(\\d+)M|M)?(?:(\\d+)D|D)?(?:T(?:(\\d+)H|H)?(?:(\\d+)M|M)?(?:((?:\\d+)(?:\\.\\d{1,2})?)?S|S)?)?$" options:0 error:&error];	
+		regex = [NSRegularExpression newRegularExpressionWithPattern:@"^P(?=\\w*\\d)(?:(\\d+)Y|Y)?(?:(\\d+)M|M)?(?:(\\d+)D|D)?(?:T(?:(\\d+)H|H)?(?:(\\d+)M|M)?(?:((?:\\d+)(?:\\.\\d{1,2})?)?S|S)?)?$"];
 	}
 	NSAssert1(error == nil, @"Error:%@", error);
 	NSTextCheckingResult* match = [regex firstMatchInString:str options:0 range:NSMakeRange(0, str.length)];
 	
 	if(match != nil) {
-		comps = [[NSDateComponents alloc] init];
+		comps = [NSDateComponents new];
 		for(NSUInteger rangeIndex = 1; rangeIndex < match.numberOfRanges; rangeIndex++) {
 			NSRange range = [match rangeAtIndex:rangeIndex];
 			if(range.location != NSNotFound) {
@@ -386,7 +387,7 @@ static NSDateFormatter *ascTimeDateFormatter = nil;
 + (BOOL)usesTwelvehourTime
 {
 	NSLocale* locale = [NSLocale currentLocale];
-	NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+	NSDateFormatter* formatter = [NSDateFormatter new];
 	[formatter setLocale:locale];
 	[formatter setTimeStyle:NSDateFormatterMediumStyle];
 	[formatter setDateStyle:NSDateFormatterNoStyle];

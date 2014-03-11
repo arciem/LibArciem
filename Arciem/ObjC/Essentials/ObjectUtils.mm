@@ -56,7 +56,9 @@ BOOL IsEmpty(id a)
 	return [Denull(a) count] == 0;
 }
 
-id<NSObject> ClassAlloc(NSString* className)
+@implementation NSObject (ObjectUtils)
+
++ (id)newInstanceOfClassNamed:(NSString *)className
 {
 	id instance = nil;
 	
@@ -66,8 +68,6 @@ id<NSObject> ClassAlloc(NSString* className)
 	
 	return instance;
 }
-
-@implementation NSObject (ObjectUtils)
 
 - (NSString*)formatKey:(NSString*)key value:(id)value compact:(BOOL)compact
 {
@@ -115,7 +115,7 @@ id<NSObject> ClassAlloc(NSString* className)
 				message = StringBySurroundingStringWithQuotes(message, YES);
 				valueStr = [NSString stringWithFormat:@"<%@: %p, %@ %d %@>", [value class], value, error.domain, error.code, message];
 			} else {
-				value = [value description];
+				valueStr = [value description];
 			}
 		} else {
 			if(compact) {
@@ -215,6 +215,14 @@ id<NSObject> ClassAlloc(NSString* className)
 - (id)associatedObjectForKey:(NSString*)key
 {
 	return objc_getAssociatedObject(self, (__bridge void*)key);
+}
+
+- (NSString *)debugName {
+    return [self associatedObjectForKey:@"debugName"];
+}
+
+- (void)setDebugName:(NSString *)debugName {
+    [self setAssociatedObject:debugName forKey:@"debugName"];
 }
 
 @end

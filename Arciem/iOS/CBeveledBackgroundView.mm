@@ -21,9 +21,9 @@
 
 @interface CBeveledBackgroundView ()
 
-@property(strong, nonatomic) CALayer* topEdgeLayer;
-@property(strong, nonatomic) CAGradientLayer* gradientLayer;
-@property(strong, nonatomic) CALayer* bottomEdgeLayer;
+@property(nonatomic) CALayer* topEdgeLayer;
+@property(nonatomic) CAGradientLayer* gradientLayer;
+@property(nonatomic) CALayer* bottomEdgeLayer;
 
 @end
 

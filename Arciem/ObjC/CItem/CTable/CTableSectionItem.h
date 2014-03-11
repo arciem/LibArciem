@@ -24,7 +24,8 @@
 
 @property (nonatomic) BOOL isReordering;
 
-+ (CTableSectionItem*)item;
++ (CTableSectionItem *)newTableSectionItem;
++ (CTableSectionItem *)newTableSectionItemWithTitle:(NSString*)title key:(NSString*)key;
 
 - (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden;
 

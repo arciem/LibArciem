@@ -18,14 +18,16 @@
 
 #import "CNavigationController.h"
 #import "CViewController.h"
+#import "CNavigationBar.h"
 
-#if 0
-@interface UINavigationController (Superclass)
+NSString *const CNavigationControllerWillShowViewControllerNotification = @"CNavigationControllerWillShowViewControllerNotification";
+NSString *const CNavigationControllerDidShowViewControllerNotification = @"CNavigationControllerDidShowViewControllerNotification";
 
-- (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item;
+@interface CNavigationController () <UINavigationControllerDelegate>
 
+@property (copy, nonatomic) dispatch_block_t willShowViewController;
+@property (copy, nonatomic) dispatch_block_t didShowViewController;
 @end
-#endif
 
 @implementation CNavigationController
 
@@ -36,10 +38,21 @@
 //	CLogSetTagActive(@"C_NAVIGATION_CONTROLLER", YES);
 }
 
+- (id<UINavigationControllerDelegate>)delegate {
+    return self;
+}
+
+- (void)setDelegate:(id<UINavigationControllerDelegate>)delegate {
+    NSAssert(NO, @"CNavigationController is its own delegate. Delegate may not be reassigned.");
+}
+
 - (id)initWithRootViewController:(UIViewController *)rootViewController
 {
 	if(self = [super initWithRootViewController:rootViewController]) {
 		CLogTrace(@"C_NAVIGATION_CONTROLLER", @"%@ initWithRootViewController:", self, rootViewController);
+        
+        CNavigationBar *navBar = [CNavigationBar new];
+        [self setValue:navBar forKey:@"navigationBar"];
 	}
 	
 	return self;
@@ -147,6 +160,46 @@
 	}
 	
 	return disables;
+}
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated willShowViewController:(dispatch_block_t)willShowViewController didShowViewController:(dispatch_block_t)didShowViewController {
+    self.willShowViewController = willShowViewController;
+    self.didShowViewController = didShowViewController;
+    [self pushViewController:viewController animated:animated];
+}
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated didShowViewController:(dispatch_block_t)didShowViewController {
+    [self pushViewController:viewController animated:animated willShowViewController:NULL didShowViewController:didShowViewController];
+}
+
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated willShowViewController:(dispatch_block_t)willShowViewController {
+    [self pushViewController:viewController animated:animated willShowViewController:willShowViewController didShowViewController:NULL];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if(self.willShowViewController != nil) {
+        self.willShowViewController();
+        self.willShowViewController = nil;
+    }
+    NSDictionary *userInfo = @{
+                               @"viewController": viewController,
+                               @"animated": @(animated)
+                               };
+    [[NSNotificationCenter defaultCenter] postNotificationName:CNavigationControllerWillShowViewControllerNotification object:self userInfo:userInfo];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if(self.didShowViewController != nil) {
+        self.didShowViewController();
+        self.didShowViewController = nil;
+    }
+    NSDictionary *userInfo = @{
+                               @"viewController": viewController,
+                               @"animated": @(animated)
+                               };
+    [[NSNotificationCenter defaultCenter] postNotificationName:CNavigationControllerDidShowViewControllerNotification object:self userInfo:userInfo];
 }
 
 @end

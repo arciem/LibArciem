@@ -18,16 +18,26 @@
 
 #import "CItem.h"
 #import "CTableSectionItem.h"
-#import "CTableSpacerItem.h"
+#import "CSpacerTableRowItem.h"
+#import "CActionTableRowItem.h"
+#import "CAddRepeatingTableRowItem.h"
+#import "CCheckboxTableRowItem.h"
+#import "CButtonTableRowItem.h"
+#import "CCardNumberTableRowItem.h"
+#import "CMultiChoiceSummaryTableRowItem.h"
+#import "CNoteTableRowItem.h"
+#import "CTableRowItem.h"
+#import "CSummaryTableRowItem.h"
+#import "CTextFieldTableRowItem.h"
 
 @protocol CTableItemDelegate;
 
 @interface CTableItem : CItem
 
-@property (copy, nonatomic) NSMutableDictionary* textLabelAttributes;
+@property (copy, nonatomic) NSDictionary* textLabelAttributes;
 @property (weak, nonatomic) id<CTableItemDelegate> delegate;
 
-+ (CTableItem*)item;
++ (CTableItem*)newTableItem;
 
 - (void)tableSectionItem:(CTableSectionItem*)tableSectionItem rowsDidChangeWithNew:(NSArray*)newItems old:(NSArray*)oldItems kind:(NSKeyValueChange)kind indexes:(NSIndexSet*)indexes;
 - (void)tableRowItem:(CTableRowItem*)rowItem didChangeHiddenFrom:(BOOL)fromHidden to:(BOOL)toHidden;

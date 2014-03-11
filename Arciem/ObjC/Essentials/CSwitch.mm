@@ -20,7 +20,7 @@
 
 @interface CSwitch ()
 
-@property (strong, nonatomic) NSMutableDictionary* dict;
+@property (nonatomic) NSMutableDictionary* dict;
 
 @end
 
@@ -28,21 +28,27 @@
 
 @synthesize dict = dict_;
 
-- (id)initWithFirstKey:(id)firstKey args:(va_list)args
-{
-	if(self = [super init]) {
-		self.dict = [NSMutableDictionary dictionary];
-		for (id key = firstKey; key != nil; key = va_arg(args, id)) {
-			id block = [va_arg(args, id) copy];
-			(self.dict)[key] = block;
-		}
-	}
+- (id)initWithDictionary:(NSDictionary *)d {
+    if(self = [super init]) {
+        self.dict = [NSMutableDictionary dictionaryWithCapacity:d.count];
+        [d enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            self.dict[key] = [obj copy];
+        }];
+    }
+    return self;
+}
+
+- (id)initWithFirstKey:(id)firstKey args:(va_list)args {
+    NSMutableDictionary *d = [NSMutableDictionary new];
+    for (id key = firstKey; key != nil; key = va_arg(args, id)) {
+        d[key] = [va_arg(args, id) copy];
+    }
+    self = [self initWithDictionary:d];
 	
 	return self;
 }
 
-- (id)initWithKeysAndBlocks:(id)firstKey, ...
-{
+- (id)initWithKeysAndBlocks:(id)firstKey, ... {
 	va_list args;
 	va_start(args, firstKey);
 	self = [self initWithFirstKey:firstKey args:args];
@@ -51,8 +57,7 @@
 	return self;
 }
 
-+ (CSwitch*)switchWithKeysAndBlocks:(id)firstKey, ...
-{
++ (CSwitch*)switchWithKeysAndBlocks:(id)firstKey, ... {
 	CSwitch* result = nil;
 	
 	va_list args;
@@ -63,8 +68,11 @@
 	return result;
 }
 
-- (id)switchOnKey:(id)key withArg:(id)arg
-{
++ (CSwitch *)switchWithDictionary:(NSDictionary *)d {
+    return [[CSwitch alloc] initWithDictionary:d];
+}
+
+- (id)switchOnKey:(id)key withArg:(id)arg {
 	id result = nil;
 	
 	id (^bl)(id) = (self.dict)[key];
@@ -78,8 +86,7 @@
 	return result;
 }
 
-- (id)switchOnKey:(id)key
-{
+- (id)switchOnKey:(id)key {
 	return [self switchOnKey:key withArg:nil];
 }
 

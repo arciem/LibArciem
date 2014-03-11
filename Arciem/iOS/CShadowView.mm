@@ -24,8 +24,8 @@
 
 @interface CShadowView ()
 
-@property (strong, nonatomic) CAGradientLayer* shadowLayer;
-@property (strong, nonatomic) CObserver* edgeObserver;
+@property (nonatomic) CAGradientLayer* shadowLayer;
+@property (nonatomic) CObserver* edgeObserver;
 
 @end
 
@@ -34,18 +34,21 @@
 - (void)setup {
 	[super setup];
     
+    self.layoutView = YES;
+
     self.userInteractionEnabled = NO;
 
 	CGColorRef clearColor = CreateColorWithGray(0, 0);
 	CGColorRef blackColor = CreateColorWithGray(0, 0.25);
     
-	self.shadowLayer = [[CAGradientLayer alloc] init];
+	self.shadowLayer = [CAGradientLayer new];
 	self.shadowLayer.needsDisplayOnBoundsChange = YES;
 	self.shadowLayer.colors = @[(__bridge_transfer id)blackColor, (__bridge_transfer id)clearColor];
 	[self.layer addSublayer:self.shadowLayer];
 
-    self.edgeObserver = [CObserver observerWithKeyPath:@"edge" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-        [self syncToEdge];
+    BSELF;
+    self.edgeObserver = [CObserver newObserverWithKeyPath:@"edge" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+        [bself syncToEdge];
     }];
 }
 

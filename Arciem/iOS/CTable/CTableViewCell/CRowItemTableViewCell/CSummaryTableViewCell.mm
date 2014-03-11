@@ -18,13 +18,12 @@
 
 #import "CSummaryTableViewCell.h"
 #import "UIViewUtils.h"
-#import "CTableSummaryItem.h"
-#import "DeviceUtils.h"
+#import "CSummaryTableRowItem.h"
 #import "CObserver.h"
 
 @interface CSummaryTableViewCell ()
 
-@property (strong, nonatomic) CObserver* modelValueObserver;
+@property (nonatomic) CObserver* modelValueObserver;
 
 @end
 
@@ -36,41 +35,24 @@
 {
 	[super setup];
 	
-	self.textLabel.font = self.font;
-	self.textLabel.adjustsFontSizeToFitWidth = YES;
-	self.textLabel.minimumFontSize = self.fontSize * 0.6;
-	self.textLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+	self.titleLabel.font = self.font;
+	self.titleLabel.adjustsFontSizeToFitWidth = YES;
+	self.titleLabel.minimumScaleFactor = 0.6;
+	self.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 
-	self.modelValueObserver = [CObserver observerWithKeyPath:@"value" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self syncToModelValue:newValue];
+    BSELF;
+	self.modelValueObserver = [CObserver newObserverWithKeyPath:@"value" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[bself syncToModelValue:newValue];
 	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self syncToModelValue:newValue];
+		[bself syncToModelValue:newValue];
 	}];
-}
-
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	
-	CGRect layoutFrame = self.layoutFrame;
-	
-	CFrame* textLabelFrame = self.textLabel.cframe;
-	textLabelFrame.flexibleLeft = CGRectGetMinX(layoutFrame);
-	textLabelFrame.flexibleRight = CGRectGetMaxX(layoutFrame);
-	
-	CFieldValidationView* validationView = self.validationView;
-	CFrame* validationViewFrame = validationView.cframe;
-	validationViewFrame.centerY = textLabelFrame.centerY;
-	validationViewFrame.right = textLabelFrame.left - 8;
-	
-	//	self.rowItem.model.needsValidation = YES;
 }
 
 - (void)syncToRowItem
 {
 	[super syncToRowItem];
 	
-	CTableSummaryItem* rowItem = (CTableSummaryItem*)self.rowItem;
+	CSummaryTableRowItem* rowItem = (CSummaryTableRowItem*)self.rowItem;
 	if(rowItem.requiresDrillDown) {
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	} else {
@@ -84,20 +66,6 @@
 - (void)syncToModelValue:(id)value
 {
 //	CLogDebug(nil, @"%@ syncToModelValue:%@", self, value);
-}
-
-- (CGSize)sizeThatFits:(CGSize)size
-{
-	if(IsPhone()) {
-		size.height = 30;
-	}
-	
-	return size;
-}
-
-- (NSUInteger)validationViewsNeeded
-{
-	return 1;
 }
 
 @end

@@ -19,20 +19,26 @@
 #import "CViewController.h"
 
 // These notifications are posted from within an animation block.
-extern NSString* const SidebarContainerViewControllerWillShrinkCenterViewController;
-extern NSString* const SidebarContainerViewControllerWillObscureCenterViewController;
-extern NSString* const SidebarContainerViewControllerWillRevealCenterViewController;
+extern NSString *const SidebarContainerViewControllerWillShrinkCenterViewController;
+extern NSString *const SidebarContainerViewControllerWillObscureCenterViewController;
+extern NSString *const SidebarContainerViewControllerWillRevealCenterViewController;
+
+// These notifications are posted before animation starts.
+extern NSString *const SidebarContainerViewControllerWillSwipeOpenLeftViewController;
+extern NSString *const SidebarContainerViewControllerWillSwipeClosedLeftViewController;
+extern NSString *const SidebarContainerViewControllerWillSwipeOpenRightViewController;
+extern NSString *const SidebarContainerViewControllerWillSwipeClosedRightViewController;
 
 @interface CSidebarContainerViewController : CViewController<UIGestureRecognizerDelegate>
 
-@property (strong, nonatomic) UIViewController* centerViewController;
-@property (strong, nonatomic) UIViewController* leftViewController;
-@property (strong, nonatomic) UIViewController* rightViewController;
+@property (nonatomic) UIViewController* centerViewController;
+@property (nonatomic) UIViewController* leftViewController;
+@property (nonatomic) UIViewController* rightViewController;
 
-@property (strong, readonly, nonatomic) UISwipeGestureRecognizer* centerSwipeRightRecognizer;
-@property (strong, readonly, nonatomic) UISwipeGestureRecognizer* centerSwipeLeftRecognizer;
-@property (strong, readonly, nonatomic) UISwipeGestureRecognizer* leftSwipeLeftRecognizer;
-@property (strong, readonly, nonatomic) UISwipeGestureRecognizer* rightSwipeRightRecognizer;
+@property (readonly, nonatomic) UISwipeGestureRecognizer* centerSwipeRightRecognizer;
+@property (readonly, nonatomic) UISwipeGestureRecognizer* centerSwipeLeftRecognizer;
+@property (readonly, nonatomic) UISwipeGestureRecognizer* leftSwipeLeftRecognizer;
+@property (readonly, nonatomic) UISwipeGestureRecognizer* rightSwipeRightRecognizer;
 
 @property (nonatomic) BOOL leftViewVisible;
 @property (nonatomic) BOOL rightViewVisible;

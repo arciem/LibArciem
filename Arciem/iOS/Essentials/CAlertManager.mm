@@ -25,8 +25,8 @@ const NSUInteger kOKButtonIndex = 1;
 
 @interface CAlertManager ()
 
-@property(strong, nonatomic) NSMutableArray* alerts;
-@property(strong, nonatomic) NSMutableArray* completionBlocks;
+@property(nonatomic) NSMutableArray *alerts;
+@property(nonatomic) NSMutableArray *completionBlocks;
 
 @end
 
@@ -35,8 +35,7 @@ const NSUInteger kOKButtonIndex = 1;
 @synthesize alerts = alerts_;
 @synthesize completionBlocks = completionBlocks_;
 
-- (id)init
-{
+- (id)init {
 	if((self = [super init])) {
 		self.alerts = [NSMutableArray array];
 		self.completionBlocks = [NSMutableArray array];
@@ -45,9 +44,8 @@ const NSUInteger kOKButtonIndex = 1;
 	return self;
 }
 
-+ (CAlertManager*)sharedAlertManager
-{
-    static CAlertManager* instance = nil;
++ (CAlertManager *)sharedAlertManager {
+    static CAlertManager *instance = nil;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         instance = [CAlertManager new];
@@ -55,14 +53,13 @@ const NSUInteger kOKButtonIndex = 1;
     return instance;
 }
 
-- (void)showAlertWithTitle:(NSString*)title message:(NSString*)message buttonTitles:(NSArray*)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion
-{
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion {
 	@synchronized(self) {
-		UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 		if(buttonTitles == nil) {
 			[alertView addButtonWithTitle:IString(@"Cancel")];
 		} else {
-			for(NSString* title in buttonTitles) {
+			for(NSString *title in buttonTitles) {
 				[alertView addButtonWithTitle:title];
 			}
 		}
@@ -78,38 +75,30 @@ const NSUInteger kOKButtonIndex = 1;
 	}
 }
 
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message
-{
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
     [self showAlertWithTitle:title message:message buttonTitles:nil completion:NULL];
 }
 
-- (void)showCancelAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion
-{
+- (void)showCancelAlertWithTitle:(NSString *)title message:(NSString *)message completion:(void (^)(NSUInteger buttonIndex))completion {
 	[self showAlertWithTitle:title message:message buttonTitles:nil completion:completion];
 }
 
-- (void)showCancelAlertWithTitle:(NSString*)title message:(NSString*)message
-{
+- (void)showCancelAlertWithTitle:(NSString *)title message:(NSString *)message {
 	[self showCancelAlertWithTitle:title message:message completion:nil];
 }
 
-- (void)showConfirmAlertWithTitle:(NSString*)title message:(NSString*)message completion:(void (^)(NSUInteger buttonIndex))completion
-{
+- (void)showConfirmAlertWithTitle:(NSString *)title message:(NSString *)message completion:(void (^)(NSUInteger buttonIndex))completion {
 	[self showAlertWithTitle:title message:message buttonTitles:@[IString(@"Cancel"), IString(@"OK")] completion:completion];
 }
 
-- (void)showOKAlertWithTitle:(NSString*)title message:(NSString*)message
-{
+- (void)showOKAlertWithTitle:(NSString *)title message:(NSString *)message {
     [self showAlertWithTitle:title message:message buttonTitles:@[IString(@"OK")] completion:nil];
 }
 
-//
-#pragma mark UIAlertViewDelegate
-//
+#pragma mark - UIAlertViewDelegate
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSUInteger)buttonIndex
-{
-	void(^completion)(NSUInteger idx) = nil;
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSUInteger)buttonIndex {
+	void(^completion)(NSUInteger) = NULL;
 	
 	@synchronized(self) {
 		NSUInteger index = [self.alerts indexOfObject:alertView];

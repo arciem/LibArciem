@@ -20,7 +20,7 @@
 
 @interface CMutableArray ()
 
-@property (strong, nonatomic) NSMutableArray* objects;
+@property (nonatomic) NSMutableArray* objects;
 @property (weak, nonatomic) id owner;
 @property (copy, nonatomic) NSString* key;
 

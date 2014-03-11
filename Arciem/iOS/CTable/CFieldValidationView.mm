@@ -21,57 +21,55 @@
 #import "ThreadUtils.h"
 #import "UIColorUtils.h"
 #import "CObserver.h"
+#import "ObjectUtils.h"
+#import "UIViewUtils.h"
 
 static UIImage* sValidImage = nil;
 static UIImage* sInvalidImage = nil;
 
 @interface CFieldValidationView ()
 
-@property (strong, readonly, nonatomic) UIView* newView;
-@property (strong, readonly, nonatomic) UIView* validView;
-@property (strong, readonly, nonatomic) UIView* invalidView;
-@property (strong, readonly, nonatomic) UIView* needsValidationView;
-@property (strong, readonly, nonatomic) UIView* validatingView;
-@property (strong, nonatomic) UIView* contentView;
-@property (strong, nonatomic) UIView* lastContentView;
-@property (strong, nonatomic) CObserver* itemStateObserver;
-@property (strong, nonatomic) CObserver* itemEditingObserver;
-
-- (void)syncToState;
+@property (readonly, nonatomic) UIView* newView;
+@property (readonly, nonatomic) UIView* validView;
+@property (readonly, nonatomic) UIView* invalidView;
+@property (readonly, nonatomic) UIView* needsValidationView;
+@property (readonly, nonatomic) UIView* validatingView;
+@property (nonatomic) UIView* contentView;
+@property (nonatomic) UIView* lastContentView;
+@property (nonatomic) CObserver* itemStateObserver;
+@property (nonatomic) CObserver* itemEditingObserver;
 
 @end
 
 @implementation CFieldValidationView
 
-@synthesize item = item_;
-@synthesize newView = newView_;
-@synthesize validView = validView_;
-@synthesize invalidView	= invalidView_;
-@synthesize needsValidationView = needsValidationView_;
-@synthesize validatingView = validatingView_;
-@synthesize contentView = contentView_;
-@synthesize lastContentView = lastContentView_;
-@synthesize validMarkTintColor = validMarkTintColor_;
-@synthesize invalidMarkTintColor = invalidMarkTintColor_;
-@synthesize itemStateObserver = itemStateObserver_;
-@synthesize itemEditingObserver = itemEditingObserver_;
+@synthesize validView = _validView;
+@synthesize invalidView = _invalidView;
+@synthesize validatingView = _validatingView;
+@synthesize item = _item;
+@synthesize newView = _newView;
+@synthesize needsValidationView = _needsValidationView;
+@synthesize contentView = _contentView;
 
 - (void)setup
 {
 	[super setup];
 	[self syncToState];
+    self.opaque = NO;
+    self.backgroundColor = [UIColor clearColor];
 	self.userInteractionEnabled = NO;
 	self.validMarkTintColor = [[UIColor greenColor] colorByDarkeningFraction:0.2];
 	self.invalidMarkTintColor = [[UIColor redColor] colorByDarkeningFraction:0.1];
-	
-	self.itemStateObserver = [CObserver observerWithKeyPath:@"state" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self armSyncToState];
+    
+    BSELF;
+	self.itemStateObserver = [CObserver newObserverWithKeyPath:@"state" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
 	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self armSyncToState];
+		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
 	}];
 	
-	self.itemEditingObserver = [CObserver observerWithKeyPath:@"isEditing" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self armSyncToState];
+	self.itemEditingObserver = [CObserver newObserverWithKeyPath:@"editing" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
 	}];
 }
 
@@ -84,7 +82,8 @@ static UIImage* sInvalidImage = nil;
 {
 	UIImage* image = [UIImage imageNamed:imageName];
 	if(image != nil) {
-		image = [UIImage imageWithShapeImage:image tintColor:tintColor shadowColor:[UIColor colorWithWhite:0.0 alpha:0.8] shadowOffset:CGSizeMake(0.0, -1.0) shadowBlur:0];
+		image = [UIImage newImageWithShapeImage:image tintColor:tintColor shadowColor:[UIColor clearColor] shadowOffset:CGSizeMake(0.0, 0.0) shadowBlur:0];
+//		image = [UIImage newImageWithShapeImage:image tintColor:tintColor shadowColor:[UIColor colorWithWhite:0.0 alpha:0.8] shadowOffset:CGSizeMake(0.0, -1.0) shadowBlur:0];
 	}
 	return image;
 }
@@ -107,122 +106,147 @@ static UIImage* sInvalidImage = nil;
 
 - (UIView*)validView
 {
-	if(validView_ == nil) {
+	if(_validView == nil) {
 		if(sValidImage == nil) {
 			sValidImage = [self imageNamed:@"FieldValidMark" tintColor:self.validMarkTintColor];
 		}
-		validView_ = [self viewWithImage:sValidImage tintColor:self.validMarkTintColor];
+		_validView = [self viewWithImage:sValidImage tintColor:self.validMarkTintColor];
 	}
-	return validView_;
+	return _validView;
 }
 
 - (UIView*)invalidView
 {
-	if(invalidView_ == nil) {
+	if(_invalidView == nil) {
 		if(sInvalidImage == nil) {
 			sInvalidImage = [self imageNamed:@"FieldInvalidMark" tintColor:self.invalidMarkTintColor];
 		}
-		invalidView_ = [self viewWithImage:sInvalidImage tintColor:self.invalidMarkTintColor];
+		_invalidView = [self viewWithImage:sInvalidImage tintColor:self.invalidMarkTintColor];
 	}
-	return invalidView_;
+	return _invalidView;
 }
 
 - (UIView*)newView
 {
-	return newView_;
+	return _newView;
 }
 
 - (UIView*)needsValidationView
 {
-	return needsValidationView_;
+	return _needsValidationView;
 }
 
 - (UIView*)validatingView
 {
-	if(validatingView_ == nil) {
-		validatingView_ = [self viewWithImage:nil tintColor:[UIColor blueColor]];
+	if(_validatingView == nil) {
+		_validatingView = [self viewWithImage:nil tintColor:[UIColor blueColor]];
 	}
-	return validatingView_;
+	return _validatingView;
 }
 
 - (CItem*)item
 {
-	return item_;
+	return _item;
 }
 
 - (void)setItem:(CItem *)item
 {
-	if(item_ != item) {
-		[self.itemStateObserver removeObject:item_];
-		[self.itemEditingObserver removeObject:item_];
-		item_ = item;
-		[self.itemStateObserver addObject:item_];
-		[self.itemEditingObserver addObject:item_];
+	if(_item != item) {
+		[self.itemStateObserver removeObject:_item];
+		[self.itemEditingObserver removeObject:_item];
+		_item = item;
+		[self.itemStateObserver addObject:_item];
+		[self.itemEditingObserver addObject:_item];
 	}
 }
 
 - (UIView*)contentView
 {
-	return contentView_;
+	return _contentView;
 }
 
 - (void)setContentView:(UIView *)contentView
 {
-	if(contentView_ != contentView) {
+	if(_contentView != contentView) {
 		[self.lastContentView removeFromSuperview];
-		self.lastContentView = contentView_;
-		contentView_ = contentView;
+		self.lastContentView = _contentView;
+		_contentView = contentView;
 		
-		if(contentView_ != nil) {
-			[self addSubview:contentView_];
+		if(_contentView != nil) {
+			[self addSubview:_contentView];
 		}
 
-		contentView_.frame = self.bounds;
-		contentView_.alpha = 0.0;
+		self.contentView.frame = self.bounds;
+		self.contentView.alpha = 0.0;
+        BSELF;
 		[UIView animateWithDuration:0.3 animations:^{
-			contentView_.alpha = 1.0;
-			self.lastContentView.alpha = 0.0;
+			bself.contentView.alpha = 1.0;
+			bself.lastContentView.alpha = 0.0;
 		}];
 	}
 }
 
-- (void)syncToState
-{
-	switch(self.item.state) {
-		case CItemStateNeedsValidation:
-			self.contentView = self.needsValidationView;
-			break;
-		case CItemStateValidating:
-			self.contentView = self.validatingView;
-			break;
-		case CItemStateValid:
-			if(self.item.isNew) {
-				self.contentView = self.newView;
-			} else {
-				if(self.item.isEditing) {
-					self.contentView = self.validView;
-				} else {
-					self.contentView = self.newView;
-				}
-			}
-			break;
-		case CItemStateInvalid:
-			self.contentView = self.item.isNew ? self.newView : self.invalidView;
-			break;
-	}
+- (UIView *)contentViewForState:(CItemState)state {
+    UIView *resultView = nil;
+    switch(state) {
+        case CItemStateNeedsValidation:
+            resultView = self.needsValidationView;
+            break;
+        case CItemStateValidating:
+            resultView = self.validatingView;
+            break;
+        case CItemStateValid:
+            if(self.item.fresh) {
+                resultView = self.newView;
+            } else {
+                if(self.item.editing) {
+                    resultView = self.validView;
+                } else {
+                    resultView = self.newView;
+                }
+            }
+            break;
+        case CItemStateInvalid:
+            resultView = self.item.fresh ? self.newView : self.invalidView;
+            break;
+    }
+    return resultView;
 }
 
-- (void)armSyncToState
+- (void)syncToState
 {
-	[NSThread performBlockOnMainThread:^{
-		[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(syncToState) object:nil];
-		[self performSelector:@selector(syncToState) withObject:nil afterDelay:0.2];
-	}];
+    self.contentView = [self contentViewForState:self.item.state];
+}
+
+- (void)armSyncToStateWithOldState:(CItemState)oldState
+{
+    CItemState newState = self.item.state;
+    if(oldState != newState) {
+        if(oldState != CItemStateValid && newState != CItemStateValid) {
+            self.contentView = self.newView;
+        }
+        BSELF;
+        [NSThread performBlockOnMainThread:^{
+            [NSObject cancelPreviousPerformRequestsWithTarget:bself selector:@selector(syncToState) object:nil];
+            NSTimeInterval duration;
+            if(newState == CItemStateValid) {
+                duration = 0.2;
+            } else {
+                duration = 2.5;
+            }
+            //CLogDebug(nil, @"%@ oldState:%d newState:%d duration:%f", bself, oldState, newState, duration);
+            [bself performSelector:@selector(syncToState) withObject:nil afterDelay:duration];
+        }];
+    }
+}
+
+- (CGSize)intrinsicContentSize {
+    return CGSizeMake(20, 20);
 }
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-	return CGSizeMake(20, 20);
+	return self.intrinsicContentSize;
 }
 
 @end

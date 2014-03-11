@@ -67,7 +67,10 @@ public:
 	delta3 operator*(double n) const { return delta3(dx * n, dy * n, dz * n); }
 	delta3 operator/(double n) const { return delta3(dx / n, dy / n, dz / n); }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 	bool operator==(delta3 const& d) const { return dx == d.dx && dy == d.dy && dz == d.dz; }
+#pragma clang diagnostic pop
 	bool operator!=(delta3 const& d) const { return !(*this == d); }
 	
 	double volume(void) const { return dx * dy * dz; }
@@ -75,7 +78,10 @@ public:
 	void multiply(double n, delta3& dst) const { dst.dx = dx * n; dst.dy = dy * n; dst.dz = dz * n; }
 	void divide(double n, delta3& dst) const { dst.dx = dx / n; dst.dy = dy / n; dst.dz = dz / n; }
 	
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wfloat-equal"
 	bool equals(delta3 const& d) const { return dx == d.dx && dy == d.dy && dz == d.dz; }
+#pragma clang diagnostic pop
 	
 	double distance() const { return sqrt(dx * dx + dy * dy + dz * dz); }
 

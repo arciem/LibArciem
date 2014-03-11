@@ -291,7 +291,7 @@ NSString* const kDimensionPackaging = @"kDimensionPackaging";
 + (CQuantityManager*)sharedQuantityManager
 {
 	if(sQuantityManager == nil) {
-		sQuantityManager = [[CQuantityManager alloc] init];
+		sQuantityManager = [CQuantityManager new];
 	}
 	return sQuantityManager;
 }

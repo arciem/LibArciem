@@ -31,15 +31,16 @@
 
 #import "CWorker.h"
 
-extern NSString* const CRestErrorDomain;
+extern NSString *const CRestErrorDomain;
 
-extern NSString* const CRestErrorWorkerErrorKey;
-extern NSString* const CRestErrorFailingURLErrorKey;
+extern NSString *const CRestErrorWorkerErrorKey;
+extern NSString *const CRestErrorFailingURLErrorKey;
 
-extern NSString* const CRestJSONMIMEType;
+extern NSString *const CRestJSONMIMEType;
 
 enum {
 	CRestOfflineError = 2121,
+    CRestBackgroundTaskExpiredError = 3001
 };
 
 @interface CRestWorker : CWorker <NSURLConnectionDelegate>
@@ -48,20 +49,20 @@ enum {
 + (CRestWorker*)workerWithRequest:(NSURLRequest*)request;
 
 // Inputs - may change between retries
-@property (strong, nonatomic) NSURLRequest* request;
+@property (nonatomic) NSURLRequest *request;
 
 @property (nonatomic) BOOL showsNetworkActivityIndicator; // default == YES
 
-@property (copy, nonatomic) NSIndexSet* successStatusCodes; // set of HTTP status codes that count as "success", default: {200}
+@property (copy, nonatomic) NSIndexSet *successStatusCodes; // set of HTTP status codes that count as "success", default: {200}
 
-@property (strong, nonatomic) NSString* expectedMIMEType;
+@property (nonatomic) NSString *expectedMIMEType;
 
 // Outputs
-@property (readonly, strong, nonatomic) NSURLResponse* response;
-@property (readonly, nonatomic) NSHTTPURLResponse* httpResponse;
-@property (readonly, nonatomic) NSData* data;
-@property (readonly, nonatomic) NSString* dataAsString; // UTF-8
-@property (strong, readonly, nonatomic) id dataAsJSON; // nil if parse error
+@property (readonly, nonatomic) NSURLResponse *response;
+@property (readonly, nonatomic) NSHTTPURLResponse *httpResponse;
+@property (readonly, nonatomic) NSData *data;
+@property (readonly, nonatomic) NSString *dataAsString; // UTF-8
+@property (readonly, nonatomic) id dataAsJSON; // nil if parse error
 
 - (id)dataAsJSONWithError:(NSError**)error;
 

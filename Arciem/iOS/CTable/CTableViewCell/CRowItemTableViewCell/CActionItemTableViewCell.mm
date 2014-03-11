@@ -21,29 +21,38 @@
 
 @implementation CActionItemTableViewCell
 
-@dynamic actionItem;
-
-- (void)syncToRowItem
-{
+- (void)syncToRowItem {
 	[super syncToRowItem];
 
-	self.accessoryType = IsEmptyString(self.actionItem.action) ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
-//    self.accessoryView.hidden = self.rowItem.isDisabled;
+    [self syncTitleLabelToRowItem];
+
+	self.accessoryType = IsEmptyString(self.tableActionItem.actionItem.actionValue) ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
+//    self.accessoryView.hidden = self.rowItem.disabled;
 }
 
-- (CTableActionItem*)actionItem
-{
-	return (CTableActionItem*)self.rowItem;
+- (CActionTableRowItem*)tableActionItem {
+	return (CActionTableRowItem*)self.rowItem;
 }
 
-- (void)setActionItem:(CTableActionItem *)actionItem
-{
-	self.rowItem = actionItem;
+- (void)setTableActionItem:(CActionTableRowItem *)tableActionItem {
+	self.rowItem = tableActionItem;
+}
+
+- (void)updateConstraints {
+    [super updateConstraints];
+    
+    CLayoutConstraintsGroup *group = [self resetConstraintsGroupForKey:@"CActionItemTableViewCell_contentView" owner:self.contentView];
+    [group addConstraint:[self.titleLabel constrainLeadingEqualToLeadingOfItem:self.contentView offset:20]];
+    [group addConstraint:[self.titleLabel constrainCenterYEqualToCenterYOfItem:self.contentView]];
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.accessoryView.alpha = self.rowItem.isDisabled ? 0.5 : 1.0;
+    self.accessoryView.alpha = self.rowItem.disabled ? 0.5 : 1.0;
+}
+
+- (NSUInteger)validationViewsNeeded {
+	return 0;
 }
 
 @end

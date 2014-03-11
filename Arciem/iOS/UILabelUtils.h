@@ -23,6 +23,6 @@
 
 - (void)adjustFontSizeToFit:(CGFloat)largeFontSize;
 
-+ (CGSize)maxSizeOfStrings:(NSArray*)strings withFont:(UIFont*)font forWidth:(CGFloat)width lineBreakMode:(NSLineBreakMode)lineBreakMode;
++ (CGSize)maxSizeOfStrings:(NSArray*)strings withFont:(UIFont*)font forWidth:(CGFloat)width;
 
 @end

@@ -26,29 +26,23 @@
 #import "DeviceUtils.h"
 
 static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
+static BOOL sTestingMode;
 
 @interface CRowItemTableViewCell ()
 
 @property (strong, readwrite, nonatomic) NSMutableArray* mutableValidationViews;
-@property (strong, nonatomic) CTapToDismissKeyboardManager* tapDismiss1;
-@property (strong, nonatomic) CTapToDismissKeyboardManager* tapDismiss2;
-@property (strong, nonatomic) CObserver* rowItemObserver;
-@property (strong, nonatomic) NSMutableArray* modelValueObservers;
-@property (strong, nonatomic) CObserver* rowItemDisabledObserver;
+@property (nonatomic) NSMutableArray *mutableValidationViewConstraints;
+
+@property (nonatomic) CObserver* rowItemObserver;
+@property (nonatomic) NSMutableArray* modelValueObservers;
+@property (nonatomic) CObserver* rowItemDisabledObserver;
 
 @end
 
 @implementation CRowItemTableViewCell
 
-@synthesize rowItem = rowItem_;
-@synthesize mutableValidationViews = mutableValidationViews_;
-@synthesize activeItem = activeItem_;
-@synthesize tapDismiss1 = tapDismiss1_;
-@synthesize tapDismiss2 = tapDismiss2_;
-@synthesize delegate = delegate_;
-@synthesize rowItemObserver = rowItemObserver_;
-@synthesize modelValueObservers = modelValueObservers_;
-@dynamic validationViewsNeeded;
+@synthesize rowItem = _rowItem;
+@synthesize activeItem = _activeItem;
 
 + (void)initialize
 {
@@ -60,11 +54,10 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	[super setup];
 
 	self.indentationWidth = IsPad() ? 30 : 10;
-	self.textLabel.backgroundColor = [UIColor clearColor];
 
-	__weak CRowItemTableViewCell* self__ = self;
-	self.rowItemObserver = [CObserver observerWithKeyPath:@"rowItem" ofObject:self action:^(id object, CTableRowItem* newRowItem, CTableRowItem* oldRowItem, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[self__ rowItemDidChangeFrom:oldRowItem to:newRowItem];
+	BSELF;
+	self.rowItemObserver = [CObserver newObserverWithKeyPath:@"rowItem" ofObject:self action:^(id object, CTableRowItem* newRowItem, CTableRowItem* oldRowItem, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[bself rowItemDidChangeFrom:oldRowItem to:newRowItem];
 	}];
 
 	CLogTrace(sClassTag, @"%@ setup", self);
@@ -73,8 +66,8 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 - (void)dealloc
 {
 	CLogTrace(sClassTag, @"%@ dealloc", self);
-	self.rowItemObserver = nil;
 	self.rowItem = nil;
+	self.rowItemObserver = nil;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -93,19 +86,35 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 - (CFieldValidationView*)validationViewAtIndex:(NSUInteger)index
 {
 	if(self.mutableValidationViews == nil) {
-		self.mutableValidationViews = [NSMutableArray array];
+		self.mutableValidationViews = [NSMutableArray new];
 	}
 	
 	while(self.mutableValidationViews.count <= index) {
 		CFieldValidationView* view = [[CFieldValidationView alloc] initWithFrame:CGRectZero];
-		//		view.backgroundColor = [UIColor redColor];
-		view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+#if 0
+#warning DEBUG ONLY
+		view.backgroundColor = [[UIColor blueColor] colorWithAlpha:0.2];
+#endif
+        view.translatesAutoresizingMaskIntoConstraints = NO;
+        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 		[self.mutableValidationViews addObject:view];
 		[self.contentView addSubview:view];
-		[self setNeedsLayout];
+		[self setNeedsUpdateConstraints];
 	}
 	
 	return (self.mutableValidationViews)[index];
+}
+
+- (CLayoutConstraintsGroup *)validationViewConstraintsAtIndex:(NSUInteger)index {
+	if(self.mutableValidationViewConstraints == nil) {
+        self.mutableValidationViewConstraints = [NSMutableArray new];
+	}
+	
+	while(self.mutableValidationViewConstraints.count <= index) {
+        [self.mutableValidationViewConstraints addObject:[CLayoutConstraintsGroup groupWithOwner:self.contentView]];
+	}
+	
+	return (self.mutableValidationViewConstraints)[index];
 }
 
 - (CFieldValidationView*)validationView
@@ -113,14 +122,19 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	return [self validationViewAtIndex:0];
 }
 
+- (CLayoutConstraintsGroup *)validationViewConstraints {
+    return [self validationViewConstraintsAtIndex:0];
+}
+
 - (void)setValidationView:(CFieldValidationView *)validationView atIndex:(NSUInteger)index
 {
 	CFieldValidationView* oldValidationView = [self validationViewAtIndex:index];
 	if(validationView != oldValidationView) {
+        [[self validationViewConstraintsAtIndex:index] removeAllConstraints];
 		[oldValidationView removeFromSuperview];
 		(self.mutableValidationViews)[index] = validationView;
 		[self.contentView addSubview:validationView];
-		[self setNeedsLayout];
+		[self setNeedsUpdateConstraints];
 	}
 }
 
@@ -134,9 +148,16 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	return [self.mutableValidationViews copy];
 }
 
+- (NSArray *)validationViewsConstraints {
+    return [self.mutableValidationViewConstraints copy];
+}
+
 - (void)setNumberOfValidationViewsTo:(NSUInteger)count
 {
 	while(self.mutableValidationViews.count > count) {
+        CLayoutConstraintsGroup *constraints = self.mutableValidationViewConstraints.lastObject;
+        [constraints removeAllConstraints];
+        [self.mutableValidationViewConstraints removeLastObject];
 		CFieldValidationView* view = self.mutableValidationViews.lastObject;
 		[view removeFromSuperview];
 		[self.mutableValidationViews removeLastObject];
@@ -146,21 +167,15 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	}
 }
 
-- (void)layoutValidationViewFrame:(CFrame*)frame
-{
-	[frame sizeToFit];
-}
+- (void)updateConstraints {
+    [super updateConstraints];
 
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
+    CLayoutConstraintsGroup *group = [self resetConstraintsGroupForKey:@"CRowItemTableViewCell_validationViews" owner:self.contentView];
 
-	for(CFieldValidationView* validationView in self.validationViews) {
-		[self layoutValidationViewFrame:validationView.cframe];
-//		[validationViewFrame sizeToFit];
-//		validationViewFrame.right = self.contentView.boundsRight - 10;
-//		validationViewFrame.centerY = self.boundsCenterY;
-	}
+    BSELF;
+    [self.validationViews enumerateObjectsUsingBlock:^(CFieldValidationView* validationView, NSUInteger idx, BOOL *stop) {
+        [group addConstraint:[validationView constrainCenterYEqualToCenterYOfItem:bself.contentView] withPriority:UILayoutPriorityDefaultLow];
+    }];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfRowItem
@@ -170,14 +185,14 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 
 - (CTableRowItem*)rowItem
 {
-	return rowItem_;
+	return _rowItem;
 }
 
 - (void)setRowItem:(CTableRowItem *)rowItem
 {
-	if(rowItem_ != rowItem) {
+	if(_rowItem != rowItem) {
 		[self willChangeValueForKey:@"rowItem"];
-		rowItem_ = rowItem;
+		_rowItem = rowItem;
 		[self didChangeValueForKey:@"rowItem"];
 	}
 }
@@ -204,32 +219,37 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 }
 
 // May be overridden by subclasses
-- (void)syncToRowItem
-{
-	self.textLabel.text = self.rowItem.title;
-
+- (void)syncTitleLabelToRowItem {
+	self.titleLabel.text = self.rowItem.title;
+    
 	CTableRowItem* rowItem = self.rowItem;
 	self.indentationLevel = rowItem.indentationLevel;
-
+    
 	CTableItem* tableItem = (CTableItem*)rowItem.superitem.superitem;
-	[self applyAttributes:tableItem.textLabelAttributes toLabel:self.textLabel];
-	[self applyAttributes:rowItem.textLabelAttributes toLabel:self.textLabel];
+	[self applyAttributes:tableItem.textLabelAttributes toLabel:self.titleLabel];
+	[self applyAttributes:rowItem.textLabelAttributes toLabel:self.titleLabel];
+    
+	self.titleLabel.alpha = rowItem.disabled ? 0.5 : 1.0;
+}
 
-	self.textLabel.alpha = rowItem.isDisabled ? 0.5 : 1.0;
+// May be overridden by subclasses
+- (void)syncToRowItem
+{
+	CTableRowItem* rowItem = self.rowItem;
 	
-	if(rowItem.isUnselectable) {
-		self.tapDismiss1 = [[CTapToDismissKeyboardManager alloc] initWithView:self];
-		self.tapDismiss2 = [[CTapToDismissKeyboardManager alloc] initWithView:self.contentView];
+	if(!rowItem.rowSelectable) {
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else {
-		self.tapDismiss1 = nil;
-		self.tapDismiss2 = nil;
-		self.selectionStyle = UITableViewCellSelectionStyleBlue;
+        if(IsOSVersionAtLeast7()) {
+            self.selectionStyle = UITableViewCellSelectionStyleDefault;
+        } else {
+            self.selectionStyle = UITableViewCellSelectionStyleBlue;
+        }
 	}
 	
 	[self syncValidationViews];
 
-	[self setNeedsLayout];
+	[self setNeedsUpdateConstraints];
 
 //	CLogDebug(nil, @"%@ synced", rowItem);
 }
@@ -250,17 +270,20 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
                      ^(UILabel* lbl, id value) {
                          if([value boolValue]) {
                              lbl.textColor = [UIColor colorWithWhite:0.95 alpha:1.0];
-                             lbl.shadowOffset = CGSizeMake(0, -1);
-                             lbl.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+                             lbl.highlightedTextColor = [UIColor blackColor];
                          }
                      },
                  @"adjustsFontSizeToFitWidth":
                      ^(UILabel* lbl, id value) {
                          lbl.adjustsFontSizeToFitWidth = [value boolValue];
                      },
+                 @"minimumScaleFactor":
+                     ^(UILabel* lbl, id value) {
+                         lbl.minimumScaleFactor = [value floatValue];
+                     },
                  @"minimumFontSize":
                      ^(UILabel* lbl, id value) {
-                         lbl.minimumFontSize = [value floatValue];
+                         NSAssert(NO, @"minimumFontSize is deprecated.");
                      },
                  @"fontSize":
                      ^(UILabel* lbl, id value) {
@@ -269,6 +292,10 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
                  @"textColor":
                      ^(UILabel* lbl, id value) {
                          lbl.textColor = [UIColor colorWithString:(NSString*)value];
+                     },
+                 @"bold":
+                     ^(UILabel* lbl, id value) {
+                         lbl.font = [UIFont boldSystemFontOfSize:lbl.font.pointSize];
                      },
                  };
 	}
@@ -285,17 +312,17 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	if(oldRowItem != newRowItem) {
 		[self syncToRowItem];
 		self.modelValueObservers = [NSMutableArray array];
-		__weak CRowItemTableViewCell* self__ = self;
+		BSELF;
         [newRowItem.models enumerateObjectsUsingBlock:^(CItem *newModel, NSUInteger idx, BOOL *stop) {
-			CObserver* modelValueObserver = [CObserver observerWithKeyPath:@"value" ofObject:newModel action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-				[self__ model:newModel valueDidChangeFrom:oldValue to:newValue];
+			CObserver* modelValueObserver = [CObserver newObserverWithKeyPath:@"value" ofObject:newModel action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+				[bself model:newModel valueDidChangeFrom:oldValue to:newValue];
 			} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-				[self__ model:newModel valueDidChangeFrom:oldValue to:newValue];
+				[bself model:newModel valueDidChangeFrom:oldValue to:newValue];
 			}];
-			[self__.modelValueObservers addObject:modelValueObserver];
+			[bself.modelValueObservers addObject:modelValueObserver];
         }];
-        self.rowItemDisabledObserver = [CObserver observerWithKeyPath:@"isDisabled" ofObject:newRowItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-            [self syncToRowItem];
+        self.rowItemDisabledObserver = [CObserver newObserverWithKeyPath:@"disabled" ofObject:newRowItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+            [bself syncToRowItem];
         }];
 	}
 }
@@ -305,17 +332,25 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 //	CLogDebug(nil, @"model:%@ valueDidChangeFrom:%@ to:%@", model, oldValue, newValue);
 }
 
++ (void)setTestingMode:(BOOL)testingMode {
+    sTestingMode = testingMode;
+}
+
+- (BOOL)isTestingMode {
+    return sTestingMode;
+}
+
 #pragma mark - @propery activeItem
 
 - (CItem*)activeItem
 {
-	return activeItem_;
+	return _activeItem;
 }
 
 - (void)setActiveItem:(CItem *)activeItem
 {
-	activeItem_ = activeItem;
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"ItemDidBecomeActive" object:activeItem_];
+	_activeItem = activeItem;
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"ItemDidBecomeActive" object:_activeItem];
 }
 
 #pragma mark - @property fontSize
@@ -329,7 +364,30 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 
 - (UIFont*)font
 {
-	return [UIFont boldSystemFontOfSize:self.fontSize];
+	return [UIFont systemFontOfSize:self.fontSize];
+}
+
+#pragma mark - @property contentInset
+
+- (UIEdgeInsets)contentInset {
+    UIEdgeInsets inset = UIEdgeInsetsZero;
+    
+    CGFloat margin;
+	if(IsPad()) {
+        margin = 70;
+	} else {
+		margin = self.editing ? 10 : 35;
+	}
+
+    inset.left += margin;
+    inset.right += margin;
+	
+	CGFloat indentPoints = self.indentationLevel * self.indentationWidth;
+	if(indentPoints > 0) {
+		inset.left += indentPoints;
+	}
+
+    return inset;
 }
 
 #pragma mark - @property layoutFrame
@@ -341,7 +399,7 @@ static NSString* const sClassTag = @"C_ROW_ITEM_TABLE_VIEW_CELL";
 	if(IsPad()) {
 		frame.size = CGSizeMake(self.contentView.width - 140, 31);
 	} else {
-		CGFloat margins = self.isEditing ? 20 : 70;
+		CGFloat margins = self.editing ? 20 : 70;
 		frame.size = CGSizeMake(self.contentView.width - margins, 31);
 	}
 	

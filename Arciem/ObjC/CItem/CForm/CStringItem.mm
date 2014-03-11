@@ -20,13 +20,13 @@
 #import "ObjectUtils.h"
 #import "StringUtils.h"
 #import "ErrorUtils.h"
-#import "CTableTextFieldItem.h"
+#import "CTextFieldTableRowItem.h"
 
 NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 @interface CStringItem ()
 
-@property (strong, nonatomic) NSCharacterSet* invalidCharacterSet;
+@property (nonatomic) NSCharacterSet* invalidCharacterSet;
 
 @end
 
@@ -36,7 +36,6 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 @synthesize maxLength = maxLength_;
 @synthesize validCharacterSet = validCharacterSet_;
 @synthesize invalidCharacterSet = invalidCharacterSet_;
-@synthesize validRegularExpression = validRegularExpression_;
 
 #pragma mark - Lifecycle
 
@@ -56,19 +55,19 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	[self syncToValidCharacters];
 }
 
-+ (CItem*)stringItemWithDictionary:(NSDictionary*)dict
++ (CStringItem*)newStringItemWithDictionary:(NSDictionary*)dict
 {
 	return [[self alloc] initWithDictionary:dict];
 }
 
-+ (CItem*)stringItem
++ (CStringItem*)newStringItem
 {
-	return [self stringItemWithDictionary:nil];
+	return [self newStringItemWithDictionary:nil];
 }
 
-+ (CItem*)stringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue
++ (CStringItem*)newStringItemWithTitle:(NSString*)title key:(NSString*)key stringValue:(NSString*)stringValue
 {
-	return [self stringItemWithDictionary:@{@"title": title,
+	return [self newStringItemWithDictionary:@{@"title": title,
 											 @"key": key,
 											 @"value": stringValue}];
 }
@@ -80,7 +79,6 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	item.minLength = self.minLength;
 	item.maxLength = self.maxLength;
 	item.validCharacterSet = self.validCharacterSet;
-	item.validRegularExpression = self.validRegularExpression;
 	
 	return item;
 }
@@ -261,6 +259,34 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 	return [self string:string matchesRegularExpression:self.validRegularExpression];
 }
 
+#pragma mark - @property validRegularExpression
+
+- (NSString*)validRegularExpression
+{
+	return (self.dict)[@"validRegularExpression"];
+}
+
+- (void)setValidRegularExpression:(NSString *)validRegularExpression
+{
+	(self.dict)[@"validRegularExpression"] = validRegularExpression;
+}
+
+#pragma mark - @property invalidRegularExpressionMessage
+
+- (NSString*)invalidRegularExpressionMessage
+{
+	NSString *message = (self.dict)[@"invalidRegularExpressionMessage"];
+    if(message == nil) {
+        message = @"%@ is invalid.";
+    }
+    return message;
+}
+
+- (void)setInvalidRegularExpressionMessage:(NSString *)invalidRegularExpressionMessage
+{
+	(self.dict)[@"invalidRegularExpressionMessage"] = invalidRegularExpressionMessage;
+}
+
 #pragma mark - @property fieldWidthCharacters
 
 - (NSUInteger)fieldWidthCharacters
@@ -290,7 +316,8 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 - (BOOL)shouldChangeCharactersInRange:(NSRange)range inString:(NSString*)fromString toReplacementString:(NSString*)string resultString:(NSString**)resultString
 {
-	NSString* toString = [EnsureRealString(fromString) stringByReplacingCharactersInRange:range withString:string];
+    NSString *realFromString = EnsureRealString(fromString);
+	NSString *toString = [realFromString stringByReplacingCharactersInRange:ClampRangeWithinString(range, realFromString) withString:string];
 	if(resultString != nil) {
 		if([self.autocapitalizationType isEqualToString:@"all"]) {
 			toString = [toString uppercaseString];
@@ -306,7 +333,10 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 - (NSString*)formatCharacterCount:(NSUInteger)count
 {
 	NSString* format = count == 1 ? @"%d character" : @"%d characters";
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	return [NSString stringWithFormat:format, count];
+#pragma clang diagnostic pop
 }
 
 - (NSError*)validate
@@ -345,12 +375,11 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 			
 			if(error == nil) {
 				if(![self stringMatchesValidRegularExpression:self.stringValue]) {
-					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorSyntaxError localizedFormat:@"%@ is not valid.", self.title];
+					error = [NSError errorWithDomain:CStringItemErrorDomain code:CStringItemErrorSyntaxError localizedFormat:self.invalidRegularExpressionMessage, self.title];
 				}
 			}
 		}
 	}
-	
 	return error;
 }
 
@@ -358,7 +387,7 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 
 - (NSArray*)tableRowItems
 {
-	CTableTextFieldItem* rowItem = [CTableTextFieldItem itemWithKey:self.key title:self.title stringItem:self];
+	CTextFieldTableRowItem* rowItem = [CTextFieldTableRowItem newItemWithKey:self.key title:self.title stringItem:self];
 	return @[rowItem];
 }
 

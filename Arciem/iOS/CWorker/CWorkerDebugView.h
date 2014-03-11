@@ -18,14 +18,16 @@
 
 #import "CView.h"
 #import "CWorker.h"
+#import "UIViewUtils.h"
 
 @interface CWorkerDebugView : CView
 
 - (id)initWithFrame:(CGRect)frame worker:(CWorker*)worker;
 
-@property (strong, nonatomic) CWorker* worker;
+@property (nonatomic) CWorker* worker;
 @property (nonatomic) NSUInteger row;
 @property (nonatomic) CGFloat fontSize;
-@property (nonatomic) CGFloat minimumFontSize;
+@property (nonatomic) CGFloat minimumScaleFactor;
+@property (nonatomic) CLayoutConstraintsGroup *constraintsGroup;
 
 @end

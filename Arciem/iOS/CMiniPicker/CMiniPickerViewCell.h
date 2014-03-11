@@ -24,8 +24,8 @@
 @interface CMiniPickerViewCell : CView
 
 @property (nonatomic) UIEdgeInsets margins;
-@property (strong, nonatomic) UIFont* font;
-@property (strong, nonatomic) CItem* model;
+@property (nonatomic) UIFont* font;
+@property (nonatomic) CItem* model;
 @property (nonatomic) BOOL onDarkBackground;
 @property (weak, nonatomic) id<CMiniPickerViewCellDelegate> delegate;
 
@@ -36,6 +36,7 @@
 @required
 
 - (CGFloat)miniPickerViewCell:(CMiniPickerViewCell*)cell widthForColumnIndex:(NSUInteger)index;
+- (CGFloat)maxHeightForMiniPickerViewCell:(CMiniPickerViewCell *)cell;
 
 @end
 
@@ -43,7 +44,7 @@
 
 @required
 
-@property (readonly, nonatomic) NSString* text;
+@property (readonly, nonatomic) NSAttributedString* text;
 @property (readonly, nonatomic) NSUInteger lines;
 @property (readonly, nonatomic) NSTextAlignment alignment;
 
@@ -51,9 +52,9 @@
 
 @interface CMiniPickerViewCellColumn : NSObject <CMiniPickerViewCellColumn>
 
-- (id)initWithText:(NSString*)text lines:(NSUInteger)lines alignment:(NSTextAlignment)alignment;
+- (id)initWithText:(NSAttributedString*)text lines:(NSUInteger)lines alignment:(NSTextAlignment)alignment;
 
-@property (readonly, nonatomic) NSString* text;
+@property (readonly, nonatomic) NSAttributedString* text;
 @property (readonly, nonatomic) NSUInteger lines;
 @property (readonly, nonatomic) NSTextAlignment alignment;
 

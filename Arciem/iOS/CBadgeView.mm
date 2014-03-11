@@ -19,6 +19,8 @@
 #import "CBadgeView.h"
 #import "ObjectUtils.h"
 #import "StringUtils.h"
+#import "DeviceUtils.h"
+#import "CGUtils.h"
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
@@ -60,13 +62,16 @@ static const CGFloat kFontSize = 14.0;
     self.contentScaleFactor = [[UIScreen mainScreen] scale];
     self.backgroundColor = [UIColor clearColor];
     self.textColor = [UIColor whiteColor];
-    self.strokeColor = [UIColor whiteColor];
     self.fillColor = [UIColor redColor];
     self.cornerRoundness = 0.5;
-    self.hasGloss = YES;
-    _scaleFactor = 1.0;
-    _shadowRadius = 3.0;
-    _shadowOffset = CGSizeMake(0.0, 1.0);
+    self.scaleFactor = 1.0;
+
+//    if(!IsOSVersionAtLeast7()) {
+//        self.strokeColor = [UIColor whiteColor];
+//        self.hasGloss = YES;
+//        _shadowRadius = 3.0;
+//        _shadowOffset = CGSizeMake(0.0, 1.0);
+//    }
 }
 
 + (CBadgeView*)badgeViewWithText:(NSString *)text {
@@ -108,7 +113,7 @@ static const CGFloat kFontSize = 14.0;
 }
 
 - (void)setScaleFactor:(CGFloat)scaleFactor {
-    if(_scaleFactor != scaleFactor) {
+    if(fabs(_scaleFactor - scaleFactor) > 0.001) {
         _scaleFactor = scaleFactor;
         [self syncToSize];
     }
@@ -119,7 +124,7 @@ static const CGFloat kFontSize = 14.0;
 }
 
 - (void)setShadowRadius:(CGFloat)shadowRadius {
-    if(_shadowRadius != shadowRadius) {
+    if(fabs(_shadowRadius - shadowRadius) > 0.001) {
         _shadowRadius = shadowRadius;
         [self syncToSize];
     }
@@ -306,7 +311,7 @@ static const CGFloat kFontSize = 14.0;
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
 
-	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextRef context = UIGraphicsGetCurrentContextChecked();
 
     CGContextSaveGState(context);
     CGSize offset = self.imageOffset;

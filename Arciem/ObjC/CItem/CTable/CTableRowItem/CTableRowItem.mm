@@ -23,17 +23,13 @@
 
 @interface CTableRowItem ()
 
-@property (strong, nonatomic) NSMutableArray* nonretainedModels;
-@property (strong, nonatomic) CObserver* isHiddenObserver;
+@property (nonatomic) NSMutableArray* nonretainedModels;
+@property (nonatomic) CObserver* hiddenObserver;
 
 @end
 
 @implementation CTableRowItem
 
-@synthesize nonretainedModels = nonretainedModels_;
-@synthesize isDeletable = isDeletable_;
-@synthesize isReorderable = isReorderable_;
-@synthesize isHiddenObserver = isHiddenObserver_;
 @dynamic model;
 
 + (void)initialize
@@ -77,15 +73,16 @@
 {
 	[super activate];
 //	CLogDebug(nil, @"%@ activate", self);
-	self.isHiddenObserver = [CObserver observerWithKeyPath:@"isHidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[(CTableSectionItem*)self.superitem tableRowItem:self didChangeHiddenFrom:[oldValue boolValue] to:[newValue boolValue]];
+    BSELF;
+	self.hiddenObserver = [CObserver newObserverWithKeyPath:@"hidden" ofObject:self action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[(CTableSectionItem*)bself.superitem tableRowItem:bself didChangeHiddenFrom:[oldValue boolValue] to:[newValue boolValue]];
 	}];
 }
 
 - (void)deactivate
 {
 //	CLogDebug(nil, @"%@ deactivate", self);
-	self.isHiddenObserver = nil;
+	self.hiddenObserver = nil;
 	[super deactivate];
 }
 
@@ -127,14 +124,18 @@
 
 #pragma mark - @property textLabelAttributes
 
-- (NSMutableDictionary*)textLabelAttributes
+- (NSDictionary*)textLabelAttributes
 {
-	return (self.dict)[@"textLabelAttributes"];
+	NSDictionary *attr = (self.dict)[@"textLabelAttributes"];
+    if(attr == nil) {
+        attr = (self.model.dict)[@"textLabelAttributes"];
+    }
+    return attr;
 }
 
-- (void)setTextLabelAttributes:(NSMutableDictionary *)textLabelAttributes
+- (void)setTextLabelAttributes:(NSDictionary *)textLabelAttributes
 {
-	(self.dict)[@"textLabelAttributes"] = [textLabelAttributes mutableCopy];
+	(self.dict)[@"textLabelAttributes"] = [textLabelAttributes copy];
 }
 
 - (NSString*)defaultCellType
@@ -150,11 +151,11 @@
 	return strings;
 }
 
-#pragma mark - @property isUnselectable
+#pragma mark - @property rowSelectable
 
-- (BOOL)isUnselectable
+- (BOOL)isRowSelectable
 {
-	return YES;
+	return NO;
 }
 
 #pragma mark - @property indentationLevel

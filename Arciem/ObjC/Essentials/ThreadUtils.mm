@@ -32,7 +32,7 @@ void dispatch_async_repeated(double intervalInSeconds, dispatch_queue_t queue, v
 
 @implementation NSThread (BlocksAdditions)
 
-- (void)performBlock:(void (^)(void))block
+- (void)performBlock:(dispatch_block_t)block
 {
 	if ([[NSThread currentThread] isEqual:self]) {
 		block();
@@ -41,7 +41,7 @@ void dispatch_async_repeated(double intervalInSeconds, dispatch_queue_t queue, v
 	}
 }
 
-- (void)performBlock:(void (^)(void))block waitUntilDone:(BOOL)wait
+- (void)performBlock:(dispatch_block_t)block waitUntilDone:(BOOL)wait
 {
     [NSThread performSelector:@selector(ng_runBlock:)
                      onThread:self
@@ -49,9 +49,9 @@ void dispatch_async_repeated(double intervalInSeconds, dispatch_queue_t queue, v
                 waitUntilDone:wait];
 }
 
-- (void)performBlock:(void (^)(BOOL* stop))block repeatInterval:(NSTimeInterval)repeatInterval;
+- (void)performBlock:(void (^)(BOOL* stop))block queue:(dispatch_queue_t)queue repeatInterval:(NSTimeInterval)repeatInterval
 {
-    dispatch_async_repeated(repeatInterval, dispatch_get_current_queue(), block);
+    dispatch_async_repeated(repeatInterval, queue, block);
 }
 
 + (void)performBlockOnMainThread:(void (^)(BOOL* stop))block repeatInterval:(NSTimeInterval)repeatInterval
@@ -59,18 +59,18 @@ void dispatch_async_repeated(double intervalInSeconds, dispatch_queue_t queue, v
     dispatch_async_repeated(repeatInterval, dispatch_get_main_queue(), block);
 }
 
-+ (void)ng_runBlock:(void (^)(void))block
++ (void)ng_runBlock:(dispatch_block_t)block
 {
 	block();
 }
 
-+ (void)performBlockInBackground:(void (^)(void))block
++ (void)performBlockInBackground:(dispatch_block_t)block
 {
 	[self performSelectorInBackground:@selector(ng_runBlock:)
 	                           withObject:[block copy]];
 }
 
-+ (void)performBlockOnMainThread:(void (^)(void))block
++ (void)performBlockOnMainThread:(dispatch_block_t)block
 {
 	if([[self currentThread] isEqual:[self mainThread]]) {
 		block();
@@ -79,7 +79,7 @@ void dispatch_async_repeated(double intervalInSeconds, dispatch_queue_t queue, v
 	}
 }
 
-+ (void)performBlockOnMainThread:(void (^)(void))block afterDelay:(NSTimeInterval)delay
++ (void)performBlockOnMainThread:(dispatch_block_t)block afterDelay:(NSTimeInterval)delay
 {
 	int64_t delta = (int64_t)(1.0e9 * delay);
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), dispatch_get_main_queue(), block);
@@ -87,7 +87,7 @@ void dispatch_async_repeated(double intervalInSeconds, dispatch_queue_t queue, v
 
 + (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2
 {
-	NSCondition* condition = [[NSCondition alloc] init];
+	NSCondition* condition = [NSCondition new];
 	
 	[self performBlockOnMainThread:^{
 		block1(condition);
