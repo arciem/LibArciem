@@ -18,13 +18,13 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol CTextFieldTableViewCellDelegate;
+@protocol CTextFieldTableViewCell2Delegate;
 
-@interface CTextFieldTableViewCell : UITableViewCell <UITextFieldDelegate>
+@interface CTextFieldTableViewCell2 : UITableViewCell <UITextFieldDelegate>
 
 //- (id)initWithLabelText:(NSString*)labelText;
 
-@property (nonatomic, weak) id <CTextFieldTableViewCellDelegate> delegate;
+@property (nonatomic, weak) id <CTextFieldTableViewCell2Delegate> delegate;
 
 @property (weak, readonly, nonatomic) IBOutlet UITextField *textField;
 @property (weak, readonly, nonatomic) IBOutlet UILabel *label;
@@ -35,13 +35,13 @@
 @end
 
 // Protocol to be adopted by an object wishing to customize cell behavior with respect to editing.
-@protocol CTextFieldTableViewCellDelegate <NSObject>
+@protocol CTextFieldTableViewCell2Delegate <NSObject>
 
 @optional
 
 // Invoked before editing begins. The delegate may return NO to prevent editing.
-- (BOOL)cellShouldBeginEditing:(CTextFieldTableViewCell *)cell;
+- (BOOL)cellShouldBeginEditing:(CTextFieldTableViewCell2 *)cell;
 // Invoked after editing ends.
-- (void)cellDidEndEditing:(CTextFieldTableViewCell *)cell;
+- (void)cellDidEndEditing:(CTextFieldTableViewCell2 *)cell;
 
 @end

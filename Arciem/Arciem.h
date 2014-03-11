@@ -132,7 +132,8 @@
 #import "UIImageUtils.h"
 #import "UIViewUtils.h"
 #import "UIViewControllerUtils.h"
-#import "CTextFieldTableViewCell.h"
+#import "CTextFieldTableViewCell1.h"
+#import "CTextFieldTableViewCell2.h"
 #import "CButton.h"
 #import "CSwitchTableViewCell.h"
 

@@ -16,20 +16,20 @@
  
  *******************************************************************************/
 
-#import "CTextFieldTableViewCell.h"
+#import "CTextFieldTableViewCell1.h"
 
 #import "UIViewUtils.h"
 #import "Geom.h"
 
 //#define DEBUG_LAYOUT
 
-@interface CTextFieldTableViewCell ()
+@interface CTextFieldTableViewCell1 ()
 
 @property(readwrite, nonatomic) UITextField *textField;
 
 @end
 
-@implementation CTextFieldTableViewCell
+@implementation CTextFieldTableViewCell1
 
 @synthesize textField = textField_;
 @synthesize textFieldLeft = textFieldLeft_;

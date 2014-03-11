@@ -18,7 +18,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CTextFieldTableViewCell : UITableViewCell
+@interface CTextFieldTableViewCell1 : UITableViewCell
 
 - (id)initWithReuseIdentifier:(NSString*)reuseIdentifier;
 

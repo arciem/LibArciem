@@ -16,10 +16,10 @@
  
  *******************************************************************************/
 
-#import "CTextFieldTableViewCell.h"
+#import "CTextFieldTableViewCell2.h"
 #import "UIViewUtils.h"
 
-@interface CTextFieldTableViewCell ()
+@interface CTextFieldTableViewCell2 ()
 
 @property (weak, readwrite, nonatomic) IBOutlet UITextField *textField;
 @property (weak, readwrite, nonatomic) IBOutlet UILabel *label;
@@ -27,7 +27,7 @@
 
 @end
 
-@implementation CTextFieldTableViewCell
+@implementation CTextFieldTableViewCell2
 
 - (BOOL)isEnabled
 {

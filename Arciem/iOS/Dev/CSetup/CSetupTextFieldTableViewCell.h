@@ -16,8 +16,8 @@
  
  *******************************************************************************/
 
-#import "CTextFieldTableViewCell.h"
+#import "CTextFieldTableViewCell1.h"
 
-@interface CSetupTextFieldTableViewCell : CTextFieldTableViewCell
+@interface CSetupTextFieldTableViewCell : CTextFieldTableViewCell1
 
 @end
