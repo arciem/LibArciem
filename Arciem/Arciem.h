@@ -134,14 +134,14 @@
 #import "UIViewControllerUtils.h"
 #import "CTextFieldTableViewCell.h"
 #import "CButton.h"
+#import "CSwitchTableViewCell.h"
 
 // CTable
 #import "CTableManager.h"
 #import "CTableView.h"
 #import "CTableViewCell.h"
-#import "CTextFieldTableViewCell.h"
 #import "CTextFieldItemTableViewCell.h"
-#import "CSwitchTableViewCell.h"
+#import "CSwitchItemTableViewCell.h"
 
 // Dev
 #import "CDebugOverlayView.h"

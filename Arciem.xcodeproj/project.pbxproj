@@ -39,10 +39,7 @@
 		032867A018CEED8600974918 /* CTableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0328679E18CEED8600974918 /* CTableView.mm */; };
 		032867A318CEFAEC00974918 /* CSwitchTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 032867A118CEFAEC00974918 /* CSwitchTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		032867A418CEFAEC00974918 /* CSwitchTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032867A218CEFAEC00974918 /* CSwitchTableViewCell.mm */; };
-		032867A818CEFB4B00974918 /* CTextFieldTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 032867A518CEFB4B00974918 /* CTextFieldTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		032867A918CEFB4B00974918 /* CTextFieldTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032867A618CEFB4B00974918 /* CTextFieldTableViewCell.mm */; };
-		032867AA18CEFB6B00974918 /* CTextFieldTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 032867A718CEFB4B00974918 /* CTextFieldTableViewCell.xib */; };
-		032867AD18CEFD7F00974918 /* CTextFieldTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 032867AB18CEFD7F00974918 /* CTextFieldTableViewCell.h */; };
+		032867AD18CEFD7F00974918 /* CTextFieldTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 032867AB18CEFD7F00974918 /* CTextFieldTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		032867AE18CEFD7F00974918 /* CTextFieldTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032867AC18CEFD7F00974918 /* CTextFieldTableViewCell.mm */; };
 		032AEEF016DE66DA0024D14E /* CSystemSound.h in Headers */ = {isa = PBXBuildFile; fileRef = 032AEEEE16DE66D90024D14E /* CSystemSound.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		032AEEF116DE66DA0024D14E /* CSystemSound.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032AEEEF16DE66D90024D14E /* CSystemSound.mm */; };
@@ -416,9 +413,6 @@
 		0328679E18CEED8600974918 /* CTableView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTableView.mm; sourceTree = "<group>"; };
 		032867A118CEFAEC00974918 /* CSwitchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSwitchTableViewCell.h; sourceTree = "<group>"; };
 		032867A218CEFAEC00974918 /* CSwitchTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSwitchTableViewCell.mm; sourceTree = "<group>"; };
-		032867A518CEFB4B00974918 /* CTextFieldTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextFieldTableViewCell.h; sourceTree = "<group>"; };
-		032867A618CEFB4B00974918 /* CTextFieldTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTextFieldTableViewCell.mm; sourceTree = "<group>"; };
-		032867A718CEFB4B00974918 /* CTextFieldTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CTextFieldTableViewCell.xib; sourceTree = "<group>"; };
 		032867AB18CEFD7F00974918 /* CTextFieldTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextFieldTableViewCell.h; sourceTree = "<group>"; };
 		032867AC18CEFD7F00974918 /* CTextFieldTableViewCell.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTextFieldTableViewCell.mm; sourceTree = "<group>"; };
 		032AEEEE16DE66D90024D14E /* CSystemSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSystemSound.h; sourceTree = "<group>"; };
@@ -1235,9 +1229,6 @@
 				039DC2E416CB689900B52A7F /* CTableViewCell.mm */,
 				032867A118CEFAEC00974918 /* CSwitchTableViewCell.h */,
 				032867A218CEFAEC00974918 /* CSwitchTableViewCell.mm */,
-				032867A518CEFB4B00974918 /* CTextFieldTableViewCell.h */,
-				032867A618CEFB4B00974918 /* CTextFieldTableViewCell.mm */,
-				032867A718CEFB4B00974918 /* CTextFieldTableViewCell.xib */,
 				039DC2CA16CB689900B52A7F /* CRowItemTableViewCell */,
 			);
 			path = CTableViewCell;
@@ -1436,7 +1427,6 @@
 				039DC19016CB3DF700B52A7F /* random.hpp in Headers */,
 				039DC19116CB3DF700B52A7F /* time_utils.hpp in Headers */,
 				039DC19316CB3DF700B52A7F /* xtime.hpp in Headers */,
-				032867A818CEFB4B00974918 /* CTextFieldTableViewCell.h in Headers */,
 				032867AD18CEFD7F00974918 /* CTextFieldTableViewCell.h in Headers */,
 				039DC1B816CB3DF700B52A7F /* gl_utils.hpp in Headers */,
 				039DC1BA16CB3DF700B52A7F /* murmur_hash_3.hpp in Headers */,
@@ -1647,7 +1637,6 @@
 				039DC34B16CC988100B52A7F /* InfoPlist.strings in Resources */,
 				039DC35716CC9A1900B52A7F /* FaveStarOff.png in Resources */,
 				039DC35816CC9A1900B52A7F /* FaveStarOff@2x.png in Resources */,
-				032867AA18CEFB6B00974918 /* CTextFieldTableViewCell.xib in Resources */,
 				039DC35916CC9A1900B52A7F /* FaveStarOn.png in Resources */,
 				039DC35A16CC9A1900B52A7F /* FaveStarOn@2x.png in Resources */,
 			);
@@ -1775,7 +1764,6 @@
 				039DC29416CB662100B52A7F /* CGradientView.mm in Sources */,
 				039DC29616CB662100B52A7F /* CGUtils.mm in Sources */,
 				039DC29816CB662100B52A7F /* CImageView.mm in Sources */,
-				032867A918CEFB4B00974918 /* CTextFieldTableViewCell.mm in Sources */,
 				032867AE18CEFD7F00974918 /* CTextFieldTableViewCell.mm in Sources */,
 				0383E97418A19CF4003A6BF5 /* CButton.mm in Sources */,
 				039DC29A16CB662100B52A7F /* CNavigationBar.mm in Sources */,
