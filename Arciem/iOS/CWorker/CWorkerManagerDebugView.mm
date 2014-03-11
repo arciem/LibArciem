@@ -29,7 +29,7 @@ static const CGFloat kRowLeading = 4;
 static const CGFloat kRowHeight = kCWorkerDebugViewHeight + kRowLeading;
 
 static const NSTimeInterval kLayoutAnimationDuration = 0.3;
-static const NSTimeInterval kRemovalSlideAnimationDuration = 1.0;
+//static const NSTimeInterval kRemovalSlideAnimationDuration = 1.0;
 static const NSTimeInterval kRemovalFadeDelay = 5.0;
 static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 

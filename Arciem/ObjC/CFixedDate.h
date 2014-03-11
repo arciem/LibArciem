@@ -20,15 +20,6 @@
 
 
 @interface CFixedDate : NSObject <NSCopying>
-{
-	@private
-	NSInteger _year;
-	NSInteger _month;
-	NSInteger _day;
-	NSInteger _weekday;
-	NSDate* _date;
-	NSDate* _GMTDate;
-}
 
 + (CFixedDate*)fixedDateWithYear:(NSInteger)year month:(NSInteger)month day:(NSInteger)day;
 + (CFixedDate*)fixedDateWithDate:(NSDate*)date;

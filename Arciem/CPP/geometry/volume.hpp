@@ -33,7 +33,7 @@ public:
 	volume(const point3& origin, const delta3& size) : origin(origin), size(size) { }
 	volume(const delta3& size) : size(size) { }
 	volume(double x, double y, double z, double dx, double dy, double dz) : origin(x, y, z), size(dx, dy, dz) { }
-	volume(const volume& v) : origin(v.origin), size(v.size) { }
+//	volume(const volume& v) : origin(v.origin), size(v.size) { }
 	
 	double x_min() const { return origin.x; }
 	double x_max() const { return origin.x + size.dx; }

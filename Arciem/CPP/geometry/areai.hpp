@@ -38,7 +38,7 @@ public:
 	areai(delta2i const& size) : size(size) { }
 	areai(int x, int y, int dx, int dy) : origin(x, y), size(dx, dy) { }
 	areai(int x_min, int y_min, int x_max, int y_max, int) : origin(x_min, y_min), size(x_max - x_min + 1, y_max - y_min + 1) { }
-	areai(areai const& a) : origin(a.origin), size(a.size) { }
+//	areai(areai const& a) : origin(a.origin), size(a.size) { }
 	
 	int x_min() const { return origin.x; }
 	int y_min() const { return origin.y; }

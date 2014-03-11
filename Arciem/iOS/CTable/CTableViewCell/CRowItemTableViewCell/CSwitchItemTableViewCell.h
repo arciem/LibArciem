@@ -18,6 +18,8 @@
 
 #import "CRowItemTableViewCell.h"
 
-@interface CSwitchTableViewCell : CRowItemTableViewCell
+@interface CSwitchItemTableViewCell : CRowItemTableViewCell
+
+@property (nonatomic, getter = isOn) BOOL on;
 
 @end

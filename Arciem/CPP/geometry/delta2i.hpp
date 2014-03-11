@@ -33,7 +33,7 @@ public:
 	
 	delta2i() : dx(0), dy(0) { }
 	delta2i(int dx, int dy) : dx(dx), dy(dy) { }
-	delta2i(const delta2i& d) : dx(d.dx), dy(d.dy) { }
+//	delta2i(const delta2i& d) : dx(d.dx), dy(d.dy) { }
 	explicit delta2i(const delta2& d);
 
 	delta2i operator+(int n) const { return delta2i(dx + n, dy + n); }

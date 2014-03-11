@@ -25,7 +25,17 @@ struct FD_DateInfo {
 	int y, m, d;
 };
 
-@interface CFixedDate(hidden)
+@interface CFixedDate ()
+{
+@private
+	NSInteger _year;
+	NSInteger _month;
+	NSInteger _day;
+	NSInteger _weekday;
+	NSDate* _date;
+	NSDate* _GMTDate;
+}
+
 - (int)dayNumber;
 - (FD_DateInfo)dateFromDayNumber:(int)n;
 @end
@@ -158,7 +168,7 @@ struct FD_DateInfo {
 	return (myNum < otherNum ? NSOrderedAscending : NSOrderedDescending);
 }
 
-- (BOOL)isEqualToDate:(CFixedDate *)other;
+- (BOOL)isEqualToDate:(CFixedDate *)other
 {
 //	return [[self date] isEqualToDate:[other date]];
 	return ([self dayNumber] == [other dayNumber]);

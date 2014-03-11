@@ -39,7 +39,7 @@ public:
 	explicit area(delta2 const& size) : size(size) { }
 	area(double x, double y, double dx, double dy) : origin(x, y), size(dx, dy) { }
 	area(double x_min, double y_min, double x_max, double y_max, int) : origin(x_min, y_min), size(x_max - x_min, y_max - y_min) { }
-	area(area const& a) : origin(a.origin), size(a.size) { }
+//	area(area const& a) : origin(a.origin), size(a.size) { }
 	
 	double x_min() const { return origin.x; }
 	double y_min() const { return origin.y; }

@@ -34,7 +34,7 @@ public:
 	//
 	delta2() : dx(0.0), dy(0.0) { }
 	delta2(double dx, double dy) : dx(dx), dy(dy) { }
-	delta2(delta2 const& d) : dx(d.dx), dy(d.dy) { }
+//	delta2(delta2 const& d) : dx(d.dx), dy(d.dy) { }
 
 	//
 	// mutators

@@ -16,18 +16,27 @@
  
  *******************************************************************************/
 
-#import "CSwitchTableViewCell.h"
+#import "CSwitchItemTableViewCell.h"
 #import "CBooleanItem.h"
 
-@interface CSwitchTableViewCell ()
+@interface CSwitchItemTableViewCell ()
 
 @property (readonly, nonatomic) UISwitch *switchControl;
 
 @end
 
-@implementation CSwitchTableViewCell
+@implementation CSwitchItemTableViewCell
 
 @synthesize switchControl = _switchControl;
+@dynamic on;
+
+- (BOOL)isOn {
+    return self.switchControl.on;
+}
+
+- (void)setOn:(BOOL)on {
+    self.switchControl.on = on;
+}
 
 - (void)setup
 {
