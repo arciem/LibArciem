@@ -205,8 +205,8 @@ static const CGFloat kFontSize = 14.0;
     shadowBounds = CGRectInset(shadowBounds, shadowInset, shadowInset);
     shadowBounds = CGRectOffset(shadowBounds, self.shadowOffset.width, self.shadowOffset.height);
 
-    CGFloat ox = std::max(0.0f, imageBounds.origin.x - shadowBounds.origin.x);
-    CGFloat oy = std::max(0.0f, imageBounds.origin.y - shadowBounds.origin.y);
+    CGFloat ox = std::max(CGFloat(0.0), imageBounds.origin.x - shadowBounds.origin.x);
+    CGFloat oy = std::max(CGFloat(0.0), imageBounds.origin.y - shadowBounds.origin.y);
     CGSize offset = CGSizeMake(ox, oy);
     return offset;
     //    CGRect shadowBounds = self.shadowBounds;
@@ -289,7 +289,7 @@ static const CGFloat kFontSize = 14.0;
 - (void)drawStrokeWithContext:(CGContextRef)context rect:(CGRect)rect {
 	CGFloat r = CGRectGetHeight(rect) * self.cornerRoundness;
 
-    CGFloat lineWidth = std::max(1.0f, 2.0f * self.scaleFactor);
+    CGFloat lineWidth = std::max(CGFloat(1.0f), CGFloat(2.0) * self.scaleFactor);
     rect = CGRectInset(rect, lineWidth / 2 - 0.5, lineWidth / 2 - 0.5);
 
 	CGFloat maxX = CGRectGetMaxX(rect);

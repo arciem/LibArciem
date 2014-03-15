@@ -570,9 +570,9 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 		}
 		for(NSString *keyPath in self.dependentKeyPaths) {
 			CItem *otherItem = [self.rootItem valueForKeyPath:keyPath];
-            if(!otherItem.fresh) {
+//            if(!otherItem.fresh) {
                 otherItem.needsValidation = YES;
-            }
+//            }
 		}
 		
 	} else {

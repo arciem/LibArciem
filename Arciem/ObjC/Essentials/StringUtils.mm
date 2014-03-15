@@ -515,7 +515,7 @@ string ToStd(NSString* s) {
 	
 	unsigned char* alphabet = URLSafe ? alphabetURLSafe : alphabetStandard;
 	
-	int encodedLength = (4 * ((data.length / 3) + (1 - (3 - (data.length % 3)) / 3))) + 1;  
+	int encodedLength = (int)((4 * ((data.length / 3) + (1 - (3 - (data.length % 3)) / 3))) + 1);
 	unsigned char *outputBuffer = (unsigned char *)malloc(encodedLength);
 	unsigned char *inputBuffer = (unsigned char *)data.bytes;
 	
@@ -524,7 +524,7 @@ string ToStd(NSString* s) {
 	int remain;
 	
 	for(i = 0; i < data.length; i += 3) {  
-		remain = data.length - i;  
+		remain = (int)(data.length - i);
 		
 		outputBuffer[j++] = alphabet[(inputBuffer[i] & 0xFC) >> 2];  
 		outputBuffer[j++] = alphabet[((inputBuffer[i] & 0x03) << 4) |   

@@ -167,7 +167,7 @@
 				}];
 				[bself.endRepeatRowItem.superitem.subitems removeObjectsAtIndexes:adjustedIndexes];
 			} else {
-				NSAssert1(false, @"Unimplemented change kind:%d", kind);
+				NSAssert1(false, @"Unimplemented change kind:%lu", (unsigned long)kind);
 			}
 		}
 	};

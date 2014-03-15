@@ -145,9 +145,9 @@ inline void to_duration(arciem::xtime xt, int& milliseconds)
             xt.nsec += nanoseconds_per_second;
             --xt.sec;
         }
-        milliseconds = (int)((xt.sec - cur.sec) * milliseconds_per_second) +
+        milliseconds = (int)(((xt.sec - cur.sec) * milliseconds_per_second) +
             (((xt.nsec - cur.nsec) + (nanoseconds_per_millisecond/2)) /
-                nanoseconds_per_millisecond);
+                nanoseconds_per_millisecond));
     }
 }
 
@@ -162,9 +162,9 @@ inline void to_microduration(const arciem::xtime& xt, int& microseconds)
         microseconds = 0;
     else
     {
-        microseconds = (int)((xt.sec - cur.sec) * microseconds_per_second) +
+        microseconds = (int)(((xt.sec - cur.sec) * microseconds_per_second) +
             (((xt.nsec - cur.nsec) + (nanoseconds_per_microsecond/2)) /
-                nanoseconds_per_microsecond);
+                nanoseconds_per_microsecond));
     }
 }
 

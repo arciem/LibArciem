@@ -168,7 +168,7 @@ static __strong CSystemSound *sDetentSound = nil;
         viewBottomOffset = viewTopOffset + view.height;
         if(clampedOffset >= viewTopOffset && clampedOffset < viewBottomOffset) {
             selectedIndex = index;
-            selectedIndexOffsetFraction = arciem::map(clampedOffset, viewTopOffset, viewBottomOffset, -0.5f, 0.5f);
+            selectedIndexOffsetFraction = arciem::map(clampedOffset, viewTopOffset, viewBottomOffset, CGFloat(-0.5), CGFloat(0.5));
             CGFloat overlayHeight = view.height;
             if(selectedIndexOffsetFraction < 0.0 && index > 0) {
                 UIView *previousView = self.contentViews[index - 1];
@@ -324,7 +324,7 @@ static __strong CSystemSound *sDetentSound = nil;
         viewBottomOffset = viewTopOffset + view.height;
         if(clampedTargetOffset >= viewTopOffset && clampedTargetOffset < viewBottomOffset) {
 //            selectedIndex = index;
-            targetContentOffset->y = arciem::denormalize(0.5f, viewTopOffset, viewBottomOffset);
+            targetContentOffset->y = arciem::denormalize(CGFloat(0.5), viewTopOffset, viewBottomOffset);
             break;
         }
         

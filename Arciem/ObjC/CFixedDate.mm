@@ -22,22 +22,22 @@ static CFixedDate* __distantFuture = nil;
 static CFixedDate* __distantPast = nil;
 
 struct FD_DateInfo {
-	int y, m, d;
+	long y, m, d;
 };
 
 @interface CFixedDate ()
 {
 @private
-	NSInteger _year;
-	NSInteger _month;
-	NSInteger _day;
-	NSInteger _weekday;
+	long _year;
+	long _month;
+	long _day;
+	long _weekday;
 	NSDate* _date;
 	NSDate* _GMTDate;
 }
 
-- (int)dayNumber;
-- (FD_DateInfo)dateFromDayNumber:(int)n;
+- (long)dayNumber;
+- (FD_DateInfo)dateFromDayNumber:(long)n;
 @end
 
 @implementation CFixedDate
@@ -162,8 +162,8 @@ struct FD_DateInfo {
 - (NSComparisonResult)compare:(CFixedDate *)other
 {
 //	return [[self date] compare:[other date]];
-	int myNum = [self dayNumber];
-	int otherNum = [other dayNumber];
+	long myNum = [self dayNumber];
+	long otherNum = [other dayNumber];
 	if (myNum == otherNum) return NSOrderedSame;
 	return (myNum < otherNum ? NSOrderedAscending : NSOrderedDescending);
 }
@@ -233,7 +233,7 @@ struct FD_DateInfo {
 	return ([self dayNumber] >= [other dayNumber]);
 }
 
-- (CFixedDate*)addDays:(int)days
+- (CFixedDate*)addDays:(long)days
 {
 //	return [CFixedDate fixedDateWithDate:[[self date] addDays:days]];
 		
@@ -241,20 +241,20 @@ struct FD_DateInfo {
 	return [CFixedDate fixedDateWithYear:info.y month:info.m day:info.d]; // set with autorelease... hum...
 }
 
-- (int)daysUntilDate:(CFixedDate*)other
+- (long)daysUntilDate:(CFixedDate*)other
 {
 //	return [[self date] daysUntilDate:[other date]];
 	return [other dayNumber] - [self dayNumber];
 }
 
-- (int)dayNumber {
-	int y = _year, m = _month, d = _day;
+- (long)dayNumber {
+	long y = _year, m = _month, d = _day;
 	if (m < 3) { m += 12 ; y--; }
 	return -678973 + d + ((153 * m - 2) / 5) + 365 * y + y / 4 - y / 100 + y / 400;
 }
 
-- (FD_DateInfo)dateFromDayNumber:(int)n {
-	int g = 0, J, t, D, M, Y;
+- (FD_DateInfo)dateFromDayNumber:(long)n {
+	long g = 0, J, t, D, M, Y;
 	FD_DateInfo info;
 	J = n + 2400001;
 	// Alg F : To convert a Julian day number, J, to a date D/M/Y
@@ -273,7 +273,7 @@ struct FD_DateInfo {
 }
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"CFixedDate [%d %d %d]", (int)_year, (int)_month, (int)_day];
+	return [NSString stringWithFormat:@"CFixedDate [%ld %ld %ld]", _year, _month, _day];
 }
 
 @end

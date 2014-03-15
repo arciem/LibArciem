@@ -29,8 +29,8 @@ std::string bezier2_list::to_string() const
 	outputstringstream o;
 	
 	o << "[";
-	unsigned s = size();
-	for(unsigned i = 0; i < s; ++i) {
+	size_type s = size();
+	for(size_type i = 0; i < s; ++i) {
 		o << i << ":" << (*this)[i].to_string();
 		if(i != s - 1) {
 			o << " ";

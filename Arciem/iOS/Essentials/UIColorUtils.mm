@@ -162,7 +162,7 @@
 	
 	CGFloat h, s, b, a;
 	if([self getHue:&h saturation:&s brightness:&b alpha:&a]) {
-		b = arciem::denormalize(fraction, b, 0.0f);
+		b = arciem::denormalize(fraction, b, CGFloat(0.0));
 		color = [UIColor colorWithHue:h saturation:s brightness:b alpha:a];
 	}
 	
@@ -175,7 +175,7 @@
 	
 	CGFloat h, s, b, a;
 	if([self getHue:&h saturation:&s brightness:&b alpha:&a]) {
-		s = arciem::denormalize(fraction, s, 1.0f);
+		s = arciem::denormalize(fraction, s, (CGFloat)1.0);
 		color = [UIColor colorWithHue:h saturation:s brightness:b alpha:a];
 	}
 	
@@ -188,7 +188,7 @@
 	
 	CGFloat h, s, b, a;
 	if([self getHue:&h saturation:&s brightness:&b alpha:&a]) {
-		s = arciem::denormalize(fraction, s, 0.0f);
+		s = arciem::denormalize(fraction, s, CGFloat(0.0));
 		color = [UIColor colorWithHue:h saturation:s brightness:b alpha:a];
 	}
 	

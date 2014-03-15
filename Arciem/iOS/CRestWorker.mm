@@ -259,9 +259,9 @@ NSString *const CRestJSONMIMEType = @"application/json";
 - (void)updateTitleForError
 {
 	if(self.error != nil) {
-		[self.titleItems addObject:[NSString stringWithFormat:@"=%d", self.error.code]];
+		[self.titleItems addObject:[NSString stringWithFormat:@"=%ld", (long)self.error.code]];
 	} else if(self.httpResponse != nil) {
-		[self.titleItems addObject:[NSString stringWithFormat:@"=%d", self.httpResponse.statusCode]];
+		[self.titleItems addObject:[NSString stringWithFormat:@"=%ld", (long)self.httpResponse.statusCode]];
 	} else {
 		[self.titleItems addObject:@"=?"];
 	}

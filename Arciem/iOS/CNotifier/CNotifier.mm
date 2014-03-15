@@ -110,7 +110,7 @@
 						[self removeItems:oldItems];
 					} break;
 					default: {
-						NSAssert1(NO, @"Unimplemented change kind:%d", changeKind);
+						NSAssert1(NO, @"Unimplemented change kind:%ld", (unsigned long)changeKind);
 					} break;
 				}
 			}
@@ -210,7 +210,7 @@
 		NSInteger nextItem = 1;
 		for(int i = 0; i < 100; i++) {
 			if(arciem::random_flat() < 0.5) {
-				NSString* message = [NSString stringWithFormat:@"Item %d", nextItem++];
+				NSString* message = [NSString stringWithFormat:@"Item %ld", (long)nextItem++];
 				NSInteger priority = arciem::random_range(0, 3);
 				
 				CNotifierItem* item = [CNotifierItem itemWithMessage:message priority:priority tapHandler:NULL];

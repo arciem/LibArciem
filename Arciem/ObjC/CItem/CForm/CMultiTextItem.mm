@@ -42,7 +42,7 @@
 
 - (NSArray*)tableRowItems
 {
-	NSAssert1(self.subitems.count == 2, @"count of %d not supported.", self.subitems.count);
+	NSAssert1(self.subitems.count == 2, @"count of %lu not supported.", (unsigned long)self.subitems.count);
 	CTextFieldTableRowItem* rowItem = [CTextFieldTableRowItem newItemWithKey:self.key title:self.title multiTextItem:self];
 	return @[rowItem];
 }

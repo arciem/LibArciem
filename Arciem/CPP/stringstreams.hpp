@@ -43,6 +43,7 @@
 	
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wweak-vtables"
+#pragma clang diagnostic ignored "-Wpadded"
 	class inputstringstream : public std::istringstream {
 	public:
 		explicit inputstringstream(std::string const& s) : std::istringstream(s) { }

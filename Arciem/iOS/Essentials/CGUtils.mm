@@ -360,7 +360,7 @@ CGGradientRef GradientCreateEaseOut(CGColorRef color1, CGColorRef color2, CGColo
 {
     CGColorRef *colorValues = new CGColorRef[steps];
     for(NSUInteger step = 0; step < steps; step++) {
-        CGFloat t = arciem::normalize((CGFloat)step, (CGFloat)0.0, (CGFloat)steps - 1);
+        CGFloat t = arciem::normalize(CGFloat(step), CGFloat(0.0), CGFloat(steps - 1));
         CGFloat phi = std::powf(arciem::ease_out(t), 0.5);
         //        CLogDebug(nil, @"step:%d t:%f phi:%f", step, t, phi);
         colorValues[step] = CreateColorByInterpolatingColors(color1, color2, phi);
@@ -382,7 +382,7 @@ CGGradientRef GradientCreateSine(CGColorRef color1, CGColorRef color2, CGColorSp
 {
     CGColorRef *colorValues = new CGColorRef[steps];
     for(NSUInteger step = 0; step < steps; step++) {
-        CGFloat t = arciem::normalize((CGFloat)step, (CGFloat)0.0, (CGFloat)steps - 1);
+        CGFloat t = arciem::normalize(CGFloat(step), CGFloat(0.0), CGFloat(steps - 1));
         CGFloat phi = std::powf(std::fabsf(std::sinf(t * M_PI)), exponent);
 //        CLogDebug(nil, @"step:%d t:%f phi:%f", step, t, phi);
         colorValues[step] = CreateColorByInterpolatingColors(color1, color2, phi);
@@ -405,7 +405,7 @@ CGGradientRef GradientCreateRainbow(CGFloat hueOffset, CGFloat saturation, CGFlo
     NSUInteger kSteps = 8;
     CGColorRef *colorValues = new CGColorRef[kSteps];
     for(NSUInteger step = 0; step < kSteps; step++) {
-        CGFloat t = arciem::normalize((CGFloat)step, 0.0f, (CGFloat)kSteps - 1);
+        CGFloat t = arciem::normalize(CGFloat(step), CGFloat(0.0), CGFloat(kSteps - 1));
         CGFloat hue = fmodf(t + hueOffset, 1.0);
         if(hue < 0.0) hue += 1.0;
         arciem::color_hsb hsb(hue, saturation, value, alpha);
@@ -729,15 +729,15 @@ CGColorRef CreateColorByDarkening(CGColorRef color, CGFloat fractionDarker)
 	size_t numberOfComponents = CGColorGetNumberOfComponents(color);
 	switch(numberOfComponents) {
 	case 2:
-		newc[0] = arciem::denormalize(fractionDarker, oldc[0], 0.0f);
+		newc[0] = arciem::denormalize(fractionDarker, CGFloat(oldc[0]), CGFloat(0.0));
 		newc[1] = newc[0];
 		newc[2] = newc[0];
 		newc[3] = oldc[1];
 		break;
 	case 4:
-		newc[0] = arciem::denormalize(fractionDarker, oldc[0], 0.0f);
-		newc[1] = arciem::denormalize(fractionDarker, oldc[1], 0.0f);
-		newc[2] = arciem::denormalize(fractionDarker, oldc[2], 0.0f);
+		newc[0] = arciem::denormalize(fractionDarker, CGFloat(oldc[0]), CGFloat(0.0));
+		newc[1] = arciem::denormalize(fractionDarker, CGFloat(oldc[1]), CGFloat(0.0));
+		newc[2] = arciem::denormalize(fractionDarker, CGFloat(oldc[2]), CGFloat(0.0));
 		newc[3] = oldc[3];
 		break;
 	}
@@ -753,15 +753,15 @@ CGColorRef CreateColorByLightening(CGColorRef color, CGFloat fractionLighter)
 	size_t numberOfComponents = CGColorGetNumberOfComponents(color);
 	switch(numberOfComponents) {
 	case 2:
-		newc[0] = arciem::denormalize(fractionLighter, oldc[0], 1.0f);
+		newc[0] = arciem::denormalize(fractionLighter, CGFloat(oldc[0]), CGFloat(1.0));
 		newc[1] = newc[0];
 		newc[2] = newc[0];
 		newc[3] = oldc[1];
 		break;
 	case 4:
-		newc[0] = arciem::denormalize(fractionLighter, oldc[0], 1.0f);
-		newc[1] = arciem::denormalize(fractionLighter, oldc[1], 1.0f);
-		newc[2] = arciem::denormalize(fractionLighter, oldc[2], 1.0f);
+		newc[0] = arciem::denormalize(fractionLighter, CGFloat(oldc[0]), CGFloat(1.0));
+		newc[1] = arciem::denormalize(fractionLighter, CGFloat(oldc[1]), CGFloat(1.0));
+		newc[2] = arciem::denormalize(fractionLighter, CGFloat(oldc[2]), CGFloat(1.0));
 		newc[3] = oldc[3];
 		break;
 	}
@@ -777,7 +777,7 @@ CGColorRef CreateColorByColorDodge(CGColorRef color, CGFloat fractionLighter)
 	size_t numberOfComponents = CGColorGetNumberOfComponents(color);
 	switch(numberOfComponents) {
 		case 2:
-			newc[0] = arciem::denormalize(fractionLighter, oldc[0], 1.0f);
+			newc[0] = arciem::denormalize(fractionLighter, CGFloat(oldc[0]), CGFloat(1.0));
 			newc[1] = newc[0];
 			newc[2] = newc[0];
 			newc[3] = oldc[1];
@@ -802,7 +802,7 @@ CGColorRef CreateColorByColorBurn(CGColorRef color, CGFloat fractionDarker)
 	size_t numberOfComponents = CGColorGetNumberOfComponents(color);
 	switch(numberOfComponents) {
 		case 2:
-			newc[0] = arciem::denormalize(fractionDarker, oldc[0], 0.0f);
+			newc[0] = arciem::denormalize(fractionDarker, CGFloat(oldc[0]), CGFloat(0.0));
 			newc[1] = newc[0];
 			newc[2] = newc[0];
 			newc[3] = oldc[1];

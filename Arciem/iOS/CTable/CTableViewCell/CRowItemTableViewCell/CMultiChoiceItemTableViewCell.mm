@@ -41,7 +41,7 @@
 		} else if(selectedIndexes.count == 1) {
 			title = [NSString stringWithFormat:@"%@: %@", title, model.selectedSubitem.title];
 		} else {
-			title = [NSString stringWithFormat:@"%@: (%d selected)", title, selectedIndexes.count];
+			title = [NSString stringWithFormat:@"%@: (%lu selected)", title, (unsigned long)selectedIndexes.count];
 		}
 	} else {
 		title = [NSString stringWithFormat:@"%@...", title];

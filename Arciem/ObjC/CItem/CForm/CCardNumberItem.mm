@@ -153,7 +153,7 @@ static NSString* const kJCBMinimalRegularExpression = @"^(?:2131|1800|35)";
 
 + (NSString *)generateRandomDigit {
     NSInteger d = (NSInteger)arciem::random_range(0, 10);
-    return [NSString stringWithFormat:@"%d", d];
+    return [NSString stringWithFormat:@"%ld", (long)d];
 }
 
 + (NSString *)generateSampleNumberWithTotalDigits:(NSUInteger)totalDigits prefixes:(NSArray *)prefixes {
@@ -294,7 +294,7 @@ static NSString* const kJCBMinimalRegularExpression = @"^(?:2131|1800|35)";
         d = 10 - d;
     }
 //    NSInteger d = ( 10 - [self luhnSumString:string] % 10 ) % 10;
-    return [NSString stringWithFormat:@"%d", d];
+    return [NSString stringWithFormat:@"%ld", (long)d];
 }
 
 #pragma mark - Table Support

@@ -31,9 +31,9 @@
 {
     NSString* result;
     if(count == 1) {
-        result = [NSString stringWithFormat:@"%d digit", count];
+        result = [NSString stringWithFormat:@"%lu digit", (unsigned long)count];
     } else {
-        result = [NSString stringWithFormat:@"%d digits", count];
+        result = [NSString stringWithFormat:@"%lu digits", (unsigned long)count];
     }
     return result;
 }

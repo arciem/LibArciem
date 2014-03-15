@@ -50,6 +50,6 @@
 - (BOOL)isOlderThanOrEqualToDate:(CFixedDate*)other;
 - (BOOL)isYoungerThanOrEqualToDate:(CFixedDate*)other;
 
-- (CFixedDate*)addDays:(int)days;
-- (int)daysUntilDate:(CFixedDate*)other;
+- (CFixedDate*)addDays:(long)days;
+- (long)daysUntilDate:(CFixedDate*)other;
 @end

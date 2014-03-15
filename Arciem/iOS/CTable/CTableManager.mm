@@ -273,7 +273,7 @@
 
 	NSUInteger enteringSectionIndex = [self indexOfSectionForKey:newSectionKey];
 	
-	NSAssert2(enteringSectionIndex == leavingSectionIndex, @"Need adjacent sections in model. entering:%d leaving:%d", enteringSectionIndex, leavingSectionIndex);
+	NSAssert2(enteringSectionIndex == leavingSectionIndex, @"Need adjacent sections in model. entering:%u leaving:%u", (unsigned int)enteringSectionIndex, (unsigned int)leavingSectionIndex);
 	NSIndexSet *sectionIndexes = [NSIndexSet indexSetWithIndex:enteringSectionIndex];
 	[self.tableView reloadSections:sectionIndexes withRowAnimation:UITableViewRowAnimationAutomatic];
 }
@@ -531,7 +531,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSAssert1(editingStyle == UITableViewCellEditingStyleDelete, @"Unimplemented editing style:%d", editingStyle);
+	NSAssert1(editingStyle == UITableViewCellEditingStyleDelete, @"Unimplemented editing style:%ld", (long)editingStyle);
 	CTableRowItem *rowItem = [self rowAtIndexPath:indexPath];
 	[rowItem.model removeFromSuperitem];
     if([self.delegate respondsToSelector:@selector(tableManager:didDeleteRow:atIndexPath:)]) {
@@ -658,7 +658,7 @@
 			[self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 		} break;
 		default:
-			NSAssert1(false, @"Unimplemented change kind:%d", kind);
+			NSAssert1(false, @"Unimplemented change kind:%lu", (unsigned long)kind);
 			break;
 	}
 }

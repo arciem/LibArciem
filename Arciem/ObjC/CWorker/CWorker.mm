@@ -326,12 +326,12 @@ static NSUInteger sNextSequenceNumber = 0;
 
 - (NSString*)formattedSequenceNumber
 {
-	return [NSString stringWithFormat:@"%d", self.sequenceNumber];
+	return [NSString stringWithFormat:@"%lu", (unsigned long)self.sequenceNumber];
 }
 
 - (NSString*)formattedQueuePriority
 {
-	return [NSString stringWithFormat:@"(%d)", self.queuePriority];
+	return [NSString stringWithFormat:@"(%ld)", (long)self.queuePriority];
 }
 
 - (NSString*)formattedDependencies
@@ -361,7 +361,7 @@ static NSUInteger sNextSequenceNumber = 0;
 	NSString* result = @"";
 	
 	if(self.error != nil) {
-		result = [NSString stringWithFormat:@"=%d", self.error.code];
+		result = [NSString stringWithFormat:@"=%ld", (long)self.error.code];
 	}
 	
 	return result;

@@ -216,7 +216,7 @@
 			result = (self.dateFormatter.standaloneMonthSymbols)[row];
 			break;
 		case 1:
-			result = [NSString stringWithFormat:@"%d", self.minimumYear + row];
+			result = [NSString stringWithFormat:@"%ld", (long)(self.minimumYear + row)];
 			break;
 		default:
 			break;
@@ -291,7 +291,7 @@
 
 			NSString* monthString = (self.dateFormatter.standaloneMonthSymbols)[row];
 			
-			label.text = [NSString stringWithFormat:@"(%02d) %@", month, monthString];
+			label.text = [NSString stringWithFormat:@"(%02ld) %@", (long)month, monthString];
 			label.textAlignment = NSTextAlignmentRight;
 			
 			highlighted = month == self.currentMonth;
@@ -300,7 +300,7 @@
 			month = [self monthForMonthRow:[pickerView selectedRowInComponent:0]];
 			year = [self yearForYearRow:row];
 					 
-			label.text = [NSString stringWithFormat:@"%d", year];
+			label.text = [NSString stringWithFormat:@"%ld", (long)year];
 			label.textAlignment = NSTextAlignmentCenter;
 					 
 			highlighted = year == self.currentYear;

@@ -88,7 +88,7 @@ BOOL IsEmpty(id a)
 		} else if([value isKindOfClass:[NSArray class]]) {
 			if(compact) {
 				NSArray* array = (NSArray*)value;
-				valueStr = [NSString stringWithFormat:@"<%@: %p, count:%d>", [array class], array, array.count];
+				valueStr = [NSString stringWithFormat:@"<%@: %p, count:%lu>", [array class], array, (unsigned long)array.count];
 			} else {
 				valueStr = [value description];
 			}
@@ -113,7 +113,7 @@ BOOL IsEmpty(id a)
 				NSString* message = error.localizedDescription;
 				message = StringByLimitingLengthOfString(message, compact ? kMaxCompactStringLength : NSUIntegerMax, YES);
 				message = StringBySurroundingStringWithQuotes(message, YES);
-				valueStr = [NSString stringWithFormat:@"<%@: %p, %@ %d %@>", [value class], value, error.domain, error.code, message];
+				valueStr = [NSString stringWithFormat:@"<%@: %p, %@ %ld %@>", [value class], value, error.domain, (long)error.code, message];
 			} else {
 				valueStr = [value description];
 			}

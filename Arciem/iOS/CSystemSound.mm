@@ -31,7 +31,7 @@
 {
     if(self = [super init]) {
         OSStatus err = AudioServicesCreateSystemSoundID((__bridge CFURLRef)url, &soundID);
-        NSAssert2(err == 0, @"Error creating audio object: %ld %@", err, url);
+        NSAssert2(err == 0, @"Error creating audio object: %ld %@", (long)err, url);
     }
     return self;
 }
