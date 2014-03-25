@@ -27,7 +27,7 @@
 
 - (NSString*)defaultCellType
 {
-	return @"CSwitchTableViewCell";
+	return @"CSwitchItemTableViewCell";
 }
 
 @end

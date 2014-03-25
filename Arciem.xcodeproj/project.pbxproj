@@ -382,13 +382,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		032867BA18CF17E400974918 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 039DC10716CB300D00B52A7F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 039DC34216CC987E00B52A7F;
-			remoteInfo = ArciemResources;
-		};
 		039DC33C16CC88B600B52A7F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 039DC10716CB300D00B52A7F /* Project object */;
@@ -404,18 +397,6 @@
 			remoteInfo = LibArciemResources;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		032867B718CF154100974918 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 7;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		030F11FB181688AD0098DC59 /* CActionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CActionItem.h; sourceTree = "<group>"; };
@@ -1606,7 +1587,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				032867BB18CF17E400974918 /* PBXTargetDependency */,
 			);
 			name = Arciem;
 			productName = LibArciem;
@@ -1620,7 +1600,6 @@
 				039DC33F16CC987E00B52A7F /* Sources */,
 				039DC34016CC987E00B52A7F /* Frameworks */,
 				039DC34116CC987E00B52A7F /* Resources */,
-				032867B718CF154100974918 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -1686,7 +1665,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n";
+			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Resources\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n";
 		};
 		039DC33E16CC88E600B52A7F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1891,11 +1870,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		032867BB18CF17E400974918 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 039DC34216CC987E00B52A7F /* ArciemResources */;
-			targetProxy = 032867BA18CF17E400974918 /* PBXContainerItemProxy */;
-		};
 		039DC33D16CC88B600B52A7F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 039DC10E16CB300D00B52A7F /* Arciem */;
@@ -2002,6 +1976,10 @@
 		039DC11E16CB300D00B52A7F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
 				DSTROOT = /tmp/LibArciem.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Arciem/Arciem-Prefix.pch";
@@ -2014,6 +1992,10 @@
 		039DC11F16CB300D00B52A7F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
 				DSTROOT = /tmp/LibArciem.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Arciem/Arciem-Prefix.pch";
@@ -2040,9 +2022,6 @@
 		039DC34E16CC988100B52A7F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = "ArciemResources/ArciemResources-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = Arciem;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -2051,11 +2030,6 @@
 		039DC34F16CC988100B52A7F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				INFOPLIST_FILE = "ArciemResources/ArciemResources-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = Arciem;
 				WRAPPER_EXTENSION = bundle;
 			};

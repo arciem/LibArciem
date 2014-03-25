@@ -533,6 +533,9 @@
 {
 	NSAssert1(editingStyle == UITableViewCellEditingStyleDelete, @"Unimplemented editing style:%ld", (long)editingStyle);
 	CTableRowItem *rowItem = [self rowAtIndexPath:indexPath];
+    if([self.delegate respondsToSelector:@selector(tableManager:willDeleteRow:atIndexPath:)]) {
+        [self.delegate tableManager:self willDeleteRow:rowItem atIndexPath:indexPath];
+    }
 	[rowItem.model removeFromSuperitem];
     if([self.delegate respondsToSelector:@selector(tableManager:didDeleteRow:atIndexPath:)]) {
         [self.delegate tableManager:self didDeleteRow:rowItem atIndexPath:indexPath];

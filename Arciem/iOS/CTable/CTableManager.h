@@ -59,6 +59,7 @@
 
 @optional
 - (void)tableManager:(CTableManager*)tableManager didSelectRow:(CTableRowItem*)rowItem atIndexPath:(NSIndexPath *)indexPath;
+- (void)tableManager:(CTableManager *)tableManager willDeleteRow:(CTableRowItem *)rowItem atIndexPath:(NSIndexPath *)indexPath;
 - (void)tableManager:(CTableManager *)tableManager didDeleteRow:(CTableRowItem *)rowItem atIndexPath:(NSIndexPath *)indexPath;
 - (void)tableManager:(CTableManager *)tableManager didMoveRow:(CTableRowItem *)rowItem toIndexPath:(NSIndexPath *)indexPath;
 - (void)tableManager:(CTableManager*)tableManager prepareCell:(CRowItemTableViewCell*)cell;
