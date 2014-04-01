@@ -65,6 +65,10 @@
 		0362A8F6174FF48C005AA5ED /* CWorkerDebugView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */; };
 		0362A8F7174FF48C005AA5ED /* CWorkerManagerDebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0362A8F8174FF48C005AA5ED /* CWorkerManagerDebugView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0362A8F4174FF48C005AA5ED /* CWorkerManagerDebugView.mm */; };
+		036D26F218E3F67F00E48AFE /* CTextureAtlasImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 036D26F018E3F67F00E48AFE /* CTextureAtlasImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		036D26F318E3F67F00E48AFE /* CTextureAtlasImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 036D26F118E3F67F00E48AFE /* CTextureAtlasImage.mm */; };
+		036D26F618E3F69400E48AFE /* CTextureAtlasSubimage.h in Headers */ = {isa = PBXBuildFile; fileRef = 036D26F418E3F69400E48AFE /* CTextureAtlasSubimage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		036D26F718E3F69400E48AFE /* CTextureAtlasSubimage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 036D26F518E3F69400E48AFE /* CTextureAtlasSubimage.mm */; };
 		036DE93A1755E31200B6B345 /* CDebugMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE9381755E31200B6B345 /* CDebugMenuView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0370D7AF173761E0005165CA /* CNotifierViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370D7AD173761E0005165CA /* CNotifierViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0370D7B0173761E0005165CA /* CNotifierViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0370D7AE173761E0005165CA /* CNotifierViewController.mm */; };
@@ -77,6 +81,8 @@
 		0378B89617EA9A6E0073D97E /* CShieldView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0378B89417EA9A6E0073D97E /* CShieldView.mm */; };
 		0383E97318A19CF4003A6BF5 /* CButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 0383E97118A19CF4003A6BF5 /* CButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0383E97418A19CF4003A6BF5 /* CButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0383E97218A19CF4003A6BF5 /* CButton.mm */; };
+		0393A58D18E3CD0500DD81E4 /* CTextureAtlas.h in Headers */ = {isa = PBXBuildFile; fileRef = 0393A58B18E3CD0500DD81E4 /* CTextureAtlas.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0393A58E18E3CD0500DD81E4 /* CTextureAtlas.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0393A58C18E3CD0500DD81E4 /* CTextureAtlas.mm */; };
 		039DC11316CB300D00B52A7F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC11216CB300D00B52A7F /* Foundation.framework */; };
 		039DC12116CB32B000B52A7F /* Arciem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC11716CB300D00B52A7F /* Arciem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		039DC13E16CB398A00B52A7F /* CLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12416CB398A00B52A7F /* CLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -441,6 +447,10 @@
 		0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CWorkerDebugView.mm; path = CWorker/CWorkerDebugView.mm; sourceTree = "<group>"; };
 		0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CWorkerManagerDebugView.h; path = CWorker/CWorkerManagerDebugView.h; sourceTree = "<group>"; };
 		0362A8F4174FF48C005AA5ED /* CWorkerManagerDebugView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CWorkerManagerDebugView.mm; path = CWorker/CWorkerManagerDebugView.mm; sourceTree = "<group>"; };
+		036D26F018E3F67F00E48AFE /* CTextureAtlasImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextureAtlasImage.h; sourceTree = "<group>"; };
+		036D26F118E3F67F00E48AFE /* CTextureAtlasImage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTextureAtlasImage.mm; sourceTree = "<group>"; };
+		036D26F418E3F69400E48AFE /* CTextureAtlasSubimage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextureAtlasSubimage.h; sourceTree = "<group>"; };
+		036D26F518E3F69400E48AFE /* CTextureAtlasSubimage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTextureAtlasSubimage.mm; sourceTree = "<group>"; };
 		036DE9381755E31200B6B345 /* CDebugMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDebugMenuView.h; sourceTree = "<group>"; };
 		036DE9391755E31200B6B345 /* CDebugMenuView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDebugMenuView.mm; sourceTree = "<group>"; };
 		0370D7AD173761E0005165CA /* CNotifierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CNotifierViewController.h; sourceTree = "<group>"; };
@@ -454,6 +464,8 @@
 		0378B89417EA9A6E0073D97E /* CShieldView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CShieldView.mm; sourceTree = "<group>"; };
 		0383E97118A19CF4003A6BF5 /* CButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CButton.h; sourceTree = "<group>"; };
 		0383E97218A19CF4003A6BF5 /* CButton.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CButton.mm; sourceTree = "<group>"; };
+		0393A58B18E3CD0500DD81E4 /* CTextureAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextureAtlas.h; sourceTree = "<group>"; };
+		0393A58C18E3CD0500DD81E4 /* CTextureAtlas.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CTextureAtlas.mm; sourceTree = "<group>"; };
 		039DC10F16CB300D00B52A7F /* libArciem.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libArciem.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		039DC11216CB300D00B52A7F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		039DC11616CB300D00B52A7F /* Arciem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Arciem-Prefix.pch"; path = "Arciem/Arciem-Prefix.pch"; sourceTree = "<group>"; };
@@ -1129,6 +1141,12 @@
 				0362A8F4174FF48C005AA5ED /* CWorkerManagerDebugView.mm */,
 				036DE9381755E31200B6B345 /* CDebugMenuView.h */,
 				036DE9391755E31200B6B345 /* CDebugMenuView.mm */,
+				0393A58B18E3CD0500DD81E4 /* CTextureAtlas.h */,
+				0393A58C18E3CD0500DD81E4 /* CTextureAtlas.mm */,
+				036D26F018E3F67F00E48AFE /* CTextureAtlasImage.h */,
+				036D26F118E3F67F00E48AFE /* CTextureAtlasImage.mm */,
+				036D26F418E3F69400E48AFE /* CTextureAtlasSubimage.h */,
+				036D26F518E3F69400E48AFE /* CTextureAtlasSubimage.mm */,
 				03F9445516E9735D00F9FEF3 /* CMiniPicker */,
 				039DC26B16CB662100B52A7F /* Essentials */,
 				039DC2B116CB678A00B52A7F /* CNotifier */,
@@ -1450,6 +1468,7 @@
 				0318155D181ED11B007794F3 /* CPaymentMethodTypeImageView.h in Headers */,
 				039DC21416CB4C4400B52A7F /* CDateItem.h in Headers */,
 				039DC21616CB4C4400B52A7F /* CEmailItem.h in Headers */,
+				036D26F618E3F69400E48AFE /* CTextureAtlasSubimage.h in Headers */,
 				039DC21816CB4C4400B52A7F /* CForm.h in Headers */,
 				039DC21A16CB4C4400B52A7F /* CMultiChoiceItem.h in Headers */,
 				039DC21C16CB4C4400B52A7F /* CMultiTextItem.h in Headers */,
@@ -1532,6 +1551,7 @@
 				039DC32116CB693700B52A7F /* CSetup.h in Headers */,
 				039DC32316CB693700B52A7F /* CSetupBoolOptionTableViewCell.h in Headers */,
 				039DC32516CB693700B52A7F /* CSetupEditServerViewController.h in Headers */,
+				0393A58D18E3CD0500DD81E4 /* CTextureAtlas.h in Headers */,
 				039DC32716CB693700B52A7F /* CSetupMainViewController.h in Headers */,
 				039DC32916CB693700B52A7F /* CSetupNavigationController.h in Headers */,
 				039DC32B16CB693700B52A7F /* CSetupOptionTableViewCell.h in Headers */,
@@ -1551,6 +1571,7 @@
 				03F9446816E9735D00F9FEF3 /* CMiniPickerView.h in Headers */,
 				03F9446A16E9735D00F9FEF3 /* CMiniPickerViewCell.h in Headers */,
 				03336559181B99FB00308E0A /* CSwitchItemTableViewCell.h in Headers */,
+				036D26F218E3F67F00E48AFE /* CTextureAtlasImage.h in Headers */,
 				03258714171CA8F800AE084E /* CNetworkController.h in Headers */,
 				033A75F417274B8F0045933D /* AppUtils.h in Headers */,
 				033A75FE172754ED0045933D /* CKeychainUtils.h in Headers */,
@@ -1710,6 +1731,7 @@
 				039DC19B16CB3DF700B52A7F /* bezier2.cpp in Sources */,
 				039DC19D16CB3DF700B52A7F /* bezier2_list.cpp in Sources */,
 				039DC19F16CB3DF700B52A7F /* delta2.cpp in Sources */,
+				036D26F318E3F67F00E48AFE /* CTextureAtlasImage.mm in Sources */,
 				039DC1A116CB3DF700B52A7F /* delta2i.cpp in Sources */,
 				039DC1A316CB3DF700B52A7F /* delta3.cpp in Sources */,
 				039DC1A516CB3DF700B52A7F /* geometry.cpp in Sources */,
@@ -1831,6 +1853,7 @@
 				039DC38C16CCA43000B52A7F /* CReachability.mm in Sources */,
 				039DC39016CCA43000B52A7F /* CTabBar.mm in Sources */,
 				039DC39616CCA44000B52A7F /* UILabelUtils.mm in Sources */,
+				0393A58E18E3CD0500DD81E4 /* CTextureAtlas.mm in Sources */,
 				039DC39816CCA44000B52A7F /* WhiteLabel.mm in Sources */,
 				0349E1A0180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.mm in Sources */,
 				032AEEF116DE66DA0024D14E /* CSystemSound.mm in Sources */,
@@ -1846,6 +1869,7 @@
 				03F263241734D99D0078F41D /* CSidebarContainerViewController.mm in Sources */,
 				0370D7B0173761E0005165CA /* CNotifierViewController.mm in Sources */,
 				0370D7BA17381A5A005165CA /* CShadowView.mm in Sources */,
+				036D26F718E3F69400E48AFE /* CTextureAtlasSubimage.mm in Sources */,
 				0374652C17449CA70007F56D /* CDisclosureIndicator.mm in Sources */,
 				03E3C841174ACBFF004E00EB /* CBadgeView.mm in Sources */,
 				03AC9082174E680700781374 /* UIViewControllerUtils.mm in Sources */,
