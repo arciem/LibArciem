@@ -35,10 +35,7 @@
 {
 	[super setup];
 	
-	self.titleLabel.font = self.font;
-	self.titleLabel.adjustsFontSizeToFitWidth = YES;
-	self.titleLabel.minimumScaleFactor = 0.6;
-	self.titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+//	self.titleLabel.font = self.font;
 
     BSELF;
 	self.modelValueObserver = [CObserver newObserverWithKeyPath:@"value" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {

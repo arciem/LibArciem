@@ -44,6 +44,7 @@
 	self.titleLabel.font = [UIFont systemFontOfSize:14];
 	self.titleLabel.textAlignment = NSTextAlignmentCenter;
 	self.titleLabel.numberOfLines = 0;
+    self.titleLabel.backgroundColor = [UIColor yellowColor];
 }
 
 - (void)updateConstraints {

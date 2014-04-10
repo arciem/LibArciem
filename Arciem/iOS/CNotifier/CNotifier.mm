@@ -217,13 +217,13 @@
 				[items addObject:item];
 				switch(priority) {
 					case 0:
-						item.tintColor = [[UIColor greenColor] colorByLighteningFraction:0.1];
+						item.tintColor = [[UIColor greenColor] newColorByLighteningFraction:0.1];
 						break;
 					case 1:
 						item.tintColor = [UIColor yellowColor];
 						break;
 					case 2:
-						item.tintColor = [[UIColor redColor] colorByLighteningFraction:0.2];
+						item.tintColor = [[UIColor redColor] newColorByLighteningFraction:0.2];
 						item.whiteText = YES;
 						break;
 					default:

@@ -291,7 +291,7 @@ static BOOL sTestingMode;
                      },
                  @"textColor":
                      ^(UILabel* lbl, id value) {
-                         lbl.textColor = [UIColor colorWithString:(NSString*)value];
+                         lbl.textColor = [UIColor newColorWithString:(NSString*)value];
                      },
                  @"bold":
                      ^(UILabel* lbl, id value) {

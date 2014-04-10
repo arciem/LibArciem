@@ -389,7 +389,7 @@
 	CGRect bounds = CGRectMake(0, 0, shapeImage.size.width + 2 * offset.x, shapeImage.size.height + 2 * offset.y);
     shapeImage = [shapeImage newImageByScalingToSize:shapeImage.size centeredWithinImageOfSize:bounds.size backgroundColor:nil];
 
-//    tintColor = [tintColor colorByDesaturatingFraction:0.2];
+//    tintColor = [tintColor newColorByDesaturatingFraction:0.2];
 	UIImage* backgroundImage = [self newImageWithSize:shapeImage.size scale:shapeImage.scale backgroundColor:tintColor];
 
 	// Draw the shape image on a white background to get rid of any alpha channel

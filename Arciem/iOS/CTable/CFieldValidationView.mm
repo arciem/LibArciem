@@ -58,8 +58,8 @@ static UIImage* sInvalidImage = nil;
     self.opaque = NO;
     self.backgroundColor = [UIColor clearColor];
 	self.userInteractionEnabled = NO;
-	self.validMarkTintColor = [[UIColor greenColor] colorByDarkeningFraction:0.2];
-	self.invalidMarkTintColor = [[UIColor redColor] colorByDarkeningFraction:0.1];
+	self.validMarkTintColor = [[UIColor greenColor] newColorByDarkeningFraction:0.2];
+	self.invalidMarkTintColor = [[UIColor redColor] newColorByDarkeningFraction:0.1];
     
     BSELF;
 	self.itemStateObserver = [CObserver newObserverWithKeyPath:@"state" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {

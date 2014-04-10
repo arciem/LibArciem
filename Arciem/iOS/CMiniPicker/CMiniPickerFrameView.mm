@@ -45,14 +45,14 @@ static const CGFloat kFrameWidth = 8.0;
     self.margins = UIEdgeInsetsMake(kTopBevelHeight + kFrameWidth, kFrameWidth, kFrameWidth, kFrameWidth);
     
     _bevelGradientRef = GradientCreateWith2Colors(
-                                                      [UIColor colorWithRGBValue:0x313944].CGColor,
-                                                      [UIColor colorWithRGBValue:0xd7d7da].CGColor, SharedColorSpaceDeviceRGB());
+                                                      [UIColor newColorWithRGBValue:0x313944].CGColor,
+                                                      [UIColor newColorWithRGBValue:0xd7d7da].CGColor, SharedColorSpaceDeviceRGB());
 
     _frameGradientRef = GradientCreateGloss(
-                                                [UIColor colorWithRGBValue:0xa2a3aa].CGColor,
-                                                [UIColor colorWithRGBValue:0x484a55].CGColor,
-                                                [UIColor colorWithRGBValue:0x3a3c4f].CGColor,
-                                                [UIColor colorWithRGBValue:0x3a3d52].CGColor,
+                                                [UIColor newColorWithRGBValue:0xa2a3aa].CGColor,
+                                                [UIColor newColorWithRGBValue:0x484a55].CGColor,
+                                                [UIColor newColorWithRGBValue:0x3a3c4f].CGColor,
+                                                [UIColor newColorWithRGBValue:0x3a3d52].CGColor,
                                                 SharedColorSpaceDeviceRGB());
 }
 

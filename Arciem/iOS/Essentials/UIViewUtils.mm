@@ -787,10 +787,10 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 }
 
 - (NSArray *)constrainFrameToFrameOfItem:(id)item {
-    return @[
-             [self constrainCenterEqualToCenterOfItem:item],
-             [self constrainSizeToSizeOfItem:item]
-             ];
+    NSArray *a1 = [self constrainCenterEqualToCenterOfItem:item];
+    NSArray *a2 = [self constrainSizeToSizeOfItem:item];
+    NSArray *a = [a1 arrayByAddingObjectsFromArray:a2];
+    return a;
 }
 
 - (NSArray *)constrainLeadingAndTrailingSpacingEqual {

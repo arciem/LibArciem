@@ -116,9 +116,9 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 		if(self.worker.finished) {
 			status = @"FINISHED";
 			if(self.worker.error == nil) {
-				backgroundColor = [[UIColor greenColor] colorByDarkeningFraction:0.7];
+				backgroundColor = [[UIColor greenColor] newColorByDarkeningFraction:0.7];
 			} else {
-				backgroundColor = [[UIColor redColor] colorByDarkeningFraction:0.5];
+				backgroundColor = [[UIColor redColor] newColorByDarkeningFraction:0.5];
 			}
 			textColor = [UIColor whiteColor];
 			if(self.worker.cancelled) {
@@ -128,7 +128,7 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 			}
 		} else if(self.worker.executing) {
 			status = @"EXECUTING";
-			backgroundColor = [[UIColor blueColor] colorByLighteningFraction:0.5];
+			backgroundColor = [[UIColor blueColor] newColorByLighteningFraction:0.5];
 			textColor = [UIColor blackColor];
 			if(self.worker.active) {
 				status = @"ACTIVE";
@@ -155,7 +155,7 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 		
 		self.label.textColor = textColor;
 		self.layer.backgroundColor = backgroundColor.CGColor;
-		self.layer.borderColor = [backgroundColor colorByDarkeningFraction:0.5].CGColor;
+		self.layer.borderColor = [backgroundColor newColorByDarkeningFraction:0.5].CGColor;
 	
 		CLogTrace(@"C_WORKER_DEBUG_VIEW", @"worker: %@ %@ active:%d", self.worker, status, self.worker.active);
         
