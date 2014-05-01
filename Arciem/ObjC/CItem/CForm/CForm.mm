@@ -34,7 +34,7 @@
 	[rootItem_ activateAll];
 }
 
-- (id)initWithRootItem:(CItem*)rootItem
+- (instancetype)initWithRootItem:(CItem*)rootItem
 {
 	if(self = [super init]) {
 		self.rootItem = rootItem;

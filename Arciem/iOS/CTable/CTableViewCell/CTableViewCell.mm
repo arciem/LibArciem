@@ -43,7 +43,7 @@
 	[self setup];
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
 		[self setup];
@@ -51,7 +51,7 @@
 	return self;
 }
 
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
 	if(self = [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
 	}

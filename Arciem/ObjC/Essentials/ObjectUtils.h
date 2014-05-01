@@ -18,7 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
-#define BSELF __weak __typeof(self) bself = self
+#define BOBJ(_a, _b) __weak __typeof(_a) _b = _a
+#define BSELF BOBJ(self, bself)
 
 BOOL IsNull(id a);
 id Denull(id a);
@@ -29,20 +30,22 @@ BOOL IsEmpty(id a);
 
 @interface NSObject (ObjectUtils)
 
-+ (id)newInstanceOfClassNamed:(NSString *)className;
++ (id)newInstanceOfClassNamed:(NSString *)className NS_RETURNS_RETAINED;
 
-- (NSString*)formatValueForKey:(NSString*)key compact:(BOOL)compact;
-- (NSString*)formatKey:(NSString*)key value:(id)value compact:(BOOL)compact;
-- (NSString*)formatBoolValueForKey:(NSString*)key compact:(BOOL)compact;
-- (NSString*)formatBoolValueForKey:(NSString*)key compact:(BOOL)compact hidingIf:(BOOL)hideValue;
-- (NSString*)formatObjectWithValues:(NSArray*)values;
-- (NSString*)formatNumberForKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero;
-- (NSString*)formatCountForKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero;
+- (NSString *)shortDescription;
+
+- (NSString *)formatValueForKey:(NSString *)key compact:(BOOL)compact;
+- (NSString *)formatKey:(NSString *)key value:(id)value compact:(BOOL)compact;
+- (NSString *)formatBoolValueForKey:(NSString *)key compact:(BOOL)compact;
+- (NSString *)formatBoolValueForKey:(NSString *)key compact:(BOOL)compact hidingIf:(BOOL)hideValue;
+- (NSString *)formatObjectWithValues:(NSArray *)values;
+- (NSString *)formatNumberForKey:(NSString *)key hidingIfZero:(BOOL)hideIfZero;
+- (NSString *)formatCountForKey:(NSString *)key hidingIfZero:(BOOL)hideIfZero;
 
 - (void)setPropertiesToNil;
 
-- (void)setAssociatedObject:(id)obj forKey:(NSString*)key;
-- (id)associatedObjectForKey:(NSString*)key;
+- (void)setAssociatedObject:(id)obj forKey:(NSString *)key;
+- (id)associatedObjectForKey:(NSString *)key;
 
 @property (nonatomic) NSString *debugName;
 
@@ -54,22 +57,22 @@ BOOL IsEmpty(id a);
 + (id)dictionaryWithKeysAndObjects:(id)firstKey, ... NS_REQUIRES_NIL_TERMINATION;
 + (id)dictionaryWithKeysAndCopiedObjects:(id)firstKey, ... NS_REQUIRES_NIL_TERMINATION;
 
-- (NSDictionary*)dictionaryBySettingObject:(id)anObject forKey:(id<NSCopying>)key;
-- (id)valueForKey:(NSString*)key defaultValue:(id)defaultValue;
-- (NSUInteger)unsignedIntegerValueForKey:(NSString*)key defaultValue:(NSUInteger)defaultValue;
-- (NSString*)stringValueForKey:(NSString*)key defaultValue:(NSString*)defaultValue;
+- (NSDictionary *)dictionaryBySettingObject:(id)anObject forKey:(id<NSCopying>)key;
+- (id)valueForKey:(NSString *)key defaultValue:(id)defaultValue;
+- (NSUInteger)unsignedIntegerValueForKey:(NSString *)key defaultValue:(NSUInteger)defaultValue;
+- (NSString *)stringValueForKey:(NSString *)key defaultValue:(NSString *)defaultValue;
 
 @end
 
 @interface NSMutableDictionary (ObjectUtils)
 
-- (void)overrideWithValuesFromDictionary:(NSDictionary*)dict;
+- (void)overrideWithValuesFromDictionary:(NSDictionary *)dict;
 
 @end
 
 @interface NSArray (ObjectUtils)
 
-- (NSArray*)arrayByRemovingObjectAtIndex:(NSUInteger)index;
-- (NSArray*)arrayByReplacingObjectAtIndex:(NSUInteger)index withObject:(id)object;
+- (NSArray *)arrayByRemovingObjectAtIndex:(NSUInteger)index;
+- (NSArray *)arrayByReplacingObjectAtIndex:(NSUInteger)index withObject:(id)object;
 
 @end

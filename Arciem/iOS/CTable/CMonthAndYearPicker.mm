@@ -47,7 +47,7 @@
 @synthesize dateFormatter = dateFormatter_;
 @synthesize currentDate = currentDate_;
 
-- (id)init
+- (instancetype)init
 {
 	if(self = [self initWithFrame:CGRectZero]) {
 	}
@@ -55,7 +55,7 @@
 	return self;
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
 	if(self = [super initWithFrame:CGRectMake(0, 0, 320, 216)]) {
         self.date = [NSDate date];
@@ -309,13 +309,13 @@
 			break;
 	}
 
-	BOOL disabled = NO;
+	BOOL enabled = YES;
 
 	NSDate* date = [self dateForMonth:month year:year];
 	if(self.minimumDate != nil && [date isEarlierThanDate:self.minimumDate]) {
-		disabled = YES;
+		enabled = NO;
 	} else if(self.maximumDate != nil && [date isLaterThanDate:self.maximumDate]) {
-		disabled = YES;
+		enabled = NO;
 	}
 
 	if(highlighted) {
@@ -325,10 +325,10 @@
             label.textColor = [UIColor systemHighlightBlue];
         }
 	} else {
-		if(disabled) {
-			label.textColor = [UIColor grayColor];
-		} else {
+		if(enabled) {
 			label.textColor = [UIColor blackColor];
+		} else {
+			label.textColor = [UIColor grayColor];
 		}
 	}
 	

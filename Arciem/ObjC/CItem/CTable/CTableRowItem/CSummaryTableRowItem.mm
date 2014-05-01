@@ -22,7 +22,7 @@
 
 @synthesize requiresDrillDown = requiresDrillDown_;
 
-- (id)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model
+- (instancetype)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model
 {
 	if(self = [super initWithKey:key title:title model:model]) {
 		requiresDrillDown_ = YES;

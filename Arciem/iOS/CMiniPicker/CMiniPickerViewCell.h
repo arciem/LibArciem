@@ -52,7 +52,7 @@
 
 @interface CMiniPickerViewCellColumn : NSObject <CMiniPickerViewCellColumn>
 
-- (id)initWithText:(NSAttributedString*)text lines:(NSUInteger)lines alignment:(NSTextAlignment)alignment;
+- (instancetype)initWithText:(NSAttributedString*)text lines:(NSUInteger)lines alignment:(NSTextAlignment)alignment;
 
 @property (readonly, nonatomic) NSAttributedString* text;
 @property (readonly, nonatomic) NSUInteger lines;

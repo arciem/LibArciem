@@ -35,7 +35,7 @@
 //	CLogSetTagActive(@"C_NOTIFIER_ITEM", YES);
 }
 
-- (id)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(dispatch_block_t)tapHandler
+- (instancetype)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(dispatch_block_t)tapHandler
 {
 	if(self = [super init]) {
 		self.message = message;

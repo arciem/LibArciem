@@ -51,8 +51,8 @@ extern NSString* const InterfaceWillChangeOrientationNotification;
 // Behavior provided by subclasses
 - (void)stateDidChangeFrom:(CViewControllerState)oldState to:(CViewControllerState)newState;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
-- (id)initWithDeviceNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
+- (instancetype)initWithDeviceNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
 
 - (void)setStatusBarStyleIfFullScreen:(UIStatusBarStyle)statusBarStyle;
 

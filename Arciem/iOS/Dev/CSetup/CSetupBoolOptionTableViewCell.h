@@ -20,6 +20,6 @@
 
 @interface CSetupBoolOptionTableViewCell : CSetupOptionTableViewCell
 
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
 @end

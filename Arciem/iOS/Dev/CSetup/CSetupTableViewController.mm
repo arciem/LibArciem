@@ -22,7 +22,7 @@
 
 @implementation CSetupTableViewController
 
-- (id)init
+- (instancetype)init
 {
 	if(self = [self initWithStyle:UITableViewStyleGrouped]) {
 	};

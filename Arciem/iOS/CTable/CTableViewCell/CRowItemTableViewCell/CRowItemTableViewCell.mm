@@ -35,7 +35,7 @@ static BOOL sTestingMode;
 
 @property (nonatomic) CObserver* rowItemObserver;
 @property (nonatomic) NSMutableArray* modelValueObservers;
-@property (nonatomic) CObserver* rowItemDisabledObserver;
+@property (nonatomic) CObserver* rowItemEnabledObserver;
 
 @end
 
@@ -229,7 +229,7 @@ static BOOL sTestingMode;
 	[self applyAttributes:tableItem.textLabelAttributes toLabel:self.titleLabel];
 	[self applyAttributes:rowItem.textLabelAttributes toLabel:self.titleLabel];
     
-	self.titleLabel.alpha = rowItem.disabled ? 0.5 : 1.0;
+	self.titleLabel.alpha = rowItem.enabled ? 1.0 : 0.5;
 }
 
 // May be overridden by subclasses
@@ -321,7 +321,7 @@ static BOOL sTestingMode;
 			}];
 			[bself.modelValueObservers addObject:modelValueObserver];
         }];
-        self.rowItemDisabledObserver = [CObserver newObserverWithKeyPath:@"disabled" ofObject:newRowItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+        self.rowItemEnabledObserver = [CObserver newObserverWithKeyPath:@"enabled" ofObject:newRowItem action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
             [bself syncToRowItem];
         }];
 	}

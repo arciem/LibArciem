@@ -48,7 +48,7 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	[super awakeFromNib];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
 	if((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
 		[self setup];
@@ -57,7 +57,7 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 	return self;
 }
 
-- (id)initWithDeviceNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithDeviceNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
 	if(nibNameOrNil != nil) {
 		nibNameOrNil = StringByAppendingDeviceSuffix(nibNameOrNil);

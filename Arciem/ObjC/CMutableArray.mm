@@ -32,7 +32,7 @@
 @synthesize owner = owner_;
 @synthesize key = key_;
 
-- (id)initWithOwner:(id)owner key:(NSString*)key
+- (instancetype)initWithOwner:(id)owner key:(NSString*)key
 {
 	if(self = [super init]) {
 		self.objects = [NSMutableArray array];
@@ -42,7 +42,7 @@
 	return self;
 }
 
-+ (id)arrayWithOwner:(id)owner key:(NSString*)key
++ (instancetype)newArrayWithOwner:(id)owner key:(NSString*)key
 {
 	return [[self alloc] initWithOwner:owner key:key];
 }

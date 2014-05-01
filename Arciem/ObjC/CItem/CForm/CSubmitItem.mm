@@ -70,8 +70,24 @@
 
 - (void)syncState
 {
-	BOOL valid = self.rootItem.valid && !self.editing;
-	self.disabled = !valid;
+    BOOL rootItemValid = self.rootItem.valid;
+    BOOL notEditing = !self.editing;
+	BOOL valid = rootItemValid && notEditing;
+    CLogTrace(@"BUTTON", @"%@ syncState rootItemValid:%@ notEditing:%@ valid/enabled:%@", [self shortDescription], @(rootItemValid), @(notEditing), @(valid));
+    if(self.enabled != valid) {
+        self.enabled = valid;
+    }
+}
+
+- (BOOL)isEnabled {
+    BOOL enabled = [super isEnabled];
+//    CLogTrace(@"BUTTON", @"%@ isEnabled:%@", self, @(enabled));
+    return enabled;
+}
+
+- (void)setEnabled:(BOOL)enabled {
+    CLogTrace(@"BUTTON", @"%@ setEnabled:%@", [self shortDescription], @(enabled));
+    [super setEnabled:enabled];
 }
 
 #pragma mark - Table Support

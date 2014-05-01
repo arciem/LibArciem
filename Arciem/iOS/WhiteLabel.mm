@@ -43,7 +43,7 @@
     return instance;
 }
 
-- (id)init
+- (instancetype)init
 {
     if(self = [super init]) {
         _cache = [NSCache new];

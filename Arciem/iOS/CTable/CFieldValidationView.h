@@ -25,4 +25,6 @@
 @property (nonatomic) UIColor* validMarkTintColor;
 @property (nonatomic) UIColor* invalidMarkTintColor;
 
+- (void)syncToState;
+
 @end

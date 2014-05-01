@@ -20,7 +20,7 @@
 
 @interface CShieldView : CView
 
-- (id)initWithParentView:(UIView *)parentView;
+- (instancetype)initWithParentView:(UIView *)parentView;
 - (void)addToParent;
 - (void)addToParentDelayed;
 - (void)removeFromParent;

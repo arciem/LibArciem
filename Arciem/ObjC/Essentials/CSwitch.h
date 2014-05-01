@@ -20,8 +20,8 @@
 
 @interface CSwitch : NSObject
 
-- (id)initWithDictionary:(NSDictionary *)d;
-- (id)initWithKeysAndBlocks:(id)firstKey, ... NS_REQUIRES_NIL_TERMINATION;
+- (instancetype)initWithDictionary:(NSDictionary *)d;
+- (instancetype)initWithKeysAndBlocks:(id)firstKey, ... NS_REQUIRES_NIL_TERMINATION;
 
 + (CSwitch *)switchWithDictionary:(NSDictionary *)d;
 + (CSwitch *)switchWithKeysAndBlocks:(id)firstKey, ... NS_REQUIRES_NIL_TERMINATION;

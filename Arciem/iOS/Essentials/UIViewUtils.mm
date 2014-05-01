@@ -132,6 +132,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (void)printViewHierarchy:(UIView*)view indent:(NSString*)indent level:(NSUInteger)level
 {
+#if TESTING
     NSString *scrollViewPrefix = @"⬜️";
     if([view isKindOfClass:[UIScrollView class]]) {
         scrollViewPrefix = @"🔃";
@@ -142,8 +143,6 @@ static const NSTimeInterval kAnimationDuration = 0.4;
     }
     NSString *translatesPrefix = view.translatesAutoresizingMaskIntoConstraints ? @"⬜️" : @"✅";
     NSString *ambiguousPrefix = view.hasAmbiguousLayout ? @"❓" : @"⬜️";
-
-    NSString* prefix = [NSString stringWithFormat:@"%@ %@ %@", scrollViewPrefix, translatesPrefix, ambiguousPrefix];
 
     NSMutableArray *auxInfoStrings = [NSMutableArray new];
 
@@ -164,12 +163,14 @@ static const NSTimeInterval kAnimationDuration = 0.4;
     NSString *debugName = view.debugName;
     NSString *debugNameString = IsEmptyString(debugName) ? @"" : [NSString stringWithFormat:@"%@: ", debugName];
     NSString *auxInfoString = StringByJoiningNonemptyStringsWithString(auxInfoStrings, @" ");
+    NSString *prefix = [NSString stringWithFormat:@"%@ %@ %@", scrollViewPrefix, translatesPrefix, ambiguousPrefix];
 	CLogPrint(@"%@%@%3d %@%@ %@", prefix, indent, level, debugNameString, view, auxInfoString);
     
 	indent = [indent stringByAppendingString:@"  │"];
 	for(UIView* subview in view.subviews) {
 		[self printViewHierarchy:subview indent:indent level:level+1];
 	}
+#endif
 }
 
 - (void)printViewHierarchy {
@@ -178,6 +179,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (void)printConstraintsHierarchy:(UIView*)view indent:(NSString*)indent level:(int)level
 {
+#if TESTING
     NSString *translatesPrefix = view.translatesAutoresizingMaskIntoConstraints ? @"⬜️" : @"✅";
     NSString *ambiguousPrefix = view.hasAmbiguousLayout ? @"❓" : @"⬜️";
     NSString* prefix = [NSString stringWithFormat:@"%@ %@ ", translatesPrefix, ambiguousPrefix];
@@ -195,6 +197,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	for(UIView* subview in view.subviews) {
 		[self printConstraintsHierarchy:subview indent:indent level:level+1];
 	}
+#endif
 }
 
 - (void)printConstraintsHierarchy {
@@ -889,7 +892,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 //	CLogSetTagActive(@"C_FRAME", YES);
 }
 
-- (id)initWithView:(UIView*)view
+- (instancetype)initWithView:(UIView*)view
 {
 	if(self = [super init]) {
 		view_ = view;
@@ -901,7 +904,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 	return self;
 }
 
-- (id)initWithRect:(CGRect)rect
+- (instancetype)initWithRect:(CGRect)rect
 {
 	if(self = [super init]) {
 		frame_ = rect;

@@ -41,7 +41,7 @@
 //	CLogSetTagActive(@"C_NOTIFIER", YES);
 }
 
-- (id)init
+- (instancetype)init
 {
 	if(self = [super init]) {
 		self.subscriptions = [NSMutableSet set];

@@ -21,6 +21,7 @@
 @implementation UIViewController (UIViewControllerUtils)
 
 - (void)printContainmentHierarchyWithIndent:(NSString*)indent level:(int)level {
+#if TESTING
 	NSString* prefix = @"   ";
 	CLogPrint(@"%@%@%3d %@", prefix, indent, level, self);
 	indent = [indent stringByAppendingString:@"  |"];
@@ -34,6 +35,7 @@
     [self.childViewControllers enumerateObjectsUsingBlock:^(UIViewController* childViewController, NSUInteger idx, BOOL *stop) {
         [childViewController printContainmentHierarchyWithIndent:indent level:level+1];
     }];
+#endif
 }
 
 - (void)printContainmentHierarchy {
@@ -41,8 +43,10 @@
 }
 
 - (void)printPresentationHierarchy:(NSString*)indent level:(int)level {
+#if TESTING
 	NSString* prefix = @"   ";
 	CLogPrint(@"%@%@%3d %@", prefix, indent, level, self);
+#endif
 	indent = [indent stringByAppendingString:@"  |"];
     [self.presentedViewController printPresentationHierarchy:indent level:level+1];
 }

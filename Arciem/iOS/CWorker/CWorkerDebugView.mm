@@ -46,7 +46,7 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 	
 }
 
-- (id)initWithFrame:(CGRect)frame worker:(CWorker*)worker
+- (instancetype)initWithFrame:(CGRect)frame worker:(CWorker*)worker
 {
 	if(self = [super initWithFrame:frame]) {
 		self.worker = worker;

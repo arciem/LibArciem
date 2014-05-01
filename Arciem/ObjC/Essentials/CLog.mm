@@ -18,6 +18,8 @@
 
 #import "CLog.h"
 
+#if TESTING
+
 static NSMutableSet* sLogTags = nil;
 static CLogLevel sLogLevel = kLogWarn;
 
@@ -164,3 +166,5 @@ void CLogPrint(NSString* format, ...)
 #pragma clang diagnostic pop
 	fprintf(stderr, "%s\n", [str UTF8String]);
 }
+
+#endif

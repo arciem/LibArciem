@@ -34,7 +34,7 @@
 @synthesize textField = textField_;
 @synthesize textFieldLeft = textFieldLeft_;
 
-- (id)initWithReuseIdentifier:(NSString*)reuseIdentifier
+- (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier
 {
 	if(self = [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
 		self.selectionStyle = UITableViewCellSelectionStyleNone;

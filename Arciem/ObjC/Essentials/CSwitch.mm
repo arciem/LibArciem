@@ -28,7 +28,7 @@
 
 @synthesize dict = dict_;
 
-- (id)initWithDictionary:(NSDictionary *)d {
+- (instancetype)initWithDictionary:(NSDictionary *)d {
     if(self = [super init]) {
         self.dict = [NSMutableDictionary dictionaryWithCapacity:d.count];
         [d enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
@@ -38,7 +38,7 @@
     return self;
 }
 
-- (id)initWithFirstKey:(id)firstKey args:(va_list)args {
+- (instancetype)initWithFirstKey:(id)firstKey args:(va_list)args {
     NSMutableDictionary *d = [NSMutableDictionary new];
     for (id key = firstKey; key != nil; key = va_arg(args, id)) {
         d[key] = [va_arg(args, id) copy];
@@ -48,7 +48,7 @@
 	return self;
 }
 
-- (id)initWithKeysAndBlocks:(id)firstKey, ... {
+- (instancetype)initWithKeysAndBlocks:(id)firstKey, ... {
 	va_list args;
 	va_start(args, firstKey);
 	self = [self initWithFirstKey:firstKey args:args];

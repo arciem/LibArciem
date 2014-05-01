@@ -28,7 +28,7 @@
 
 @implementation CTapToDismissKeyboardManager
 
-- (id)initWithView:(UIView*)view
+- (instancetype)initWithView:(UIView*)view
 {
 	if(self = [super init]) {
 		self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];

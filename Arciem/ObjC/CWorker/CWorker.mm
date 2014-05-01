@@ -45,7 +45,7 @@ static NSUInteger sNextSequenceNumber = 0;
 //	CLogSetTagActive(@"C_WORKER", YES);
 }
 
-- (id)init
+- (instancetype)init
 {
 	if(self = [super init]) {
 		self.sequenceNumber = sNextSequenceNumber++;
@@ -206,7 +206,7 @@ static NSUInteger sNextSequenceNumber = 0;
 	CLogTrace(@"C_WORKER", @"%@ ending retry delay", self, self.retryDelayInterval);
 }
 
-- (NSOperation*)createOperationForTry
+- (NSOperation*)newOperationForTry
 {
 	NSAssert(self.operation == nil, @"operation must not exist");
 	

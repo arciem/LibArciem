@@ -20,6 +20,6 @@
 
 @interface CTapToDismissKeyboardManager : NSObject<UIGestureRecognizerDelegate>
 
-- (id)initWithView:(UIView*)view;
+- (instancetype)initWithView:(UIView*)view;
 
 @end

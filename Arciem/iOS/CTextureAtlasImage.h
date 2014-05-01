@@ -22,7 +22,7 @@
 
 @interface CTextureAtlasImage : NSObject
 
-- (id)initWithAtlas:(CTextureAtlas *)atlas dictionary:(NSDictionary *)dict;
+- (instancetype)initWithAtlas:(CTextureAtlas *)atlas dictionary:(NSDictionary *)dict;
 
 @property (readonly, nonatomic) NSArray *subimages;
 @property (readonly, nonatomic) UIImage *image;

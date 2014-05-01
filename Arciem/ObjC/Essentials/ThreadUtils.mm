@@ -107,3 +107,13 @@ void dispatch_async_repeated(double intervalInSeconds, dispatch_queue_t queue, v
 }
 
 @end
+
+
+@implementation NSOperationQueue (BlocksAdditions)
+
+- (void)performSynchronousOperationWithBlock:(dispatch_block_t)block {
+    NSOperation *op = [NSBlockOperation blockOperationWithBlock:block];
+    [self addOperations:@[op] waitUntilFinished:YES];
+}
+
+@end

@@ -20,7 +20,7 @@
 
 @interface CMutableArray : NSMutableArray
 
-- (id)initWithOwner:(id)owner key:(NSString*)key;
-+ (id)arrayWithOwner:(id)owner key:(NSString*)key;
+- (instancetype)initWithOwner:(id)owner key:(NSString*)key;
++ (instancetype)newArrayWithOwner:(id)owner key:(NSString*)key;
 
 @end

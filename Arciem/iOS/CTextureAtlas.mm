@@ -59,7 +59,7 @@ static NSMutableDictionary *sAtlases;
     return _directoryName;
 }
 
-- (id)initWithName:(NSString *)name {
+- (instancetype)initWithName:(NSString *)name {
     if(self = [super init]) {
         _name = name;
         NSString *plistPath = [[NSBundle mainBundle] pathForResource:_name ofType:@"plist" inDirectory:self.directoryName];

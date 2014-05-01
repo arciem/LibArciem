@@ -24,6 +24,6 @@
 
 @property(copy, nonatomic) CSetupServerItem* server;
 
-- (id)initWithReuseIdentifier:(NSString*)reuseIdentifier;
+- (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier;
 
 @end

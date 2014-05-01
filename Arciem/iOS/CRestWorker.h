@@ -45,7 +45,7 @@ enum {
 
 @interface CRestWorker : CWorker <NSURLConnectionDelegate>
 
-- (id)initWithRequest:(NSURLRequest*)request;
+- (instancetype)initWithRequest:(NSURLRequest*)request;
 + (CRestWorker*)workerWithRequest:(NSURLRequest*)request;
 
 // Inputs - may change between retries

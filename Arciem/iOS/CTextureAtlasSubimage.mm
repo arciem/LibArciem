@@ -45,7 +45,7 @@ static NSRegularExpression *sRemoveExtensionRegularExpression;
 @synthesize opaque = _opaque;
 @synthesize image = _image;
 
-- (id)initWithAtlasImage:(CTextureAtlasImage *)atlasImage dictionary:(NSDictionary *)dict {
+- (instancetype)initWithAtlasImage:(CTextureAtlasImage *)atlasImage dictionary:(NSDictionary *)dict {
     if(self = [super init]) {
         
         if(sRemoveExtensionRegularExpression == nil) {

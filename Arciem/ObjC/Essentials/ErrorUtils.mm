@@ -21,14 +21,14 @@
 
 @implementation NSError (ErrorUtils)
 
-- (id)initWithDomain:(NSString *)domain code:(NSInteger)code localizedDescription:(NSString*)localizedDescription
+- (instancetype)initWithDomain:(NSString *)domain code:(NSInteger)code localizedDescription:(NSString*)localizedDescription
 {
 	NSDictionary* userInfo = @{NSLocalizedDescriptionKey: localizedDescription};
 
 	return [self initWithDomain:domain code:code userInfo:userInfo];
 }
 
-- (id)initWithDomain:(NSString *)domain code:(NSInteger)code localizedFormat:(NSString *)localizedFormat arguments:(va_list)argList
+- (instancetype)initWithDomain:(NSString *)domain code:(NSInteger)code localizedFormat:(NSString *)localizedFormat arguments:(va_list)argList
 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wformat-nonliteral"
@@ -38,7 +38,7 @@
 	return [self initWithDomain:domain code:code localizedDescription:localizedDescription];
 }
 
-- (id)initWithDomain:(NSString *)domain code:(NSInteger)code localizedFormat:(NSString *)localizedFormat, ...
+- (instancetype)initWithDomain:(NSString *)domain code:(NSInteger)code localizedFormat:(NSString *)localizedFormat, ...
 {
 	va_list argList;
 	va_start(argList, localizedFormat);

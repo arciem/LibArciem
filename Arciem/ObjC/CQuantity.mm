@@ -275,7 +275,7 @@ NSString* const kDimensionPackaging = @"kDimensionPackaging";
 	[self addUnitWithSymbol:@"box" name:@"box" dimension:packagaing];
 }
 
-- (id)init
+- (instancetype)init
 {
 	if(sQuantityManager == nil) {
 		if((self = [super init])) {
@@ -360,7 +360,7 @@ NSString* const kDimensionPackaging = @"kDimensionPackaging";
 @synthesize name = name_;
 @synthesize baseUnit = baseUnit_;
 
-- (id)initWithIdentifier:(NSString*)identifier name:(NSString*)name
+- (instancetype)initWithIdentifier:(NSString*)identifier name:(NSString*)name
 {
 	if((self = [super init])) {
 		self.identifier = identifier;
@@ -396,7 +396,7 @@ NSString* const kDimensionPackaging = @"kDimensionPackaging";
 @synthesize toBase = toBase_;
 @synthesize fromBase = fromBase_;
 
-- (id)initWithSymbol:(NSString*)symbol name:(NSString*)name dimension:(CDimension*)dimension
+- (instancetype)initWithSymbol:(NSString*)symbol name:(NSString*)name dimension:(CDimension*)dimension
 {
 	if((self = [super init])) {
 		self.symbol = symbol;
@@ -442,7 +442,7 @@ NSString* const kDimensionPackaging = @"kDimensionPackaging";
 @synthesize unit = unit_;
 @synthesize dimension = dimension_;
 
-- (id)initWithValue:(double)value unit:(NSString*)unit dimension:(NSString*)dimension
+- (instancetype)initWithValue:(double)value unit:(NSString*)unit dimension:(NSString*)dimension
 {
 	if((self = [super init])) {
 		self.value = value;

@@ -22,7 +22,7 @@
 
 @interface CTextureAtlasSubimage : NSObject
 
-- (id)initWithAtlasImage:(CTextureAtlasImage *)image dictionary:(NSDictionary *)dict;
+- (instancetype)initWithAtlasImage:(CTextureAtlasImage *)image dictionary:(NSDictionary *)dict;
 
 - (void)drawInRect:(CGRect)rect;
 

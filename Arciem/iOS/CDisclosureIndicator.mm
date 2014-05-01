@@ -32,7 +32,7 @@
     return indicator;
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     CGRect f = frame;
     f.size.width = 11;

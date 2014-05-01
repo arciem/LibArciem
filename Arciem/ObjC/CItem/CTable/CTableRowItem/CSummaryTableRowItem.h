@@ -22,6 +22,6 @@
 
 @property (nonatomic) BOOL requiresDrillDown;
 
-- (id)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model;
+- (instancetype)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model;
 
 @end

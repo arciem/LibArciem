@@ -27,7 +27,7 @@
 
 @implementation CSystemSound
 
-- (id)initWithFileURL:(NSURL*)url
+- (instancetype)initWithFileURL:(NSURL*)url
 {
     if(self = [super init]) {
         OSStatus err = AudioServicesCreateSystemSoundID((__bridge CFURLRef)url, &soundID);

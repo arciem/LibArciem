@@ -20,7 +20,7 @@
 
 @interface CSystemSound : NSObject
 
-- (id)initWithFileURL:(NSURL*)url;
+- (instancetype)initWithFileURL:(NSURL*)url;
 - (void)play;
 
 @end

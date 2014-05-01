@@ -35,7 +35,7 @@ const NSUInteger kOKButtonIndex = 1;
 @synthesize alerts = alerts_;
 @synthesize completionBlocks = completionBlocks_;
 
-- (id)init {
+- (instancetype)init {
 	if((self = [super init])) {
 		self.alerts = [NSMutableArray array];
 		self.completionBlocks = [NSMutableArray array];

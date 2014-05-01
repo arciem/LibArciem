@@ -33,7 +33,7 @@ static void* const kAnnotationCoordinateChangedContext = (void*)0x2;
 
 @synthesize label = label_;
 
-- (id)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithAnnotation:(id<MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier
 {
 	if(self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier]) {
 		self.label = [[UILabel alloc] initWithFrame:CGRectZero];

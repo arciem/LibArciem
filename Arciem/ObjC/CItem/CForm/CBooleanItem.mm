@@ -112,9 +112,9 @@ NSString* const CBooleanItemInterfaceSwitch = @"switch";
 	return @[item];
 }
 
-- (NSError*)validate
+- (NSError*)validateValue
 {
-	NSError* error = [super validate];
+	NSError* error = [super validateValue];
 	
 	if(error == nil) {
         NSNumber *validValue = self.validValue;

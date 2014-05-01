@@ -58,7 +58,7 @@ BOOL IsEmpty(id a)
 
 @implementation NSObject (ObjectUtils)
 
-+ (id)newInstanceOfClassNamed:(NSString *)className
++ (id)newInstanceOfClassNamed:(NSString *)className NS_RETURNS_RETAINED
 {
 	id instance = nil;
 	
@@ -69,13 +69,17 @@ BOOL IsEmpty(id a)
 	return instance;
 }
 
-- (NSString*)formatKey:(NSString*)key value:(id)value compact:(BOOL)compact
+- (NSString *)shortDescription {
+    return [NSString stringWithFormat:@"<%@: %p>", NSStringFromClass([self class]), self];
+}
+
+- (NSString *)formatKey:(NSString *)key value:(id)value compact:(BOOL)compact
 {
-	NSString* result = @"";
+	NSString * result = @"";
 	NSUInteger kMaxCompactStringLength = 30;
     
 	if(value != nil) {
-		NSString* valueStr = nil;
+		NSString * valueStr = nil;
 		if([value isKindOfClass:[NSString class]]) {
 			valueStr = StringByLimitingLengthOfString([value description], compact ? kMaxCompactStringLength : NSUIntegerMax, YES);
 			valueStr = StringBySurroundingStringWithQuotes(valueStr, YES);
@@ -87,7 +91,7 @@ BOOL IsEmpty(id a)
 			valueStr = [value description];
 		} else if([value isKindOfClass:[NSArray class]]) {
 			if(compact) {
-				NSArray* array = (NSArray*)value;
+				NSArray * array = (NSArray *)value;
 				valueStr = [NSString stringWithFormat:@"<%@: %p, count:%lu>", [array class], array, (unsigned long)array.count];
 			} else {
 				valueStr = [value description];
@@ -95,9 +99,9 @@ BOOL IsEmpty(id a)
 		} else if([value isKindOfClass:[NSDictionary class]]) {
 			if(compact) {
 				NSMutableString* buf = [NSMutableString stringWithString:@"{ "];
-				NSDictionary* dict = (NSDictionary*)value;
+				NSDictionary * dict = (NSDictionary *)value;
 				
-				for(NSString* key in [dict allKeys]) {
+				for(NSString * key in [dict allKeys]) {
 					[buf appendFormat:@"%@ ", [dict formatValueForKey:key compact:YES]];
 				}
 				
@@ -110,7 +114,7 @@ BOOL IsEmpty(id a)
 		} else if([value isKindOfClass:[NSError class]]) {
 			if(compact) {
 				NSError* error = (NSError*)value;
-				NSString* message = error.localizedDescription;
+				NSString * message = error.localizedDescription;
 				message = StringByLimitingLengthOfString(message, compact ? kMaxCompactStringLength : NSUIntegerMax, YES);
 				message = StringBySurroundingStringWithQuotes(message, YES);
 				valueStr = [NSString stringWithFormat:@"<%@: %p, %@ %ld %@>", [value class], value, error.domain, (long)error.code, message];
@@ -130,42 +134,42 @@ BOOL IsEmpty(id a)
 	return result;
 }
 
-- (NSString*)formatValueForKey:(NSString*)key compact:(BOOL)compact
+- (NSString *)formatValueForKey:(NSString *)key compact:(BOOL)compact
 {
 	return [self formatKey:key value:[self valueForKey:key] compact:compact];
 }
 
-- (NSString*)formatBoolValueForKey:(NSString*)key compact:(BOOL)compact
+- (NSString *)formatBoolValueForKey:(NSString *)key compact:(BOOL)compact
 {
 	id value = (id)([[self valueForKey:key] boolValue] ? kCFBooleanTrue : kCFBooleanFalse);
 	return [self formatKey:key value:value compact:compact];
 }
 
-- (NSString*)formatNumber:(NSNumber*)number forKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero
+- (NSString *)formatNumber:(NSNumber*)number forKey:(NSString *)key hidingIfZero:(BOOL)hideIfZero
 {
-    NSString* result = @"";
+    NSString * result = @"";
     if(!hideIfZero || [number floatValue] != 0.0f) {
         result = [self formatKey:key value:number compact:NO];
     }
     return result;
 }
 
-- (NSString*)formatNumberForKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero
+- (NSString *)formatNumberForKey:(NSString *)key hidingIfZero:(BOOL)hideIfZero
 {
     NSNumber* number = (NSNumber*)[self valueForKey:key];
     return [self formatNumber:number forKey:key hidingIfZero:hideIfZero];
 }
 
-- (NSString*)formatCountForKey:(NSString*)key hidingIfZero:(BOOL)hideIfZero
+- (NSString *)formatCountForKey:(NSString *)key hidingIfZero:(BOOL)hideIfZero
 {
-    NSArray* array = (NSArray*)[self valueForKey:key];
+    NSArray * array = (NSArray *)[self valueForKey:key];
     if(array == nil) array = @[];
     return [self formatNumber:@(array.count) forKey:key hidingIfZero:hideIfZero];
 }
 
-- (NSString*)formatBoolValueForKey:(NSString*)key compact:(BOOL)compact hidingIf:(BOOL)hideValue
+- (NSString *)formatBoolValueForKey:(NSString *)key compact:(BOOL)compact hidingIf:(BOOL)hideValue
 {
-	NSString* result = @"";
+	NSString * result = @"";
 	
 	BOOL boolValue = [[self valueForKey:key] boolValue];
 	
@@ -177,13 +181,13 @@ BOOL IsEmpty(id a)
 	return result;
 }
 
-- (NSString*)formatObjectWithValues:(NSArray*)values
+- (NSString *)formatObjectWithValues:(NSArray *)values
 {
-	NSString* s = nil;
-	NSString* o = [NSString stringWithFormat:@"%@:%p", [self class], self];
-	NSString* a = nil;
+	NSString * s = nil;
+	NSString * o = [NSString stringWithFormat:@"%@:%p", [self class], self];
+	NSString * a = nil;
 	if(values.count > 0) {
-		NSArray* v = [@[o] arrayByAddingObjectsFromArray:values];
+		NSArray * v = [@[o] arrayByAddingObjectsFromArray:values];
 		a = StringByJoiningNonemptyStringsWithString(v, @"; ");
 	} else {
 		a = o;
@@ -207,12 +211,12 @@ BOOL IsEmpty(id a)
     free(properties);
 }
 
-- (void)setAssociatedObject:(id)obj forKey:(NSString*)key
+- (void)setAssociatedObject:(id)obj forKey:(NSString *)key
 {
 	objc_setAssociatedObject(self, (__bridge void*)key, obj, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (id)associatedObjectForKey:(NSString*)key
+- (id)associatedObjectForKey:(NSString *)key
 {
 	return objc_getAssociatedObject(self, (__bridge void*)key);
 }
@@ -259,14 +263,14 @@ BOOL IsEmpty(id a)
     return [self dictionaryWithObjects:values forKeys:keys];
 }
 
-- (NSDictionary*)dictionaryBySettingObject:(id)anObject forKey:(id<NSCopying>)key
+- (NSDictionary *)dictionaryBySettingObject:(id)anObject forKey:(id<NSCopying>)key
 {
     NSMutableDictionary* d = [self mutableCopy];
     d[key] = anObject;
     return [d copy];
 }
 
-- (id)valueForKey:(NSString*)key defaultValue:(id)defaultValue
+- (id)valueForKey:(NSString *)key defaultValue:(id)defaultValue
 {
 	id result = self[key];
 	if(result == nil) {
@@ -275,12 +279,12 @@ BOOL IsEmpty(id a)
 	return result;
 }
 
-- (NSUInteger)unsignedIntegerValueForKey:(NSString*)key defaultValue:(NSUInteger)defaultValue
+- (NSUInteger)unsignedIntegerValueForKey:(NSString *)key defaultValue:(NSUInteger)defaultValue
 {
 	return [[self valueForKey:key defaultValue:@(defaultValue)] unsignedIntegerValue];
 }
 
-- (NSString*)stringValueForKey:(NSString*)key defaultValue:(NSString*)defaultValue
+- (NSString *)stringValueForKey:(NSString *)key defaultValue:(NSString *)defaultValue
 {
 	return [self valueForKey:key defaultValue:defaultValue];
 }
@@ -289,7 +293,7 @@ BOOL IsEmpty(id a)
 
 @implementation NSMutableDictionary (ObjectUtils)
 
-- (void)overrideWithValuesFromDictionary:(NSDictionary*)dict
+- (void)overrideWithValuesFromDictionary:(NSDictionary *)dict
 {
 	for(id key in dict) {
 		if(self[key] == nil) {
@@ -302,14 +306,14 @@ BOOL IsEmpty(id a)
 
 @implementation NSArray (ObjectUtils)
 
-- (NSArray*)arrayByRemovingObjectAtIndex:(NSUInteger)index
+- (NSArray *)arrayByRemovingObjectAtIndex:(NSUInteger)index
 {
 	NSMutableArray* a = [self mutableCopy];
 	[a removeObjectAtIndex:index];
 	return [a copy];
 }
 
-- (NSArray*)arrayByReplacingObjectAtIndex:(NSUInteger)index withObject:(id)object
+- (NSArray *)arrayByReplacingObjectAtIndex:(NSUInteger)index withObject:(id)object
 {
 	NSMutableArray* a = [self mutableCopy];
 	a[index] = object;

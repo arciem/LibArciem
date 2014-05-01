@@ -37,7 +37,7 @@
 //	CLogSetTagActive(@"C_OBSERVER", YES);
 }
 
-- (id)initWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior
+- (instancetype)initWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior
 {
 	if(self = [super init]) {
 		self.keyPath = keyPath;
@@ -160,7 +160,7 @@
 	}];
 }
 
-- (id)initWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior
+- (instancetype)initWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior
 {
 	if(self = [self initWithKeyPath:keyPath action:action initial:initial prior:prior]) {
 		NSAssert(object != nil, @"Cannot create observer for nil object");
@@ -171,7 +171,7 @@
 	return self;
 }
 
-- (id)initWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action
+- (instancetype)initWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action
 {
 	if(self = [self initWithKeyPath:keyPath ofObject:object action:action initial:NULL prior:NULL]) {
 	}

@@ -22,7 +22,7 @@
 
 @interface CWorkerDebugView : CView
 
-- (id)initWithFrame:(CGRect)frame worker:(CWorker*)worker;
+- (instancetype)initWithFrame:(CGRect)frame worker:(CWorker*)worker;
 
 @property (nonatomic) CWorker* worker;
 @property (nonatomic) NSUInteger row;

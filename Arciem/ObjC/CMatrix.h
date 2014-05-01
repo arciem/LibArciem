@@ -24,7 +24,7 @@
 @property(nonatomic, readonly) NSUInteger rowCount;
 @property(nonatomic, readonly) NSUInteger columnCount;
 
-- (id)init;
+- (instancetype)init;
 + (CMatrix*)matrix;
 
 - (id<NSObject>)objectAtIndexPath:(NSIndexPath*)path;

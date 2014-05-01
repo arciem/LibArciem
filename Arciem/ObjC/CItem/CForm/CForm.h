@@ -38,7 +38,7 @@
 
 @property (nonatomic) CItem* rootItem;
 
-- (id)initWithRootItem:(CItem*)rootItem;
+- (instancetype)initWithRootItem:(CItem*)rootItem;
 
 + (CForm*)newFormForResourceName:(NSString*)resourceName withExtension:(NSString*)extension;
 + (CForm*)newFormForResourceName:(NSString*)resourceName;

@@ -60,7 +60,7 @@ typedef NSUInteger CItemState;
 @property (nonatomic, getter = isHidden) BOOL hidden;
 @property (readonly, nonatomic) NSArray *visibleSubitems;
 
-@property (nonatomic, getter = isDisabled) BOOL disabled;
+@property (nonatomic, getter = isEnabled) BOOL enabled;
 
 @property (nonatomic, getter = isSelectable) BOOL selectable;
 @property (nonatomic, getter = isSelected) BOOL selected;
@@ -77,8 +77,8 @@ typedef NSUInteger CItemState;
 
 @property (nonatomic) BOOL printHierarchyAfterValidate;
 
-- (id)initWithDictionary:(NSDictionary*)dict;
-- (id)initWithJSONRepresentation:(NSString*)json;
+- (instancetype)initWithDictionary:(NSDictionary*)dict NS_RETURNS_RETAINED;
+- (instancetype)initWithJSONRepresentation:(NSString*)json NS_RETURNS_RETAINED;
 + (CItem*)newItem;
 + (CItem*)newItemWithDictionary:(NSDictionary*)dict;
 + (CItem*)newItemWithJSONRepresentation:(NSString*)json;
@@ -89,7 +89,7 @@ typedef NSUInteger CItemState;
 // Override in subclasses.
 - (void)setup;
 - (BOOL)isEmpty;
-- (NSError*)validate;
+- (NSError*)validateValue;
 - (void)validateWithCompletion:(void (^)(NSError *error))completion;
 - (NSArray*)descriptionStringsCompact:(BOOL)compact;
 - (BOOL)didSelect; // return of YES (the default) indicates immediate deselection
@@ -106,6 +106,7 @@ typedef NSUInteger CItemState;
 - (void)activateAll;
 - (void)deactivateAll;
 
+- (void)validateHierarchy;
 - (void)printHierarchy;
 
 - (NSArray*)tableRowItems;

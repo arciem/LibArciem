@@ -36,7 +36,7 @@
 @synthesize subimages = _subimages;
 @synthesize image = _image;
 
-- (id)initWithAtlas:(CTextureAtlas *)atlas dictionary:(NSDictionary *)dict {
+- (instancetype)initWithAtlas:(CTextureAtlas *)atlas dictionary:(NSDictionary *)dict {
     if(self = [super init]) {
         _atlas = atlas;
         _path = dict[@"path"];

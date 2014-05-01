@@ -20,7 +20,7 @@
 
 @interface CTextFieldTableViewCell1 : UITableViewCell
 
-- (id)initWithReuseIdentifier:(NSString*)reuseIdentifier;
+- (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier;
 
 @property(readonly, nonatomic) UITextField* textField;
 @property(nonatomic) CGFloat textFieldLeft;

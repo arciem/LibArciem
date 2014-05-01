@@ -19,7 +19,7 @@
 @interface CWorker : NSObject
 
 // designated initializer, sets sequenceNumber to next increment
-- (id)init;
+- (instancetype)init;
 
 - (void)cancel;
 
@@ -65,7 +65,7 @@
 - (void)performDelay:(NSTimeInterval)delay;
 
 // may be augmented with call to super
-- (NSOperation*)createOperationForTry;
+- (NSOperation*)newOperationForTry;
 
 // default behavior may be entirely overridden without call to super
 - (void)performRetryDelay;

@@ -22,7 +22,7 @@
 
 @synthesize option = option_;
 
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
 	if(self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
         self.translatesAutoresizingMaskIntoConstraints = NO;

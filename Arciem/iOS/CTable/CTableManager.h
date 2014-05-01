@@ -47,7 +47,7 @@
 @property (nonatomic) BOOL cachesAllCells;
 
 - (void)clearSelectionAnimated:(BOOL)animated;
-- (void)setRowForKeyPath:(NSString*)keyPath disabled:(BOOL)disabled withRowAnimation:(UITableViewRowAnimation)animation;
+- (void)setRowForKeyPath:(NSString*)keyPath enabled:(BOOL)enabled withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)replaceSectionAtIndex:(NSUInteger)leavingSectionIndex withSectionWithKey:(NSString*)newSectionKey;
 - (NSIndexPath*)indexPathForModel:(CItem*)model;
 - (CTableSectionItem*)sectionForIndex:(NSUInteger)sectionIndex;
@@ -59,6 +59,7 @@
 
 @optional
 - (void)tableManager:(CTableManager*)tableManager didSelectRow:(CTableRowItem*)rowItem atIndexPath:(NSIndexPath *)indexPath;
+- (void)tableManager:(CTableManager *)tableManager didTapAccessoryButtonForRow:(CTableRowItem *)rowItem atIndexPath:(NSIndexPath *)indexPath;
 - (void)tableManager:(CTableManager *)tableManager willDeleteRow:(CTableRowItem *)rowItem atIndexPath:(NSIndexPath *)indexPath;
 - (void)tableManager:(CTableManager *)tableManager didDeleteRow:(CTableRowItem *)rowItem atIndexPath:(NSIndexPath *)indexPath;
 - (void)tableManager:(CTableManager *)tableManager didMoveRow:(CTableRowItem *)rowItem toIndexPath:(NSIndexPath *)indexPath;

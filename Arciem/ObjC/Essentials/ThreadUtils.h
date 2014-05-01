@@ -32,3 +32,9 @@ typedef void (^error_block_t)(NSError *);
 + (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2;
 
 @end
+
+@interface NSOperationQueue (BlocksAdditions)
+
+- (void)performSynchronousOperationWithBlock:(dispatch_block_t)block;
+
+@end

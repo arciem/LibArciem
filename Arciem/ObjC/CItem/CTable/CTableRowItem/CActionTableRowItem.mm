@@ -40,7 +40,7 @@
 
 - (BOOL)isRowSelectable
 {
-	return !self.disabled;
+	return self.enabled;
 }
 
 + (instancetype)newTableActionItemWithKey:(NSString *)key title:(NSString *)title actionItem:(CActionItem *)actionItem {

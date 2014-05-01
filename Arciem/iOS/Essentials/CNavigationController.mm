@@ -46,7 +46,7 @@ NSString *const CNavigationControllerDidShowViewControllerNotification = @"CNavi
     NSAssert(NO, @"CNavigationController is its own delegate. Delegate may not be reassigned.");
 }
 
-- (id)initWithRootViewController:(UIViewController *)rootViewController
+- (instancetype)initWithRootViewController:(UIViewController *)rootViewController
 {
 	if(self = [super initWithRootViewController:rootViewController]) {
 		CLogTrace(@"C_NAVIGATION_CONTROLLER", @"%@ initWithRootViewController:", self, rootViewController);
