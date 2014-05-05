@@ -69,7 +69,7 @@
         CGRectDivide(grayRect, &whiteRect, &grayRect, 1.0, CGRectMinXEdge);
     }
     ContextFillRectColor(context, blackRect, [UIColor blackColor].CGColor);
-    ContextFillRectColor(context, grayRect, [UIColor colorWithRGBValue:0xcbccdd].CGColor);
+    ContextFillRectColor(context, grayRect, [UIColor newColorWithRGBValue:0xcbccdd].CGColor);
     ContextFillRectColor(context, whiteRect, [UIColor colorWithWhite:1.0 alpha:0.5].CGColor);
 }
 
@@ -87,7 +87,7 @@
         [self context:context drawSlotAtX:CGRectGetMaxX(bounds) leftSide:NO];
         
         CGContextSetBlendMode(context, kCGBlendModeMultiply);
-        ContextFillRectColor(context, self.underlayRect, [UIColor colorWithRGBValue:0xa0aac5].CGColor);
+        ContextFillRectColor(context, self.underlayRect, [UIColor newColorWithRGBValue:0xa0aac5].CGColor);
     }
 }
 

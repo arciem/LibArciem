@@ -24,8 +24,8 @@ typedef void(^CObserverBlock)(id object, id newValue, id oldValue, NSKeyValueCha
 
 @interface CObserver : NSObject
 
-- (id)initWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
-- (id)initWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
+- (instancetype)initWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
+- (instancetype)initWithKeyPath:(NSString*)keyPath action:(CObserverBlock)action initial:(CObserverBlock)initial prior:(CObserverBlock)prior;
 
 
 + (CObserver*)newObserverWithKeyPath:(NSString*)keyPath ofObject:(id)object action:(CObserverBlock)action;

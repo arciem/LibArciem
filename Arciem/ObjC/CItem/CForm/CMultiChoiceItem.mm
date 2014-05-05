@@ -110,9 +110,9 @@ NSString* const CMultiChoiceItemErrorDomain = @"CMultiChoiceItemErrorDomain";
 	return self.choicesCount == 0;
 }
 
-- (NSError*)validate
+- (NSError*)validateValue
 {
-	NSError* error = [super validate];
+	NSError* error = [super validateValue];
 	
 	if(error == nil) {
 		NSUInteger choicesCount = self.choicesCount;

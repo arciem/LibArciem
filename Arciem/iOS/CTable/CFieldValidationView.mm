@@ -58,18 +58,18 @@ static UIImage* sInvalidImage = nil;
     self.opaque = NO;
     self.backgroundColor = [UIColor clearColor];
 	self.userInteractionEnabled = NO;
-	self.validMarkTintColor = [[UIColor greenColor] colorByDarkeningFraction:0.2];
-	self.invalidMarkTintColor = [[UIColor redColor] colorByDarkeningFraction:0.1];
+	self.validMarkTintColor = [[UIColor greenColor] newColorByDarkeningFraction:0.2];
+	self.invalidMarkTintColor = [[UIColor redColor] newColorByDarkeningFraction:0.1];
     
     BSELF;
-	self.itemStateObserver = [CObserver newObserverWithKeyPath:@"state" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
-	} initial:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
+	self.itemStateObserver = [CObserver newObserverWithKeyPath:@"state" action:^(CItem *item, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue] oldEditing:item.editing];
+	} initial:^(CItem *item, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue] oldEditing:item.editing];
 	}];
 	
-	self.itemEditingObserver = [CObserver newObserverWithKeyPath:@"editing" action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-		[bself armSyncToStateWithOldState:(CItemState)[oldValue unsignedIntValue]];
+	self.itemEditingObserver = [CObserver newObserverWithKeyPath:@"editing" action:^(CItem *item, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		[bself armSyncToStateWithOldState:item.state oldEditing:[oldValue boolValue]];
 	}];
 }
 
@@ -215,13 +215,18 @@ static UIImage* sInvalidImage = nil;
 
 - (void)syncToState
 {
-    self.contentView = [self contentViewForState:self.item.state];
+    BSELF;
+    [NSThread performBlockOnMainThread:^{
+        [NSObject cancelPreviousPerformRequestsWithTarget:bself selector:@selector(syncToState) object:nil];
+        bself.contentView = [bself contentViewForState:self.item.state];
+    }];
 }
 
-- (void)armSyncToStateWithOldState:(CItemState)oldState
+- (void)armSyncToStateWithOldState:(CItemState)oldState oldEditing:(BOOL)oldEditing
 {
     CItemState newState = self.item.state;
-    if(oldState != newState) {
+    BOOL newEditing = self.item.editing;
+    if(oldState != newState || oldEditing != newEditing) {
         if(oldState != CItemStateValid && newState != CItemStateValid) {
             self.contentView = self.newView;
         }

@@ -29,8 +29,8 @@
 
 @property (copy, readonly, nonatomic) void (^block)(id object);
 
-- (id)initWithDelay:(NSTimeInterval)delay target:(id)target selector:(SEL)selector;
-- (id)initWithDelay:(NSTimeInterval)delay block:(void (^)(id object))block;
+- (instancetype)initWithDelay:(NSTimeInterval)delay target:(id)target selector:(SEL)selector;
+- (instancetype)initWithDelay:(NSTimeInterval)delay block:(void (^)(id object))block;
 
 + (CSlowCall*)newSlowCallWithDelay:(NSTimeInterval)delay target:(id)target selector:(SEL)selector;
 + (CSlowCall*)newSlowCallWithDelay:(NSTimeInterval)delay block:(void (^)(id object))block;

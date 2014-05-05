@@ -29,7 +29,7 @@ NSString *const CDidTapButtonNotification = @"CDidTapButtonNotification";
 
 @interface CButtonTableViewCell ()
 
-@property (nonatomic) CObserver* modelDisabledObserver;
+@property (nonatomic) CObserver* modelEnabledObserver;
 @property (readwrite, nonatomic) UIButton* button;
 @property (readonly, nonatomic) CSlowCall* syncStateSlowCall;
 @property (nonatomic) CView *redView;
@@ -38,9 +38,7 @@ NSString *const CDidTapButtonNotification = @"CDidTapButtonNotification";
 
 @implementation CButtonTableViewCell
 
-@synthesize button = button_;
-@synthesize modelDisabledObserver = modelDisabledObserver_;
-@synthesize syncStateSlowCall = syncStateSlowCall_;
+@synthesize syncStateSlowCall = _syncStateSlowCall;
 
 
 - (UILabel *)textLabel {
@@ -72,14 +70,14 @@ NSString *const CDidTapButtonNotification = @"CDidTapButtonNotification";
 
 - (CSlowCall*)syncStateSlowCall
 {
-	if(syncStateSlowCall_ == nil) {
+	if(_syncStateSlowCall == nil) {
 		BSELF;
-		syncStateSlowCall_ = [CSlowCall newSlowCallWithDelay:0.2 block:^(id object) {
+		_syncStateSlowCall = [CSlowCall newSlowCallWithDelay:0.2 block:^(id object) {
 			[bself syncToState];
 		}];
 	}
 	
-	return syncStateSlowCall_;
+	return _syncStateSlowCall;
 }
 
 - (NSUInteger)validationViewsNeeded
@@ -89,17 +87,22 @@ NSString *const CDidTapButtonNotification = @"CDidTapButtonNotification";
 
 - (BOOL)isButtonEnabled
 {
-	return !self.rowItem.model.disabled;
+    BOOL enabled = self.rowItem.model.enabled;
+    CLogTrace(@"BUTTON", @"%@ isButtonEnabled model:%@ enabled:%@", [self shortDescription], [self.rowItem.model shortDescription], @(enabled));
+	return enabled;
 }
 
 - (void)syncToState
 {
 	[self.syncStateSlowCall disarm];
-	self.button.enabled = self.isButtonEnabled;
+
+    BOOL enabled = self.buttonEnabled;
+    CLogTrace(@"BUTTON", @"%@ syncToState enabled:%@", [self shortDescription], @(enabled));
+	self.button.enabled = enabled;
 
     if([self.rowItem.model isKindOfClass:[CSubmitItem class]]) {
         if(IsOSVersionAtLeast7()) {
-            if(self.isButtonEnabled) {
+            if(self.buttonEnabled) {
                 self.button.backgroundColor = self.tintColor;
                 self.button.alpha = 1.0;
             } else {
@@ -112,15 +115,17 @@ NSString *const CDidTapButtonNotification = @"CDidTapButtonNotification";
 
 - (void)setNeedsSyncToState
 {
+    CLogTrace(@"BUTTON", @"%@ setNeedsSyncToState", [self shortDescription]);
 	[self.syncStateSlowCall arm];
 }
 
 - (void)syncToRowItem
 {
+    CLogTrace(@"BUTTON", @"%@ syncToRowItem", [self shortDescription]);
 	[super syncToRowItem];
 	
 	if(self.rowItem == nil) {
-		self.modelDisabledObserver = nil;
+		self.modelEnabledObserver = nil;
 	} else {
 		[self.button setTitle:self.rowItem.model.title forState:UIControlStateNormal];
 		
@@ -135,11 +140,12 @@ NSString *const CDidTapButtonNotification = @"CDidTapButtonNotification";
         }
         
 		BSELF;
-		CObserverBlock action = ^(id object, NSNumber* newValue, NSNumber* oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
+		CObserverBlock action = ^(id object, NSNumber* newEnabled, NSNumber* oldEnabled, NSKeyValueChange kind, NSIndexSet *indexes) {
+            CLogTrace(@"BUTTON", @"%@ modelEnabledObserver calling setNeedsSyncToState with enabled:%@ model:%@", [bself shortDescription], newEnabled, [object shortDescription]);
 			[bself setNeedsSyncToState];
 		};
 		
-		self.modelDisabledObserver = [CObserver newObserverWithKeyPath:@"disabled" ofObject:self.rowItem.model action:action initial:action];
+		self.modelEnabledObserver = [CObserver newObserverWithKeyPath:@"enabled" ofObject:self.rowItem.model action:action initial:action];
 	}
 }
 

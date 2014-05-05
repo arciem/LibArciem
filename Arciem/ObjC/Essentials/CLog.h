@@ -29,6 +29,14 @@ typedef enum {
 	kLogAll = -2147483647	// The ALL has the lowest possible rank and is intended to turn on all logging.
 } CLogLevel;
 
+#if !defined(TESTING)
+#error TESTING is not defined.
+#endif
+
+#if TESTING == 1
+
+//#warning Logging Enabled
+
 void CLogSetTagActive(NSString* tag, BOOL active);
 BOOL CLogIsTagActive(NSString* tag);
 void CLogSetLevel(CLogLevel logLevel);
@@ -47,3 +55,22 @@ void CLogTrace(NSString* tag, NSString *format, ...);
 void CLogv(CLogLevel level, NSString *format, va_list args);
 
 void CLogPrint(NSString* format, ...);
+
+#else
+
+//#warning Logging Disabled
+
+#define CLogSetTagActive(tag, active)
+#define CLogIsTagActive(tag) (NO)
+#define CLogSetLevel(loglevel)
+#define CLog(...)
+#define CLogFatal(...)
+#define CLogError(...)
+#define CLogWarn(...)
+#define CLogInfo(...)
+#define CLogDebug(...)
+#define CLogTrace(...)
+#define CLogv(...)
+#define CLogPrint(...)
+
+#endif

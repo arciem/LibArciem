@@ -150,8 +150,8 @@ static NSCalendar* sCalendar = nil;
 
 #pragma mark - Validation
 
-- (NSError*)validate {
-	NSError* error = [super validate];
+- (NSError*)validateValue {
+	NSError* error = [super validateValue];
 	
 	if(error == nil) {
 		if(self.minDate != nil && [self.dateValue compare:self.minDate] == NSOrderedAscending) {

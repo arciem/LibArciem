@@ -44,7 +44,7 @@
 @synthesize offColor = _offColor;
 @synthesize mapView = _mapView;
 
-- (id)initWithMapView:(MKMapView*)mapView
+- (instancetype)initWithMapView:(MKMapView*)mapView
 {
 	self.button = [CButton buttonWithType:UIButtonTypeCustom];
 	if(self = [super initWithCustomView:self.button]) {

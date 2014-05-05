@@ -138,16 +138,16 @@
 	CGRectDivide(middle, &bottomEdge, &middle, bottomEdgeWidth, CGRectMaxYEdge);
 	
 	UIColor* tintColor = [self.item.tintColor colorWithAlphaComponent:1.0];
-	UIColor* topColor = [tintColor colorByLighteningFraction:0.3];
-	UIColor* bottomColor = [[tintColor colorByDarkeningFraction:0.3] colorByColorBurnFraction:0.1];
+	UIColor* topColor = [tintColor newColorByLighteningFraction:0.3];
+	UIColor* bottomColor = [[tintColor newColorByDarkeningFraction:0.3] newColorByColorBurnFraction:0.1];
 	
     UIColor *color1, *color2;
 //    if(IsOSVersionAtLeast7()) {
-        color1 = [tintColor colorByLighteningFraction:0.1];
-        color2 = [tintColor colorByDarkeningFraction:0.1];
+        color1 = [tintColor newColorByLighteningFraction:0.1];
+        color2 = [tintColor newColorByDarkeningFraction:0.1];
 //    } else {
-//        color1 = [tintColor colorByLighteningFraction:0.2];
-//        color2 = [tintColor colorByDarkeningFraction:0.3];
+//        color1 = [tintColor newColorByLighteningFraction:0.2];
+//        color2 = [tintColor newColorByDarkeningFraction:0.3];
 //    }
 
     CGContextRef context = [UIImage beginImageContextWithSize:imageBounds.size opaque:YES scale:0.0 flipped:NO];

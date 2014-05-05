@@ -20,9 +20,9 @@
 
 @interface NSError (ErrorUtils)
 
-- (id)initWithDomain:(NSString *)domain code:(NSInteger)code localizedDescription:(NSString*)localizedDescription;
-- (id)initWithDomain:(NSString *)domain code:(NSInteger)code localizedFormat:(NSString *)localizedFormat arguments:(va_list)argList;
-- (id)initWithDomain:(NSString *)domain code:(NSInteger)code localizedFormat:(NSString *)localizedFormat, ...;
+- (instancetype)initWithDomain:(NSString *)domain code:(NSInteger)code localizedDescription:(NSString*)localizedDescription;
+- (instancetype)initWithDomain:(NSString *)domain code:(NSInteger)code localizedFormat:(NSString *)localizedFormat arguments:(va_list)argList;
+- (instancetype)initWithDomain:(NSString *)domain code:(NSInteger)code localizedFormat:(NSString *)localizedFormat, ...;
 
 + (NSError*)errorWithDomain:(NSString *)domain code:(NSInteger)code localizedDescription:(NSString*)localizedDescription;
 + (NSError*)errorWithDomain:(NSString *)domain code:(NSInteger)code localizedFormat:(NSString *)localizedFormat arguments:(va_list)argList;

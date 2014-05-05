@@ -56,7 +56,7 @@
 	[self setup];
 }
 
-- (id)init
+- (instancetype)init
 {
 	if(self = [super init]) {
 		[self setup];
@@ -165,13 +165,13 @@
 	return result;
 }
 
-- (void)setRowForKeyPath:(NSString*)keyPath disabled:(BOOL)disabled withRowAnimation:(UITableViewRowAnimation)animation
+- (void)setRowForKeyPath:(NSString*)keyPath enabled:(BOOL)enabled withRowAnimation:(UITableViewRowAnimation)animation
 {
 	NSIndexPath *indexPath = [self indexPathOfRowForKeyPath:keyPath];
 	if(indexPath != nil) {
 		CTableRowItem *row = [self rowAtIndexPath:indexPath];
-		if(row.disabled != disabled) {
-			row.disabled = disabled;
+		if(row.enabled != enabled) {
+			row.enabled = enabled;
 			[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:animation];
 		}
 	}
@@ -377,11 +377,9 @@
 	return [self rowsForSection:section].count;
 }
 
-- (CRowItemTableViewCell*)createCellWithCellType:(NSString*)cellType reuseIdentifier:(NSString*)reuseIdentifier
+- (CRowItemTableViewCell*)newCellWithCellType:(NSString*)cellType reuseIdentifier:(NSString*)reuseIdentifier
 {
-	CRowItemTableViewCell *cell = nil;
-	cell = (CRowItemTableViewCell*)[NSObject newInstanceOfClassNamed:cellType];
-	cell = [cell initWithReuseIdentifier:reuseIdentifier];
+	CRowItemTableViewCell *cell = [(CRowItemTableViewCell*)[NSObject newInstanceOfClassNamed:cellType] initWithReuseIdentifier:reuseIdentifier];
 	cell.delegate = self;
     if([self.delegate respondsToSelector:@selector(tableManager:prepareCell:)]) {
         [self.delegate tableManager:self prepareCell:cell];
@@ -429,14 +427,14 @@
 	}
 }
 
-- (CRowItemTableViewCell *)createCellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CRowItemTableViewCell *)newCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	CRowItemTableViewCell *cell = nil;
 	
 	CTableRowItem *rowItem = [self rowAtIndexPath:indexPath];
 	NSString *cellType = rowItem.cellType;
 	NSString *reuseIdentifier = cellType;
-	cell = [self createCellWithCellType:cellType reuseIdentifier:reuseIdentifier];
+	cell = [self newCellWithCellType:cellType reuseIdentifier:reuseIdentifier];
 	
 	return cell;
 }
@@ -452,7 +450,7 @@
 	if(cell == nil) {
 		cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
 		if(cell == nil) {
-			cell = [self createCellForRowAtIndexPath:indexPath];
+			cell = [self newCellForRowAtIndexPath:indexPath];
 			if(self.cachesAllCells) {
 				[self setCachedCell:cell forRowAtIndexPath:indexPath];
 			}
@@ -469,7 +467,7 @@
 
     CRowItemTableViewCell *cell = [self cachedCellForRowAtIndexPath:indexPath];
     if(cell == nil) {
-        cell = [self createCellForRowAtIndexPath:indexPath];
+        cell = [self newCellForRowAtIndexPath:indexPath];
         if(self.cachesAllCells) {
             [self setCachedCell:cell forRowAtIndexPath:indexPath];
         }
@@ -626,6 +624,12 @@
             }
         }];
     }
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+//    CLogDebug(nil, @"accessoryButtonTappedForRowWithIndexPath:%@", indexPath);
+	CTableRowItem *rowItem = [self rowAtIndexPath:indexPath];
+    [self.delegate tableManager:self didTapAccessoryButtonForRow:rowItem atIndexPath:indexPath];
 }
 
 #pragma mark - @protocol CTableItemDelegate

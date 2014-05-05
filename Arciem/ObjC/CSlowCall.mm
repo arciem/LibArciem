@@ -37,7 +37,7 @@
 @synthesize isArmed = isArmed_;
 @synthesize block = block_;
 
-- (id)initWithDelay:(NSTimeInterval)delay target:(id)target selector:(SEL)selector
+- (instancetype)initWithDelay:(NSTimeInterval)delay target:(id)target selector:(SEL)selector
 {
 	if(self = [super init]) {
 		delay_ = delay;
@@ -48,7 +48,7 @@
 	return self;
 }
 
-- (id)initWithDelay:(NSTimeInterval)delay block:(void (^)(id object))block
+- (instancetype)initWithDelay:(NSTimeInterval)delay block:(void (^)(id object))block
 {
 	if(self = [super init]) {
 		delay_ = delay;

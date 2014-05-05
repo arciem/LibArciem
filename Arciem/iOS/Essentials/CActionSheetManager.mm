@@ -28,7 +28,7 @@
 
 @implementation CActionSheetManager
 
-- (id)init {
+- (instancetype)init {
 	if((self = [super init])) {
 		self.actionSheets = [NSMutableArray array];
 		self.completionBlocks = [NSMutableArray array];

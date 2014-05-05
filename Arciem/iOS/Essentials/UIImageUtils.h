@@ -29,6 +29,7 @@
 + (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius;
 + (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor;
 + (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier;
++ (UIImage *)newEmbossedImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor;
 + (UIImage *)newEtchedImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor glossAlpha:(CGFloat)glossAlpha;
 + (UIImage *)newEtchedImageWithShapeImage:(UIImage *)shapeImage backgroundImage:(UIImage *)backgroundImage glossAlpha:(CGFloat)glossAlpha;
 + (UIImage *)newEtchedButtonImageWithSize:(CGSize)size scale:(CGFloat)scale tintColor:(UIColor *)tintColor cornerRadius:(CGFloat)cornerRadius glossAlpha:(CGFloat)glossAlpha;

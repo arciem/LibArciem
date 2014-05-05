@@ -27,7 +27,7 @@
     [self syncTitleLabelToRowItem];
 
 	self.accessoryType = IsEmptyString(self.tableActionItem.actionItem.actionValue) ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDisclosureIndicator;
-//    self.accessoryView.hidden = self.rowItem.disabled;
+//    self.accessoryView.hidden = !self.rowItem.enabled;
 }
 
 - (CActionTableRowItem*)tableActionItem {
@@ -48,7 +48,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.accessoryView.alpha = self.rowItem.disabled ? 0.5 : 1.0;
+    self.accessoryView.alpha = self.rowItem.enabled ? 1.0 : 0.5;
 }
 
 - (NSUInteger)validationViewsNeeded {

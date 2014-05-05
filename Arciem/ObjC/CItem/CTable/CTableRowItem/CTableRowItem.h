@@ -30,7 +30,7 @@
 @property (nonatomic, getter = isReorderable) BOOL reorderable;
 @property (nonatomic) NSInteger indentationLevel;
 
-- (id)initWithKey:(NSString*)key title:(NSString*)title models:(NSArray*)models;
-- (id)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model;
+- (instancetype)initWithKey:(NSString*)key title:(NSString*)title models:(NSArray*)models;
+- (instancetype)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model;
 
 @end

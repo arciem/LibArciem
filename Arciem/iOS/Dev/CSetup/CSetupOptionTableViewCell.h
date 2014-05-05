@@ -23,7 +23,7 @@
 
 @property(nonatomic) CItem* option;
 
-- (id)initWithReuseIdentifier:(NSString*)reuseIdentifier;
+- (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier;
 
 // behavior provided by subclasses
 - (void)syncToOption;

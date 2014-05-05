@@ -19,14 +19,13 @@
 #import "CNetworkActivity.h"
 #import "CLog.h"
 #import "ObjectUtils.h"
+#import "ThreadUtils.h"
 
 @class CNetworkActivityIndicator;
 
 static NSUInteger sNextSequenceNumber = 1;
 static const NSTimeInterval kTimerInterval = 0.1;
 static const NSTimeInterval kIndicatorHysteresisInterval = 0.2;
-static CNetworkActivityIndicator* sSharedIndicator = nil;
-static NSMutableArray* sActivities = nil;
 static NSTimeInterval sLastRemoveTime = 0;
 
 @interface CNetworkActivity ()
@@ -41,6 +40,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 
 @property (nonatomic) NSTimer* timer;
 @property (nonatomic) NSInteger activationsCount;
+@property(readonly, nonatomic) NSOperationQueue *queue;
 
 + (CNetworkActivityIndicator*)sharedIndicator;
 - (void)addActivity;
@@ -50,67 +50,49 @@ static NSTimeInterval sLastRemoveTime = 0;
 
 @implementation CNetworkActivity
 
-@synthesize sequenceNumber = sequenceNumber_;
-@synthesize name = name_;
-@synthesize indicator = indicator_;
-@synthesize backgroundTaskIdentifier = backgroundTaskIdentifier_;
-
 - (NSString*)description
 {
 	return [self formatObjectWithValues:@[[self formatValueForKey:@"sequenceNumber" compact:YES],
 										 [self formatBoolValueForKey:@"hasIndicator" compact:YES]]];
 }
 
-- (id)initWithIndicator:(BOOL)indicator
+- (instancetype)initWithIndicator:(BOOL)indicator
 {
-	@synchronized([self class]) {
-//		CLogSetTagActive(@"NETWORK_ACTIVITY", YES);
-		if((self = [super init])) {
-			self.sequenceNumber = sNextSequenceNumber++;
-			self.indicator = indicator;
-			CLogDebug(@"NETWORK_ACTIVITY", @"%@ init", self);
-			if(sActivities == nil) {
-				sActivities = [NSMutableArray new];
-			}
-			[sActivities addObject:[NSValue valueWithNonretainedObject:self]];
-			if(self.hasIndicator) {
-				[[CNetworkActivityIndicator sharedIndicator] addActivity];
-			}
-            BSELF;
-			self.backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-				[[UIApplication sharedApplication] endBackgroundTask:bself.backgroundTaskIdentifier];
-				bself.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
-			}];
-		}
-	}
+    if(self = [super init]) {
+        self.sequenceNumber = sNextSequenceNumber++;
+        self.indicator = indicator;
+        CLogDebug(@"NETWORK_ACTIVITY", @"%@ init", self);
+        if(self.hasIndicator) {
+            [[CNetworkActivityIndicator sharedIndicator] addActivity];
+        }
+        BSELF;
+        __block UIBackgroundTaskIdentifier taskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+            [[UIApplication sharedApplication] endBackgroundTask:taskIdentifier];
+            taskIdentifier = UIBackgroundTaskInvalid;
+            bself.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+        }];
+        self.backgroundTaskIdentifier = taskIdentifier;
+    }
 	
 	return self;
 }
 
-- (id)init
+- (instancetype)init
 {
 	return [self initWithIndicator:NO];
 }
 
 - (void)dealloc
 {
-	@synchronized([self class]) {
-		CLogDebug(@"NETWORK_ACTIVITY", @"%@ dealloc", self);
-		for(NSValue* v in sActivities) {
-			if([v nonretainedObjectValue] == self) {
-				[sActivities removeObject:v];
-				sLastRemoveTime = [NSDate timeIntervalSinceReferenceDate];
-				if(self.hasIndicator) {
-					[[CNetworkActivityIndicator sharedIndicator] removeActivity];
-				}
-				if(self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
-					[[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
-					self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
-				}
-				break;
-			}
-		}
-	}
+    CLogDebug(@"NETWORK_ACTIVITY", @"%@ dealloc", self);
+    sLastRemoveTime = [NSDate timeIntervalSinceReferenceDate];
+    if(self.hasIndicator) {
+        [[CNetworkActivityIndicator sharedIndicator] removeActivity];
+    }
+    if(self.backgroundTaskIdentifier != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskIdentifier];
+        self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+    }
 }
 
 + (CNetworkActivity*)activityWithIndicator:(BOOL)indicator
@@ -126,7 +108,17 @@ static NSTimeInterval sLastRemoveTime = 0;
 @synthesize timer = timer_;
 @synthesize activationsCount = activationsCount_;
 
-- (id)init
+- (NSOperationQueue *)queue {
+    static NSOperationQueue *q;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        q = [NSOperationQueue new];
+    });
+    
+    return q;
+}
+
+- (instancetype)init
 {
 	if((self = [super init])) {
 		self.timer = [NSTimer timerWithTimeInterval:kTimerInterval target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
@@ -138,50 +130,75 @@ static NSTimeInterval sLastRemoveTime = 0;
 
 + (CNetworkActivityIndicator*)sharedIndicator
 {
-	if(sSharedIndicator == nil) {
-		sSharedIndicator = [CNetworkActivityIndicator new];
-	}
+    static CNetworkActivityIndicator *indicator;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        indicator = [CNetworkActivityIndicator new];
+    });
 	
-	return sSharedIndicator;
+	return indicator;
 }
 
 - (void)turnOnIndicator
 {
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+#if TESTING
+    BSELF;
+#endif
+    [self.queue performSynchronousOperationWithBlock:^{
+        UIApplication *app = [UIApplication sharedApplication];
+        if(!app.networkActivityIndicatorVisible) {
+            CLogDebug(@"NETWORK_ACTIVITY", @"%@ turnOnIndicator", bself);
+            app.networkActivityIndicatorVisible = YES;
+        }
+    }];
 }
 
 - (void)turnOffIndicator
 {
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+#if TESTING
+    BSELF;
+#endif
+    [self.queue performSynchronousOperationWithBlock:^{
+        UIApplication *app = [UIApplication sharedApplication];
+        if(app.networkActivityIndicatorVisible) {
+            CLogDebug(@"NETWORK_ACTIVITY", @"%@ turnOffIndicator", bself);
+            app.networkActivityIndicatorVisible = NO;
+        }
+    }];
 }
 
 - (void)timerFired:(NSTimer*)timer
 {
-	@synchronized(self) {
-		if(self.activationsCount == 0) {
+    BSELF;
+    [self.queue performSynchronousOperationWithBlock:^{
+//		CLogDebug(@"NETWORK_ACTIVITY", @"%@ timerFired activationsCount:%d", bself, bself.activationsCount);
+		if(bself.activationsCount == 0) {
 			if([NSDate timeIntervalSinceReferenceDate] - sLastRemoveTime > kIndicatorHysteresisInterval) {
-				[self turnOffIndicator];
+				[bself turnOffIndicator];
 			}
-		} else {
-			[self turnOnIndicator];
 		}
-	}
+	}];
 }
 
 - (void)addActivity
 {
-	@synchronized(self) {
-		self.activationsCount++;
-		CLogDebug(@"NETWORK_ACTIVITY", @"%@ addActivity: %d", self, self.activationsCount);
-	}
+    BSELF;
+    [self.queue performSynchronousOperationWithBlock:^{
+		bself.activationsCount++;
+        if(bself.activationsCount == 1) {
+            [bself turnOnIndicator];
+        }
+		CLogDebug(@"NETWORK_ACTIVITY", @"%@ addActivity activationsCount:%d", bself, bself.activationsCount);
+	}];
 }
 
 - (void)removeActivity
 {
-	@synchronized(self) {
-		self.activationsCount--;
-		CLogDebug(@"NETWORK_ACTIVITY", @"%@ removeActivity: %d", self, self.activationsCount);
-	}
+    BSELF;
+    [self.queue performSynchronousOperationWithBlock:^{
+		bself.activationsCount--;
+		CLogDebug(@"NETWORK_ACTIVITY", @"%@ removeActivity activationsCount:%d", bself, bself.activationsCount);
+	}];
 }
 
 @end

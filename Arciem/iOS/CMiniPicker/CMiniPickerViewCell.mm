@@ -38,7 +38,7 @@
 @synthesize model = _model;
 @synthesize onDarkBackground = _onDarkBackground;
 
-- (UILabel*)createLabel
+- (UILabel*)newLabel
 {
     UILabel* label = [UILabel new];
     label.numberOfLines = 0;
@@ -149,7 +149,7 @@
         columns = @[column];
     }
     for(id<CMiniPickerViewCellColumn> column in columns) {
-        UILabel* label = [self createLabel];
+        UILabel* label = [self newLabel];
         NSAttributedString *string = column.text;
         if(self.font != nil) {
             NSMutableAttributedString *mstring = [string mutableCopy];
@@ -208,7 +208,7 @@
 
 @implementation CMiniPickerViewCellColumn
 
-- (id)initWithText:(NSAttributedString*)text lines:(NSUInteger)lines alignment:(NSTextAlignment)alignment
+- (instancetype)initWithText:(NSAttributedString*)text lines:(NSUInteger)lines alignment:(NSTextAlignment)alignment
 {
     if(self = [super init]) {
         self.text = text;

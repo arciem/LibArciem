@@ -53,7 +53,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 @synthesize validatesAutomatically = _validatesAutomatically;
 @synthesize required = _required;
 @synthesize hidden = _hidden;
-@synthesize disabled = _disabled;
+@synthesize enabled = _enabled;
 @synthesize selectable = _selectable;
 @synthesize selected = _selected;
 @synthesize validating = _validating;
@@ -72,7 +72,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 	// behavior provided by subclasses
 }
 
-- (id)initWithDictionary:(NSDictionary*)dict {
+- (instancetype)initWithDictionary:(NSDictionary*)dict NS_RETURNS_RETAINED {
 	NSMutableDictionary *mutableDict = nil;
 	if(dict == nil) {
 		mutableDict = [NSMutableDictionary dictionary];
@@ -95,7 +95,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 		_dict = mutableDict;
 		[self incrementCurrentRevision];
 		_required = [_dict[@"required"] boolValue];
-		_disabled = [_dict[@"disabled"] boolValue];
+		_enabled = ![_dict[@"disabled"] boolValue];
 		_hidden = [_dict[@"hidden"] boolValue];
         _selectable = [_dict[@"selectable"] boolValue];
         _selected = [_dict[@"selected"] boolValue];
@@ -115,7 +115,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 	return self;
 }
 
-- (id)initWithJSONRepresentation:(NSString *)json {
+- (instancetype)initWithJSONRepresentation:(NSString *)json NS_RETURNS_RETAINED {
 	NSData *data = [json dataUsingEncoding:NSUTF8StringEncoding];
 	NSError *error = nil;
 	NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
@@ -138,7 +138,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 	return [self newItemForResourceName:resourceName withExtension:@"json"];
 }
 
-- (id)init {
+- (instancetype)init {
 	if(self = [self initWithDictionary:nil]) {
 	}
 	
@@ -170,7 +170,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 	item->_validatesAutomatically = self.validatesAutomatically;
 	item->_required = self.required;
 	item->_hidden = self.hidden;
-	item->_disabled = self.disabled;
+	item->_enabled = self.enabled;
 	
     item->_selectable = self.selectable;
     item->_selected = self.selected;
@@ -316,7 +316,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
              [self formatCountForKey:@"subitems" hidingIfZero:YES],
              [self formatValueForKey:@"subitemErrors" compact:compact],
              [self formatBoolValueForKey:@"validatesAutomatically" compact:compact hidingIf:NO],
-             [self formatBoolValueForKey:@"disabled" compact:compact hidingIf:NO],
+             [self formatBoolValueForKey:@"enabled" compact:compact hidingIf:YES],
              [self formatBoolValueForKey:@"selectable" compact:compact hidingIf:NO],
              [self formatBoolValueForKey:@"selected" compact:compact hidingIf:NO]];
 }
@@ -331,6 +331,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (void)printHierarchy:(CItem*)item indent:(NSString*)indent level:(int)level {
+#if TESTING
 	NSString *activePrefix = self.active ? @"! " : @"  ";
 	NSString *statePrefix;
 	switch(item.state) {
@@ -352,7 +353,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 	}
 	NSString *newPrefix = item.fresh ? @"FRS" : @"   ";
 	NSString *reqPrefix = item.required ? @"REQ" : @"   ";
-	
+
 	NSArray *prefixes = @[activePrefix, statePrefix, newPrefix, reqPrefix];
 	NSString *prefix = [NSString stringWithComponents:prefixes separator:@" "];
 	CLogPrint(@"%@%@%3d %@", prefix, indent, level, [item descriptionCompact:YES]);
@@ -362,6 +363,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 			[self printHierarchy:subitem indent:indent level:level+1];
 		}
 	}
+#endif
 }
 
 - (void)printHierarchy {
@@ -865,7 +867,10 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 #pragma mark - Validation
 
 // may be overridden
-- (NSError*)validate {
+- (NSError*)validateValue {
+	[self disarmValidate];
+    self.needsValidation = NO;
+
 	NSError *error = nil;
 	
 	if(self.required && self.empty) {
@@ -885,7 +890,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 
 // may be overridden
 - (void)validateWithCompletion:(void (^)(NSError *error))completion {
-	NSError *error = [self validate];
+	NSError *error = [self validateValue];
 	completion(error);
 }
 
@@ -903,7 +908,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 
 - (void)validateSubtree {
 	if(self.needsValidation) {
-		self.needsValidation = NO;
+//		self.needsValidation = NO;
 		[self incrementValidationsInProgress];
 		self.error = nil;
 		self.subitemErrors = nil;
@@ -931,7 +936,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (void)validateHierarchy {
-	[self disarmValidate];
+//	[self disarmValidate];
 	
 	if(!self.validating) {
 		[self validateSubtree];
@@ -985,21 +990,21 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 	return [result copy];
 }
 
-#pragma mark - @property disabled
+#pragma mark - @property enabled
 
-+ (BOOL)automaticallyNotifiesObserversOfDisabled {
++ (BOOL)automaticallyNotifiesObserversOfEnabled {
 	return NO;
 }
 
-- (BOOL)isDisabled {
-	return _disabled;
+- (BOOL)isEnabled {
+	return _enabled;
 }
 
-- (void)setDisabled:(BOOL)disabled {
-	if(_disabled != disabled) {
-		[self willChangeValueForKey:@"disabled"];
-		_disabled = disabled;
-		[self didChangeValueForKey:@"disabled"];
+- (void)setEnabled:(BOOL)enabled {
+	if(_enabled != enabled) {
+		[self willChangeValueForKey:@"enabled"];
+		_enabled = enabled;
+		[self didChangeValueForKey:@"enabled"];
 	}
 }
 

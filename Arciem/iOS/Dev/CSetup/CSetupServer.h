@@ -18,10 +18,10 @@
 
 @interface CSetupServer : NSObject <NSCopying>
 
-- (id)init;
-- (id)initWithName:(NSString*)name baseURL:(NSURL*)baseURL;
-- (id)initWithName:(NSString *)name baseURLString:(NSString*)baseURLString;
-- (id)initWithPropertyListRepresentation:(id)propertyList;
+- (instancetype)init;
+- (instancetype)initWithName:(NSString*)name baseURL:(NSURL*)baseURL;
+- (instancetype)initWithName:(NSString *)name baseURLString:(NSString*)baseURLString;
+- (instancetype)initWithPropertyListRepresentation:(id)propertyList;
 
 + (CSetupServer*)serverWithName:(NSString*)name baseURLString:(NSString*)baseURLString;
 

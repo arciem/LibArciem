@@ -32,7 +32,7 @@
 
 - (BOOL)isRowSelectable
 {
-	return !self.disabled;
+	return self.enabled;
 }
 
 @end

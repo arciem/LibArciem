@@ -49,7 +49,7 @@ extern NSString* const kDimensionTemperature;
 @property(nonatomic, retain, readonly) NSString* name;
 @property(nonatomic, retain, readonly) CUnit* baseUnit;
 
-- (id)initWithIdentifier:(NSString*)identifier name:(NSString*)name;
+- (instancetype)initWithIdentifier:(NSString*)identifier name:(NSString*)name;
 + (CDimension*)dimensionWithIdentifier:(NSString*)identifier name:(NSString*)name;
 
 @end
@@ -62,7 +62,7 @@ extern NSString* const kDimensionTemperature;
 @property(nonatomic, copy, readonly) double(^toBase)(double);
 @property(nonatomic, copy, readonly) double(^fromBase)(double);
 
-- (id)initWithSymbol:(NSString*)symbol name:(NSString*)name dimension:(CDimension*)dimension;
+- (instancetype)initWithSymbol:(NSString*)symbol name:(NSString*)name dimension:(CDimension*)dimension;
 + (CUnit*)unitWithSymbol:(NSString*)symbol name:(NSString*)name dimension:(CDimension*)dimension;
 
 @end
@@ -73,7 +73,7 @@ extern NSString* const kDimensionTemperature;
 @property(nonatomic, readonly) double value;
 @property(nonatomic, retain, readonly) CUnit* unit;
 
-- (id)initWithValue:(double)value unit:(NSString*)unit;
+- (instancetype)initWithValue:(double)value unit:(NSString*)unit;
 - (CQuantity*)quantityWithValue:(double)value unit:(NSString*)unit;
 
 @end

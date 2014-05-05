@@ -326,20 +326,20 @@ NSString *const CDidExitTextFieldNotification = @"CDidExitTextFieldNotification"
 
 	[self setNumberOfTextFieldsTo:self.models.count];
 
+    BSELF;
     self.selectableObserver = [CObserver newObserverWithKeyPath:@"selectable" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-        [self syncToSelectable];
+        [bself syncToSelectable];
     }];
     
     [self syncToSelectable];
     
     self.selectedObserver = [CObserver newObserverWithKeyPath:@"selected" ofObject:self.rowItem.model action:^(id object, id newValue, id oldValue, NSKeyValueChange kind, NSIndexSet *indexes) {
-        [self syncToSelected];
+        [bself syncToSelected];
     }];
     
     [self syncToSelected];
     
     self.modelObservers = [NSMutableArray new];
-    BSELF;
 	[self.textFields enumerateObjectsUsingBlock:^(UITextField* textField, NSUInteger index, BOOL *stop) {
 		CItem* model = (bself.models)[index];
 
@@ -348,7 +348,7 @@ NSString *const CDidExitTextFieldNotification = @"CDidExitTextFieldNotification"
         
         UIToolbar *toolbar = [UIToolbar new];
         UIBarButtonItem *spacerItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        UIBarButtonItem *nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:self action:@selector(nextButtonTapped:)];
+        UIBarButtonItem *nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStyleBordered target:bself action:@selector(nextButtonTapped:)];
         NSArray *items = @[spacerItem, nextButtonItem];
         toolbar.items = items;
         textField.inputAccessoryView = toolbar;
@@ -516,7 +516,7 @@ NSString *const CDidExitTextFieldNotification = @"CDidExitTextFieldNotification"
     [textField layoutIfNeeded];
     
 	CStringItem* model = [self modelForTextField:textField];
-	[model validate];
+	[model validateValue];
 	model.editing = NO;
 	self.activeItem = nil;
     

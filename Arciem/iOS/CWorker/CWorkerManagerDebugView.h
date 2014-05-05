@@ -21,6 +21,6 @@
 
 @interface CWorkerManagerDebugView : CView
 
-- (id)initWithFrame:(CGRect)frame workerManager:(CWorkerManager*)workerManager;
+- (instancetype)initWithFrame:(CGRect)frame workerManager:(CWorkerManager*)workerManager;
 
 @end

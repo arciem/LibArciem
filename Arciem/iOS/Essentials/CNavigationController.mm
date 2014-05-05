@@ -59,7 +59,7 @@ NSString *const CNavigationControllerDidShowViewControllerNotification = @"CNavi
     CLogTrace(@"STATE_RID", @"%@ setup restorationIdentifier:%@", self, self.restorationIdentifier);
 }
 
-- (id)initWithRootViewController:(UIViewController *)rootViewController
+- (instancetype)initWithRootViewController:(UIViewController *)rootViewController
 {
 	if(self = [super initWithRootViewController:rootViewController]) {
 		CLogTrace(@"C_NAVIGATION_CONTROLLER", @"%@ initWithRootViewController:", self, rootViewController);

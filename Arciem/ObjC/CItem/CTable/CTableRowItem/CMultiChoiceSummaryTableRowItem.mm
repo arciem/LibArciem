@@ -20,7 +20,7 @@
 
 @implementation CMultiChoiceSummaryTableRowItem
 
-- (id)initWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
+- (instancetype)initWithKey:(NSString*)key title:(NSString*)title multiChoiceItem:(CMultiChoiceItem*)item
 {
 	if(self = [super initWithKey:key title:title model:item]) {
 		if(self.model.subitems.count <= 4) {

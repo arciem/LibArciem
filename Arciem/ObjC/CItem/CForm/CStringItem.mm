@@ -339,9 +339,9 @@ NSString* const CStringItemErrorDomain = @"CStringItemErrorDomain";
 #pragma clang diagnostic pop
 }
 
-- (NSError*)validate
+- (NSError*)validateValue
 {
-	NSError* error = [super validate];
+	NSError* error = [super validateValue];
 	
 	if(error == nil) {
 		if(self.currentLength > 0) {

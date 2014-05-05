@@ -36,7 +36,7 @@
 //	CLogSetTagActive(@"C_DUMMY_WORKER", YES);
 }
 
-- (id)initWithWorkTimeInterval:(NSTimeInterval)workTimeInterval
+- (instancetype)initWithWorkTimeInterval:(NSTimeInterval)workTimeInterval
 {
 	if(self = [super init]) {
 		self.workTimeInterval = workTimeInterval;

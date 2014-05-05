@@ -107,8 +107,8 @@
         _bevelColor1 = CGColorRetain([UIColor colorWithWhite:0.0 alpha:0.07].CGColor);
         _bevelColor2 = CGColorRetain([UIColor colorWithWhite:0.0 alpha:0.07].CGColor);
     } else {
-        _bevelColor1 = CGColorRetain([UIColor colorWithRGBValue:0x7a8696].CGColor);
-        _bevelColor2 = CGColorRetain([UIColor colorWithRGBValue:0xecedf2].CGColor);
+        _bevelColor1 = CGColorRetain([UIColor newColorWithRGBValue:0x7a8696].CGColor);
+        _bevelColor2 = CGColorRetain([UIColor newColorWithRGBValue:0xecedf2].CGColor);
     }
 }
 

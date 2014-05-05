@@ -22,7 +22,7 @@
 
 @synthesize server = server_;
 
-- (id)initWithReuseIdentifier:(NSString*)reuseIdentifier
+- (instancetype)initWithReuseIdentifier:(NSString*)reuseIdentifier
 {
 	if(self = [self initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier]) {
         self.translatesAutoresizingMaskIntoConstraints = NO;

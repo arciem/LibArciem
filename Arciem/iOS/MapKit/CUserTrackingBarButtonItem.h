@@ -20,7 +20,7 @@
 
 @interface CUserTrackingBarButtonItem : UIBarButtonItem
 
-- (id)initWithMapView:(MKMapView*)mapView;
+- (instancetype)initWithMapView:(MKMapView*)mapView;
 
 - (void)didChangeUserTrackingMode;
 

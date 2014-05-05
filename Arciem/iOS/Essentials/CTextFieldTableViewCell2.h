@@ -22,7 +22,7 @@
 
 @interface CTextFieldTableViewCell2 : UITableViewCell <UITextFieldDelegate>
 
-//- (id)initWithLabelText:(NSString*)labelText;
+//- (instancetype)initWithLabelText:(NSString*)labelText;
 
 @property (nonatomic, weak) id <CTextFieldTableViewCell2Delegate> delegate;
 

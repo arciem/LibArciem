@@ -72,7 +72,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 	self.notificationRunLoopModes = [NSArray arrayWithObject:NSRunLoopCommonModes];
 }
 
-- (id)initWithFrame:(CGRect)frame workerManager:(CWorkerManager*)workerManager
+- (instancetype)initWithFrame:(CGRect)frame workerManager:(CWorkerManager*)workerManager
 {
 	if(self = [self initWithFrame:frame]) {
 		self.workerManager = workerManager;

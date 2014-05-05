@@ -24,7 +24,7 @@
 @property (nonatomic) NSDate* minimumDate;
 @property (nonatomic) NSDate* maximumDate;
 
-- (id)init;
+- (instancetype)init;
 - (void)setDate:(NSDate *)date animated:(BOOL)animated;
 
 @end

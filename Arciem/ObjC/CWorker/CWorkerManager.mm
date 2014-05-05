@@ -47,7 +47,7 @@
     return instance;
 }
 
-- (id)init
+- (instancetype)init
 {
 	if(self = [super init]) {
 		self.queue = [NSOperationQueue new];
@@ -105,7 +105,7 @@
 - (void)startWorker:(CWorker*)worker
 {
 	@synchronized(self) {
-		NSOperation* operation = [worker createOperationForTry];
+		NSOperation* operation = [worker newOperationForTry];
 		if(operation != nil) {
 			[self.queue addOperation:operation];
 		}

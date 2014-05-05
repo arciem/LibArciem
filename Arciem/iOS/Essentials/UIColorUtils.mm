@@ -25,37 +25,62 @@
 
 @implementation UIColor(UIColorUtils)
 
-+ (UIColor*)colorWithDenormalizedHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha
++ (UIColor*)newColorWithDenormalizedHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha
 {
 	return [UIColor colorWithHue:hue / 360.0 saturation:saturation / 100.0 brightness:brightness / 100.0 alpha:alpha];
 }
 
 + (UIColor*)systemNavigationBlue
 {
-	return [self colorWithRGBValue:0x436a9b];
+    static UIColor *c;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        c = [self newColorWithRGBValue:0x436a9b];
+    });
+    return c;
 }
 
 + (UIColor*)systemHighlightBlue
 {
-	return [self colorWithRGBValue:0x0081ee];
+    static UIColor *c;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        c = [self newColorWithRGBValue:0x0081ee];
+    });
+    return c;
 }
 
 + (UIColor*)systemDoneButtonBlue
 {
-	return [[self colorWithRGBValue:0x0067df] colorByLighteningFraction:0.2];
+    static UIColor *c;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        c = [[self newColorWithRGBValue:0x0067df] newColorByLighteningFraction:0.2];
+    });
+    return c;
 }
 
 + (UIColor*)systemNavigationGray
 {
-	return [self colorWithRGBValue:0x666666];
+    static UIColor *c;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        c = [self newColorWithRGBValue:0x666666];
+    });
+    return c;
 }
 
 + (UIColor*)systemHighlightGray
 {
-	return [self colorWithRGBValue:0x000000];
+    static UIColor *c;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        c = [self newColorWithRGBValue:0x000000];
+    });
+    return c;
 }
 
-- (UIColor*)colorByInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction
+- (UIColor*)newColorByInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction
 {
 	CGColorRef color1 = CreateColorByConvertingToRGB(self.CGColor);
 	CGColorRef color2 = CreateColorByConvertingToRGB(color.CGColor);
@@ -70,7 +95,7 @@
 	return result;
 }
 
-- (UIColor*)colorByCircularInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction
+- (UIColor*)newColorByCircularInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction
 {
 	UIColor* result = self;
 	
@@ -90,7 +115,7 @@
 	return result;
 }
 
-- (UIColor*)colorByCircularInterpolatingToHue:(UIColor*)color fraction:(CGFloat)fraction
+- (UIColor*)newColorByCircularInterpolatingToHue:(UIColor*)color fraction:(CGFloat)fraction
 {
 	UIColor* result = self;
 	
@@ -107,7 +132,7 @@
 	return result;
 }
 
-- (UIColor*)colorByOffsettingHue:(CGFloat)offset
+- (UIColor*)newColorByOffsettingHue:(CGFloat)offset
 {
 	UIColor* result = self;
 	
@@ -120,7 +145,7 @@
 	return result;
 }
 
-- (UIColor*)colorByDarkeningFraction:(CGFloat)fraction
+- (UIColor*)newColorByDarkeningFraction:(CGFloat)fraction
 {
 	CGColorRef color = CreateColorByDarkening(self.CGColor, fraction);
 	UIColor* result = [UIColor colorWithCGColor:color];
@@ -129,7 +154,7 @@
 	return result;
 }
 
-- (UIColor*)colorByLighteningFraction:(CGFloat)fraction
+- (UIColor*)newColorByLighteningFraction:(CGFloat)fraction
 {
 	CGColorRef color = CreateColorByLightening(self.CGColor, fraction);
 	UIColor* result = [UIColor colorWithCGColor:color];
@@ -138,7 +163,7 @@
 	return result;
 }
 
-- (UIColor*)colorByColorBurnFraction:(CGFloat)fraction
+- (UIColor*)newColorByColorBurnFraction:(CGFloat)fraction
 {
 	CGColorRef color = CreateColorByColorBurn(self.CGColor, fraction);
 	UIColor* result = [UIColor colorWithCGColor:color];
@@ -147,7 +172,7 @@
 	return result;
 }
 
-- (UIColor*)colorByColorDodgeFraction:(CGFloat)fraction
+- (UIColor*)newColorByColorDodgeFraction:(CGFloat)fraction
 {
 	CGColorRef color = CreateColorByColorDodge(self.CGColor, fraction);
 	UIColor* result = [UIColor colorWithCGColor:color];
@@ -156,7 +181,7 @@
 	return result;
 }
 
-- (UIColor*)colorByDeepeningFraction:(CGFloat)fraction
+- (UIColor*)newColorByDeepeningFraction:(CGFloat)fraction
 {
 	UIColor* color = self;
 	
@@ -169,7 +194,7 @@
 	return color;
 }
 
-- (UIColor*)colorBySaturatingFraction:(CGFloat)fraction
+- (UIColor*)newColorBySaturatingFraction:(CGFloat)fraction
 {
 	UIColor* color = self;
 	
@@ -182,7 +207,7 @@
 	return color;
 }
 
-- (UIColor*)colorByDesaturatingFraction:(CGFloat)fraction
+- (UIColor*)newColorByDesaturatingFraction:(CGFloat)fraction
 {
 	UIColor* color = self;
 	
@@ -223,7 +248,7 @@
 	return closestColor;
 }
 
-+ (UIColor*)colorWithRGBValue:(NSUInteger)rgbValue
++ (UIColor*)newColorWithRGBValue:(NSUInteger)rgbValue
 {
 	return [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0
 						   green:((float)((rgbValue & 0xFF00) >> 8))/255.0
@@ -232,7 +257,7 @@
 			];
 }
 
-+ (UIColor*)colorWithRGBAValue:(NSUInteger)rgbaValue
++ (UIColor*)newColorWithRGBAValue:(NSUInteger)rgbaValue
 {
 	return [UIColor colorWithRed:((float)((rgbaValue & 0xFF000000) >> 24)) / 255.0
 						   green:((float)((rgbaValue & 0xFF0000) >> 16)) / 255.0
@@ -241,7 +266,7 @@
 			];
 }
 
-+ (UIColor*)colorWithString:(NSString*)str
++ (UIColor*)newColorWithString:(NSString*)str
 {
 	NSArray* comps = [str componentsSeparatedByString:@" "];
 	CGFloat red = [comps[0] floatValue];
@@ -318,7 +343,7 @@
 	return luminance;
 }
 
-- (UIColor*)colorWithRed:(CGFloat)red
+- (UIColor*)newColorWithRed:(CGFloat)red
 {
 	UIColor* color = self;
 	
@@ -330,7 +355,7 @@
 	return color;
 }
 
-- (UIColor*)colorWithGreen:(CGFloat)green
+- (UIColor*)newColorWithGreen:(CGFloat)green
 {
 	UIColor* color = self;
 	
@@ -342,7 +367,7 @@
 	return color;
 }
 
-- (UIColor*)colorWithBlue:(CGFloat)blue
+- (UIColor*)newColorWithBlue:(CGFloat)blue
 {
 	UIColor* color = self;
 	
@@ -354,7 +379,7 @@
 	return color;
 }
 
-- (UIColor*)colorWithAlpha:(CGFloat)alpha
+- (UIColor*)newColorWithAlpha:(CGFloat)alpha
 {
 	UIColor* color = self;
 	
@@ -366,7 +391,7 @@
 	return color;
 }
 
-- (UIColor*)colorWithHue:(CGFloat)hue
+- (UIColor*)newColorWithHue:(CGFloat)hue
 {
 	UIColor* color = self;
 	CGFloat h = 0.0, s = 0.0, b = 0.0, a = 0.0;
@@ -377,7 +402,7 @@
 	return color;
 }
 
-- (UIColor*)colorWithSaturation:(CGFloat)saturation
+- (UIColor*)newColorWithSaturation:(CGFloat)saturation
 {
 	UIColor* color = self;
 	CGFloat h = 0.0, s = 0.0, b = 0.0, a = 0.0;
@@ -388,7 +413,7 @@
 	return color;
 }
 
-- (UIColor*)colorWithBrightness:(CGFloat)brightness
+- (UIColor*)newColorWithBrightness:(CGFloat)brightness
 {
 	UIColor* color = self;
 	CGFloat h = 0.0, s = 0.0, b = 0.0, a = 0.0;
@@ -399,7 +424,7 @@
 	return color;
 }
 
-+ (UIColor*)randomColor
++ (UIColor*)newRandomColor
 {
     CGColorRef c = CreateRandomColor();
     UIColor* result = [UIColor colorWithCGColor:c];
@@ -407,18 +432,18 @@
     return result;
 }
 
-- (UIColor*)tintColorVariantForButtonHighlighted:(BOOL)highlighted
+- (UIColor*)newTintColorVariantForButtonHighlighted:(BOOL)highlighted
 {
 	UIColor* result = nil;
 	if(highlighted) {
-		result = [[self colorByColorBurnFraction:0.35] colorByDarkeningFraction:0.2];
+		result = [[self newColorByColorBurnFraction:0.35] newColorByDarkeningFraction:0.2];
 	} else {
-		result = [self colorByColorBurnFraction:0.25];
+		result = [self newColorByColorBurnFraction:0.25];
 	}
 	return result;
 }
 
-+ (UIImage*)diagonalRight:(BOOL)right patternImageWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale
++ (UIImage*)newDiagonalRight:(BOOL)right patternImageWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale
 {
 	CGRect imageBounds = CGRectZero;
 	imageBounds.size = size;
@@ -458,9 +483,9 @@
 	return image;
 }
 
-+ (UIColor*)diagonalRight:(BOOL)right patternColorWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale
++ (UIColor*)newDiagonalRight:(BOOL)right patternColorWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale
 {
-	UIImage *image = [self diagonalRight:right patternImageWithColor1:color1 color2:color2 size:size scale:scale];
+	UIImage *image = [self newDiagonalRight:right patternImageWithColor1:color1 color2:color2 size:size scale:scale];
 	UIColor* color = [[UIColor alloc] initWithPatternImage:image];
 	return color;
 }

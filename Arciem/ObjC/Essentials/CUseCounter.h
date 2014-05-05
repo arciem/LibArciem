@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2014 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
-@interface CNetworkActivity : NSObject
+@interface CUseToken : NSObject
+@end
 
-@property(nonatomic, readonly) NSUInteger sequenceNumber;
-@property(nonatomic) NSString* name;
-@property(nonatomic, readonly, getter = hasIndicator) BOOL indicator;
+@interface CUseCounter : NSObject
 
-- (instancetype)initWithIndicator:(BOOL)indicator;
++ (CUseCounter *)newUseCounterWithBeginUse:(dispatch_block_t)beginUse endUse:(dispatch_block_t)endUse;
 
-+ (CNetworkActivity*)activityWithIndicator:(BOOL)indicator;
+- (CUseToken *)newToken;
+- (void)removeToken:(CUseToken *)token;
 
 @end

@@ -21,7 +21,7 @@
 
 @interface CSwitchTableViewCell : UITableViewCell
 
-- (id)initWithLabelText:(NSString*)labelText;
+- (instancetype)initWithLabelText:(NSString*)labelText;
 - (void)addTarget:(id)target action:(SEL)sel;
 - (void)setOn:(BOOL)on animated:(BOOL)animated;
 - (BOOL)isOn;

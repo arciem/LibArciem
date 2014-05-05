@@ -31,7 +31,7 @@
 @synthesize switchView = switchView_;
 @dynamic boolOption;
 
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
 	if(self = [super initWithReuseIdentifier:reuseIdentifier]) {
 		self.selectionStyle = UITableViewCellSelectionStyleNone;

@@ -23,7 +23,7 @@ extern NSString *const CDidTapButtonNotification;
 @interface CButtonTableViewCell : CRowItemTableViewCell
 
 @property (readonly, nonatomic) UIButton* button;
-@property (readonly, nonatomic) BOOL isButtonEnabled;
+@property (readonly, nonatomic, getter = isButtonEnabled) BOOL buttonEnabled;
 
 - (void)syncToState;
 - (void)setNeedsSyncToState;

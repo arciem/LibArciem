@@ -27,7 +27,7 @@ static CSetup* sSetup = nil;
 @property (weak, nonatomic) UIWindow* window;
 @property (copy, nonatomic) void(^completion)(BOOL);
 
-- (id)initWithWindow:(UIWindow*)window completion:(void (^)(BOOL serverChanged))completion;
+- (instancetype)initWithWindow:(UIWindow*)window completion:(void (^)(BOOL serverChanged))completion;
 - (void)start;
 
 @end
@@ -42,7 +42,7 @@ static CSetup* sSetup = nil;
 	[sSetup start];
 }
 
-- (id)initWithWindow:(UIWindow*)window completion:(void (^)(BOOL serverChanged))completion
+- (instancetype)initWithWindow:(UIWindow*)window completion:(void (^)(BOOL serverChanged))completion
 {
 	if(self = [super init]) {
 		self.window = window;

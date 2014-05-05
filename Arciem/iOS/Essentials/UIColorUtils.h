@@ -21,12 +21,12 @@
 
 @interface UIColor(UIColorUtils)
 
-+ (UIColor*)colorWithDenormalizedHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
-+ (UIColor*)colorWithRGBValue:(NSUInteger)rgbValue;     // rrggbb eg. 0x3c001b
-+ (UIColor*)colorWithRGBAValue:(NSUInteger)rgbaValue;   // rrggbbaa eg. 0x3c001bff
-+ (UIColor*)colorWithString:(NSString*)str; // @"0.5 0.7 0.3 1.0" or @"0.5 0.7 0.3"
++ (UIColor*)newColorWithDenormalizedHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
++ (UIColor*)newColorWithRGBValue:(NSUInteger)rgbValue;     // rrggbb eg. 0x3c001b
++ (UIColor*)newColorWithRGBAValue:(NSUInteger)rgbaValue;   // rrggbbaa eg. 0x3c001bff
++ (UIColor*)newColorWithString:(NSString*)str; // @"0.5 0.7 0.3 1.0" or @"0.5 0.7 0.3"
 
-+ (UIColor*)randomColor;
++ (UIColor*)newRandomColor;
 
 + (UIColor*)systemNavigationBlue;
 + (UIColor*)systemHighlightBlue;
@@ -35,20 +35,20 @@
 + (UIColor*)systemNavigationGray;
 + (UIColor*)systemHighlightGray;
 
-+ (UIImage*)diagonalRight:(BOOL)right patternImageWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale;
-+ (UIColor*)diagonalRight:(BOOL)right patternColorWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale;
++ (UIImage*)newDiagonalRight:(BOOL)right patternImageWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale;
++ (UIColor*)newDiagonalRight:(BOOL)right patternColorWithColor1:(UIColor*)color1 color2:(UIColor*)color2 size:(CGSize)size scale:(CGFloat)scale;
 
-- (UIColor*)colorByInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
-- (UIColor*)colorByCircularInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
-- (UIColor*)colorByCircularInterpolatingToHue:(UIColor*)color fraction:(CGFloat)fraction;
-- (UIColor*)colorByOffsettingHue:(CGFloat)offset;
-- (UIColor*)colorByDarkeningFraction:(CGFloat)fraction;
-- (UIColor*)colorByLighteningFraction:(CGFloat)fraction;
-- (UIColor*)colorByColorBurnFraction:(CGFloat)fraction;
-- (UIColor*)colorByColorDodgeFraction:(CGFloat)fraction;
-- (UIColor*)colorByDeepeningFraction:(CGFloat)fraction;
-- (UIColor*)colorBySaturatingFraction:(CGFloat)fraction;
-- (UIColor*)colorByDesaturatingFraction:(CGFloat)fraction;
+- (UIColor*)newColorByInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
+- (UIColor*)newColorByCircularInterpolatingToColor:(UIColor*)color fraction:(CGFloat)fraction;
+- (UIColor*)newColorByCircularInterpolatingToHue:(UIColor*)color fraction:(CGFloat)fraction;
+- (UIColor*)newColorByOffsettingHue:(CGFloat)offset;
+- (UIColor*)newColorByDarkeningFraction:(CGFloat)fraction;
+- (UIColor*)newColorByLighteningFraction:(CGFloat)fraction;
+- (UIColor*)newColorByColorBurnFraction:(CGFloat)fraction;
+- (UIColor*)newColorByColorDodgeFraction:(CGFloat)fraction;
+- (UIColor*)newColorByDeepeningFraction:(CGFloat)fraction;
+- (UIColor*)newColorBySaturatingFraction:(CGFloat)fraction;
+- (UIColor*)newColorByDesaturatingFraction:(CGFloat)fraction;
 
 - (CGFloat)red;
 - (CGFloat)green;
@@ -59,14 +59,14 @@
 - (CGFloat)brightness;
 - (CGFloat)luminance;
 
-- (UIColor*)colorWithRed:(CGFloat)red;
-- (UIColor*)colorWithGreen:(CGFloat)green;
-- (UIColor*)colorWithBlue:(CGFloat)blue;
-- (UIColor*)colorWithAlpha:(CGFloat)alpha;
-- (UIColor*)colorWithHue:(CGFloat)hue;
-- (UIColor*)colorWithSaturation:(CGFloat)saturation;
-- (UIColor*)colorWithBrightness:(CGFloat)brightness;
+- (UIColor*)newColorWithRed:(CGFloat)red;
+- (UIColor*)newColorWithGreen:(CGFloat)green;
+- (UIColor*)newColorWithBlue:(CGFloat)blue;
+- (UIColor*)newColorWithAlpha:(CGFloat)alpha;
+- (UIColor*)newColorWithHue:(CGFloat)hue;
+- (UIColor*)newColorWithSaturation:(CGFloat)saturation;
+- (UIColor*)newColorWithBrightness:(CGFloat)brightness;
 
-- (UIColor*)tintColorVariantForButtonHighlighted:(BOOL)highlighted;
+- (UIColor*)newTintColorVariantForButtonHighlighted:(BOOL)highlighted;
 
 @end

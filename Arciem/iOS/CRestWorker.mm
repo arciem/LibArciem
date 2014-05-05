@@ -55,7 +55,7 @@ NSString *const CRestJSONMIMEType = @"application/json";
 //	CLogSetTagActive(@"C_REST_WORKER", YES);
 }
 
-- (id)initWithRequest:(NSURLRequest*)request
+- (instancetype)initWithRequest:(NSURLRequest*)request
 {
 	if(self = [super init]) {
 		self.request = request;
@@ -248,12 +248,12 @@ NSString *const CRestJSONMIMEType = @"application/json";
     [self performSelector:@selector(stopWorkerWaitLoop_) onThread:self.workerThread withObject:nil waitUntilDone:NO];
 }
 
-- (NSOperation*)createOperationForTry
+- (NSOperation*)newOperationForTry
 {
 	NSAssert(self.connection == nil, @"connection must not exist");
 	NSAssert(self.request != nil, @"request must exist");
 
-	return [super createOperationForTry];
+	return [super newOperationForTry];
 }
 
 - (void)updateTitleForError

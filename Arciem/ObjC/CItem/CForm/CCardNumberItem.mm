@@ -212,9 +212,9 @@ static NSString* const kJCBMinimalRegularExpression = @"^(?:2131|1800|35)";
     return result;
 }
 
-- (NSError*)validate
+- (NSError*)validateValue
 {
-	__block NSError* error = [super validate];
+	__block NSError* error = [super validateValue];
 	
 	if(error != nil) {
         self.cardType = nil;

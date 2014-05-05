@@ -37,7 +37,7 @@
 //	CLogSetTagActive(@"C_TABLE_ROW_ITEM", YES);
 }
 
-- (id)initWithKey:(NSString*)key title:(NSString*)title models:(NSArray*)models
+- (instancetype)initWithKey:(NSString*)key title:(NSString*)title models:(NSArray*)models
 {
 	if(self = [super init]) {
 		self.nonretainedModels = [NSMutableArray arrayWithCapacity:models.count];
@@ -51,7 +51,7 @@
 	return self;
 }
 
-- (id)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model
+- (instancetype)initWithKey:(NSString*)key title:(NSString*)title model:(CItem*)model
 {
 	NSArray* models = nil;
 	if(model != nil) {

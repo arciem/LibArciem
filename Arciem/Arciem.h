@@ -75,6 +75,7 @@
 #import "PropertyUtils.h"
 #import "StringUtils.h"
 #import "ThreadUtils.h"
+#import "CUseCounter.h"
 
 // CItem/CForm
 #import "CForm.h"
@@ -103,6 +104,7 @@
 #import "CNotifierViewController.h"
 #import "CDisclosureIndicator.h"
 #import "CBadgeView.h"
+#import "CTextureAtlas.h"
 
 // MapKit
 #import "CDebugAnnotation.h"

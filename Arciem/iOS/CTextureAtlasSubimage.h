@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2011 Arciem LLC
+ Copyright 2014 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -18,14 +18,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CNetworkActivity : NSObject
+@class CTextureAtlasImage;
 
-@property(nonatomic, readonly) NSUInteger sequenceNumber;
-@property(nonatomic) NSString* name;
-@property(nonatomic, readonly, getter = hasIndicator) BOOL indicator;
+@interface CTextureAtlasSubimage : NSObject
 
-- (instancetype)initWithIndicator:(BOOL)indicator;
+- (instancetype)initWithAtlasImage:(CTextureAtlasImage *)image dictionary:(NSDictionary *)dict;
 
-+ (CNetworkActivity*)activityWithIndicator:(BOOL)indicator;
+- (void)drawInRect:(CGRect)rect;
 
+@property (readonly, nonatomic) NSString *name;
+@property (readonly, nonatomic) CGSize sourceSize;
+@property (readonly, nonatomic, getter = isOpaque) BOOL opaque;
+@property (readonly, nonatomic) UIImage *image;
 @end

@@ -43,7 +43,7 @@
 	[self setup];
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
 		[self setup];
@@ -51,7 +51,7 @@
 	return self;
 }
 
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
 	if(self = [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
 	}
@@ -89,8 +89,9 @@
         _titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.opaque = NO;
+//        _titleLabel.font = self.font;
         _titleLabel.adjustsFontSizeToFitWidth = YES;
-        _titleLabel.minimumScaleFactor = 0.5;
+        _titleLabel.minimumScaleFactor = 0.6;
         _titleLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
         [self.contentView addSubview:_titleLabel];
     }

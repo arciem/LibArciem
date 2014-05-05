@@ -22,7 +22,7 @@
 
 @implementation CSetupTableViewController
 
-- (id)init
+- (instancetype)init
 {
 	if(self = [self initWithStyle:UITableViewStyleGrouped]) {
 	};
@@ -37,7 +37,7 @@
 	self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.bounds];
 	UIColor *color1 = [UIColor colorWithHue:0.588 saturation:0.091 brightness:0.793 alpha:1.000];
 	UIColor *color2 = [UIColor colorWithHue:0.577 saturation:0.078 brightness:0.812 alpha:1.000];
-	self.tableView.backgroundView.backgroundColor = [UIColor diagonalRight:NO patternColorWithColor1:color1 color2:color2 size:CGSizeMake(64, 64) scale:0.0];
+	self.tableView.backgroundView.backgroundColor = [UIColor newDiagonalRight:NO patternColorWithColor1:color1 color2:color2 size:CGSizeMake(64, 64) scale:0.0];
 }
 
 @end

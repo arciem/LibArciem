@@ -24,7 +24,7 @@
 @synthesize baseURL = baseURL_;
 @dynamic propertyListRepresentation;
 
-- (id)init
+- (instancetype)init
 {
 	if(self = [super init]) {
 		
@@ -33,7 +33,7 @@
 	return self;
 }
 
-- (id)initWithName:(NSString*)name baseURL:(NSURL*)baseURL
+- (instancetype)initWithName:(NSString*)name baseURL:(NSURL*)baseURL
 {
 	if(self = [self init]) {
 		self.name = name;
@@ -42,14 +42,14 @@
 	return self;
 }
 
-- (id)initWithName:(NSString *)name baseURLString:(NSString*)baseURLString
+- (instancetype)initWithName:(NSString *)name baseURLString:(NSString*)baseURLString
 {
 	if(self = [self initWithName:name baseURL:[NSURL URLWithString:baseURLString]]) {
 	}
 	return self;
 }
 
-- (id)initWithPropertyListRepresentation:(id)propertyList
+- (instancetype)initWithPropertyListRepresentation:(id)propertyList
 {
 	if(self = [self init]) {
 		self.name = propertyList[@"name"];

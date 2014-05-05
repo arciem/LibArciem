@@ -35,7 +35,7 @@ static NSString* const kClassLogTag = @"SHIELD_VIEW";
     //    CLogSetTagActive(kClassLogTag, YES);
 }
 
-- (id)initWithParentView:(UIView *)parentView {
+- (instancetype)initWithParentView:(UIView *)parentView {
     if(self = [super initWithFrame:parentView.bounds]) {
         self.parentView = parentView;
     }

@@ -32,7 +32,7 @@ static const CGFloat FONT_SIZE = 18;
 
 @implementation CSwitchTableViewCell
 
-- (id)initWithLabelText:(NSString*)labelText {
+- (instancetype)initWithLabelText:(NSString*)labelText {
 	if((self = [super initWithFrame:CGRectZero])) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
 
