@@ -23,7 +23,7 @@
 NSString *const CNavigationControllerWillShowViewControllerNotification = @"CNavigationControllerWillShowViewControllerNotification";
 NSString *const CNavigationControllerDidShowViewControllerNotification = @"CNavigationControllerDidShowViewControllerNotification";
 
-@interface CNavigationController () <UINavigationControllerDelegate>
+@interface CNavigationController () <UINavigationControllerDelegate, UIStateRestoring>
 
 @property (copy, nonatomic) dispatch_block_t willShowViewController;
 @property (copy, nonatomic) dispatch_block_t didShowViewController;
@@ -42,8 +42,21 @@ NSString *const CNavigationControllerDidShowViewControllerNotification = @"CNavi
     return self;
 }
 
+- (void)setup {
+    CLogTrace(@"STATE_RID", @"%@ setup restorationIdentifier:%@", self, self.restorationIdentifier);
+}
+
+- (void)awakeFromNib {
+    [self setup];
+}
+
 - (void)setDelegate:(id<UINavigationControllerDelegate>)delegate {
     NSAssert(NO, @"CNavigationController is its own delegate. Delegate may not be reassigned.");
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    CLogTrace(@"STATE_RID", @"%@ setup restorationIdentifier:%@", self, self.restorationIdentifier);
 }
 
 - (id)initWithRootViewController:(UIViewController *)rootViewController
@@ -53,6 +66,7 @@ NSString *const CNavigationControllerDidShowViewControllerNotification = @"CNavi
         
         CNavigationBar *navBar = [CNavigationBar new];
         [self setValue:navBar forKey:@"navigationBar"];
+        [self setup];
 	}
 	
 	return self;
@@ -200,6 +214,29 @@ NSString *const CNavigationControllerDidShowViewControllerNotification = @"CNavi
                                @"animated": @(animated)
                                };
     [[NSNotificationCenter defaultCenter] postNotificationName:CNavigationControllerDidShowViewControllerNotification object:self userInfo:userInfo];
+}
+
+#pragma mark - State Preservation and Restoration
+
+- (NSString *)restorationIdentifier {
+    NSString *rid = super.restorationIdentifier;
+    CLogTrace(@"STATE_RID", @"restorationIdentifier:%@", rid);
+    return rid;
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super encodeRestorableStateWithCoder:coder];
+    CLogTrace(@"STATE", @"encodeRestorableStateWithCoder: class:%@ restorationIdentifier:%@", NSStringFromClass(self.class), self.restorationIdentifier);
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super decodeRestorableStateWithCoder:coder];
+    CLogTrace(@"STATE", @"decodeRestorableStateWithCoder: class:%@ restorationIdentifier:%@", NSStringFromClass(self.class), self.restorationIdentifier);
+}
+
+- (void)applicationFinishedRestoringState {
+    [super applicationFinishedRestoringState];
+    CLogTrace(@"STATE", @"applicationFinishedRestoringState: class:%@ restorationIdentifier:%@", NSStringFromClass(self.class), self.restorationIdentifier);
 }
 
 @end
