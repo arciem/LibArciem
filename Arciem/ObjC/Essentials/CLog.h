@@ -29,11 +29,9 @@ typedef enum {
 	kLogAll = -2147483647	// The ALL has the lowest possible rank and is intended to turn on all logging.
 } CLogLevel;
 
-#if !defined(TESTING)
-#error TESTING is not defined.
-#endif
-
-#if TESTING == 1
+#ifdef DEBUG
+//#if 1
+#define LOGGING_ENABLED
 
 //#warning Logging Enabled
 

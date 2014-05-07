@@ -331,7 +331,7 @@ NSString *const CItemErrorDomain = @"CItemErrorDomain";
 }
 
 - (void)printHierarchy:(CItem*)item indent:(NSString*)indent level:(int)level {
-#if TESTING
+#ifdef DEBUG
 	NSString *activePrefix = self.active ? @"! " : @"  ";
 	NSString *statePrefix;
 	switch(item.state) {

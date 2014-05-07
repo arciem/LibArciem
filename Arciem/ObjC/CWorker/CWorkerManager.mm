@@ -21,15 +21,14 @@
 
 @interface CWorkerManager ()
 
-@property (strong, readwrite, nonatomic) NSOperationQueue* queue;
-@property (strong, readwrite, nonatomic) NSMutableSet* mutableWorkers;
+@property (readonly, nonatomic) NSMutableSet* mutableWorkers;
 
 @end
 
 @implementation CWorkerManager
 
-@synthesize queue = queue_;
-@synthesize mutableWorkers = mutableWorkers_;
+@synthesize queue = _queue;
+@synthesize mutableWorkers = _mutableWorkers;
 @dynamic workers;
 
 + (void)initialize
@@ -50,10 +49,10 @@
 - (instancetype)init
 {
 	if(self = [super init]) {
-		self.queue = [NSOperationQueue new];
-		self.queue.maxConcurrentOperationCount = 1;		// Make the framework user set it to something higher
+		_queue = [NSOperationQueue new];
+		_queue.maxConcurrentOperationCount = 1;		// Make the framework user set it to something higher
 		
-		self.mutableWorkers = [NSMutableSet set];
+		_mutableWorkers = [NSMutableSet set];
 	}
 	
 	return self;

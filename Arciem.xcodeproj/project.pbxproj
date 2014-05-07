@@ -6,22 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		039DC33816CC88A800B52A7F /* ArciemFramework */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 039DC33916CC88A800B52A7F /* Build configuration list for PBXAggregateTarget "ArciemFramework" */;
-			buildPhases = (
-				039DC33E16CC88E600B52A7F /* ShellScript */,
-			);
-			dependencies = (
-				039DC33D16CC88B600B52A7F /* PBXTargetDependency */,
-				039DC35116CC994D00B52A7F /* PBXTargetDependency */,
-			);
-			name = ArciemFramework;
-			productName = Framework;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		030F11FD181688AD0098DC59 /* CActionItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 030F11FB181688AD0098DC59 /* CActionItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		030F11FE181688AD0098DC59 /* CActionItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030F11FC181688AD0098DC59 /* CActionItem.mm */; };
@@ -47,6 +31,365 @@
 		032AEEF016DE66DA0024D14E /* CSystemSound.h in Headers */ = {isa = PBXBuildFile; fileRef = 032AEEEE16DE66D90024D14E /* CSystemSound.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		032AEEF116DE66DA0024D14E /* CSystemSound.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032AEEEF16DE66D90024D14E /* CSystemSound.mm */; };
 		032AEEF316DE67940024D14E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032AEEF216DE67940024D14E /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		0330EB8A191802F300A3DEF7 /* CActionItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030F11FC181688AD0098DC59 /* CActionItem.mm */; };
+		0330EB8B191802F300A3DEF7 /* CLog.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC12516CB398A00B52A7F /* CLog.mm */; };
+		0330EB8C191802F300A3DEF7 /* CObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC12716CB398A00B52A7F /* CObserver.mm */; };
+		0330EB8D191802F300A3DEF7 /* CSwitch.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC12916CB398A00B52A7F /* CSwitch.mm */; };
+		0330EB8E191802F300A3DEF7 /* DateTimeUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC12B16CB398A00B52A7F /* DateTimeUtils.mm */; };
+		0330EB8F191802F300A3DEF7 /* ErrorUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC12D16CB398A00B52A7F /* ErrorUtils.mm */; };
+		0330EB90191802F300A3DEF7 /* CUseCounter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0356A31F1905B49E002397ED /* CUseCounter.mm */; };
+		0330EB91191802F300A3DEF7 /* Geom.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC12F16CB398A00B52A7F /* Geom.mm */; };
+		0330EB92191802F300A3DEF7 /* I18nUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC13116CB398A00B52A7F /* I18nUtils.mm */; };
+		0330EB93191802F300A3DEF7 /* InvocationUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC13316CB398A00B52A7F /* InvocationUtils.mm */; };
+		0330EB94191802F300A3DEF7 /* CSectionItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030F12001816A1660098DC59 /* CSectionItem.mm */; };
+		0330EB95191802F300A3DEF7 /* JSONUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC13516CB398A00B52A7F /* JSONUtils.mm */; };
+		0330EB96191802F300A3DEF7 /* ObjectUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC13716CB398A00B52A7F /* ObjectUtils.mm */; };
+		0330EB97191802F300A3DEF7 /* PropertyUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC13916CB398A00B52A7F /* PropertyUtils.mm */; };
+		0330EB98191802F300A3DEF7 /* StringUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC13B16CB398A00B52A7F /* StringUtils.mm */; };
+		0330EB99191802F300A3DEF7 /* ThreadUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC13D16CB398A00B52A7F /* ThreadUtils.mm */; };
+		0330EB9A191802F300A3DEF7 /* random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC15F16CB3DF700B52A7F /* random.cpp */; };
+		0330EB9B191802F300A3DEF7 /* xtime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC16216CB3DF700B52A7F /* xtime.cpp */; };
+		0330EB9C191802F300A3DEF7 /* arc2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC16616CB3DF700B52A7F /* arc2.cpp */; };
+		0330EB9D191802F300A3DEF7 /* area.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC16816CB3DF700B52A7F /* area.cpp */; };
+		0330EB9E191802F300A3DEF7 /* areai.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC16A16CB3DF700B52A7F /* areai.cpp */; };
+		0330EB9F191802F300A3DEF7 /* bezier2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC16C16CB3DF700B52A7F /* bezier2.cpp */; };
+		0330EBA0191802F300A3DEF7 /* bezier2_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC16E16CB3DF700B52A7F /* bezier2_list.cpp */; };
+		0330EBA1191802F300A3DEF7 /* delta2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC17016CB3DF700B52A7F /* delta2.cpp */; };
+		0330EBA2191802F300A3DEF7 /* CTextureAtlasImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 036D26F118E3F67F00E48AFE /* CTextureAtlasImage.mm */; };
+		0330EBA3191802F300A3DEF7 /* delta2i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC17216CB3DF700B52A7F /* delta2i.cpp */; };
+		0330EBA4191802F300A3DEF7 /* delta3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC17416CB3DF700B52A7F /* delta3.cpp */; };
+		0330EBA5191802F300A3DEF7 /* geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC17616CB3DF700B52A7F /* geometry.cpp */; };
+		0330EBA6191802F300A3DEF7 /* line2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC17816CB3DF700B52A7F /* line2.cpp */; };
+		0330EBA7191802F300A3DEF7 /* orientation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC17A16CB3DF700B52A7F /* orientation.cpp */; };
+		0330EBA8191802F300A3DEF7 /* point2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC17C16CB3DF700B52A7F /* point2.cpp */; };
+		0330EBA9191802F300A3DEF7 /* point2_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC17E16CB3DF700B52A7F /* point2_list.cpp */; };
+		0330EBAA191802F300A3DEF7 /* point2i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC18016CB3DF700B52A7F /* point2i.cpp */; };
+		0330EBAB191802F300A3DEF7 /* point3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC18216CB3DF700B52A7F /* point3.cpp */; };
+		0330EBAC191802F300A3DEF7 /* volume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC18416CB3DF700B52A7F /* volume.cpp */; };
+		0330EBAD191802F300A3DEF7 /* CPaymentMethodSummaryItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E1A2180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.mm */; };
+		0330EBAE191802F300A3DEF7 /* wedge2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC18616CB3DF700B52A7F /* wedge2.cpp */; };
+		0330EBAF191802F300A3DEF7 /* gl_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC18816CB3DF700B52A7F /* gl_utils.cpp */; };
+		0330EBB0191802F300A3DEF7 /* murmur_hash_3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039DC18A16CB3DF700B52A7F /* murmur_hash_3.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
+		0330EBB1191802F300A3DEF7 /* CMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1BE16CB4B1200B52A7F /* CMatrix.mm */; };
+		0330EBB2191802F300A3DEF7 /* CMutableArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1C016CB4B1300B52A7F /* CMutableArray.mm */; };
+		0330EBB3191802F300A3DEF7 /* CQuantity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1C216CB4B1400B52A7F /* CQuantity.mm */; };
+		0330EBB4191802F300A3DEF7 /* CSlowCall.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1C416CB4B1500B52A7F /* CSlowCall.mm */; };
+		0330EBB5191802F300A3DEF7 /* NSIndexPathUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1C616CB4B1600B52A7F /* NSIndexPathUtils.mm */; };
+		0330EBB6191802F300A3DEF7 /* CBooleanItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1D516CB4C4400B52A7F /* CBooleanItem.mm */; };
+		0330EBB7191802F300A3DEF7 /* CCardNumberItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1D716CB4C4400B52A7F /* CCardNumberItem.mm */; };
+		0330EBB8191802F300A3DEF7 /* CDateItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1D916CB4C4400B52A7F /* CDateItem.mm */; };
+		0330EBB9191802F300A3DEF7 /* CEmailItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1DB16CB4C4400B52A7F /* CEmailItem.mm */; };
+		0330EBBA191802F300A3DEF7 /* CForm.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1DD16CB4C4400B52A7F /* CForm.mm */; };
+		0330EBBB191802F300A3DEF7 /* CMultiChoiceItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1DF16CB4C4400B52A7F /* CMultiChoiceItem.mm */; };
+		0330EBBC191802F300A3DEF7 /* CMultiTextItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1E116CB4C4400B52A7F /* CMultiTextItem.mm */; };
+		0330EBBD191802F300A3DEF7 /* CNoteItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1E316CB4C4400B52A7F /* CNoteItem.mm */; };
+		0330EBBE191802F300A3DEF7 /* CPasswordItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1E516CB4C4400B52A7F /* CPasswordItem.mm */; };
+		0330EBBF191802F300A3DEF7 /* CPhoneItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1E716CB4C4400B52A7F /* CPhoneItem.mm */; };
+		0330EBC0191802F300A3DEF7 /* CRepeatingItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1E916CB4C4400B52A7F /* CRepeatingItem.mm */; };
+		0330EBC1191802F300A3DEF7 /* CSpacerItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1EB16CB4C4400B52A7F /* CSpacerItem.mm */; };
+		0330EBC2191802F300A3DEF7 /* CStringItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1ED16CB4C4400B52A7F /* CStringItem.mm */; };
+		0330EBC3191802F300A3DEF7 /* CSubmitItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1EF16CB4C4400B52A7F /* CSubmitItem.mm */; };
+		0330EBC4191802F300A3DEF7 /* CItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1F116CB4C4400B52A7F /* CItem.mm */; };
+		0330EBC5191802F300A3DEF7 /* CTableItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1F416CB4C4400B52A7F /* CTableItem.mm */; };
+		0330EBC6191802F300A3DEF7 /* CActionTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1F716CB4C4400B52A7F /* CActionTableRowItem.mm */; };
+		0330EBC7191802F300A3DEF7 /* CAddRepeatingTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1F916CB4C4400B52A7F /* CAddRepeatingTableRowItem.mm */; };
+		0330EBC8191802F300A3DEF7 /* CCheckboxTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1FB16CB4C4400B52A7F /* CCheckboxTableRowItem.mm */; };
+		0330EBC9191802F300A3DEF7 /* CButtonTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1FD16CB4C4400B52A7F /* CButtonTableRowItem.mm */; };
+		0330EBCA191802F300A3DEF7 /* CCardNumberTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC1FF16CB4C4400B52A7F /* CCardNumberTableRowItem.mm */; };
+		0330EBCB191802F300A3DEF7 /* CMultiChoiceSummaryTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20116CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.mm */; };
+		0330EBCC191802F300A3DEF7 /* CNoteTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20316CB4C4400B52A7F /* CNoteTableRowItem.mm */; };
+		0330EBCD191802F300A3DEF7 /* CTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20516CB4C4400B52A7F /* CTableRowItem.mm */; };
+		0330EBCE191802F300A3DEF7 /* CStatusBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C8C9A7181ACEEC0019D97E /* CStatusBar.mm */; };
+		0330EBCF191802F300A3DEF7 /* CPaymentMethodSummaryItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E19A180E15BC00F74905 /* CPaymentMethodSummaryItem.mm */; };
+		0330EBD0191802F300A3DEF7 /* CSpacerTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20716CB4C4400B52A7F /* CSpacerTableRowItem.mm */; };
+		0330EBD1191802F300A3DEF7 /* CSummaryTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20916CB4C4400B52A7F /* CSummaryTableRowItem.mm */; };
+		0330EBD2191802F300A3DEF7 /* CTextFieldTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20B16CB4C4400B52A7F /* CTextFieldTableRowItem.mm */; };
+		0330EBD3191802F300A3DEF7 /* CTableSectionItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20D16CB4C4400B52A7F /* CTableSectionItem.mm */; };
+		0330EBD4191802F300A3DEF7 /* CTitleTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC20F16CB4C4400B52A7F /* CTitleTableRowItem.mm */; };
+		0330EBD5191802F300A3DEF7 /* CDummyWorker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC24C16CB4CCE00B52A7F /* CDummyWorker.mm */; };
+		0330EBD6191802F300A3DEF7 /* CRestWorker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC24E16CB4CCE00B52A7F /* CRestWorker.mm */; };
+		0330EBD7191802F300A3DEF7 /* CSwitchTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03336554181B97AA00308E0A /* CSwitchTableRowItem.mm */; };
+		0330EBD8191802F300A3DEF7 /* CWorker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC25016CB4CCE00B52A7F /* CWorker.mm */; };
+		0330EBD9191802F300A3DEF7 /* CWorkerManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC25216CB4CCE00B52A7F /* CWorkerManager.mm */; };
+		0330EBDA191802F300A3DEF7 /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 039DC25D16CB4FAF00B52A7F /* ISO8601DateFormatter.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		0330EBDB191802F300A3DEF7 /* CNetworkActivity.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC26216CB516400B52A7F /* CNetworkActivity.mm */; };
+		0330EBDC191802F300A3DEF7 /* CBeveledBackgroundView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC26816CB65EC00B52A7F /* CBeveledBackgroundView.mm */; };
+		0330EBDD191802F300A3DEF7 /* CActivityShieldView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC26D16CB662100B52A7F /* CActivityShieldView.mm */; };
+		0330EBDE191802F300A3DEF7 /* CAlertManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC26F16CB662100B52A7F /* CAlertManager.mm */; };
+		0330EBDF191802F300A3DEF7 /* CGradientView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC27116CB662100B52A7F /* CGradientView.mm */; };
+		0330EBE0191802F300A3DEF7 /* CGUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC27316CB662100B52A7F /* CGUtils.mm */; };
+		0330EBE1191802F300A3DEF7 /* CImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC27516CB662100B52A7F /* CImageView.mm */; };
+		0330EBE2191802F300A3DEF7 /* CTextFieldTableViewCell1.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032867AC18CEFD7F00974918 /* CTextFieldTableViewCell1.mm */; };
+		0330EBE3191802F300A3DEF7 /* CTextFieldTableViewCell2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032867B218CF0FBC00974918 /* CTextFieldTableViewCell2.mm */; };
+		0330EBE4191802F300A3DEF7 /* CButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0383E97218A19CF4003A6BF5 /* CButton.mm */; };
+		0330EBE5191802F300A3DEF7 /* CNavigationBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC27716CB662100B52A7F /* CNavigationBar.mm */; };
+		0330EBE6191802F300A3DEF7 /* CNavigationController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC27916CB662100B52A7F /* CNavigationController.mm */; };
+		0330EBE7191802F300A3DEF7 /* CTapToDismissKeyboardManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC27C16CB662100B52A7F /* CTapToDismissKeyboardManager.mm */; };
+		0330EBE8191802F300A3DEF7 /* CView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC27E16CB662100B52A7F /* CView.mm */; };
+		0330EBE9191802F300A3DEF7 /* CFixedDate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0328679618CEED1A00974918 /* CFixedDate.mm */; };
+		0330EBEA191802F300A3DEF7 /* CViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC28016CB662100B52A7F /* CViewController.mm */; };
+		0330EBEB191802F300A3DEF7 /* CWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC28216CB662100B52A7F /* CWindow.mm */; };
+		0330EBEC191802F300A3DEF7 /* DeviceUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC28416CB662100B52A7F /* DeviceUtils.mm */; };
+		0330EBED191802F300A3DEF7 /* NibUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC28616CB662100B52A7F /* NibUtils.mm */; };
+		0330EBEE191802F300A3DEF7 /* TextUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC28816CB662100B52A7F /* TextUtils.mm */; };
+		0330EBEF191802F300A3DEF7 /* UIColorUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC28A16CB662100B52A7F /* UIColorUtils.mm */; };
+		0330EBF0191802F300A3DEF7 /* CTableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0328679E18CEED8600974918 /* CTableView.mm */; };
+		0330EBF1191802F300A3DEF7 /* UIImageUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC28C16CB662100B52A7F /* UIImageUtils.mm */; };
+		0330EBF2191802F300A3DEF7 /* UIViewUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC28E16CB662100B52A7F /* UIViewUtils.mm */; };
+		0330EBF3191802F300A3DEF7 /* CNotifier.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2B316CB678A00B52A7F /* CNotifier.mm */; };
+		0330EBF4191802F300A3DEF7 /* CNotifierBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2B516CB678A00B52A7F /* CNotifierBar.mm */; };
+		0330EBF5191802F300A3DEF7 /* CNotifierItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2B716CB678A00B52A7F /* CNotifierItem.mm */; };
+		0330EBF6191802F300A3DEF7 /* CNotifierItemView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2B916CB678A00B52A7F /* CNotifierItemView.mm */; };
+		0330EBF7191802F300A3DEF7 /* CFieldValidationView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2C416CB689900B52A7F /* CFieldValidationView.mm */; };
+		0330EBF8191802F300A3DEF7 /* CMonthAndYearPicker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2C616CB689900B52A7F /* CMonthAndYearPicker.mm */; };
+		0330EBF9191802F300A3DEF7 /* CTableManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2C816CB689900B52A7F /* CTableManager.mm */; };
+		0330EBFA191802F300A3DEF7 /* CActionItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2CC16CB689900B52A7F /* CActionItemTableViewCell.mm */; };
+		0330EBFB191802F300A3DEF7 /* CAddRepeatingItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2CE16CB689900B52A7F /* CAddRepeatingItemTableViewCell.mm */; };
+		0330EBFC191802F300A3DEF7 /* CCheckboxTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2D016CB689900B52A7F /* CCheckboxTableViewCell.mm */; };
+		0330EBFD191802F300A3DEF7 /* CPaymentMethodTypeImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0318155C181ED11B007794F3 /* CPaymentMethodTypeImageView.mm */; };
+		0330EBFE191802F300A3DEF7 /* CButtonTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2D216CB689900B52A7F /* CButtonTableViewCell.mm */; };
+		0330EBFF191802F300A3DEF7 /* CCardNumberItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2D416CB689900B52A7F /* CCardNumberItemTableViewCell.mm */; };
+		0330EC00191802F300A3DEF7 /* CMultiChoiceItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2D616CB689900B52A7F /* CMultiChoiceItemTableViewCell.mm */; };
+		0330EC01191802F300A3DEF7 /* CShieldView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0378B89417EA9A6E0073D97E /* CShieldView.mm */; };
+		0330EC02191802F300A3DEF7 /* CNoteTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2D816CB689900B52A7F /* CNoteTableViewCell.mm */; };
+		0330EC03191802F300A3DEF7 /* CRowItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2DA16CB689900B52A7F /* CRowItemTableViewCell.mm */; };
+		0330EC04191802F300A3DEF7 /* CSpacerTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2DC16CB689900B52A7F /* CSpacerTableViewCell.mm */; };
+		0330EC05191802F300A3DEF7 /* CSummaryTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2DE16CB689900B52A7F /* CSummaryTableViewCell.mm */; };
+		0330EC06191802F300A3DEF7 /* CTextFieldItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2E016CB689900B52A7F /* CTextFieldItemTableViewCell.mm */; };
+		0330EC07191802F300A3DEF7 /* CTitleTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2E216CB689900B52A7F /* CTitleTableViewCell.mm */; };
+		0330EC08191802F300A3DEF7 /* CTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC2E416CB689900B52A7F /* CTableViewCell.mm */; };
+		0330EC09191802F300A3DEF7 /* CActionSheetManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039EC2EA184D38E50030AA50 /* CActionSheetManager.mm */; };
+		0330EC0A191802F300A3DEF7 /* CDebugOverlayView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC30716CB693700B52A7F /* CDebugOverlayView.mm */; };
+		0330EC0B191802F300A3DEF7 /* CSetup.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC30A16CB693700B52A7F /* CSetup.mm */; };
+		0330EC0C191802F300A3DEF7 /* CSetupBoolOptionTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC30C16CB693700B52A7F /* CSetupBoolOptionTableViewCell.mm */; };
+		0330EC0D191802F300A3DEF7 /* CSetupEditServerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC30E16CB693700B52A7F /* CSetupEditServerViewController.mm */; };
+		0330EC0E191802F300A3DEF7 /* CSetupMainViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC31016CB693700B52A7F /* CSetupMainViewController.mm */; };
+		0330EC0F191802F300A3DEF7 /* XMLUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0328679A18CEED5700974918 /* XMLUtils.mm */; };
+		0330EC10191802F300A3DEF7 /* CSetupNavigationController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC31216CB693700B52A7F /* CSetupNavigationController.mm */; };
+		0330EC11191802F300A3DEF7 /* CSetupOptionTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC31416CB693700B52A7F /* CSetupOptionTableViewCell.mm */; };
+		0330EC12191802F300A3DEF7 /* CSwitchItemTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03336558181B99FB00308E0A /* CSwitchItemTableViewCell.mm */; };
+		0330EC13191802F300A3DEF7 /* CSetupServer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC31616CB693700B52A7F /* CSetupServer.mm */; };
+		0330EC14191802F300A3DEF7 /* CSetupServerItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC31816CB693700B52A7F /* CSetupServerItem.mm */; };
+		0330EC15191802F300A3DEF7 /* CSetupServerTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC31A16CB693700B52A7F /* CSetupServerTableViewCell.mm */; };
+		0330EC16191802F300A3DEF7 /* CSetupTableViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC31C16CB693700B52A7F /* CSetupTableViewController.mm */; };
+		0330EC17191802F300A3DEF7 /* CSetupTextFieldTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC31E16CB693700B52A7F /* CSetupTextFieldTableViewCell.mm */; };
+		0330EC18191802F300A3DEF7 /* Arciem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC35B16CC9AA600B52A7F /* Arciem.mm */; };
+		0330EC19191802F300A3DEF7 /* CReachability.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC38616CCA43000B52A7F /* CReachability.mm */; };
+		0330EC1A191802F300A3DEF7 /* CTabBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC38A16CCA43000B52A7F /* CTabBar.mm */; };
+		0330EC1B191802F300A3DEF7 /* UILabelUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC39216CCA43F00B52A7F /* UILabelUtils.mm */; };
+		0330EC1C191802F300A3DEF7 /* CTextureAtlas.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0393A58C18E3CD0500DD81E4 /* CTextureAtlas.mm */; };
+		0330EC1D191802F300A3DEF7 /* WhiteLabel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039DC39416CCA44000B52A7F /* WhiteLabel.mm */; };
+		0330EC1E191802F300A3DEF7 /* CPaymentMethodSummaryTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0349E19E180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.mm */; };
+		0330EC1F191802F300A3DEF7 /* CSystemSound.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032AEEEF16DE66D90024D14E /* CSystemSound.mm */; };
+		0330EC20191802F300A3DEF7 /* CMiniPickerBackgroundView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F9445716E9735D00F9FEF3 /* CMiniPickerBackgroundView.mm */; };
+		0330EC21191802F300A3DEF7 /* CMiniPickerFrameView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F9445916E9735D00F9FEF3 /* CMiniPickerFrameView.mm */; };
+		0330EC22191802F300A3DEF7 /* CMiniPickerOverlayView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F9445B16E9735D00F9FEF3 /* CMiniPickerOverlayView.mm */; };
+		0330EC23191802F300A3DEF7 /* CMiniPickerView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F9445E16E9735D00F9FEF3 /* CMiniPickerView.mm */; };
+		0330EC24191802F300A3DEF7 /* CMiniPickerViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F9446016E9735D00F9FEF3 /* CMiniPickerViewCell.mm */; };
+		0330EC25191802F300A3DEF7 /* CNetworkController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03258713171CA8F800AE084E /* CNetworkController.mm */; };
+		0330EC26191802F300A3DEF7 /* AppUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033A75F317274B8F0045933D /* AppUtils.mm */; };
+		0330EC27191802F300A3DEF7 /* CDebugMenuView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 036DE9391755E31200B6B345 /* CDebugMenuView.mm */; };
+		0330EC28191802F300A3DEF7 /* CKeychainUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033A75FD172754ED0045933D /* CKeychainUtils.mm */; };
+		0330EC29191802F300A3DEF7 /* CSidebarContainerViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F263221734D99D0078F41D /* CSidebarContainerViewController.mm */; };
+		0330EC2A191802F300A3DEF7 /* CNotifierViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0370D7AE173761E0005165CA /* CNotifierViewController.mm */; };
+		0330EC2B191802F300A3DEF7 /* CShadowView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0370D7B817381A59005165CA /* CShadowView.mm */; };
+		0330EC2C191802F300A3DEF7 /* CTextureAtlasSubimage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 036D26F518E3F69400E48AFE /* CTextureAtlasSubimage.mm */; };
+		0330EC2D191802F300A3DEF7 /* CDisclosureIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0374652A17449CA70007F56D /* CDisclosureIndicator.mm */; };
+		0330EC2E191802F300A3DEF7 /* CBadgeView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E3C83F174ACBFF004E00EB /* CBadgeView.mm */; };
+		0330EC2F191802F300A3DEF7 /* UIViewControllerUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9080174E680700781374 /* UIViewControllerUtils.mm */; };
+		0330EC30191802F300A3DEF7 /* CDebugAnnotation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9085174EC5B800781374 /* CDebugAnnotation.mm */; };
+		0330EC31191802F300A3DEF7 /* CDebugAnnotationView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9087174EC5B800781374 /* CDebugAnnotationView.mm */; };
+		0330EC32191802F300A3DEF7 /* CUserTrackingBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */; };
+		0330EC33191802F300A3DEF7 /* MapKitUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC908B174EC5B800781374 /* MapKitUtils.mm */; };
+		0330EC34191802F300A3DEF7 /* CSwitchTableViewCell.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032867A218CEFAEC00974918 /* CSwitchTableViewCell.mm */; };
+		0330EC35191802F300A3DEF7 /* CWorkerDebugView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0362A8F2174FF48C005AA5ED /* CWorkerDebugView.mm */; };
+		0330EC36191802F300A3DEF7 /* CWorkerManagerDebugView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0362A8F4174FF48C005AA5ED /* CWorkerManagerDebugView.mm */; };
+		0330EC37191802F300A3DEF7 /* URLRequestUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03D6585817601085002B9023 /* URLRequestUtils.mm */; };
+		0330EC39191802F300A3DEF7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 032AEEF216DE67940024D14E /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		0330EC3A191802F300A3DEF7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC26516CB518A00B52A7F /* UIKit.framework */; };
+		0330EC3B191802F300A3DEF7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC11216CB300D00B52A7F /* Foundation.framework */; };
+		0330EC3C191802F300A3DEF7 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039DC34416CC987E00B52A7F /* CoreFoundation.framework */; };
+		0330EC3E191802F300A3DEF7 /* align.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC16516CB3DF700B52A7F /* align.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC3F191802F300A3DEF7 /* arc2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC16716CB3DF700B52A7F /* arc2.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC40191802F300A3DEF7 /* area.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC16916CB3DF700B52A7F /* area.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC41191802F300A3DEF7 /* areai.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC16B16CB3DF700B52A7F /* areai.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC42191802F300A3DEF7 /* bezier2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC16D16CB3DF700B52A7F /* bezier2.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC43191802F300A3DEF7 /* bezier2_list.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC16F16CB3DF700B52A7F /* bezier2_list.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC44191802F300A3DEF7 /* delta2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC17116CB3DF700B52A7F /* delta2.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC45191802F300A3DEF7 /* delta2i.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC17316CB3DF700B52A7F /* delta2i.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC46191802F300A3DEF7 /* delta3.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC17516CB3DF700B52A7F /* delta3.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC47191802F300A3DEF7 /* XMLUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 0328679918CEED5700974918 /* XMLUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC48191802F300A3DEF7 /* geometry.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC17716CB3DF700B52A7F /* geometry.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC49191802F300A3DEF7 /* line2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC17916CB3DF700B52A7F /* line2.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC4A191802F300A3DEF7 /* orientation.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC17B16CB3DF700B52A7F /* orientation.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC4B191802F300A3DEF7 /* point2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC17D16CB3DF700B52A7F /* point2.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC4C191802F300A3DEF7 /* point2_list.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC17F16CB3DF700B52A7F /* point2_list.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC4D191802F300A3DEF7 /* point2i.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC18116CB3DF700B52A7F /* point2i.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC4E191802F300A3DEF7 /* point3.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC18316CB3DF700B52A7F /* point3.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC4F191802F300A3DEF7 /* volume.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC18516CB3DF700B52A7F /* volume.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC50191802F300A3DEF7 /* wedge2.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC18716CB3DF700B52A7F /* wedge2.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC51191802F300A3DEF7 /* CFixedDate.h in Headers */ = {isa = PBXBuildFile; fileRef = 0328679518CEED1A00974918 /* CFixedDate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC52191802F300A3DEF7 /* stringstreams.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC18C16CB3DF700B52A7F /* stringstreams.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC53191802F300A3DEF7 /* Arciem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC11716CB300D00B52A7F /* Arciem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC54191802F300A3DEF7 /* CSectionItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 030F11FF1816A1660098DC59 /* CSectionItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC55191802F300A3DEF7 /* CButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 0383E97118A19CF4003A6BF5 /* CButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC56191802F300A3DEF7 /* CLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12416CB398A00B52A7F /* CLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC57191802F300A3DEF7 /* CObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12616CB398A00B52A7F /* CObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC58191802F300A3DEF7 /* CSwitch.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12816CB398A00B52A7F /* CSwitch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC59191802F300A3DEF7 /* DateTimeUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12A16CB398A00B52A7F /* DateTimeUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC5A191802F300A3DEF7 /* ErrorUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12C16CB398A00B52A7F /* ErrorUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC5B191802F300A3DEF7 /* Geom.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC12E16CB398A00B52A7F /* Geom.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC5C191802F300A3DEF7 /* I18nUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC13016CB398A00B52A7F /* I18nUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC5D191802F300A3DEF7 /* InvocationUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC13216CB398A00B52A7F /* InvocationUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC5E191802F300A3DEF7 /* JSONUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC13416CB398A00B52A7F /* JSONUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC5F191802F300A3DEF7 /* ObjectUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC13616CB398A00B52A7F /* ObjectUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC60191802F300A3DEF7 /* PropertyUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC13816CB398A00B52A7F /* PropertyUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC61191802F300A3DEF7 /* CPaymentMethodSummaryItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E199180E15BC00F74905 /* CPaymentMethodSummaryItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC62191802F300A3DEF7 /* StringUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC13A16CB398A00B52A7F /* StringUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC63191802F300A3DEF7 /* ThreadUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC13C16CB398A00B52A7F /* ThreadUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC64191802F300A3DEF7 /* config.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC15D16CB3DF700B52A7F /* config.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC65191802F300A3DEF7 /* math_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC15E16CB3DF700B52A7F /* math_utils.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC66191802F300A3DEF7 /* random.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC16016CB3DF700B52A7F /* random.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC67191802F300A3DEF7 /* time_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC16116CB3DF700B52A7F /* time_utils.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC68191802F300A3DEF7 /* xtime.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC16316CB3DF700B52A7F /* xtime.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC69191802F300A3DEF7 /* CTextFieldTableViewCell1.h in Headers */ = {isa = PBXBuildFile; fileRef = 032867AB18CEFD7F00974918 /* CTextFieldTableViewCell1.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC6A191802F300A3DEF7 /* CTextFieldTableViewCell2.h in Headers */ = {isa = PBXBuildFile; fileRef = 032867B118CF0FBC00974918 /* CTextFieldTableViewCell2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC6B191802F300A3DEF7 /* gl_utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC18916CB3DF700B52A7F /* gl_utils.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC6C191802F300A3DEF7 /* murmur_hash_3.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 039DC18B16CB3DF700B52A7F /* murmur_hash_3.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC6D191802F300A3DEF7 /* ArciemGeom.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1BC16CB4B1100B52A7F /* ArciemGeom.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC6E191802F300A3DEF7 /* CMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1BD16CB4B1100B52A7F /* CMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC6F191802F300A3DEF7 /* CMutableArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1BF16CB4B1300B52A7F /* CMutableArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC70191802F300A3DEF7 /* CQuantity.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1C116CB4B1400B52A7F /* CQuantity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC71191802F300A3DEF7 /* CSlowCall.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1C316CB4B1400B52A7F /* CSlowCall.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC72191802F300A3DEF7 /* NSIndexPathUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1C516CB4B1600B52A7F /* NSIndexPathUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC73191802F300A3DEF7 /* CBooleanItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1D416CB4C4400B52A7F /* CBooleanItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC74191802F300A3DEF7 /* CCardNumberItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1D616CB4C4400B52A7F /* CCardNumberItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC75191802F300A3DEF7 /* CPaymentMethodTypeImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0318155B181ED11B007794F3 /* CPaymentMethodTypeImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC76191802F300A3DEF7 /* CDateItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1D816CB4C4400B52A7F /* CDateItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC77191802F300A3DEF7 /* CEmailItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1DA16CB4C4400B52A7F /* CEmailItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC78191802F300A3DEF7 /* CTextureAtlasSubimage.h in Headers */ = {isa = PBXBuildFile; fileRef = 036D26F418E3F69400E48AFE /* CTextureAtlasSubimage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC79191802F300A3DEF7 /* CForm.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1DC16CB4C4400B52A7F /* CForm.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC7A191802F300A3DEF7 /* CMultiChoiceItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1DE16CB4C4400B52A7F /* CMultiChoiceItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC7B191802F300A3DEF7 /* CMultiTextItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1E016CB4C4400B52A7F /* CMultiTextItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC7C191802F300A3DEF7 /* CActionItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 030F11FB181688AD0098DC59 /* CActionItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC7D191802F300A3DEF7 /* CActionSheetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 039EC2E9184D38E50030AA50 /* CActionSheetManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC7E191802F300A3DEF7 /* CNoteItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1E216CB4C4400B52A7F /* CNoteItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC7F191802F300A3DEF7 /* CPasswordItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1E416CB4C4400B52A7F /* CPasswordItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC80191802F300A3DEF7 /* CPhoneItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1E616CB4C4400B52A7F /* CPhoneItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC81191802F300A3DEF7 /* CTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0328679D18CEED8600974918 /* CTableView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC82191802F300A3DEF7 /* CRepeatingItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1E816CB4C4400B52A7F /* CRepeatingItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC83191802F300A3DEF7 /* CSpacerItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1EA16CB4C4400B52A7F /* CSpacerItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC84191802F300A3DEF7 /* CShieldView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0378B89317EA9A6E0073D97E /* CShieldView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC85191802F300A3DEF7 /* CStringItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1EC16CB4C4400B52A7F /* CStringItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC86191802F300A3DEF7 /* CSubmitItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1EE16CB4C4400B52A7F /* CSubmitItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC87191802F300A3DEF7 /* CItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1F016CB4C4400B52A7F /* CItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC88191802F300A3DEF7 /* CTableItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1F316CB4C4400B52A7F /* CTableItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC89191802F300A3DEF7 /* CActionTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1F616CB4C4400B52A7F /* CActionTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC8A191802F300A3DEF7 /* CAddRepeatingTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1F816CB4C4400B52A7F /* CAddRepeatingTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC8B191802F300A3DEF7 /* CPaymentMethodSummaryTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E19D180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC8C191802F300A3DEF7 /* CCheckboxTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1FA16CB4C4400B52A7F /* CCheckboxTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC8D191802F300A3DEF7 /* CButtonTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1FC16CB4C4400B52A7F /* CButtonTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC8E191802F300A3DEF7 /* CCardNumberTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC1FE16CB4C4400B52A7F /* CCardNumberTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC8F191802F300A3DEF7 /* CMultiChoiceSummaryTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20016CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC90191802F300A3DEF7 /* CNoteTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20216CB4C4400B52A7F /* CNoteTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC91191802F300A3DEF7 /* CTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20416CB4C4400B52A7F /* CTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC92191802F300A3DEF7 /* CSpacerTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20616CB4C4400B52A7F /* CSpacerTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC93191802F300A3DEF7 /* CSummaryTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20816CB4C4400B52A7F /* CSummaryTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC94191802F300A3DEF7 /* CTextFieldTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20A16CB4C4400B52A7F /* CTextFieldTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC95191802F300A3DEF7 /* CTableSectionItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20C16CB4C4400B52A7F /* CTableSectionItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC96191802F300A3DEF7 /* CTitleTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC20E16CB4C4400B52A7F /* CTitleTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC97191802F300A3DEF7 /* CDummyWorker.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC24B16CB4CCE00B52A7F /* CDummyWorker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC98191802F300A3DEF7 /* CRestWorker.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC24D16CB4CCE00B52A7F /* CRestWorker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC99191802F300A3DEF7 /* CWorker.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC24F16CB4CCE00B52A7F /* CWorker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC9A191802F300A3DEF7 /* CWorkerManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC25116CB4CCE00B52A7F /* CWorkerManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC9B191802F300A3DEF7 /* ISO8601DateFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC25C16CB4FAF00B52A7F /* ISO8601DateFormatter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC9C191802F300A3DEF7 /* CStatusBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C8C9A6181ACEEC0019D97E /* CStatusBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC9D191802F300A3DEF7 /* CSwitchTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 03336553181B97AA00308E0A /* CSwitchTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC9E191802F300A3DEF7 /* CNetworkActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC26116CB516400B52A7F /* CNetworkActivity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330EC9F191802F300A3DEF7 /* CBeveledBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC26716CB65EC00B52A7F /* CBeveledBackgroundView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECA0191802F300A3DEF7 /* CActivityShieldView.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC26C16CB662100B52A7F /* CActivityShieldView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECA1191802F300A3DEF7 /* CAlertManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC26E16CB662100B52A7F /* CAlertManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECA2191802F300A3DEF7 /* CGradientView.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC27016CB662100B52A7F /* CGradientView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECA3191802F300A3DEF7 /* CGUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC27216CB662100B52A7F /* CGUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECA4191802F300A3DEF7 /* CImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC27416CB662100B52A7F /* CImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECA5191802F300A3DEF7 /* CNavigationBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC27616CB662100B52A7F /* CNavigationBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECA6191802F300A3DEF7 /* CNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC27816CB662100B52A7F /* CNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECA7191802F300A3DEF7 /* CPaymentMethodSummaryItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E1A1180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECA8191802F300A3DEF7 /* CTapToDismissKeyboardManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC27B16CB662100B52A7F /* CTapToDismissKeyboardManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECA9191802F300A3DEF7 /* CView.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC27D16CB662100B52A7F /* CView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECAA191802F300A3DEF7 /* CViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC27F16CB662100B52A7F /* CViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECAB191802F300A3DEF7 /* CWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC28116CB662100B52A7F /* CWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECAC191802F300A3DEF7 /* DeviceUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC28316CB662100B52A7F /* DeviceUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECAD191802F300A3DEF7 /* NibUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC28516CB662100B52A7F /* NibUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECAE191802F300A3DEF7 /* TextUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC28716CB662100B52A7F /* TextUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECAF191802F300A3DEF7 /* UIColorUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC28916CB662100B52A7F /* UIColorUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECB0191802F300A3DEF7 /* UIImageUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC28B16CB662100B52A7F /* UIImageUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECB1191802F300A3DEF7 /* UIViewUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC28D16CB662100B52A7F /* UIViewUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECB2191802F300A3DEF7 /* CNotifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2B216CB678A00B52A7F /* CNotifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECB3191802F300A3DEF7 /* CNotifierBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2B416CB678A00B52A7F /* CNotifierBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECB4191802F300A3DEF7 /* CNotifierItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2B616CB678A00B52A7F /* CNotifierItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECB5191802F300A3DEF7 /* CNotifierItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2B816CB678A00B52A7F /* CNotifierItemView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECB6191802F300A3DEF7 /* CFieldValidationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2C316CB689900B52A7F /* CFieldValidationView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECB7191802F300A3DEF7 /* CMonthAndYearPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2C516CB689900B52A7F /* CMonthAndYearPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECB8191802F300A3DEF7 /* CTableManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2C716CB689900B52A7F /* CTableManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECB9191802F300A3DEF7 /* CActionItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2CB16CB689900B52A7F /* CActionItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECBA191802F300A3DEF7 /* CAddRepeatingItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2CD16CB689900B52A7F /* CAddRepeatingItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECBB191802F300A3DEF7 /* CCheckboxTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2CF16CB689900B52A7F /* CCheckboxTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECBC191802F300A3DEF7 /* CButtonTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2D116CB689900B52A7F /* CButtonTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECBD191802F300A3DEF7 /* CCardNumberItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2D316CB689900B52A7F /* CCardNumberItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECBE191802F300A3DEF7 /* CUseCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 0356A31E1905B49E002397ED /* CUseCounter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECBF191802F300A3DEF7 /* CMultiChoiceItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2D516CB689900B52A7F /* CMultiChoiceItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECC0191802F300A3DEF7 /* CNoteTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2D716CB689900B52A7F /* CNoteTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECC1191802F300A3DEF7 /* CRowItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2D916CB689900B52A7F /* CRowItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECC2191802F300A3DEF7 /* CSpacerTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2DB16CB689900B52A7F /* CSpacerTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECC3191802F300A3DEF7 /* CSummaryTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2DD16CB689900B52A7F /* CSummaryTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECC4191802F300A3DEF7 /* CTextFieldItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2DF16CB689900B52A7F /* CTextFieldItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECC5191802F300A3DEF7 /* CSwitchTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 032867A118CEFAEC00974918 /* CSwitchTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECC6191802F300A3DEF7 /* CTitleTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2E116CB689900B52A7F /* CTitleTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECC7191802F300A3DEF7 /* CTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC2E316CB689900B52A7F /* CTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECC8191802F300A3DEF7 /* CDebugOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC30616CB693700B52A7F /* CDebugOverlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECC9191802F300A3DEF7 /* CSetup.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC30916CB693700B52A7F /* CSetup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECCA191802F300A3DEF7 /* CSetupBoolOptionTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC30B16CB693700B52A7F /* CSetupBoolOptionTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECCB191802F300A3DEF7 /* CSetupEditServerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC30D16CB693700B52A7F /* CSetupEditServerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECCC191802F300A3DEF7 /* CTextureAtlas.h in Headers */ = {isa = PBXBuildFile; fileRef = 0393A58B18E3CD0500DD81E4 /* CTextureAtlas.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECCD191802F300A3DEF7 /* CSetupMainViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC30F16CB693700B52A7F /* CSetupMainViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECCE191802F300A3DEF7 /* CSetupNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC31116CB693700B52A7F /* CSetupNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECCF191802F300A3DEF7 /* CSetupOptionTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC31316CB693700B52A7F /* CSetupOptionTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECD0191802F300A3DEF7 /* CSetupServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC31516CB693700B52A7F /* CSetupServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECD1191802F300A3DEF7 /* CSetupServerItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC31716CB693700B52A7F /* CSetupServerItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECD2191802F300A3DEF7 /* CSetupServerTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC31916CB693700B52A7F /* CSetupServerTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECD3191802F300A3DEF7 /* CSetupTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC31B16CB693700B52A7F /* CSetupTableViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECD4191802F300A3DEF7 /* CSetupTextFieldTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC31D16CB693700B52A7F /* CSetupTextFieldTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECD5191802F300A3DEF7 /* CReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC38516CCA43000B52A7F /* CReachability.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECD6191802F300A3DEF7 /* CTabBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC38916CCA43000B52A7F /* CTabBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECD7191802F300A3DEF7 /* UILabelUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC39116CCA43F00B52A7F /* UILabelUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECD8191802F300A3DEF7 /* WhiteLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 039DC39316CCA44000B52A7F /* WhiteLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECD9191802F300A3DEF7 /* CSystemSound.h in Headers */ = {isa = PBXBuildFile; fileRef = 032AEEEE16DE66D90024D14E /* CSystemSound.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECDA191802F300A3DEF7 /* CMiniPickerBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445616E9735D00F9FEF3 /* CMiniPickerBackgroundView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECDB191802F300A3DEF7 /* CMiniPickerFrameView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445816E9735D00F9FEF3 /* CMiniPickerFrameView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECDC191802F300A3DEF7 /* CMiniPickerOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445A16E9735D00F9FEF3 /* CMiniPickerOverlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECDD191802F300A3DEF7 /* CMiniPickerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445D16E9735D00F9FEF3 /* CMiniPickerView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECDE191802F300A3DEF7 /* CMiniPickerViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F9445F16E9735D00F9FEF3 /* CMiniPickerViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECDF191802F300A3DEF7 /* CSwitchItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 03336557181B99FB00308E0A /* CSwitchItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECE0191802F300A3DEF7 /* CTextureAtlasImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 036D26F018E3F67F00E48AFE /* CTextureAtlasImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECE1191802F300A3DEF7 /* CNetworkController.h in Headers */ = {isa = PBXBuildFile; fileRef = 03258712171CA8F700AE084E /* CNetworkController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECE2191802F300A3DEF7 /* AppUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 033A75F217274B8F0045933D /* AppUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECE3191802F300A3DEF7 /* CKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 033A75FC172754ED0045933D /* CKeychainUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECE4191802F300A3DEF7 /* CSidebarContainerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 03F263211734D99D0078F41D /* CSidebarContainerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECE5191802F300A3DEF7 /* CNotifierViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370D7AD173761E0005165CA /* CNotifierViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECE6191802F300A3DEF7 /* CShadowView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370D7B717381A59005165CA /* CShadowView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECE7191802F300A3DEF7 /* CTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 0374651B17421EB60007F56D /* CTable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECE8191802F300A3DEF7 /* CDisclosureIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0374652917449CA70007F56D /* CDisclosureIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECE9191802F300A3DEF7 /* CBadgeView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03E3C83E174ACBFF004E00EB /* CBadgeView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECEA191802F300A3DEF7 /* UIViewControllerUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC907F174E680700781374 /* UIViewControllerUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECEB191802F300A3DEF7 /* CDebugAnnotation.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC9084174EC5B800781374 /* CDebugAnnotation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECEC191802F300A3DEF7 /* CDebugAnnotationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC9086174EC5B800781374 /* CDebugAnnotationView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECED191802F300A3DEF7 /* CUserTrackingBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC9088174EC5B800781374 /* CUserTrackingBarButtonItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECEE191802F300A3DEF7 /* MapKitUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC908A174EC5B800781374 /* MapKitUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECEF191802F300A3DEF7 /* CWorkerDebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0362A8F1174FF48C005AA5ED /* CWorkerDebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECF0191802F300A3DEF7 /* CWorkerManagerDebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0362A8F3174FF48C005AA5ED /* CWorkerManagerDebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECF1191802F300A3DEF7 /* CDebugMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 036DE9381755E31200B6B345 /* CDebugMenuView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0330ECF2191802F300A3DEF7 /* URLRequestUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03D6585717601085002B9023 /* URLRequestUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03336555181B97AA00308E0A /* CSwitchTableRowItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 03336553181B97AA00308E0A /* CSwitchTableRowItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03336556181B97AA00308E0A /* CSwitchTableRowItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03336554181B97AA00308E0A /* CSwitchTableRowItem.mm */; };
 		03336559181B99FB00308E0A /* CSwitchItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 03336557181B99FB00308E0A /* CSwitchItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -390,19 +733,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		039DC33C16CC88B600B52A7F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 039DC10716CB300D00B52A7F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 039DC10E16CB300D00B52A7F;
-			remoteInfo = LibArciem;
-		};
-		039DC35016CC994D00B52A7F /* PBXContainerItemProxy */ = {
+		0330ED3D1918322200A3DEF7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 039DC10716CB300D00B52A7F /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 039DC34216CC987E00B52A7F;
-			remoteInfo = LibArciemResources;
+			remoteInfo = "Arciem Resources";
+		};
+		0330ED3F1918322800A3DEF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 039DC10716CB300D00B52A7F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 039DC34216CC987E00B52A7F;
+			remoteInfo = "Arciem Resources";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -431,6 +774,7 @@
 		032AEEEE16DE66D90024D14E /* CSystemSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSystemSound.h; sourceTree = "<group>"; };
 		032AEEEF16DE66D90024D14E /* CSystemSound.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSystemSound.mm; sourceTree = "<group>"; };
 		032AEEF216DE67940024D14E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		0330ECF7191802F300A3DEF7 /* libArciem.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libArciem.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		03336553181B97AA00308E0A /* CSwitchTableRowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CSwitchTableRowItem.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		03336554181B97AA00308E0A /* CSwitchTableRowItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = CSwitchTableRowItem.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		03336557181B99FB00308E0A /* CSwitchItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSwitchItemTableViewCell.h; sourceTree = "<group>"; };
@@ -786,6 +1130,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0330EC38191802F300A3DEF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0330EC39191802F300A3DEF7 /* AudioToolbox.framework in Frameworks */,
+				0330EC3A191802F300A3DEF7 /* UIKit.framework in Frameworks */,
+				0330EC3B191802F300A3DEF7 /* Foundation.framework in Frameworks */,
+				0330EC3C191802F300A3DEF7 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		039DC10C16CB300D00B52A7F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -829,6 +1184,7 @@
 			children = (
 				039DC10F16CB300D00B52A7F /* libArciem.a */,
 				039DC34316CC987E00B52A7F /* Arciem.bundle */,
+				0330ECF7191802F300A3DEF7 /* libArciem.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1412,6 +1768,194 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		0330EC3D191802F300A3DEF7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0330EC3E191802F300A3DEF7 /* align.hpp in Headers */,
+				0330EC3F191802F300A3DEF7 /* arc2.hpp in Headers */,
+				0330EC40191802F300A3DEF7 /* area.hpp in Headers */,
+				0330EC41191802F300A3DEF7 /* areai.hpp in Headers */,
+				0330EC42191802F300A3DEF7 /* bezier2.hpp in Headers */,
+				0330EC43191802F300A3DEF7 /* bezier2_list.hpp in Headers */,
+				0330EC44191802F300A3DEF7 /* delta2.hpp in Headers */,
+				0330EC45191802F300A3DEF7 /* delta2i.hpp in Headers */,
+				0330EC46191802F300A3DEF7 /* delta3.hpp in Headers */,
+				0330EC47191802F300A3DEF7 /* XMLUtils.h in Headers */,
+				0330EC48191802F300A3DEF7 /* geometry.hpp in Headers */,
+				0330EC49191802F300A3DEF7 /* line2.hpp in Headers */,
+				0330EC4A191802F300A3DEF7 /* orientation.hpp in Headers */,
+				0330EC4B191802F300A3DEF7 /* point2.hpp in Headers */,
+				0330EC4C191802F300A3DEF7 /* point2_list.hpp in Headers */,
+				0330EC4D191802F300A3DEF7 /* point2i.hpp in Headers */,
+				0330EC4E191802F300A3DEF7 /* point3.hpp in Headers */,
+				0330EC4F191802F300A3DEF7 /* volume.hpp in Headers */,
+				0330EC50191802F300A3DEF7 /* wedge2.hpp in Headers */,
+				0330EC51191802F300A3DEF7 /* CFixedDate.h in Headers */,
+				0330EC52191802F300A3DEF7 /* stringstreams.hpp in Headers */,
+				0330EC53191802F300A3DEF7 /* Arciem.h in Headers */,
+				0330EC54191802F300A3DEF7 /* CSectionItem.h in Headers */,
+				0330EC55191802F300A3DEF7 /* CButton.h in Headers */,
+				0330EC56191802F300A3DEF7 /* CLog.h in Headers */,
+				0330EC57191802F300A3DEF7 /* CObserver.h in Headers */,
+				0330EC58191802F300A3DEF7 /* CSwitch.h in Headers */,
+				0330EC59191802F300A3DEF7 /* DateTimeUtils.h in Headers */,
+				0330EC5A191802F300A3DEF7 /* ErrorUtils.h in Headers */,
+				0330EC5B191802F300A3DEF7 /* Geom.h in Headers */,
+				0330EC5C191802F300A3DEF7 /* I18nUtils.h in Headers */,
+				0330EC5D191802F300A3DEF7 /* InvocationUtils.h in Headers */,
+				0330EC5E191802F300A3DEF7 /* JSONUtils.h in Headers */,
+				0330EC5F191802F300A3DEF7 /* ObjectUtils.h in Headers */,
+				0330EC60191802F300A3DEF7 /* PropertyUtils.h in Headers */,
+				0330EC61191802F300A3DEF7 /* CPaymentMethodSummaryItem.h in Headers */,
+				0330EC62191802F300A3DEF7 /* StringUtils.h in Headers */,
+				0330EC63191802F300A3DEF7 /* ThreadUtils.h in Headers */,
+				0330EC64191802F300A3DEF7 /* config.hpp in Headers */,
+				0330EC65191802F300A3DEF7 /* math_utils.hpp in Headers */,
+				0330EC66191802F300A3DEF7 /* random.hpp in Headers */,
+				0330EC67191802F300A3DEF7 /* time_utils.hpp in Headers */,
+				0330EC68191802F300A3DEF7 /* xtime.hpp in Headers */,
+				0330EC69191802F300A3DEF7 /* CTextFieldTableViewCell1.h in Headers */,
+				0330EC6A191802F300A3DEF7 /* CTextFieldTableViewCell2.h in Headers */,
+				0330EC6B191802F300A3DEF7 /* gl_utils.hpp in Headers */,
+				0330EC6C191802F300A3DEF7 /* murmur_hash_3.hpp in Headers */,
+				0330EC6D191802F300A3DEF7 /* ArciemGeom.h in Headers */,
+				0330EC6E191802F300A3DEF7 /* CMatrix.h in Headers */,
+				0330EC6F191802F300A3DEF7 /* CMutableArray.h in Headers */,
+				0330EC70191802F300A3DEF7 /* CQuantity.h in Headers */,
+				0330EC71191802F300A3DEF7 /* CSlowCall.h in Headers */,
+				0330EC72191802F300A3DEF7 /* NSIndexPathUtils.h in Headers */,
+				0330EC73191802F300A3DEF7 /* CBooleanItem.h in Headers */,
+				0330EC74191802F300A3DEF7 /* CCardNumberItem.h in Headers */,
+				0330EC75191802F300A3DEF7 /* CPaymentMethodTypeImageView.h in Headers */,
+				0330EC76191802F300A3DEF7 /* CDateItem.h in Headers */,
+				0330EC77191802F300A3DEF7 /* CEmailItem.h in Headers */,
+				0330EC78191802F300A3DEF7 /* CTextureAtlasSubimage.h in Headers */,
+				0330EC79191802F300A3DEF7 /* CForm.h in Headers */,
+				0330EC7A191802F300A3DEF7 /* CMultiChoiceItem.h in Headers */,
+				0330EC7B191802F300A3DEF7 /* CMultiTextItem.h in Headers */,
+				0330EC7C191802F300A3DEF7 /* CActionItem.h in Headers */,
+				0330EC7D191802F300A3DEF7 /* CActionSheetManager.h in Headers */,
+				0330EC7E191802F300A3DEF7 /* CNoteItem.h in Headers */,
+				0330EC7F191802F300A3DEF7 /* CPasswordItem.h in Headers */,
+				0330EC80191802F300A3DEF7 /* CPhoneItem.h in Headers */,
+				0330EC81191802F300A3DEF7 /* CTableView.h in Headers */,
+				0330EC82191802F300A3DEF7 /* CRepeatingItem.h in Headers */,
+				0330EC83191802F300A3DEF7 /* CSpacerItem.h in Headers */,
+				0330EC84191802F300A3DEF7 /* CShieldView.h in Headers */,
+				0330EC85191802F300A3DEF7 /* CStringItem.h in Headers */,
+				0330EC86191802F300A3DEF7 /* CSubmitItem.h in Headers */,
+				0330EC87191802F300A3DEF7 /* CItem.h in Headers */,
+				0330EC88191802F300A3DEF7 /* CTableItem.h in Headers */,
+				0330EC89191802F300A3DEF7 /* CActionTableRowItem.h in Headers */,
+				0330EC8A191802F300A3DEF7 /* CAddRepeatingTableRowItem.h in Headers */,
+				0330EC8B191802F300A3DEF7 /* CPaymentMethodSummaryTableRowItem.h in Headers */,
+				0330EC8C191802F300A3DEF7 /* CCheckboxTableRowItem.h in Headers */,
+				0330EC8D191802F300A3DEF7 /* CButtonTableRowItem.h in Headers */,
+				0330EC8E191802F300A3DEF7 /* CCardNumberTableRowItem.h in Headers */,
+				0330EC8F191802F300A3DEF7 /* CMultiChoiceSummaryTableRowItem.h in Headers */,
+				0330EC90191802F300A3DEF7 /* CNoteTableRowItem.h in Headers */,
+				0330EC91191802F300A3DEF7 /* CTableRowItem.h in Headers */,
+				0330EC92191802F300A3DEF7 /* CSpacerTableRowItem.h in Headers */,
+				0330EC93191802F300A3DEF7 /* CSummaryTableRowItem.h in Headers */,
+				0330EC94191802F300A3DEF7 /* CTextFieldTableRowItem.h in Headers */,
+				0330EC95191802F300A3DEF7 /* CTableSectionItem.h in Headers */,
+				0330EC96191802F300A3DEF7 /* CTitleTableRowItem.h in Headers */,
+				0330EC97191802F300A3DEF7 /* CDummyWorker.h in Headers */,
+				0330EC98191802F300A3DEF7 /* CRestWorker.h in Headers */,
+				0330EC99191802F300A3DEF7 /* CWorker.h in Headers */,
+				0330EC9A191802F300A3DEF7 /* CWorkerManager.h in Headers */,
+				0330EC9B191802F300A3DEF7 /* ISO8601DateFormatter.h in Headers */,
+				0330EC9C191802F300A3DEF7 /* CStatusBar.h in Headers */,
+				0330EC9D191802F300A3DEF7 /* CSwitchTableRowItem.h in Headers */,
+				0330EC9E191802F300A3DEF7 /* CNetworkActivity.h in Headers */,
+				0330EC9F191802F300A3DEF7 /* CBeveledBackgroundView.h in Headers */,
+				0330ECA0191802F300A3DEF7 /* CActivityShieldView.h in Headers */,
+				0330ECA1191802F300A3DEF7 /* CAlertManager.h in Headers */,
+				0330ECA2191802F300A3DEF7 /* CGradientView.h in Headers */,
+				0330ECA3191802F300A3DEF7 /* CGUtils.h in Headers */,
+				0330ECA4191802F300A3DEF7 /* CImageView.h in Headers */,
+				0330ECA5191802F300A3DEF7 /* CNavigationBar.h in Headers */,
+				0330ECA6191802F300A3DEF7 /* CNavigationController.h in Headers */,
+				0330ECA7191802F300A3DEF7 /* CPaymentMethodSummaryItemTableViewCell.h in Headers */,
+				0330ECA8191802F300A3DEF7 /* CTapToDismissKeyboardManager.h in Headers */,
+				0330ECA9191802F300A3DEF7 /* CView.h in Headers */,
+				0330ECAA191802F300A3DEF7 /* CViewController.h in Headers */,
+				0330ECAB191802F300A3DEF7 /* CWindow.h in Headers */,
+				0330ECAC191802F300A3DEF7 /* DeviceUtils.h in Headers */,
+				0330ECAD191802F300A3DEF7 /* NibUtils.h in Headers */,
+				0330ECAE191802F300A3DEF7 /* TextUtils.h in Headers */,
+				0330ECAF191802F300A3DEF7 /* UIColorUtils.h in Headers */,
+				0330ECB0191802F300A3DEF7 /* UIImageUtils.h in Headers */,
+				0330ECB1191802F300A3DEF7 /* UIViewUtils.h in Headers */,
+				0330ECB2191802F300A3DEF7 /* CNotifier.h in Headers */,
+				0330ECB3191802F300A3DEF7 /* CNotifierBar.h in Headers */,
+				0330ECB4191802F300A3DEF7 /* CNotifierItem.h in Headers */,
+				0330ECB5191802F300A3DEF7 /* CNotifierItemView.h in Headers */,
+				0330ECB6191802F300A3DEF7 /* CFieldValidationView.h in Headers */,
+				0330ECB7191802F300A3DEF7 /* CMonthAndYearPicker.h in Headers */,
+				0330ECB8191802F300A3DEF7 /* CTableManager.h in Headers */,
+				0330ECB9191802F300A3DEF7 /* CActionItemTableViewCell.h in Headers */,
+				0330ECBA191802F300A3DEF7 /* CAddRepeatingItemTableViewCell.h in Headers */,
+				0330ECBB191802F300A3DEF7 /* CCheckboxTableViewCell.h in Headers */,
+				0330ECBC191802F300A3DEF7 /* CButtonTableViewCell.h in Headers */,
+				0330ECBD191802F300A3DEF7 /* CCardNumberItemTableViewCell.h in Headers */,
+				0330ECBE191802F300A3DEF7 /* CUseCounter.h in Headers */,
+				0330ECBF191802F300A3DEF7 /* CMultiChoiceItemTableViewCell.h in Headers */,
+				0330ECC0191802F300A3DEF7 /* CNoteTableViewCell.h in Headers */,
+				0330ECC1191802F300A3DEF7 /* CRowItemTableViewCell.h in Headers */,
+				0330ECC2191802F300A3DEF7 /* CSpacerTableViewCell.h in Headers */,
+				0330ECC3191802F300A3DEF7 /* CSummaryTableViewCell.h in Headers */,
+				0330ECC4191802F300A3DEF7 /* CTextFieldItemTableViewCell.h in Headers */,
+				0330ECC5191802F300A3DEF7 /* CSwitchTableViewCell.h in Headers */,
+				0330ECC6191802F300A3DEF7 /* CTitleTableViewCell.h in Headers */,
+				0330ECC7191802F300A3DEF7 /* CTableViewCell.h in Headers */,
+				0330ECC8191802F300A3DEF7 /* CDebugOverlayView.h in Headers */,
+				0330ECC9191802F300A3DEF7 /* CSetup.h in Headers */,
+				0330ECCA191802F300A3DEF7 /* CSetupBoolOptionTableViewCell.h in Headers */,
+				0330ECCB191802F300A3DEF7 /* CSetupEditServerViewController.h in Headers */,
+				0330ECCC191802F300A3DEF7 /* CTextureAtlas.h in Headers */,
+				0330ECCD191802F300A3DEF7 /* CSetupMainViewController.h in Headers */,
+				0330ECCE191802F300A3DEF7 /* CSetupNavigationController.h in Headers */,
+				0330ECCF191802F300A3DEF7 /* CSetupOptionTableViewCell.h in Headers */,
+				0330ECD0191802F300A3DEF7 /* CSetupServer.h in Headers */,
+				0330ECD1191802F300A3DEF7 /* CSetupServerItem.h in Headers */,
+				0330ECD2191802F300A3DEF7 /* CSetupServerTableViewCell.h in Headers */,
+				0330ECD3191802F300A3DEF7 /* CSetupTableViewController.h in Headers */,
+				0330ECD4191802F300A3DEF7 /* CSetupTextFieldTableViewCell.h in Headers */,
+				0330ECD5191802F300A3DEF7 /* CReachability.h in Headers */,
+				0330ECD6191802F300A3DEF7 /* CTabBar.h in Headers */,
+				0330ECD7191802F300A3DEF7 /* UILabelUtils.h in Headers */,
+				0330ECD8191802F300A3DEF7 /* WhiteLabel.h in Headers */,
+				0330ECD9191802F300A3DEF7 /* CSystemSound.h in Headers */,
+				0330ECDA191802F300A3DEF7 /* CMiniPickerBackgroundView.h in Headers */,
+				0330ECDB191802F300A3DEF7 /* CMiniPickerFrameView.h in Headers */,
+				0330ECDC191802F300A3DEF7 /* CMiniPickerOverlayView.h in Headers */,
+				0330ECDD191802F300A3DEF7 /* CMiniPickerView.h in Headers */,
+				0330ECDE191802F300A3DEF7 /* CMiniPickerViewCell.h in Headers */,
+				0330ECDF191802F300A3DEF7 /* CSwitchItemTableViewCell.h in Headers */,
+				0330ECE0191802F300A3DEF7 /* CTextureAtlasImage.h in Headers */,
+				0330ECE1191802F300A3DEF7 /* CNetworkController.h in Headers */,
+				0330ECE2191802F300A3DEF7 /* AppUtils.h in Headers */,
+				0330ECE3191802F300A3DEF7 /* CKeychainUtils.h in Headers */,
+				0330ECE4191802F300A3DEF7 /* CSidebarContainerViewController.h in Headers */,
+				0330ECE5191802F300A3DEF7 /* CNotifierViewController.h in Headers */,
+				0330ECE6191802F300A3DEF7 /* CShadowView.h in Headers */,
+				0330ECE7191802F300A3DEF7 /* CTable.h in Headers */,
+				0330ECE8191802F300A3DEF7 /* CDisclosureIndicator.h in Headers */,
+				0330ECE9191802F300A3DEF7 /* CBadgeView.h in Headers */,
+				0330ECEA191802F300A3DEF7 /* UIViewControllerUtils.h in Headers */,
+				0330ECEB191802F300A3DEF7 /* CDebugAnnotation.h in Headers */,
+				0330ECEC191802F300A3DEF7 /* CDebugAnnotationView.h in Headers */,
+				0330ECED191802F300A3DEF7 /* CUserTrackingBarButtonItem.h in Headers */,
+				0330ECEE191802F300A3DEF7 /* MapKitUtils.h in Headers */,
+				0330ECEF191802F300A3DEF7 /* CWorkerDebugView.h in Headers */,
+				0330ECF0191802F300A3DEF7 /* CWorkerManagerDebugView.h in Headers */,
+				0330ECF1191802F300A3DEF7 /* CDebugMenuView.h in Headers */,
+				0330ECF2191802F300A3DEF7 /* URLRequestUtils.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		039DC12016CB32A900B52A7F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1603,6 +2147,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		0330EB88191802F300A3DEF7 /* Arciem Debug */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0330ECF4191802F300A3DEF7 /* Build configuration list for PBXNativeTarget "Arciem Debug" */;
+			buildPhases = (
+				0330EB89191802F300A3DEF7 /* Sources */,
+				0330EC38191802F300A3DEF7 /* Frameworks */,
+				0330EC3D191802F300A3DEF7 /* Headers */,
+				0330ECF3191802F300A3DEF7 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0330ED401918322800A3DEF7 /* PBXTargetDependency */,
+			);
+			name = "Arciem Debug";
+			productName = LibArciem;
+			productReference = 0330ECF7191802F300A3DEF7 /* libArciem.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		039DC10E16CB300D00B52A7F /* Arciem */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 039DC11D16CB300D00B52A7F /* Build configuration list for PBXNativeTarget "Arciem" */;
@@ -1615,15 +2178,16 @@
 			buildRules = (
 			);
 			dependencies = (
+				0330ED3E1918322200A3DEF7 /* PBXTargetDependency */,
 			);
 			name = Arciem;
 			productName = LibArciem;
 			productReference = 039DC10F16CB300D00B52A7F /* libArciem.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		039DC34216CC987E00B52A7F /* ArciemResources */ = {
+		039DC34216CC987E00B52A7F /* Arciem Resources */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 039DC34D16CC988100B52A7F /* Build configuration list for PBXNativeTarget "ArciemResources" */;
+			buildConfigurationList = 039DC34D16CC988100B52A7F /* Build configuration list for PBXNativeTarget "Arciem Resources" */;
 			buildPhases = (
 				039DC33F16CC987E00B52A7F /* Sources */,
 				039DC34016CC987E00B52A7F /* Frameworks */,
@@ -1633,7 +2197,7 @@
 			);
 			dependencies = (
 			);
-			name = ArciemResources;
+			name = "Arciem Resources";
 			productName = LibArciemResources;
 			productReference = 039DC34316CC987E00B52A7F /* Arciem.bundle */;
 			productType = "com.apple.product-type.bundle";
@@ -1660,8 +2224,8 @@
 			projectRoot = "";
 			targets = (
 				039DC10E16CB300D00B52A7F /* Arciem */,
-				039DC34216CC987E00B52A7F /* ArciemResources */,
-				039DC33816CC88A800B52A7F /* ArciemFramework */,
+				0330EB88191802F300A3DEF7 /* Arciem Debug */,
+				039DC34216CC987E00B52A7F /* Arciem Resources */,
 			);
 		};
 /* End PBXProject section */
@@ -1682,6 +2246,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0330ECF3191802F300A3DEF7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Resources\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh Versions/Current/Resources \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Resources\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n/bin/cp -a \"${TARGET_BUILD_DIR}/lib${PRODUCT_NAME}.a\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/${PRODUCT_NAME}\"\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.bundle/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Resources\"\n";
+		};
 		039DC33716CC83D700B52A7F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1693,24 +2270,192 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Resources\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n";
-		};
-		039DC33E16CC88E600B52A7F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\nset +u\n# Avoid recursively calling this script.\nif [[ $SF_MASTER_SCRIPT_RUNNING ]]\nthen\nexit 0\nfi\nset -u\nexport SF_MASTER_SCRIPT_RUNNING=1\n\nSF_TARGET_NAME=${PROJECT_NAME}\nSF_EXECUTABLE_PATH=\"lib${SF_TARGET_NAME}.a\"\nSF_WRAPPER_NAME=\"${SF_TARGET_NAME}.framework\"\n\n# The following conditionals come from\n# https://github.com/kstenerud/iOS-Universal-Framework\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\nSF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\nSF_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SF_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\nSF_OTHER_PLATFORM=iphonesimulator\nelse\nSF_OTHER_PLATFORM=iphoneos\nfi\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$SF_SDK_PLATFORM$ ]]\nthen\nSF_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${SF_OTHER_PLATFORM}\"\nelse\necho \"Could not find platform name from build products directory: $BUILT_PRODUCTS_DIR\"\nexit 1\nfi\n\n# Build the other platform.\nxcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${SF_OTHER_PLATFORM}${SF_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" OBJROOT=\"${OBJROOT}\" BUILD_ROOT=\"${BUILD_ROOT}\" SYMROOT=\"${SYMROOT}\" $ACTION\n\n# Smash the two static libraries into one fat binary and store it in the .framework\nlipo -create \"${BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" -output \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n\n# Copy the binary to the other architecture folder to have a complete framework in both.\ncp -a \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n";
+			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Resources\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh Versions/Current/Resources \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Resources\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n/bin/cp -a \"${TARGET_BUILD_DIR}/lib${PRODUCT_NAME}.a\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/${PRODUCT_NAME}\"\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PRODUCT_NAME}.bundle/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Resources\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0330EB89191802F300A3DEF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0330EB8A191802F300A3DEF7 /* CActionItem.mm in Sources */,
+				0330EB8B191802F300A3DEF7 /* CLog.mm in Sources */,
+				0330EB8C191802F300A3DEF7 /* CObserver.mm in Sources */,
+				0330EB8D191802F300A3DEF7 /* CSwitch.mm in Sources */,
+				0330EB8E191802F300A3DEF7 /* DateTimeUtils.mm in Sources */,
+				0330EB8F191802F300A3DEF7 /* ErrorUtils.mm in Sources */,
+				0330EB90191802F300A3DEF7 /* CUseCounter.mm in Sources */,
+				0330EB91191802F300A3DEF7 /* Geom.mm in Sources */,
+				0330EB92191802F300A3DEF7 /* I18nUtils.mm in Sources */,
+				0330EB93191802F300A3DEF7 /* InvocationUtils.mm in Sources */,
+				0330EB94191802F300A3DEF7 /* CSectionItem.mm in Sources */,
+				0330EB95191802F300A3DEF7 /* JSONUtils.mm in Sources */,
+				0330EB96191802F300A3DEF7 /* ObjectUtils.mm in Sources */,
+				0330EB97191802F300A3DEF7 /* PropertyUtils.mm in Sources */,
+				0330EB98191802F300A3DEF7 /* StringUtils.mm in Sources */,
+				0330EB99191802F300A3DEF7 /* ThreadUtils.mm in Sources */,
+				0330EB9A191802F300A3DEF7 /* random.cpp in Sources */,
+				0330EB9B191802F300A3DEF7 /* xtime.cpp in Sources */,
+				0330EB9C191802F300A3DEF7 /* arc2.cpp in Sources */,
+				0330EB9D191802F300A3DEF7 /* area.cpp in Sources */,
+				0330EB9E191802F300A3DEF7 /* areai.cpp in Sources */,
+				0330EB9F191802F300A3DEF7 /* bezier2.cpp in Sources */,
+				0330EBA0191802F300A3DEF7 /* bezier2_list.cpp in Sources */,
+				0330EBA1191802F300A3DEF7 /* delta2.cpp in Sources */,
+				0330EBA2191802F300A3DEF7 /* CTextureAtlasImage.mm in Sources */,
+				0330EBA3191802F300A3DEF7 /* delta2i.cpp in Sources */,
+				0330EBA4191802F300A3DEF7 /* delta3.cpp in Sources */,
+				0330EBA5191802F300A3DEF7 /* geometry.cpp in Sources */,
+				0330EBA6191802F300A3DEF7 /* line2.cpp in Sources */,
+				0330EBA7191802F300A3DEF7 /* orientation.cpp in Sources */,
+				0330EBA8191802F300A3DEF7 /* point2.cpp in Sources */,
+				0330EBA9191802F300A3DEF7 /* point2_list.cpp in Sources */,
+				0330EBAA191802F300A3DEF7 /* point2i.cpp in Sources */,
+				0330EBAB191802F300A3DEF7 /* point3.cpp in Sources */,
+				0330EBAC191802F300A3DEF7 /* volume.cpp in Sources */,
+				0330EBAD191802F300A3DEF7 /* CPaymentMethodSummaryItemTableViewCell.mm in Sources */,
+				0330EBAE191802F300A3DEF7 /* wedge2.cpp in Sources */,
+				0330EBAF191802F300A3DEF7 /* gl_utils.cpp in Sources */,
+				0330EBB0191802F300A3DEF7 /* murmur_hash_3.cpp in Sources */,
+				0330EBB1191802F300A3DEF7 /* CMatrix.mm in Sources */,
+				0330EBB2191802F300A3DEF7 /* CMutableArray.mm in Sources */,
+				0330EBB3191802F300A3DEF7 /* CQuantity.mm in Sources */,
+				0330EBB4191802F300A3DEF7 /* CSlowCall.mm in Sources */,
+				0330EBB5191802F300A3DEF7 /* NSIndexPathUtils.mm in Sources */,
+				0330EBB6191802F300A3DEF7 /* CBooleanItem.mm in Sources */,
+				0330EBB7191802F300A3DEF7 /* CCardNumberItem.mm in Sources */,
+				0330EBB8191802F300A3DEF7 /* CDateItem.mm in Sources */,
+				0330EBB9191802F300A3DEF7 /* CEmailItem.mm in Sources */,
+				0330EBBA191802F300A3DEF7 /* CForm.mm in Sources */,
+				0330EBBB191802F300A3DEF7 /* CMultiChoiceItem.mm in Sources */,
+				0330EBBC191802F300A3DEF7 /* CMultiTextItem.mm in Sources */,
+				0330EBBD191802F300A3DEF7 /* CNoteItem.mm in Sources */,
+				0330EBBE191802F300A3DEF7 /* CPasswordItem.mm in Sources */,
+				0330EBBF191802F300A3DEF7 /* CPhoneItem.mm in Sources */,
+				0330EBC0191802F300A3DEF7 /* CRepeatingItem.mm in Sources */,
+				0330EBC1191802F300A3DEF7 /* CSpacerItem.mm in Sources */,
+				0330EBC2191802F300A3DEF7 /* CStringItem.mm in Sources */,
+				0330EBC3191802F300A3DEF7 /* CSubmitItem.mm in Sources */,
+				0330EBC4191802F300A3DEF7 /* CItem.mm in Sources */,
+				0330EBC5191802F300A3DEF7 /* CTableItem.mm in Sources */,
+				0330EBC6191802F300A3DEF7 /* CActionTableRowItem.mm in Sources */,
+				0330EBC7191802F300A3DEF7 /* CAddRepeatingTableRowItem.mm in Sources */,
+				0330EBC8191802F300A3DEF7 /* CCheckboxTableRowItem.mm in Sources */,
+				0330EBC9191802F300A3DEF7 /* CButtonTableRowItem.mm in Sources */,
+				0330EBCA191802F300A3DEF7 /* CCardNumberTableRowItem.mm in Sources */,
+				0330EBCB191802F300A3DEF7 /* CMultiChoiceSummaryTableRowItem.mm in Sources */,
+				0330EBCC191802F300A3DEF7 /* CNoteTableRowItem.mm in Sources */,
+				0330EBCD191802F300A3DEF7 /* CTableRowItem.mm in Sources */,
+				0330EBCE191802F300A3DEF7 /* CStatusBar.mm in Sources */,
+				0330EBCF191802F300A3DEF7 /* CPaymentMethodSummaryItem.mm in Sources */,
+				0330EBD0191802F300A3DEF7 /* CSpacerTableRowItem.mm in Sources */,
+				0330EBD1191802F300A3DEF7 /* CSummaryTableRowItem.mm in Sources */,
+				0330EBD2191802F300A3DEF7 /* CTextFieldTableRowItem.mm in Sources */,
+				0330EBD3191802F300A3DEF7 /* CTableSectionItem.mm in Sources */,
+				0330EBD4191802F300A3DEF7 /* CTitleTableRowItem.mm in Sources */,
+				0330EBD5191802F300A3DEF7 /* CDummyWorker.mm in Sources */,
+				0330EBD6191802F300A3DEF7 /* CRestWorker.mm in Sources */,
+				0330EBD7191802F300A3DEF7 /* CSwitchTableRowItem.mm in Sources */,
+				0330EBD8191802F300A3DEF7 /* CWorker.mm in Sources */,
+				0330EBD9191802F300A3DEF7 /* CWorkerManager.mm in Sources */,
+				0330EBDA191802F300A3DEF7 /* ISO8601DateFormatter.m in Sources */,
+				0330EBDB191802F300A3DEF7 /* CNetworkActivity.mm in Sources */,
+				0330EBDC191802F300A3DEF7 /* CBeveledBackgroundView.mm in Sources */,
+				0330EBDD191802F300A3DEF7 /* CActivityShieldView.mm in Sources */,
+				0330EBDE191802F300A3DEF7 /* CAlertManager.mm in Sources */,
+				0330EBDF191802F300A3DEF7 /* CGradientView.mm in Sources */,
+				0330EBE0191802F300A3DEF7 /* CGUtils.mm in Sources */,
+				0330EBE1191802F300A3DEF7 /* CImageView.mm in Sources */,
+				0330EBE2191802F300A3DEF7 /* CTextFieldTableViewCell1.mm in Sources */,
+				0330EBE3191802F300A3DEF7 /* CTextFieldTableViewCell2.mm in Sources */,
+				0330EBE4191802F300A3DEF7 /* CButton.mm in Sources */,
+				0330EBE5191802F300A3DEF7 /* CNavigationBar.mm in Sources */,
+				0330EBE6191802F300A3DEF7 /* CNavigationController.mm in Sources */,
+				0330EBE7191802F300A3DEF7 /* CTapToDismissKeyboardManager.mm in Sources */,
+				0330EBE8191802F300A3DEF7 /* CView.mm in Sources */,
+				0330EBE9191802F300A3DEF7 /* CFixedDate.mm in Sources */,
+				0330EBEA191802F300A3DEF7 /* CViewController.mm in Sources */,
+				0330EBEB191802F300A3DEF7 /* CWindow.mm in Sources */,
+				0330EBEC191802F300A3DEF7 /* DeviceUtils.mm in Sources */,
+				0330EBED191802F300A3DEF7 /* NibUtils.mm in Sources */,
+				0330EBEE191802F300A3DEF7 /* TextUtils.mm in Sources */,
+				0330EBEF191802F300A3DEF7 /* UIColorUtils.mm in Sources */,
+				0330EBF0191802F300A3DEF7 /* CTableView.mm in Sources */,
+				0330EBF1191802F300A3DEF7 /* UIImageUtils.mm in Sources */,
+				0330EBF2191802F300A3DEF7 /* UIViewUtils.mm in Sources */,
+				0330EBF3191802F300A3DEF7 /* CNotifier.mm in Sources */,
+				0330EBF4191802F300A3DEF7 /* CNotifierBar.mm in Sources */,
+				0330EBF5191802F300A3DEF7 /* CNotifierItem.mm in Sources */,
+				0330EBF6191802F300A3DEF7 /* CNotifierItemView.mm in Sources */,
+				0330EBF7191802F300A3DEF7 /* CFieldValidationView.mm in Sources */,
+				0330EBF8191802F300A3DEF7 /* CMonthAndYearPicker.mm in Sources */,
+				0330EBF9191802F300A3DEF7 /* CTableManager.mm in Sources */,
+				0330EBFA191802F300A3DEF7 /* CActionItemTableViewCell.mm in Sources */,
+				0330EBFB191802F300A3DEF7 /* CAddRepeatingItemTableViewCell.mm in Sources */,
+				0330EBFC191802F300A3DEF7 /* CCheckboxTableViewCell.mm in Sources */,
+				0330EBFD191802F300A3DEF7 /* CPaymentMethodTypeImageView.mm in Sources */,
+				0330EBFE191802F300A3DEF7 /* CButtonTableViewCell.mm in Sources */,
+				0330EBFF191802F300A3DEF7 /* CCardNumberItemTableViewCell.mm in Sources */,
+				0330EC00191802F300A3DEF7 /* CMultiChoiceItemTableViewCell.mm in Sources */,
+				0330EC01191802F300A3DEF7 /* CShieldView.mm in Sources */,
+				0330EC02191802F300A3DEF7 /* CNoteTableViewCell.mm in Sources */,
+				0330EC03191802F300A3DEF7 /* CRowItemTableViewCell.mm in Sources */,
+				0330EC04191802F300A3DEF7 /* CSpacerTableViewCell.mm in Sources */,
+				0330EC05191802F300A3DEF7 /* CSummaryTableViewCell.mm in Sources */,
+				0330EC06191802F300A3DEF7 /* CTextFieldItemTableViewCell.mm in Sources */,
+				0330EC07191802F300A3DEF7 /* CTitleTableViewCell.mm in Sources */,
+				0330EC08191802F300A3DEF7 /* CTableViewCell.mm in Sources */,
+				0330EC09191802F300A3DEF7 /* CActionSheetManager.mm in Sources */,
+				0330EC0A191802F300A3DEF7 /* CDebugOverlayView.mm in Sources */,
+				0330EC0B191802F300A3DEF7 /* CSetup.mm in Sources */,
+				0330EC0C191802F300A3DEF7 /* CSetupBoolOptionTableViewCell.mm in Sources */,
+				0330EC0D191802F300A3DEF7 /* CSetupEditServerViewController.mm in Sources */,
+				0330EC0E191802F300A3DEF7 /* CSetupMainViewController.mm in Sources */,
+				0330EC0F191802F300A3DEF7 /* XMLUtils.mm in Sources */,
+				0330EC10191802F300A3DEF7 /* CSetupNavigationController.mm in Sources */,
+				0330EC11191802F300A3DEF7 /* CSetupOptionTableViewCell.mm in Sources */,
+				0330EC12191802F300A3DEF7 /* CSwitchItemTableViewCell.mm in Sources */,
+				0330EC13191802F300A3DEF7 /* CSetupServer.mm in Sources */,
+				0330EC14191802F300A3DEF7 /* CSetupServerItem.mm in Sources */,
+				0330EC15191802F300A3DEF7 /* CSetupServerTableViewCell.mm in Sources */,
+				0330EC16191802F300A3DEF7 /* CSetupTableViewController.mm in Sources */,
+				0330EC17191802F300A3DEF7 /* CSetupTextFieldTableViewCell.mm in Sources */,
+				0330EC18191802F300A3DEF7 /* Arciem.mm in Sources */,
+				0330EC19191802F300A3DEF7 /* CReachability.mm in Sources */,
+				0330EC1A191802F300A3DEF7 /* CTabBar.mm in Sources */,
+				0330EC1B191802F300A3DEF7 /* UILabelUtils.mm in Sources */,
+				0330EC1C191802F300A3DEF7 /* CTextureAtlas.mm in Sources */,
+				0330EC1D191802F300A3DEF7 /* WhiteLabel.mm in Sources */,
+				0330EC1E191802F300A3DEF7 /* CPaymentMethodSummaryTableRowItem.mm in Sources */,
+				0330EC1F191802F300A3DEF7 /* CSystemSound.mm in Sources */,
+				0330EC20191802F300A3DEF7 /* CMiniPickerBackgroundView.mm in Sources */,
+				0330EC21191802F300A3DEF7 /* CMiniPickerFrameView.mm in Sources */,
+				0330EC22191802F300A3DEF7 /* CMiniPickerOverlayView.mm in Sources */,
+				0330EC23191802F300A3DEF7 /* CMiniPickerView.mm in Sources */,
+				0330EC24191802F300A3DEF7 /* CMiniPickerViewCell.mm in Sources */,
+				0330EC25191802F300A3DEF7 /* CNetworkController.mm in Sources */,
+				0330EC26191802F300A3DEF7 /* AppUtils.mm in Sources */,
+				0330EC27191802F300A3DEF7 /* CDebugMenuView.mm in Sources */,
+				0330EC28191802F300A3DEF7 /* CKeychainUtils.mm in Sources */,
+				0330EC29191802F300A3DEF7 /* CSidebarContainerViewController.mm in Sources */,
+				0330EC2A191802F300A3DEF7 /* CNotifierViewController.mm in Sources */,
+				0330EC2B191802F300A3DEF7 /* CShadowView.mm in Sources */,
+				0330EC2C191802F300A3DEF7 /* CTextureAtlasSubimage.mm in Sources */,
+				0330EC2D191802F300A3DEF7 /* CDisclosureIndicator.mm in Sources */,
+				0330EC2E191802F300A3DEF7 /* CBadgeView.mm in Sources */,
+				0330EC2F191802F300A3DEF7 /* UIViewControllerUtils.mm in Sources */,
+				0330EC30191802F300A3DEF7 /* CDebugAnnotation.mm in Sources */,
+				0330EC31191802F300A3DEF7 /* CDebugAnnotationView.mm in Sources */,
+				0330EC32191802F300A3DEF7 /* CUserTrackingBarButtonItem.mm in Sources */,
+				0330EC33191802F300A3DEF7 /* MapKitUtils.mm in Sources */,
+				0330EC34191802F300A3DEF7 /* CSwitchTableViewCell.mm in Sources */,
+				0330EC35191802F300A3DEF7 /* CWorkerDebugView.mm in Sources */,
+				0330EC36191802F300A3DEF7 /* CWorkerManagerDebugView.mm in Sources */,
+				0330EC37191802F300A3DEF7 /* URLRequestUtils.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		039DC10B16CB300D00B52A7F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1902,15 +2647,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		039DC33D16CC88B600B52A7F /* PBXTargetDependency */ = {
+		0330ED3E1918322200A3DEF7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 039DC10E16CB300D00B52A7F /* Arciem */;
-			targetProxy = 039DC33C16CC88B600B52A7F /* PBXContainerItemProxy */;
+			target = 039DC34216CC987E00B52A7F /* Arciem Resources */;
+			targetProxy = 0330ED3D1918322200A3DEF7 /* PBXContainerItemProxy */;
 		};
-		039DC35116CC994D00B52A7F /* PBXTargetDependency */ = {
+		0330ED401918322800A3DEF7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 039DC34216CC987E00B52A7F /* ArciemResources */;
-			targetProxy = 039DC35016CC994D00B52A7F /* PBXContainerItemProxy */;
+			target = 039DC34216CC987E00B52A7F /* Arciem Resources */;
+			targetProxy = 0330ED3F1918322800A3DEF7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1926,6 +2671,22 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		0330ECF5191802F300A3DEF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "Arciem/Arciem-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+			};
+			name = Debug;
+		};
+		0330ECF6191802F300A3DEF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "Arciem/Arciem-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+			};
+			name = Release;
+		};
 		039DC11B16CB300D00B52A7F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1941,19 +2702,15 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"DEBUG=1",
-					"TESTING=1",
-				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = Arciem;
 				PUBLIC_HEADERS_FOLDER_PATH = Headers/Arciem;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1986,19 +2743,19 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					$inherited,
-					"TESTING=0",
-				);
+				"GCC_OPTIMIZATION_LEVEL[arch=arm64]" = 0;
+				"GCC_OPTIMIZATION_LEVEL[sdk=iphonesimulator*]" = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = Arciem;
 				PUBLIC_HEADERS_FOLDER_PATH = Headers/Arciem;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
-				VALIDATE_PRODUCT = YES;
 				WARNING_CFLAGS = (
 					"-Wno-error=#warnings",
 					"-Weverything",
@@ -2015,43 +2772,22 @@
 		039DC11E16CB300D00B52A7F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DSTROOT = /tmp/LibArciem.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Arciem/Arciem-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = Arciem;
 			};
 			name = Debug;
 		};
 		039DC11F16CB300D00B52A7F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DSTROOT = /tmp/LibArciem.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Arciem/Arciem-Prefix.pch";
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = Arciem;
-			};
-			name = Release;
-		};
-		039DC33A16CC88A800B52A7F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		039DC33B16CC88A800B52A7F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
 		039DC34E16CC988100B52A7F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = Arciem;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -2059,7 +2795,6 @@
 		039DC34F16CC988100B52A7F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = Arciem;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
@@ -2067,6 +2802,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0330ECF4191802F300A3DEF7 /* Build configuration list for PBXNativeTarget "Arciem Debug" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0330ECF5191802F300A3DEF7 /* Debug */,
+				0330ECF6191802F300A3DEF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		039DC10A16CB300D00B52A7F /* Build configuration list for PBXProject "Arciem" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2085,16 +2829,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		039DC33916CC88A800B52A7F /* Build configuration list for PBXAggregateTarget "ArciemFramework" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				039DC33A16CC88A800B52A7F /* Debug */,
-				039DC33B16CC88A800B52A7F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		039DC34D16CC988100B52A7F /* Build configuration list for PBXNativeTarget "ArciemResources" */ = {
+		039DC34D16CC988100B52A7F /* Build configuration list for PBXNativeTarget "Arciem Resources" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				039DC34E16CC988100B52A7F /* Debug */,

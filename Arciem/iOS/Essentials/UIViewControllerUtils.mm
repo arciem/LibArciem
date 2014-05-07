@@ -21,7 +21,7 @@
 @implementation UIViewController (UIViewControllerUtils)
 
 - (void)printContainmentHierarchyWithIndent:(NSString*)indent level:(int)level {
-#if TESTING
+#ifdef DEBUG
 	NSString* prefix = @"   ";
 	CLogPrint(@"%@%@%3d %@", prefix, indent, level, self);
 	indent = [indent stringByAppendingString:@"  |"];
@@ -43,7 +43,7 @@
 }
 
 - (void)printPresentationHierarchy:(NSString*)indent level:(int)level {
-#if TESTING
+#ifdef DEBUG
 	NSString* prefix = @"   ";
 	CLogPrint(@"%@%@%3d %@", prefix, indent, level, self);
 #endif

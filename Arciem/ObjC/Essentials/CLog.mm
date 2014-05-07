@@ -18,7 +18,7 @@
 
 #import "CLog.h"
 
-#if TESTING
+#ifdef LOGGING_ENABLED
 
 static NSMutableSet* sLogTags = nil;
 static CLogLevel sLogLevel = kLogWarn;

@@ -380,70 +380,52 @@
 	return resultImage;
 }
 
-+ (UIImage *)newEmbossedImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor
++ (UIImage *)newEmbossedImageWithShapeImage:(UIImage *)shapeImage backgroundImage:(UIImage *)backgroundImage
 {
 	UIImage* resultImage = nil;
+    
 	CGContextRef context = nil;
-    CGPoint offset = CGPointMake(1, 1);
-    CGRect originalBounds = CGRectMake(0, 0, shapeImage.size.width, shapeImage.size.height);
-	CGRect bounds = CGRectMake(0, 0, shapeImage.size.width + 2 * offset.x, shapeImage.size.height + 2 * offset.y);
-    shapeImage = [shapeImage newImageByScalingToSize:shapeImage.size centeredWithinImageOfSize:bounds.size backgroundColor:nil];
-
-//    tintColor = [tintColor newColorByDesaturatingFraction:0.2];
-	UIImage* backgroundImage = [self newImageWithSize:shapeImage.size scale:shapeImage.scale backgroundColor:tintColor];
-
+    
+    CGRect bounds = CGRectMake(0, 0, shapeImage.size.width, shapeImage.size.height);
+    
 	// Draw the shape image on a white background to get rid of any alpha channel
 	UIImage* flatShapeImage = [shapeImage flattenShapeImage];
-
+    
 	// Make a stencil that contains the shape we've been passed, drawn as a black silhouette on a white background
 	CGImageRef shapeStencil = CGImageMaskCreate(CGImageGetWidth(flatShapeImage.CGImage), CGImageGetHeight(flatShapeImage.CGImage), CGImageGetBitsPerComponent(flatShapeImage.CGImage), CGImageGetBitsPerPixel(flatShapeImage.CGImage), CGImageGetBytesPerRow(flatShapeImage.CGImage), CGImageGetDataProvider(flatShapeImage.CGImage), NULL, false);
 	
 	// Also make an inverted stencil
 	CGFloat invertDecodeArray[] = {1.0, 0.0,  1.0, 0.0,  1.0, 0.0};
 	CGImageRef invertedShapeStencil = CGImageMaskCreate(CGImageGetWidth(flatShapeImage.CGImage), CGImageGetHeight(flatShapeImage.CGImage), CGImageGetBitsPerComponent(flatShapeImage.CGImage), CGImageGetBitsPerPixel(flatShapeImage.CGImage), CGImageGetBytesPerRow(flatShapeImage.CGImage), CGImageGetDataProvider(flatShapeImage.CGImage), invertDecodeArray, false);
-	
-	// To create an inner shadow, first paint a black rectangle through the inverted stencil, to create a frisket
-	UIImage* innerShadowFrisketImage = nil;
-    context = [UIImage beginImageContextWithSize:shapeImage.size opaque:NO scale:shapeImage.scale flipped:NO];
-	CGContextClipToMask(context, bounds, invertedShapeStencil);
-	CGContextSetFillColorWithColor(context, [UIColor blackColor].CGColor);
-	CGContextFillRect(context, bounds);
-    innerShadowFrisketImage = [UIImage endImageContext];
-
-	// Now draw the frisket with shadow into a new transparent image, resulting in an inner shadow
-	UIImage* innerShadowImage = nil;
-    context = [UIImage beginImageContextWithSize:shapeImage.size opaque:NO scale:shapeImage.scale flipped:NO];
-	CGContextSetShadowWithColor(context, CGSizeZero, 1.0, [UIColor blackColor].CGColor);
-	[innerShadowFrisketImage drawAtPoint:CGPointZero];
-    innerShadowImage = [UIImage endImageContext];
     
 	// Create the main context we'll be painting into
     context = [UIImage beginImageContextWithSize:shapeImage.size opaque:NO scale:shapeImage.scale flipped:YES];
     
+    // Constraint all drawing to the basic shape
+    CGContextClipToMask(context, bounds, shapeStencil);
+    
 	// Paint the tint colored shape
-	CGContextSaveGState(context);
-	CGContextClipToMask(context, bounds, shapeStencil);
-	CGContextDrawImage(context, bounds, backgroundImage.CGImage);
-	CGContextRestoreGState(context);
+    CGRect backgroundDestRect = CGRectZero;
+    backgroundDestRect.size = [Geom aspectFillSize:backgroundImage.size withinSize:shapeImage.size];
+    backgroundDestRect = [Geom alignRectMid:backgroundDestRect toRectMid:bounds];
+    CGContextDrawImage(context, backgroundDestRect, backgroundImage.CGImage);
     
 	// Paint the dark, lower etching
 	CGContextSaveGState(context);
-	CGContextClipToMask(context, bounds, shapeStencil);
-	CGContextTranslateCTM(context, 0.0, 0.5);
+	CGContextTranslateCTM(context, 0.0, 1.0);
 	CGContextClipToMask(context, bounds, invertedShapeStencil);
     CGContextSetBlendMode(context, kCGBlendModeNormal);
-	CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:0.0 alpha:0.5].CGColor);
-	CGContextFillRect(context, bounds);
+	CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:0.0 alpha:0.7].CGColor);
+    CGContextFillRect(context, bounds);
 	CGContextRestoreGState(context);
 	
 	// Paint the light, upper etching
 	CGContextSaveGState(context);
-	CGContextClipToMask(context, bounds, shapeStencil);
-	CGContextTranslateCTM(context, 0.0, -0.5);
+	CGContextTranslateCTM(context, 0.0, -1.0);
 	CGContextClipToMask(context, bounds, invertedShapeStencil);
     CGContextSetBlendMode(context, kCGBlendModeNormal);
-	CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:1.0 alpha:0.5].CGColor);
-	CGContextFillRect(context, CGRectInset(bounds, -2, -2));
+	CGContextSetFillColorWithColor(context, [UIColor colorWithWhite:1.0 alpha:0.9].CGColor);
+    CGContextFillRect(context, bounds);
 	CGContextRestoreGState(context);
     
 	// Retrieve the finished image
@@ -453,9 +435,22 @@
 	CGImageRelease(shapeStencil);
 	CGImageRelease(invertedShapeStencil);
     
-    resultImage = [resultImage newImageByScalingToSize:bounds.size centeredWithinImageOfSize:originalBounds.size backgroundColor:nil];
-    
 	return resultImage;
+}
+
++ (UIImage *)newEmbossedImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor
+{
+    CGRect bounds = CGRectMake(0, 0, 10, 10);
+    CGContextRef context = [UIImage beginImageContextWithSize:bounds.size opaque:YES scale:1 flipped:YES];
+
+	// Paint the tint colored shape
+    CGContextSetFillColorWithColor(context, tintColor.CGColor);
+    CGContextFillRect(context, bounds);
+    
+	// Retrieve the finished image
+    UIImage* backgroundImage = [UIImage endImageContext];
+    
+	return [self newEmbossedImageWithShapeImage:shapeImage backgroundImage:backgroundImage];
 }
 
 + (UIImage *)newEtchedImageWithShapeImage:(UIImage *)shapeImage backgroundImage:(UIImage *)backgroundImage glossAlpha:(CGFloat)glossAlpha

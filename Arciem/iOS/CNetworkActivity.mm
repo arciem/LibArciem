@@ -141,7 +141,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 
 - (void)turnOnIndicator
 {
-#if TESTING
+#ifdef LOGGING_ENABLED
     BSELF;
 #endif
     [self.queue performSynchronousOperationWithBlock:^{
@@ -155,7 +155,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 
 - (void)turnOffIndicator
 {
-#if TESTING
+#ifdef LOGGING_ENABLED
     BSELF;
 #endif
     [self.queue performSynchronousOperationWithBlock:^{

@@ -132,7 +132,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (void)printViewHierarchy:(UIView*)view indent:(NSString*)indent level:(NSUInteger)level
 {
-#if TESTING
+#ifdef DEBUG
     NSString *scrollViewPrefix = @"⬜️";
     if([view isKindOfClass:[UIScrollView class]]) {
         scrollViewPrefix = @"🔃";
@@ -179,7 +179,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (void)printConstraintsHierarchy:(UIView*)view indent:(NSString*)indent level:(int)level
 {
-#if TESTING
+#ifdef DEBUG
     NSString *translatesPrefix = view.translatesAutoresizingMaskIntoConstraints ? @"⬜️" : @"✅";
     NSString *ambiguousPrefix = view.hasAmbiguousLayout ? @"❓" : @"⬜️";
     NSString* prefix = [NSString stringWithFormat:@"%@ %@ ", translatesPrefix, ambiguousPrefix];
