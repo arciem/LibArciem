@@ -208,4 +208,27 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
     }
 }
 
+#pragma mark - State Preservation and Restoration
+
+- (NSString *)restorationIdentifier {
+    NSString *rid = super.restorationIdentifier;
+    CLogTrace(@"STATE_RID", @"restorationIdentifier:%@", rid);
+    return rid;
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super encodeRestorableStateWithCoder:coder];
+    CLogTrace(@"STATE", @"encodeRestorableStateWithCoder: class:%@ restorationIdentifier:%@", NSStringFromClass(self.class), self.restorationIdentifier);
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super decodeRestorableStateWithCoder:coder];
+    CLogTrace(@"STATE", @"decodeRestorableStateWithCoder: class:%@ restorationIdentifier:%@", NSStringFromClass(self.class), self.restorationIdentifier);
+}
+
+- (void)applicationFinishedRestoringState {
+    [super applicationFinishedRestoringState];
+    CLogTrace(@"STATE", @"applicationFinishedRestoringState: class:%@ restorationIdentifier:%@", NSStringFromClass(self.class), self.restorationIdentifier);
+}
+
 @end

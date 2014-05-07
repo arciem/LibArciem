@@ -19,6 +19,8 @@
 #import "CTableView.h"
 #import "UIViewUtils.h"
 
+@interface CTableView () <UIStateRestoring>
+@end
 
 @implementation CTableView
 
@@ -52,6 +54,38 @@
 //	NSLog(@"%@ reloadDataDeferred", self);
 	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	[self performSelector:@selector(reloadDataFromDeferred:) withObject:nil afterDelay:0.1];
+}
+
+#if 0
+- (void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated {
+    [super setContentOffset:contentOffset animated:animated];
+}
+
+- (void)setContentOffset:(CGPoint)contentOffset {
+    [super setContentOffset:contentOffset];
+}
+#endif
+
+#pragma mark - State Preservation and Restoration
+
+- (NSString *)restorationIdentifier {
+    NSString *rid = super.restorationIdentifier;
+    CLogTrace(@"STATE_RID", @"restorationIdentifier:%@", rid);
+    return rid;
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super encodeRestorableStateWithCoder:coder];
+    CLogTrace(@"STATE", @"encodeRestorableStateWithCoder: class:%@ restorationIdentifier:%@", NSStringFromClass(self.class), self.restorationIdentifier);
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super decodeRestorableStateWithCoder:coder];
+    CLogTrace(@"STATE", @"decodeRestorableStateWithCoder: class:%@ restorationIdentifier:%@", NSStringFromClass(self.class), self.restorationIdentifier);
+}
+
+- (void)applicationFinishedRestoringState {
+    CLogTrace(@"STATE", @"applicationFinishedRestoringState: class:%@ restorationIdentifier:%@", NSStringFromClass(self.class), self.restorationIdentifier);
 }
 
 @end
