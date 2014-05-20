@@ -37,6 +37,7 @@
 
 @synthesize model = _model;
 @synthesize onDarkBackground = _onDarkBackground;
+@synthesize debugView = _debugView;
 
 - (UILabel*)newLabel
 {
@@ -62,6 +63,21 @@
         }
     }
     return label;
+}
+
+- (UIView *)debugView {
+    return _debugView;
+}
+
+- (void)setDebugView:(UIView *)debugView {
+    if(_debugView != debugView) {
+        [_debugView removeFromSuperview];
+        _debugView = debugView;
+        [self addSubview:_debugView];
+        [self addConstraint:[_debugView constrainTopEqualToTopOfItem:self offset:2]];
+        [self addConstraint:[_debugView constrainTrailingEqualToTrailingOfItem:self]];
+        [self addConstraint:[_debugView constrainLeadingGreaterThanOrEqualToLeadingOfItem:self offset:0]];
+    }
 }
 
 - (void)setup

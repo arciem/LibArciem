@@ -39,4 +39,8 @@
 
 - (CGFloat)miniPickerView:(CMiniPickerView*)view widthForColumnIndex:(NSUInteger)index;
 
+@optional
+
+- (UIView *)miniPickerView:(CMiniPickerView*)view debugViewForChoiceItem:(CBooleanItem *)choiceItem index:(NSUInteger)index;
+
 @end

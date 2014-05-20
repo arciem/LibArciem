@@ -242,7 +242,7 @@ static __strong CSystemSound *sDetentSound = nil;
 
     BOOL singleChoice = self.model.subitems.count <= 1;
 
-    for(CBooleanItem *choiceItem in self.model.subitems) {
+    [self.model.subitems enumerateObjectsUsingBlock:^(CBooleanItem *choiceItem, NSUInteger idx, BOOL *stop) {
         NSAssert1([choiceItem isKindOfClass:[CBooleanItem class]], @"Subitem is not CBooleanItem: %@", choiceItem);
         CMiniPickerViewCell *cellView = [CMiniPickerViewCell new];
         UIEdgeInsets cellViewMargins = cellView.margins;
@@ -255,7 +255,11 @@ static __strong CSystemSound *sDetentSound = nil;
         cellView.delegate = self;
         [self.contentViews addObject:cellView];
         [self.scrollContentView addSubview:cellView];
-    }
+        if([self.delegate respondsToSelector:@selector(miniPickerView:debugViewForChoiceItem:index:)]) {
+            UIView *debugView = [self.delegate miniPickerView:self debugViewForChoiceItem:choiceItem index:idx];
+            [cellView setDebugView:debugView];
+        }
+    }];
     
     if(singleChoice) {
         self.frameView.hidden = YES;

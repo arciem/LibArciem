@@ -28,6 +28,7 @@
 @property (nonatomic) CItem* model;
 @property (nonatomic) BOOL onDarkBackground;
 @property (weak, nonatomic) id<CMiniPickerViewCellDelegate> delegate;
+@property (nonatomic) UIView *debugView;
 
 @end
 
