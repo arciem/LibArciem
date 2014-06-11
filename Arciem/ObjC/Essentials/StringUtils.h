@@ -92,6 +92,7 @@ NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* 
 + (NSString*)stringWithUUID;
 + (NSString*)stringWithBase64UUIDURLSafe:(BOOL)URLSafe;
 + (NSString*)stringWithASCIIData:(NSData*)data;
++ (NSString*)stringWithHexadecimalData:(NSData*)data;
 + (NSString*)stringWithData:(NSData*)data encoding:(NSStringEncoding)encoding;
 + (NSString*)stringWithCRLF;
 + (NSString*)stringWithComponents:(NSArray*)components separator:(NSString*)separator;

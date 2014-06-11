@@ -316,6 +316,19 @@ string ToStd(NSString* s) {
 	return result;
 }
 
++ (NSString*)stringWithHexadecimalData:(NSData*)data {
+    NSMutableString *s = [NSMutableString new];
+    
+    const char *buf = (const char *)[data bytes];
+    for(NSUInteger i = 0; i < data.length; i++) {
+        const unsigned char b = buf[i];
+        [s appendFormat:@"%02x", b];
+    }
+    
+    return [s copy];
+}
+
+
 + (NSString*)stringWithASCIIData:(NSData*)data {
 	return [self stringWithData:data encoding:NSASCIIStringEncoding];
 }
