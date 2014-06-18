@@ -129,9 +129,7 @@
     CGFloat topEdgeWidth = 0.5;
     CGFloat bottomEdgeWidth = 0.5;
     
-    if(IsOSVersionAtLeast7()) {
-        topEdgeWidth = 0.0;
-    }
+    topEdgeWidth = 0.0;
     
 	CGRect topEdge, middle, bottomEdge;
 	CGRectDivide(imageBounds, &topEdge, &middle, topEdgeWidth, CGRectMinYEdge);
@@ -142,13 +140,8 @@
 	UIColor* bottomColor = [[tintColor newColorByDarkeningFraction:0.3] newColorByColorBurnFraction:0.1];
 	
     UIColor *color1, *color2;
-//    if(IsOSVersionAtLeast7()) {
-        color1 = [tintColor newColorByLighteningFraction:0.1];
-        color2 = [tintColor newColorByDarkeningFraction:0.1];
-//    } else {
-//        color1 = [tintColor newColorByLighteningFraction:0.2];
-//        color2 = [tintColor newColorByDarkeningFraction:0.3];
-//    }
+    color1 = [tintColor newColorByLighteningFraction:0.1];
+    color2 = [tintColor newColorByDarkeningFraction:0.1];
 
     CGContextRef context = [UIImage beginImageContextWithSize:imageBounds.size opaque:YES scale:0.0 flipped:NO];
     
@@ -175,16 +168,8 @@
 
 	if(self.item.whiteText) {
 		self.label.textColor = [UIColor whiteColor];
-//        if(!IsOSVersionAtLeast7()) {
-//            self.label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-//            self.label.shadowOffset = CGSizeMake(0, -1);
-//        }
 	} else {
 		self.label.textColor = [UIColor blackColor];
-//        if(!IsOSVersionAtLeast7()) {
-//            self.label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.5];
-//            self.label.shadowOffset = CGSizeMake(0, 1);
-//        }
 	}
 
 	UIImageView* rightAccessoryView = nil;

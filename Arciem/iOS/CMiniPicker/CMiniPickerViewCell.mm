@@ -49,19 +49,7 @@
 #warning DEBUG ONLY
     label.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.25];
 #endif
-    if(self.onDarkBackground) {
-        label.textColor = [UIColor whiteColor];
-        if(!IsOSVersionAtLeast7()) {
-            label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.6];
-            label.shadowOffset = CGSizeMake(0, -1);
-        }
-    } else {
-        label.textColor = [UIColor blackColor];
-        if(!IsOSVersionAtLeast7()) {
-            label.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.6];
-            label.shadowOffset = CGSizeMake(0, 1);
-        }
-    }
+    label.textColor = self.onDarkBackground ? [UIColor whiteColor] : [UIColor blackColor];
     return label;
 }
 

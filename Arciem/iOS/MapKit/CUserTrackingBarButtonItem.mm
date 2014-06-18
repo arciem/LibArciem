@@ -92,11 +92,7 @@
 - (UIImage *)noFollowImage {
     if(_noFollowImage == nil) {
         UIImage *image = [UIImage imageNamed:@"Tracking~iPad"];
-        if(IsOSVersionAtLeast7()) {
-            _noFollowImage = image;
-        } else {
-            _noFollowImage = [UIImage newImageWithShapeImage:image tintColor:self.offColor];
-        }
+        _noFollowImage = image;
     }
     return _noFollowImage;
 }
@@ -104,11 +100,7 @@
 - (UIImage *)followImage {
     if(_followImage == nil) {
         UIImage *image = [UIImage imageNamed:@"Tracking~iPad"];
-        if(IsOSVersionAtLeast7()) {
-            _followImage = image;
-        } else {
-            _followImage = [UIImage newImageWithShapeImage:image tintColor:self.onColor];
-        }
+        _followImage = image;
     }
     return _followImage;
 }
@@ -116,11 +108,7 @@
 - (UIImage *)followWithHeadingImage {
     if(_followWithHeadingImage == nil) {
         UIImage *image = [UIImage imageNamed:@"TrackingWithHeading~iPad"];
-        if(IsOSVersionAtLeast7()) {
-            _followWithHeadingImage = image;
-        } else {
-            _followWithHeadingImage = [UIImage newImageWithShapeImage:image tintColor:self.onColor];
-        }
+        _followWithHeadingImage = image;
     }
     return _followWithHeadingImage;
 }
@@ -131,24 +119,16 @@
 		[UIView animateWithDuration:0.3 animations:^{
 			self.button.transform = CGAffineTransformMakeScale(0.01, 0.01);
 		} completion:^(BOOL finished) {
-            if(IsOSVersionAtLeast7()) {
-                self.button.tintedImage = image;
-                self.button.tintColor = color;
-            } else {
-                [self.button setImage:image forState:UIControlStateNormal];
-            }
+            self.button.tintedImage = image;
+            self.button.tintColor = color;
 			[UIView animateWithDuration:0.3 animations:^{
 				self.button.transform = CGAffineTransformIdentity;
 			} completion:^(BOOL finished) {
 			}];
 		}];
 	} else {
-        if(IsOSVersionAtLeast7()) {
-            self.button.tintedImage = image;
-            self.button.tintColor = color;
-        } else {
-            [self.button setImage:image forState:UIControlStateNormal];
-        }
+        self.button.tintedImage = image;
+        self.button.tintColor = color;
 	}
 }
 

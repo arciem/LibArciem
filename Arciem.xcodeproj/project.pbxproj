@@ -2208,7 +2208,7 @@
 		039DC10716CB300D00B52A7F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Arciem LLC";
 			};
 			buildConfigurationList = 039DC10A16CB300D00B52A7F /* Build configuration list for PBXProject "Arciem" */;
@@ -2708,7 +2708,8 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Arciem;
 				PUBLIC_HEADERS_FOLDER_PATH = Headers/Arciem;
@@ -2724,6 +2725,7 @@
 					"-Wno-c++98-compat-pedantic",
 					"-Wno-direct-ivar-access",
 					"-Wno-explicit-ownership-type",
+					"-Wno-old-style-cast",
 				);
 			};
 			name = Debug;
@@ -2749,7 +2751,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Arciem;
 				PUBLIC_HEADERS_FOLDER_PATH = Headers/Arciem;
@@ -2765,6 +2767,7 @@
 					"-Wno-c++98-compat-pedantic",
 					"-Wno-direct-ivar-access",
 					"-Wno-explicit-ownership-type",
+					"-Wno-old-style-cast",
 				);
 			};
 			name = Release;

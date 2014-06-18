@@ -84,32 +84,23 @@
     self.contentMode = UIViewContentModeRedraw;
     
     _glossGradient = GradientCreateGloss([UIColor colorWithWhite:1.0 alpha:0.8].CGColor,
-                                             [UIColor colorWithWhite:1.0 alpha:0.2].CGColor,
-                                             [UIColor colorWithWhite:1.0 alpha:0.0].CGColor,
-                                             [UIColor colorWithWhite:1.0 alpha:0.0].CGColor,
-                                             SharedColorSpaceDeviceGray());
+                                         [UIColor colorWithWhite:1.0 alpha:0.2].CGColor,
+                                         [UIColor colorWithWhite:1.0 alpha:0.0].CGColor,
+                                         [UIColor colorWithWhite:1.0 alpha:0.0].CGColor,
+                                         SharedColorSpaceDeviceGray());
     
     _shadowGradient = GradientCreateEaseOut([UIColor colorWithWhite:0.0 alpha:0.6].CGColor,
-                                                    [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
-                                                    SharedColorSpaceDeviceGray(), 20);
-
-    if(IsOSVersionAtLeast7()) {
-        _shadeGradientRef = GradientCreateSine(
-                                               [UIColor colorWithWhite:1.0 alpha:0.9].CGColor,
-                                               [UIColor colorWithWhite:1.0 alpha:0.0].CGColor,
-                                               SharedColorSpaceDeviceGray(),
-                                               30, 2);
-    } else {
-        _shadeGradientRef = [self createShadeGradient];
-    }
+                                            [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+                                            SharedColorSpaceDeviceGray(), 20);
     
-    if(IsOSVersionAtLeast7()) {
-        _bevelColor1 = CGColorRetain([UIColor colorWithWhite:0.0 alpha:0.07].CGColor);
-        _bevelColor2 = CGColorRetain([UIColor colorWithWhite:0.0 alpha:0.07].CGColor);
-    } else {
-        _bevelColor1 = CGColorRetain([UIColor newColorWithRGBValue:0x7a8696].CGColor);
-        _bevelColor2 = CGColorRetain([UIColor newColorWithRGBValue:0xecedf2].CGColor);
-    }
+    _shadeGradientRef = GradientCreateSine(
+                                           [UIColor colorWithWhite:1.0 alpha:0.9].CGColor,
+                                           [UIColor colorWithWhite:1.0 alpha:0.0].CGColor,
+                                           SharedColorSpaceDeviceGray(),
+                                           30, 2);
+    
+    _bevelColor1 = CGColorRetain([UIColor colorWithWhite:0.0 alpha:0.07].CGColor);
+    _bevelColor2 = CGColorRetain([UIColor colorWithWhite:0.0 alpha:0.07].CGColor);
 }
 
 - (void)dealloc
@@ -146,38 +137,22 @@
 
     CGRect shadeBounds = UIEdgeInsetsInsetRect(self.bounds, self.margins);
 
-    if(IsOSVersionAtLeast7()) {
-        CGRect upperRect = shadeBounds;
-        upperRect.size.height = CGRectGetMinY(bevelRectTop1) - CGRectGetMinY(shadeBounds);
-        CGRect lowerRect = shadeBounds;
-        lowerRect.size.height = CGRectGetMaxY(shadeBounds) - CGRectGetMaxY(bevelRectBottom);
-        lowerRect.origin.y = CGRectGetMaxY(bevelRectBottom);
-        ContextFillRectColor(context, upperRect, [UIColor colorWithWhite:1.0 alpha:0.5].CGColor);
-        ContextFillRectColor(context, lowerRect, [UIColor colorWithWhite:1.0 alpha:0.5].CGColor);
-    }
+    CGRect upperRect = shadeBounds;
+    upperRect.size.height = CGRectGetMinY(bevelRectTop1) - CGRectGetMinY(shadeBounds);
+    CGRect lowerRect = shadeBounds;
+    lowerRect.size.height = CGRectGetMaxY(shadeBounds) - CGRectGetMaxY(bevelRectBottom);
+    lowerRect.origin.y = CGRectGetMaxY(bevelRectBottom);
+    ContextFillRectColor(context, upperRect, [UIColor colorWithWhite:1.0 alpha:0.5].CGColor);
+    ContextFillRectColor(context, lowerRect, [UIColor colorWithWhite:1.0 alpha:0.5].CGColor);
     
     ContextFillRectGradientVertical(context, shadeBounds, self.shadeGradientRef);
 
-    if(IsOSVersionAtLeast7()) {
-        CGContextSetStrokeColorWithColor(context, self.bevelColor1);
-        CGContextSetLineWidth(context, 1.0);
-        CGContextStrokeRect(context, shadeBounds);
+    CGContextSetStrokeColorWithColor(context, self.bevelColor1);
+    CGContextSetLineWidth(context, 1.0);
+    CGContextStrokeRect(context, shadeBounds);
 
-        ContextFillRectColor(context, bevelRectTop1, self.bevelColor1);
-        ContextFillRectColor(context, bevelRectBottom, self.bevelColor2);
-    } else {
-        ContextFillRectColor(context, bevelRectTop1, self.bevelColor1);
-        ContextFillRectColor(context, bevelRectTop2, self.bevelColor2);
-
-        ContextFillRectGradientVertical(context, glossRect, self.glossGradient);
-        ContextFillRectColor(context, bevelRectBottom, self.bevelColor1);
-        
-        CFrame* shadowFrame = [CFrame new];
-        shadowFrame.frame = self.overlayRect;
-        shadowFrame.top = shadowFrame.bottom;
-        shadowFrame.height = 20.0;
-        ContextFillRectGradientVertical(context, shadowFrame.frame, self.shadowGradient);
-    }
+    ContextFillRectColor(context, bevelRectTop1, self.bevelColor1);
+    ContextFillRectColor(context, bevelRectBottom, self.bevelColor2);
 }
 
 @end

@@ -85,9 +85,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    if(IsOSVersionAtLeast7()) {
-        self.titleLabel.textColor = self.tintColor;
-    }
+    self.titleLabel.textColor = self.tintColor;
 }
 
 @end

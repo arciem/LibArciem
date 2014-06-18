@@ -68,11 +68,7 @@ static const CGFloat kShadowWidth = 15.0;
 	[super setup];
     
 	self.minCenterViewControllerWidth = 320;
-    if(IsOSVersionAtLeast7()) {
-        self.centerOpenWidth = 62;
-    } else {
-        self.centerOpenWidth = 52;
-    }
+    self.centerOpenWidth = 62;
 	self.sidebarWidth = self.minCenterViewControllerWidth - self.centerOpenWidth;
 }
 

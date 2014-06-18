@@ -60,6 +60,8 @@
                                    @"expiry": boldAttributes
                                    };
     NSAttributedString *attributedText = [[[NSAttributedString alloc] initWithString:@"Ending in: {lastFour} Expires: {expiry}" attributes:attributes]stringByReplacingTemplatesWithReplacements:replacements attributes:attributesDict];
+    self.titleLabel.adjustsFontSizeToFitWidth = YES;
+    self.titleLabel.minimumScaleFactor = 0.5;
     self.titleLabel.attributedText = attributedText;
 }
 

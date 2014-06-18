@@ -23,6 +23,7 @@
 
 @implementation UILabel (UILabelUtils)
 
+#if 0
 - (void)adjustFontSizeToFit:(CGFloat)largeFontSize
 {
 	UIFont* font = nil;
@@ -42,6 +43,20 @@
 		}
 	}
 	self.font = font;
+}
+#endif
+
+- (void)adjustFontSizeToFit:(CGFloat)largeFontSize
+{
+    CGSize constraintSize = self.bounds.size;
+    NSDictionary *attr = @{
+                           NSFontAttributeName: self.font
+                           };
+    NSStringDrawingContext *context = [NSStringDrawingContext new];
+    context.minimumScaleFactor = self.minimumScaleFactor;
+    [self.text boundingRectWithSize:constraintSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attr context:context];
+    CGFloat actualScaleFactor = context.actualScaleFactor;
+    self.font = [self.font fontWithSize:self.font.pointSize * actualScaleFactor];
 }
 
 + (CGSize)maxSizeOfStrings:(NSArray*)strings withFont:(UIFont*)font forWidth:(CGFloat)width

@@ -25,7 +25,7 @@
 + (UIImage *)endImageContext NS_RETURNS_RETAINED;
 
 + (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor;
-+ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor textColor:(UIColor *)textColor text:(NSString*)text;
+//+ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor textColor:(UIColor *)textColor text:(NSString*)text;
 + (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius;
 + (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor;
 + (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier;

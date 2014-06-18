@@ -393,7 +393,7 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 	if(object == self.workerManager) {
 		if([keyPath isEqualToString:@"workers"]) {
 //			CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"workers change: %@", change);
-			NSKeyValueChange changeKind = [[change objectForKey:NSKeyValueChangeKindKey] intValue];
+			NSKeyValueChange changeKind = (NSKeyValueChange)[[change objectForKey:NSKeyValueChangeKindKey] intValue];
 			switch(changeKind) {
                 case NSKeyValueChangeSetting:
 				case NSKeyValueChangeInsertion: {
@@ -416,6 +416,8 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 						[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:bself.notificationRunLoopModes];
 					}];
 				} break;
+                case NSKeyValueChangeReplacement: {
+                } break;
 			}
 		}
 	} else if(context == (void*)0x123) {

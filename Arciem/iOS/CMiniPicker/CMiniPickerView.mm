@@ -106,9 +106,6 @@ static __strong CSystemSound *sDetentSound = nil;
     [self addSubview:self.backgroundView];
     [self addSubview:self.scrollView];
     [self addSubview:self.overlayView];
-    if(!IsOSVersionAtLeast7()) {
-        [self addSubview:self.frameView];
-    }
 }
 
 - (void)layoutSubviews

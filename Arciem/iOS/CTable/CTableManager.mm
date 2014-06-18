@@ -613,17 +613,15 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(IsOSVersionAtLeast7()) {
-        UIColor *tintColor = self.tableView.tintColor;
-        [cell visitAllDescendentViewsWithBlock:^(UIView *view) {
-            if(view.inputView != nil) {
-                view.inputView.tintColor = tintColor;
-            }
-            if(view.inputAccessoryView != nil) {
-                view.inputAccessoryView.tintColor = tintColor;
-            }
-        }];
-    }
+    UIColor *tintColor = self.tableView.tintColor;
+    [cell visitAllDescendentViewsWithBlock:^(UIView *view) {
+        if(view.inputView != nil) {
+            view.inputView.tintColor = tintColor;
+        }
+        if(view.inputAccessoryView != nil) {
+            view.inputAccessoryView.tintColor = tintColor;
+        }
+    }];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
@@ -664,7 +662,8 @@
 			[self invalidateRowsForSection:sectionIndex];
 			[self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
 		} break;
-		default:
+        case NSKeyValueChangeSetting:
+        case NSKeyValueChangeReplacement:
 			NSAssert1(false, @"Unimplemented change kind:%lu", (unsigned long)kind);
 			break;
 	}

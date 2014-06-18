@@ -319,11 +319,7 @@
 	}
 
 	if(highlighted) {
-        if(IsOSVersionAtLeast7()) {
-            label.textColor = self.tintColor;
-        } else {
-            label.textColor = [UIColor systemHighlightBlue];
-        }
+        label.textColor = self.tintColor;
 	} else {
 		if(enabled) {
 			label.textColor = [UIColor blackColor];

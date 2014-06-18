@@ -19,6 +19,7 @@
 #import "CDebugOverlayView.h"
 #import "UIViewUtils.h"
 #import "ObjectUtils.h"
+#import "CLog.h"
 
 @interface CDebugOverlayView ()
 
@@ -106,6 +107,9 @@
 			contentCenterX = self.boundsCenterX;
 			rotationAngle = -M_PI/2;
 			break;
+//        case UIInterfaceOrientationUnknown:
+//        default:
+//            break;
 	}
 	
 	CGPoint contentCenter = CGPointMake(contentCenterX, contentCenterY);

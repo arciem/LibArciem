@@ -101,14 +101,12 @@ NSString *const CDidTapButtonNotification = @"CDidTapButtonNotification";
 	self.button.enabled = enabled;
 
     if([self.rowItem.model isKindOfClass:[CSubmitItem class]]) {
-        if(IsOSVersionAtLeast7()) {
-            if(self.buttonEnabled) {
-                self.button.backgroundColor = self.tintColor;
-                self.button.alpha = 1.0;
-            } else {
-                self.button.backgroundColor = [UIColor colorWithWhite:0.5 alpha:1.0];
-                self.button.alpha = 0.3;
-            }
+        if(self.buttonEnabled) {
+            self.button.backgroundColor = self.tintColor;
+            self.button.alpha = 1.0;
+        } else {
+            self.button.backgroundColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+            self.button.alpha = 0.3;
         }
     }
 }
@@ -132,11 +130,9 @@ NSString *const CDidTapButtonNotification = @"CDidTapButtonNotification";
         if([self.rowItem.model isKindOfClass:[CSubmitItem class]]) {
             self.button.titleLabel.font = [UIFont boldSystemFontOfSize:self.button.titleLabel.font.pointSize];
             
-            if(IsOSVersionAtLeast7()) {
-                [self.button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                [self.button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
-                self.button.contentEdgeInsets = UIEdgeInsetsMake(5, 15, 5, 15);
-            }
+            [self.button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.button setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
+            self.button.contentEdgeInsets = UIEdgeInsetsMake(5, 15, 5, 15);
         }
         
 		BSELF;

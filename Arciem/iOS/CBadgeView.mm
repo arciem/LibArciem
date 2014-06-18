@@ -65,13 +65,6 @@ static const CGFloat kFontSize = 14.0;
     self.fillColor = [UIColor redColor];
     self.cornerRoundness = 0.5;
     self.scaleFactor = 1.0;
-
-//    if(!IsOSVersionAtLeast7()) {
-//        self.strokeColor = [UIColor whiteColor];
-//        self.hasGloss = YES;
-//        _shadowRadius = 3.0;
-//        _shadowOffset = CGSizeMake(0.0, 1.0);
-//    }
 }
 
 + (CBadgeView*)badgeViewWithText:(NSString *)text {
@@ -154,7 +147,7 @@ static const CGFloat kFontSize = 14.0;
 }
 
 - (CGSize)unscaledTextSize {
-    return [self.text sizeWithFont:self.unscaledFont];
+    return [self.text sizeWithAttributes:@{NSFontAttributeName: self.unscaledFont}];
 }
 
 - (CGSize)unscaledImageSize {
@@ -334,10 +327,14 @@ static const CGFloat kFontSize = 14.0;
 	if(!IsEmptyString(self.text)) {
 		[self.textColor set];
 		UIFont *textFont = self.scaledFont;
-		CGSize textSize = [self.text sizeWithFont:textFont];
+        NSDictionary *attr = @{
+                               NSFontAttributeName: textFont,
+                               NSForegroundColorAttributeName: self.textColor
+                               };
+        CGSize textSize = [self.text sizeWithAttributes:attr];
         CGPoint p = CGPointMake((bounds.size.width / 2 - textSize.width / 2), (bounds.size.height / 2 - textSize.height / 2));
         p.x += 0.25;
-		[self.text drawAtPoint:p withFont:textFont];
+        [self.text drawAtPoint:p withAttributes:attr];
 	}
 
 	CGContextRestoreGState(context);

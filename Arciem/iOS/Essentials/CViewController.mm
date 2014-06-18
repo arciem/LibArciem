@@ -201,10 +201,8 @@ NSString* const InterfaceWillChangeOrientationNotification = @"InterfaceWillChan
 }
 
 - (void)setStatusBarStyleIfFullScreen:(UIStatusBarStyle)statusBarStyle {
-    if(IsOSVersionAtLeast7()) {
-        if(IsPhone() || self.effectiveModalPresentationStyle == UIModalPresentationFullScreen) {
-            [UIApplication sharedApplication].statusBarStyle = statusBarStyle;
-        }
+    if(IsPhone() || self.effectiveModalPresentationStyle == UIModalPresentationFullScreen) {
+        [UIApplication sharedApplication].statusBarStyle = statusBarStyle;
     }
 }
 

@@ -40,6 +40,7 @@
 	return resultImage;
 }
 
+#if 0
 + (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor textColor:(UIColor *)textColor text:(NSString*)text
 {
 	UIImage* uiImage = nil;
@@ -47,27 +48,34 @@
 	CGContextRef context = BitmapContextCreate(size, YES);
 	if(context != NULL) {
 		UIGraphicsPushContext(context);
-			CGRect rect = CGRectMake(0, 0, size.width, size.height);
-
-			[backgroundColor set];
-			//CGContextSetFillColorWithColor(context, backgroundColor);
-			CGContextFillRect(context, rect);
-			//DrawCrossedBox(context, rect, [[UIColor redColor] cgColor], 1.0, true);
-	
-			UIFont* font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
-			[textColor set];
-			CGFloat actualFontSize;
-			CGSize stringSize = [text sizeWithFont:font minFontSize:[UIFont smallSystemFontSize] actualFontSize:&actualFontSize forWidth:size.width lineBreakMode:NSLineBreakByTruncatingTail];
-			CGPoint p = CGPointMake((size.width - stringSize.width) / 2, (size.height - stringSize.height) / 2);
-			[text drawAtPoint:p forWidth:size.width withFont:font minFontSize:[UIFont smallSystemFontSize] actualFontSize:&actualFontSize lineBreakMode:NSLineBreakByTruncatingTail baselineAdjustment:UIBaselineAdjustmentNone];
+        CGRect rect = CGRectMake(0, 0, size.width, size.height);
+        
+        [backgroundColor set];
+        //CGContextSetFillColorWithColor(context, backgroundColor);
+        CGContextFillRect(context, rect);
+        //DrawCrossedBox(context, rect, [[UIColor redColor] cgColor], 1.0, true);
+        
+        UIFont* font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
+        [textColor set];
+        CGFloat actualFontSize;
+        
+        NSDictionary *attr = @{NSFontAttributeName: font,
+                               NSForegroundColorAttributeName: textColor};
+        NSStringDrawingContext* stringDrawingContext = [NSStringDrawingContext new];
+        CGRect stringRect = [text boundingRectWithSize:CGSizeMake(size.width, CGFLOAT_MAX) options:NSStringDrawingTruncatesLastVisibleLine attributes:attr context:stringDrawingContext];
+//        CGSize stringSize = [text sizeWithFont:font minFontSize:[UIFont smallSystemFontSize] actualFontSize:&actualFontSize forWidth:size.width lineBreakMode:NSLineBreakByTruncatingTail];
+        stringRect.origin = CGPointMake((size.width - stringRect.size.width) / 2, (size.height - stringRect.size.height) / 2);
+        [text drawInRect:stringRect withAttributes:attr];
+        [text drawWithRect:stringRect options:NSStringDrawingTruncatesLastVisibleLine attributes:attr context:stringDrawingContext];
+//        [text drawAtPoint:p forWidth:size.width withFont:font minFontSize:[UIFont smallSystemFontSize] actualFontSize:&actualFontSize lineBreakMode:NSLineBreakByTruncatingTail baselineAdjustment:UIBaselineAdjustmentNone];
 		
 		UIGraphicsPopContext();
 		
 		CGImageRef image = CGBitmapContextCreateImage(context);
-
+        
 		BitmapContextFreeData(context);
 		CGContextRelease(context);
-
+        
 		uiImage = [[UIImage alloc] initWithCGImage:image];
 		
 		CGImageRelease(image);
@@ -75,6 +83,7 @@
 	
 	return uiImage;
 }
+#endif
 
 + (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier
 {

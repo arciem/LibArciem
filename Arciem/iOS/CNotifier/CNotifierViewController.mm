@@ -60,11 +60,9 @@ static const CGFloat kNotifierBarHeight = 30.0;
 }
 
 - (void)syncToModalPresentationStyle {
-    if(IsOSVersionAtLeast7()) {
-        self.statusBarHeight = 20;
-        if(IsPad() && self.modalPresentationStyle != UIModalPresentationFullScreen) {
-            self.statusBarHeight = 0;
-        }
+    self.statusBarHeight = 20;
+    if(IsPad() && self.modalPresentationStyle != UIModalPresentationFullScreen) {
+        self.statusBarHeight = 0;
     }
 }
 

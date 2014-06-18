@@ -213,7 +213,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	NSKeyValueChange kind = [change[NSKeyValueChangeKindKey] unsignedIntegerValue];
+	NSKeyValueChange kind = (NSKeyValueChange)[change[NSKeyValueChangeKindKey] unsignedIntegerValue];
 	id oldValue = change[NSKeyValueChangeOldKey];
 	id newValue = change[NSKeyValueChangeNewKey];
 	NSIndexSet* indexes = change[NSKeyValueChangeIndexesKey];

@@ -34,7 +34,7 @@ NSString* DeviceIPAddress();
 NSString* StringByAppendingDeviceSuffix(NSString* s);
 
 BOOL IsOSVersionAtLeast(NSString *minVerStr);
-BOOL IsOSVersionAtLeast7();
+BOOL IsOSVersionAtLeast8();
 
 id<NSObject> DeviceClassAlloc(NSString* className);
 NSString* APNSDeviceToken(NSData* s);

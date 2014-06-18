@@ -37,10 +37,9 @@
 - (void)syncToTintColor {
     UIImage *image = _tintedImage;
     UIColor *color = self.tintColor;
-    if(!IsOSVersionAtLeast7() || color == nil) {
+    if(color == nil) {
         color = self.defaultTintColor;
-    }
-    if(color != nil && _tintedImage != nil) {
+    } else if(_tintedImage != nil) {
         image = [UIImage newImageWithShapeImage:image tintColor:color];
     }
     [self setImage:image forState:UIControlStateNormal];

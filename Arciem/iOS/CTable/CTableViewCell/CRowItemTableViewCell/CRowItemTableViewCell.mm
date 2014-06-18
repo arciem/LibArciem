@@ -240,11 +240,7 @@ static BOOL sTestingMode;
 	if(!rowItem.rowSelectable) {
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else {
-        if(IsOSVersionAtLeast7()) {
-            self.selectionStyle = UITableViewCellSelectionStyleDefault;
-        } else {
-            self.selectionStyle = UITableViewCellSelectionStyleBlue;
-        }
+        self.selectionStyle = UITableViewCellSelectionStyleDefault;
 	}
 	
 	[self syncValidationViews];

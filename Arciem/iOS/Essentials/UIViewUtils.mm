@@ -61,13 +61,9 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
     CGContextRef ctx = [UIImage beginImageContextWithSize:r.size opaque:NO scale:0.0 flipped:NO];
 
-//    if(IsOSVersionAtLeast7()) {
-//        [self drawViewHierarchyInRect:r afterScreenUpdates:NO];
-//    } else {
-        [[UIColor clearColor] set];
-        CGContextFillRect(ctx, r);
-        [self.layer renderInContext:ctx];
-//    }
+    [[UIColor clearColor] set];
+    CGContextFillRect(ctx, r);
+    [self.layer renderInContext:ctx];
 
     image = [UIImage endImageContext];
     return image;
@@ -154,9 +150,7 @@ static const NSTimeInterval kAnimationDuration = 0.4;
         [auxInfoStrings addObject:[NSString stringWithFormat:@"textColor:%@", ((UILabel *)view).textColor]];
     }
     
-    if(IsOSVersionAtLeast7()) {
-        [auxInfoStrings addObject:[NSString stringWithFormat:@"tintColor:%@", view.tintColor]];
-    }
+    [auxInfoStrings addObject:[NSString stringWithFormat:@"tintColor:%@", view.tintColor]];
 
     [auxInfoStrings addObject:[NSString stringWithFormat:@"alpha:%f", view.alpha]];
 

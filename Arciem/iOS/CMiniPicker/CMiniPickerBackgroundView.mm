@@ -34,11 +34,7 @@
     [super setup];
     self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.contentMode = UIViewContentModeRedraw;
-    if(IsOSVersionAtLeast7()) {
-        self.backgroundColor = [UIColor whiteColor];
-    } else {
-        self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
-    }
+    self.backgroundColor = [UIColor whiteColor];
 }
 
 - (CGRect)underlayRect
@@ -71,24 +67,6 @@
     ContextFillRectColor(context, blackRect, [UIColor blackColor].CGColor);
     ContextFillRectColor(context, grayRect, [UIColor newColorWithRGBValue:0xcbccdd].CGColor);
     ContextFillRectColor(context, whiteRect, [UIColor colorWithWhite:1.0 alpha:0.5].CGColor);
-}
-
-- (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
-    if(!IsOSVersionAtLeast7()) {
-        CGContextRef context = UIGraphicsGetCurrentContextChecked();
-        //    ContextFillRectColor(context, self.bounds, SharedBlackColor());
-        ContextFillRectColor(context, self.bounds, self.backgroundColor.CGColor);
-        
-        CGRect bounds = UIEdgeInsetsInsetRect(self.bounds, self.margins);
-        [self context:context drawSlotAtX:CGRectGetMinX(bounds) leftSide:YES];
-        [self context:context drawSlotAtX:CGRectGetMaxX(bounds) leftSide:NO];
-        
-        CGContextSetBlendMode(context, kCGBlendModeMultiply);
-        ContextFillRectColor(context, self.underlayRect, [UIColor newColorWithRGBValue:0xa0aac5].CGColor);
-    }
 }
 
 @end

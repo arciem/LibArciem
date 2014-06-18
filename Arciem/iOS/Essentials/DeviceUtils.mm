@@ -52,13 +52,13 @@ BOOL IsOSVersionAtLeast(NSString *minVerStr)
 	return [currSysVer compare:minVerStr options:NSNumericSearch] != NSOrderedAscending;
 }
 
-BOOL IsOSVersionAtLeast7() {
-    static BOOL atLeast7;
+BOOL IsOSVersionAtLeast8() {
+    static BOOL atLeast;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        atLeast7 = IsOSVersionAtLeast(@"7.0");
+        atLeast = IsOSVersionAtLeast(@"8.0");
     });
-    return atLeast7;
+    return atLeast;
 }
 
 CGFloat ScreenScale()
