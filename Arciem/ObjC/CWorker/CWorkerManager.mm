@@ -18,10 +18,12 @@
 
 #import "CWorkerManager.h"
 #import "ObjectUtils.h"
+#import "CSerializer.h"
+#import "ThreadUtils.h"
 
 @interface CWorkerManager ()
 
-@property (readonly, nonatomic) NSMutableSet* mutableWorkers;
+@property (readonly, nonatomic) NSMutableSet *mutableWorkers;
 
 @end
 
@@ -31,17 +33,21 @@
 @synthesize mutableWorkers = _mutableWorkers;
 @dynamic workers;
 
-+ (void)initialize
-{
-//	CLogSetTagActive(@"C_WORKER_MANAGER", YES);
-}
-
 + (CWorkerManager*)sharedWorkerManager
 {
     static CWorkerManager *instance = nil;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
         instance = [CWorkerManager new];
+    });
+    return instance;
+}
+
+- (CSerializer *)serializer {
+    static CSerializer *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [CSerializer newSerializerWithName:@"WorkerManager Serializer"];
     });
     return instance;
 }
@@ -85,67 +91,61 @@
 
 - (void)addMutableWorkersObject:(id)worker
 {
-	@synchronized(self) {
+//    [NSThread performBlockOnMainThread:^{
 		[self willChangeValueForKey:@"workers" withSetMutation:NSKeyValueUnionSetMutation usingObjects:[NSSet setWithObject:worker]];
 		[self.mutableWorkers addObject:worker];
 		[self didChangeValueForKey:@"workers" withSetMutation:NSKeyValueUnionSetMutation usingObjects:[NSSet setWithObject:worker]];
-	}
+//    } waitUntilDone:YES];
 }
 
 - (void)removeMutableWorkersObject:(id)worker
 {
-	@synchronized(self) {
+//    [NSThread performBlockOnMainThread:^{
 		[self willChangeValueForKey:@"workers" withSetMutation:NSKeyValueMinusSetMutation usingObjects:[NSSet setWithObject:worker]];
 		[self.mutableWorkers removeObject:worker];
 		[self didChangeValueForKey:@"workers" withSetMutation:NSKeyValueMinusSetMutation usingObjects:[NSSet setWithObject:worker]];
-	}
+//	} waitUntilDone:YES];
 }
 
 - (void)startWorker:(CWorker*)worker
 {
-	@synchronized(self) {
-		NSOperation* operation = [worker newOperationForTry];
-		if(operation != nil) {
-			[self.queue addOperation:operation];
-		}
-        CLogTrace(@"C_WORKER_MANAGER", @"started:%@ operation:%@", worker, operation);
-	}
+    NSOperation* operation = [worker newOperationForTry];
+    if(operation != nil) {
+        [self.queue addOperation:operation];
+    }
+    CLogTrace(@"C_WORKER_MANAGER", @"started:%@ operation:%@", worker, operation);
 }
 
 - (BOOL)workerIsNowReady:(CWorker*)worker
 {
-	@synchronized(worker) {
-		BOOL nowReady = YES;
+    BOOL nowReady = YES;
 
-		if(!worker.executing) {
-			nowReady = NO;
-		} else if(worker.finished) {
-			nowReady = NO;
-		} else if(worker.ready) {
-			nowReady = NO;
-		} else {
-			for(CWorker* predecessorWorker in worker.dependencies) {
-				if(!predecessorWorker.finished) {
-					nowReady = NO;
-					break;
-				}
-			}
-		}
+    if(!worker.executing) {
+        nowReady = NO;
+    } else if(worker.finished) {
+        nowReady = NO;
+    } else if(worker.ready) {
+        nowReady = NO;
+    } else {
+        for(CWorker* predecessorWorker in worker.dependencies) {
+            if(!predecessorWorker.finished) {
+                nowReady = NO;
+                break;
+            }
+        }
+    }
 
-		return nowReady;
-	}
+    return nowReady;
 }
 
 - (void)startReadyWorkers
 {
-	@synchronized(self) {
-		for(CWorker* worker in self.workers) {
-			if([self workerIsNowReady:worker]) {
-				[self startWorker:worker];
-				worker.ready = YES;
-			}
-		}
-	}
+    for(CWorker* worker in self.workers) {
+        if([self workerIsNowReady:worker]) {
+            [self startWorker:worker];
+            worker.ready = YES;
+        }
+    }
 }
 
 - (void)addWorker:(CWorker*)worker success:(void (^)(CWorker*))success failure:(void (^)(CWorker*, NSError*))failure finally:(void (^)(CWorker*))finally
@@ -155,55 +155,49 @@
 
 - (void)addWorker:(CWorker*)worker success:(void (^)(CWorker*))success shouldRetry:(BOOL (^)(CWorker*, NSError*))shouldRetry failure:(void (^)(CWorker*, NSError*))failure finally:(void (^)(CWorker*))finally
 {
-	@synchronized(self) {
+    [self.serializer perform:^{
 		NSAssert1(!worker.isExecuting, @"worker already executing: %@", worker);
 		NSAssert1(!worker.finished, @"worker already finished: %@", worker);
 		
 		BSELF;
 		
 		worker.success = ^(CWorker* worker) {
-			@synchronized(worker) {
-				CLogTrace(@"C_WORKER_MANAGER", @"success:%@", worker);
-				if(success != NULL) {
-                    success(worker);
-                }
-			}
+            CLogTrace(@"C_WORKER_MANAGER", @"success:%@", worker);
+            if(success != NULL) {
+                success(worker);
+            }
 		};
 		
 		worker.failure = ^(CWorker* worker, NSError* error) {
-			@synchronized(worker) {
-				CLogTrace(@"C_WORKER_MANAGER", @"failure:%@", error);
-				BOOL retry = NO;
-				if(worker.canRetry) {
-                    if(shouldRetry != NULL) {
-                        retry = shouldRetry(worker, error);
-                    }
-				}
-				if(retry) {
-					[bself startWorker:worker];
-				} else {
-					if(failure != NULL) {
-                        failure(worker, error);
-                    }
-				}
-			}
+            CLogTrace(@"C_WORKER_MANAGER", @"failure:%@", error);
+            BOOL retry = NO;
+            if(worker.canRetry) {
+                if(shouldRetry != NULL) {
+                    retry = shouldRetry(worker, error);
+                }
+            }
+            if(retry) {
+                [bself startWorker:worker];
+            } else {
+                if(failure != NULL) {
+                    failure(worker, error);
+                }
+            }
 		};
 		
 		worker.finally = ^(CWorker* worker) {
-			@synchronized(worker) {
-				CLogTrace(@"C_WORKER_MANAGER", @"finally:%@", worker);
-				worker.finished = YES;
-				if(!worker.cancelled) {
-                    if(finally != NULL) {
-                        finally(worker);
-                    }
-				}
-				@synchronized(bself) {
-					[bself.workers removeObject:worker];
-					worker.executing = NO;
-					[bself startReadyWorkers];
-				}
-			}
+            CLogTrace(@"C_WORKER_MANAGER", @"finally:%@", worker);
+            worker.finished = YES;
+            if(!worker.cancelled) {
+                if(finally != NULL) {
+                    finally(worker);
+                }
+            }
+            [bself.serializer perform:^{
+                [bself.workers removeObject:worker];
+                worker.executing = NO;
+                [bself startReadyWorkers];
+            }];
 		};
 
 		[self.workers addObject:worker];
@@ -211,7 +205,7 @@
         CLogTrace(@"C_WORKER_MANAGER", @"added:%@", worker);
 		
 		[self startReadyWorkers];
-	}
+	}];
 }
 
 @end

@@ -419,6 +419,10 @@
 		0370D7B0173761E0005165CA /* CNotifierViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0370D7AE173761E0005165CA /* CNotifierViewController.mm */; };
 		0370D7B917381A5A005165CA /* CShadowView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0370D7B717381A59005165CA /* CShadowView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0370D7BA17381A5A005165CA /* CShadowView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0370D7B817381A59005165CA /* CShadowView.mm */; };
+		037208AE1959B386002EA354 /* CSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 037208AC1959B386002EA354 /* CSerializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		037208AF1959B386002EA354 /* CSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 037208AC1959B386002EA354 /* CSerializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		037208B01959B386002EA354 /* CSerializer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 037208AD1959B386002EA354 /* CSerializer.mm */; };
+		037208B11959B386002EA354 /* CSerializer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 037208AD1959B386002EA354 /* CSerializer.mm */; };
 		0374651C17421EB60007F56D /* CTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 0374651B17421EB60007F56D /* CTable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0374652B17449CA70007F56D /* CDisclosureIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 0374652917449CA70007F56D /* CDisclosureIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0374652C17449CA70007F56D /* CDisclosureIndicator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0374652A17449CA70007F56D /* CDisclosureIndicator.mm */; };
@@ -805,6 +809,8 @@
 		0370D7AE173761E0005165CA /* CNotifierViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CNotifierViewController.mm; sourceTree = "<group>"; };
 		0370D7B717381A59005165CA /* CShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShadowView.h; sourceTree = "<group>"; };
 		0370D7B817381A59005165CA /* CShadowView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CShadowView.mm; sourceTree = "<group>"; };
+		037208AC1959B386002EA354 /* CSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSerializer.h; sourceTree = "<group>"; };
+		037208AD1959B386002EA354 /* CSerializer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CSerializer.mm; sourceTree = "<group>"; };
 		0374651B17421EB60007F56D /* CTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTable.h; sourceTree = "<group>"; };
 		0374652917449CA70007F56D /* CDisclosureIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDisclosureIndicator.h; sourceTree = "<group>"; };
 		0374652A17449CA70007F56D /* CDisclosureIndicator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CDisclosureIndicator.mm; sourceTree = "<group>"; };
@@ -1233,6 +1239,8 @@
 				03D6585817601085002B9023 /* URLRequestUtils.mm */,
 				0356A31E1905B49E002397ED /* CUseCounter.h */,
 				0356A31F1905B49E002397ED /* CUseCounter.mm */,
+				037208AC1959B386002EA354 /* CSerializer.h */,
+				037208AD1959B386002EA354 /* CSerializer.mm */,
 			);
 			path = Essentials;
 			sourceTree = "<group>";
@@ -1858,6 +1866,7 @@
 				0330EC91191802F300A3DEF7 /* CTableRowItem.h in Headers */,
 				0330EC92191802F300A3DEF7 /* CSpacerTableRowItem.h in Headers */,
 				0330EC93191802F300A3DEF7 /* CSummaryTableRowItem.h in Headers */,
+				037208AF1959B386002EA354 /* CSerializer.h in Headers */,
 				0330EC94191802F300A3DEF7 /* CTextFieldTableRowItem.h in Headers */,
 				0330EC95191802F300A3DEF7 /* CTableSectionItem.h in Headers */,
 				0330EC96191802F300A3DEF7 /* CTitleTableRowItem.h in Headers */,
@@ -2046,6 +2055,7 @@
 				039DC23E16CB4C4400B52A7F /* CTableRowItem.h in Headers */,
 				039DC24016CB4C4400B52A7F /* CSpacerTableRowItem.h in Headers */,
 				039DC24216CB4C4400B52A7F /* CSummaryTableRowItem.h in Headers */,
+				037208AE1959B386002EA354 /* CSerializer.h in Headers */,
 				039DC24416CB4C4400B52A7F /* CTextFieldTableRowItem.h in Headers */,
 				039DC24616CB4C4400B52A7F /* CTableSectionItem.h in Headers */,
 				039DC24816CB4C4400B52A7F /* CTitleTableRowItem.h in Headers */,
@@ -2305,6 +2315,7 @@
 				0330EBA1191802F300A3DEF7 /* delta2.cpp in Sources */,
 				0330EBA2191802F300A3DEF7 /* CTextureAtlasImage.mm in Sources */,
 				0330EBA3191802F300A3DEF7 /* delta2i.cpp in Sources */,
+				037208B11959B386002EA354 /* CSerializer.mm in Sources */,
 				0330EBA4191802F300A3DEF7 /* delta3.cpp in Sources */,
 				0330EBA5191802F300A3DEF7 /* geometry.cpp in Sources */,
 				0330EBA6191802F300A3DEF7 /* line2.cpp in Sources */,
@@ -2486,6 +2497,7 @@
 				039DC19F16CB3DF700B52A7F /* delta2.cpp in Sources */,
 				036D26F318E3F67F00E48AFE /* CTextureAtlasImage.mm in Sources */,
 				039DC1A116CB3DF700B52A7F /* delta2i.cpp in Sources */,
+				037208B01959B386002EA354 /* CSerializer.mm in Sources */,
 				039DC1A316CB3DF700B52A7F /* delta3.cpp in Sources */,
 				039DC1A516CB3DF700B52A7F /* geometry.cpp in Sources */,
 				039DC1A716CB3DF700B52A7F /* line2.cpp in Sources */,
@@ -2674,6 +2686,7 @@
 		0330ECF5191802F300A3DEF7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Arciem/Arciem-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 			};
@@ -2682,6 +2695,7 @@
 		0330ECF6191802F300A3DEF7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Arciem/Arciem-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 			};

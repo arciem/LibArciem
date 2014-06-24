@@ -158,33 +158,31 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 {
 	// http://en.wikipedia.org/wiki/Topological_sorting
 	
-	@synchronized(self.workerManager) {
-		NSMutableArray* sortedNodes = [NSMutableArray array]; // Empty list that will contain the sorted elements
-		
-		NSArray* allNodes = self.queuedWorkerViews;
-		
-		NSMutableArray* startingNodes = [NSMutableArray array]; // Set of all nodes with no outgoing edges
-		for(CWorkerDebugView* node in allNodes) {
-			BOOL nowReady = YES;
-			for(CWorker* predecessorWorker in node.worker.dependencies) {
-				if(!predecessorWorker.finished) {
-					nowReady = NO;
-					break;
-				}
-			}
-			if(nowReady) {
-				[startingNodes addObject:node];
-			}
-		}
-		
-		NSMutableSet* visitedNodes = [NSMutableSet set];
-		
-		for(CWorkerDebugView* node in startingNodes) {
-			[self topoVisitNode:node visitedNodes:visitedNodes allNodes:allNodes sortedNodes:sortedNodes];
-		}
-		
-		self.queuedWorkerViews = [[[sortedNodes reverseObjectEnumerator] allObjects] mutableCopy];
-	}
+    NSMutableArray* sortedNodes = [NSMutableArray array]; // Empty list that will contain the sorted elements
+    
+    NSArray* allNodes = self.queuedWorkerViews;
+    
+    NSMutableArray* startingNodes = [NSMutableArray array]; // Set of all nodes with no outgoing edges
+    for(CWorkerDebugView* node in allNodes) {
+        BOOL nowReady = YES;
+        for(CWorker* predecessorWorker in node.worker.dependencies) {
+            if(!predecessorWorker.finished) {
+                nowReady = NO;
+                break;
+            }
+        }
+        if(nowReady) {
+            [startingNodes addObject:node];
+        }
+    }
+    
+    NSMutableSet* visitedNodes = [NSMutableSet set];
+    
+    for(CWorkerDebugView* node in startingNodes) {
+        [self topoVisitNode:node visitedNodes:visitedNodes allNodes:allNodes sortedNodes:sortedNodes];
+    }
+    
+    self.queuedWorkerViews = [[[sortedNodes reverseObjectEnumerator] allObjects] mutableCopy];
 }
 
 - (void)updateQueuedWorkerViewsRows {
@@ -376,13 +374,13 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 
 - (void)syncToWorkers
 {
-	@synchronized(self) {
+	[NSThread performBlockOnMainThread:^{
 		[self addWorkers:self.workersToAdd];
 		[self removeWorkers:self.workersToRemove];
 		[self.workersToAdd removeAllObjects];
 		[self.workersToRemove removeAllObjects];
         [self setNeedsUpdateConstraints];
-	}
+	}];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -391,39 +389,36 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 
     BSELF;
 	if(object == self.workerManager) {
+        NSAssert([NSThread isMainThread], @"Must be main thread.");
 		if([keyPath isEqualToString:@"workers"]) {
 //			CLogTrace(@"WORKER_MANAGER_DEBUG_VIEW", @"workers change: %@", change);
 			NSKeyValueChange changeKind = (NSKeyValueChange)[[change objectForKey:NSKeyValueChangeKindKey] intValue];
 			switch(changeKind) {
                 case NSKeyValueChangeSetting:
 				case NSKeyValueChangeInsertion: {
-					@synchronized(self) {
+//					[[CWorker serializer] performOnMainThread:^{
 						NSSet* addedWorkers = [change objectForKey:NSKeyValueChangeNewKey];
 						[self.workersToAdd unionSet:addedWorkers];
-					}
-					[NSThread performBlockOnMainThread:^{
-						NSNotification* notification = [NSNotification notificationWithName:@"workerManagerViewNeedsSync" object:bself];
-						[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:bself.notificationRunLoopModes];
-					}];
-				} break;
+                        NSNotification* notification = [NSNotification notificationWithName:@"workerManagerViewNeedsSync" object:bself];
+                        [[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:bself.notificationRunLoopModes];
+//                    }];
+                    } break;
 				case NSKeyValueChangeRemoval: {
-					@synchronized(self) {
+//					[[CWorker serializer] performOnMainThread:^{
 						NSSet* removedWorkers = [change objectForKey:NSKeyValueChangeOldKey];
 						[self.workersToRemove unionSet:removedWorkers];
-					}
-					[NSThread performBlockOnMainThread:^{
 						NSNotification* notification = [NSNotification notificationWithName:@"workerManagerViewNeedsSync" object:bself];
 						[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:bself.notificationRunLoopModes];
-					}];
+//					}];
 				} break;
                 case NSKeyValueChangeReplacement: {
                 } break;
 			}
 		}
 	} else if(context == (void*)0x123) {
-		[NSThread performBlockOnMainThread:^{
+//		[NSThread performBlockOnMainThread:^{
 			[bself setNeedsAnimatedLayout];
-		}];
+//		}];
 	}
 }
 

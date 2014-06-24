@@ -1,11 +1,11 @@
 #import <Foundation/Foundation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
 
-typedef enum {
-	NotReachable = 0,
-	ReachableViaWiFi,
+typedef NS_ENUM(NSInteger, NetworkStatus) {
+	NetworkStatusNotReachable = 0,
+	NetworkStatusReachableViaWiFi,
 	ReachableViaWWAN
-} NetworkStatus;
+};
 
 #define kReachabilityChangedNotification @"kNetworkReachabilityChangedNotification"
 
@@ -35,5 +35,3 @@ typedef enum {
 - (BOOL)connectionRequired;
 
 @end
-
-

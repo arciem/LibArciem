@@ -125,7 +125,7 @@ NSString *const CRestJSONMIMEType = @"application/json";
 //    BSELF;
 //    void (^expirationHandler)(void) = ^{
 //        NSString *message = [NSString stringWithFormat:@"Background task expired: %@", bself.title];
-//        NSError *error = [NSError errorWithDomain:CRestErrorDomain code:CRestBackgroundTaskExpiredError localizedDescription:message];
+//        NSError *error = [NSError errorWithDomain:CRestErrorDomain code:CRestErrorBackgroundTaskExpired localizedDescription:message];
 //        [bself operationFailedWithError:error];
 //    };
 }
@@ -143,7 +143,7 @@ NSString *const CRestJSONMIMEType = @"application/json";
 - (void)performOperationWork {
 	if(self.isOffline) {
 		CLogTrace(@"C_REST_WORKER", @"%@ failing because offline", self);
-        NSError *error = [NSError errorWithDomain:CRestErrorDomain code:CRestOfflineError userInfo:nil];
+        NSError *error = [NSError errorWithDomain:CRestErrorDomain code:CRestErrorOffline userInfo:nil];
         [self handleError:error];
 	} else {
         [self performOperationWorkWithNSURLSession];
@@ -166,20 +166,20 @@ NSString *const CRestJSONMIMEType = @"application/json";
     [self.mutableData setLength:0];
     BSELF;
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        @synchronized(bself) {
-            if(!self.cancelled) {
+        [bself.serializer perform: ^{
+            if(!bself.cancelled) {
                 if(data != nil) {
                     [bself.mutableData appendData:data];
                 }
                 if(response != nil) {
                     bself.response = response;
                 }
-                if(error != nil) {
-                    [bself handleError:error];
-                } else {
-                    [bself handleResponse];
-                }
             }
+        }];
+        if(error != nil) {
+            [bself handleError:error];
+        } else {
+            [bself handleResponse];
         }
     }];
     [task resume];

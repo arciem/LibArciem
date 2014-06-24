@@ -38,9 +38,9 @@ extern NSString *const CRestErrorFailingURLErrorKey;
 
 extern NSString *const CRestJSONMIMEType;
 
-enum {
-	CRestOfflineError = 2121,
-    CRestBackgroundTaskExpiredError = 3001
+typedef NS_ENUM(NSInteger, CRestError) {
+	CRestErrorOffline = 2121,
+    CRestErrorBackgroundTaskExpired = 3001
 };
 
 @interface CRestWorker : CWorker <NSURLConnectionDelegate>

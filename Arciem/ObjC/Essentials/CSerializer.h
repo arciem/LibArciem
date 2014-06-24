@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2013 Arciem LLC
+ Copyright 2014 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,17 +16,18 @@
  
  *******************************************************************************/
 
-#import "CView.h"
+#import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, CShadowViewEdge) {
-    CShadowViewEdgeTop,
-    CShadowViewEdgeBottom,
-    CShadowViewEdgeLeft,
-    CShadowViewEdgeRight
-};
+typedef id (^serializer_block_t)(void);
 
-@interface CShadowView : CView
+@interface CSerializer : NSObject
 
-@property (nonatomic) CShadowViewEdge edge;
++ (instancetype)newSerializerWithName:(NSString *)name;
+
+- (instancetype)initWithName:(NSString *)name;
+- (void)perform:(dispatch_block_t)f;
+- (id)performWithResult:(serializer_block_t)f;
+- (void)performOnMainThread:(dispatch_block_t)f;
+- (id)performOnMainThreadWithResult:(serializer_block_t)f;
 
 @end

@@ -59,6 +59,14 @@ void dispatch_async_repeated(double intervalInSeconds, dispatch_queue_t queue, v
     dispatch_async_repeated(repeatInterval, dispatch_get_main_queue(), block);
 }
 
++ (void)performBlockOnMainThread:(dispatch_block_t)block waitUntilDone:(BOOL)wait {
+    if(wait) {
+        dispatch_sync(dispatch_get_main_queue(), block);
+    } else {
+        dispatch_async(dispatch_get_main_queue(), block);
+    }
+}
+
 + (void)ng_runBlock:(dispatch_block_t)block
 {
 	block();

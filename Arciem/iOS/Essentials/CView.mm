@@ -66,7 +66,7 @@
 {
 	self.debugColor = nil;
 	self.layoutDelegate = nil;
-	self.keyboardAdjustmentType = kViewKeyboardAdjustmentTypeNone;
+	self.keyboardAdjustmentType = CViewKeyboardAdjustmentTypeNone;
 }
 
 - (void)syncToLayoutView {
@@ -136,13 +136,13 @@
 	if(_keyboardAdjustmentType != aType) {
 		_keyboardAdjustmentType = aType;
 		switch(_keyboardAdjustmentType) {
-			case kViewKeyboardAdjustmentTypeNone:
+			case CViewKeyboardAdjustmentTypeNone:
 				[self stopObservingKeyboard];
 				break;
-			case kViewKeyboardAdjustmentTypeShrink:
+			case CViewKeyboardAdjustmentTypeShrink:
 				[self startObservingKeyboard];
 				break;
-			case kViewKeyboardAdjustmentTypeBottomConstraint:
+			case CViewKeyboardAdjustmentTypeBottomConstraint:
 				[self startObservingKeyboard];
 				break;
 		}
@@ -159,7 +159,7 @@
 
 - (void)keyboardWillMove:(NSNotification*)notification
 {
-	if(self.keyboardAdjustmentType != kViewKeyboardAdjustmentTypeNone) {
+	if(self.keyboardAdjustmentType != CViewKeyboardAdjustmentTypeNone) {
 		CGRect endKeyboardRectangle = [self endKeyboardRectangleFromNotification:notification];
 		// The keyboard doesn't just move up and down-- when pushing a new UIViewController on a UINavigationController's stack, the keyboard can actually animate sideways out of the frame without moving down at all. So instead of merely following the top of the keyboard, we actually need to see whether it's final position intersects the receiver's superview at all. If not, then the bottom of the receiver should be at the maximum position, regardless of the vertical position of the keyboard.
 		CGFloat newMaxY = self.superview.boundsBottom;
@@ -172,7 +172,7 @@
 		UIViewAnimationCurve curve = (UIViewAnimationCurve)[(notification.userInfo)[UIKeyboardAnimationCurveUserInfoKey] intValue];
         UIViewAnimationOptions options = curve << 16;
         
-        if(self.keyboardAdjustmentType == kViewKeyboardAdjustmentTypeBottomConstraint) {
+        if(self.keyboardAdjustmentType == CViewKeyboardAdjustmentTypeBottomConstraint) {
             NSAssert1(self.bottomConstraint != nil, @"%@ bottomConstraint not set.", self);
 //            CLogDebug(nil, @"%@ BEFORE newMaxY: %f boundsBottom:%f", self, newMaxY, self.superview.boundsBottom);
 //            self.bottomConstraint.constant = newMaxY - self.superview.boundsBottom;
@@ -181,7 +181,7 @@
         }
         
 		[UIView animateWithDuration:duration delay:0 options:options animations:^{
-            if(self.keyboardAdjustmentType == kViewKeyboardAdjustmentTypeBottomConstraint) {
+            if(self.keyboardAdjustmentType == CViewKeyboardAdjustmentTypeBottomConstraint) {
                 [self layoutIfNeeded];
             } else {
                 self.cframe.flexibleBottom = newMaxY;

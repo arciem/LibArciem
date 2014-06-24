@@ -20,12 +20,15 @@
 #import "CGUtils.h"
 #import "Geom.h"
 #import "UIViewUtils.h"
+#import "CSerializer.h"
+#import "ThreadUtils.h"
 
 static NSString* const kClassLogTag = @"SHIELD_VIEW";
 
 @interface CShieldView ()
 
 @property (weak, nonatomic) UIView *parentView;
+@property (nonatomic) CSerializer *serializer;
 
 @end
 
@@ -37,6 +40,7 @@ static NSString* const kClassLogTag = @"SHIELD_VIEW";
 
 - (instancetype)initWithParentView:(UIView *)parentView {
     if(self = [super initWithFrame:parentView.bounds]) {
+        self.serializer = [CSerializer newSerializerWithName:@"CShieldView Serializer"];
         self.parentView = parentView;
     }
     return self;
@@ -65,26 +69,25 @@ static NSString* const kClassLogTag = @"SHIELD_VIEW";
 }
 
 - (void)addToParentDelayed {
-    @synchronized(self) {
+    [self.serializer performOnMainThread:^{
         CLogTrace(kClassLogTag, @"%@ addToParentDelayed", self);
         [self performSelector:@selector(addToParent) withObject:nil afterDelay:0.5];
-    }
+    }];
 }
 
 - (void)addToParent {
-    @synchronized(self) {
+    [self.serializer performOnMainThread:^{
         CLogTrace(kClassLogTag, @"%@ addToParent", self);
         [self.parentView addSubview:self animated:YES];
-    }
+    }];
 }
 
 - (void)removeFromParent {
-    @synchronized(self) {
+    [self.serializer performOnMainThread:^{
         CLogTrace(kClassLogTag, @"%@ removeFromParent", self);
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(addToParent) object:nil];
-        //        [[NSRunLoop currentRunLoop] cancelPerformSelector:@selector(addToParent) target:self argument:nil];
         [self removeFromSuperviewAnimated:YES];
-    }
+    }];
 }
 
 @end

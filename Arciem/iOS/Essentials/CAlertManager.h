@@ -18,6 +18,8 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^alert_completion_block_t)(NSUInteger buttonIndex);
+
 extern const NSUInteger kCancelButtonIndex;
 extern const NSUInteger kOKButtonIndex;
 
@@ -27,9 +29,9 @@ extern const NSUInteger kOKButtonIndex;
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion;
-- (void)showCancelAlertWithTitle:(NSString *)title message:(NSString *)message completion:(void (^)(NSUInteger buttonIndex))completion;
+- (void)showCancelAlertWithTitle:(NSString *)title message:(NSString *)message completion:(alert_completion_block_t)completion;
 - (void)showCancelAlertWithTitle:(NSString *)title message:(NSString *)message;
-- (void)showConfirmAlertWithTitle:(NSString *)title message:(NSString *)message completion:(void (^)(NSUInteger buttonIndex))completion;
+- (void)showConfirmAlertWithTitle:(NSString *)title message:(NSString *)message completion:(alert_completion_block_t)completion;
 - (void)showOKAlertWithTitle:(NSString *)title message:(NSString *)message;
 
 @end

@@ -27,6 +27,7 @@ typedef void (^error_block_t)(NSError *);
 - (void)performBlock:(void (^)(BOOL* stop))block queue:(dispatch_queue_t)queue repeatInterval:(NSTimeInterval)repeatInterval;
 + (void)performBlockInBackground:(dispatch_block_t)block;
 + (void)performBlockOnMainThread:(dispatch_block_t)block;
++ (void)performBlockOnMainThread:(dispatch_block_t)block waitUntilDone:(BOOL)wait;
 + (void)performBlockOnMainThread:(dispatch_block_t)block afterDelay:(NSTimeInterval)delay;
 + (void)performBlockOnMainThread:(void (^)(BOOL* stop))block repeatInterval:(NSTimeInterval)repeatInterval;
 + (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2;

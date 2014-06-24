@@ -18,11 +18,11 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum {
-	kViewKeyboardAdjustmentTypeNone = 0,
-	kViewKeyboardAdjustmentTypeShrink,
-    kViewKeyboardAdjustmentTypeBottomConstraint
-} CViewKeyboardAdjustmentType;
+typedef NS_ENUM(NSInteger, CViewKeyboardAdjustmentType) {
+	CViewKeyboardAdjustmentTypeNone,
+	CViewKeyboardAdjustmentTypeShrink,
+    CViewKeyboardAdjustmentTypeBottomConstraint
+};
 
 @protocol CViewLayoutDelegate;
 

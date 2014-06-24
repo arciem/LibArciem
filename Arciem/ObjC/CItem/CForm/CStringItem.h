@@ -20,7 +20,7 @@
 
 extern NSString* const CStringItemErrorDomain;
 
-enum {
+typedef NS_ENUM(NSInteger, CStringItemError) {
 	CStringItemErrorTooShort = 1000,
 	CStringItemErrorTooLong,
 	CStringItemErrorWrongLength,

@@ -16,12 +16,16 @@
  
  *******************************************************************************/
 
+#import "CSerializer.h"
+
 @interface CWorker : NSObject
 
 // designated initializer, sets sequenceNumber to next increment
 - (instancetype)init;
 
 - (void)cancel;
+
+@property (readonly, nonatomic) CSerializer *serializer;
 
 // for debug display
 @property (readonly, nonatomic) NSUInteger sequenceNumber;

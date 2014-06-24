@@ -20,6 +20,7 @@
 #import "ThreadUtils.h"
 #import "random.hpp"
 #import "StringUtils.h"
+#import "CLog.h"
 
 @interface CDummyWorker ()
 
@@ -63,15 +64,15 @@
 
 + (CWorker*)randomWorkerForWorkerManager:(CWorkerManager*)workerManager
 {
-	CWorker* worker = nil;
-	@synchronized(workerManager) {
+	return [workerManager.serializer performWithResult:^{
+        CWorker* worker = nil;
 		NSArray* workers = [workerManager.workers allObjects];
 		if(workers.count > 0) {
 			NSInteger index = arciem::random_range(0, workers.count);
 			worker = workers[index];
 		}
-	}
-	return worker;
+        return worker;
+	}];
 }
 
 + (void)testWithWorkerManager:(CWorkerManager*)workerManager
@@ -138,20 +139,20 @@
 #if 1
 	static BOOL hasReaper = NO;
 	
-	@synchronized(self) {
+	[workerManager.serializer perform:^{
 		if(!hasReaper) {
 			hasReaper = YES;
 			[NSThread performBlockInBackground:^ __attribute__((noreturn)) {
 				while(YES) {
 					[NSThread sleepForTimeInterval:10.0];
-					@synchronized(workerManager) {
+					[workerManager.serializer perform:^{
 						CWorker* workerToCancel = [self randomWorkerForWorkerManager:workerManager];
 						[workerToCancel cancel];
-					}
+					}];
 				}
 			}];
 		}
-	}
+	}];
 #endif
 }
 

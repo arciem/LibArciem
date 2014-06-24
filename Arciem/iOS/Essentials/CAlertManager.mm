@@ -19,6 +19,7 @@
 #import "CAlertManager.h"
 #import "I18nUtils.h"
 #import "InvocationUtils.h"
+#import "CSerializer.h"
 
 const NSUInteger kCancelButtonIndex = 0;
 const NSUInteger kOKButtonIndex = 1;
@@ -27,6 +28,7 @@ const NSUInteger kOKButtonIndex = 1;
 
 @property(nonatomic) NSMutableArray *alerts;
 @property(nonatomic) NSMutableArray *completionBlocks;
+@property (nonatomic) CSerializer *serializer;
 
 @end
 
@@ -39,6 +41,7 @@ const NSUInteger kOKButtonIndex = 1;
 	if((self = [super init])) {
 		self.alerts = [NSMutableArray array];
 		self.completionBlocks = [NSMutableArray array];
+        self.serializer = [CSerializer newSerializerWithName:@"AlertManager Serializer"];
 	}
 	
 	return self;
@@ -53,8 +56,9 @@ const NSUInteger kOKButtonIndex = 1;
     return instance;
 }
 
-- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles completion:(void (^)(NSUInteger buttonIndex))completion {
-	@synchronized(self) {
+- (void)showAlertWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles completion:(alert_completion_block_t)completion {
+    [self.serializer perform:
+	^{
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 		if(buttonTitles == nil) {
 			[alertView addButtonWithTitle:IString(@"Cancel")];
@@ -64,22 +68,22 @@ const NSUInteger kOKButtonIndex = 1;
 			}
 		}
 
-		if(completion == NULL) {
-			completion = ^(NSUInteger idx) { };
-		}
-
 		[self.alerts addObject:alertView];
-		[self.completionBlocks addObject:[completion copy]];
+        if(completion == NULL) {
+            [self.completionBlocks addObject:[^(NSUInteger idx) { } copy]];
+        } else {
+            [self.completionBlocks addObject:[completion copy]];
+        }
 		
 		[alertView show];
-	}
+	}];
 }
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message {
     [self showAlertWithTitle:title message:message buttonTitles:nil completion:NULL];
 }
 
-- (void)showCancelAlertWithTitle:(NSString *)title message:(NSString *)message completion:(void (^)(NSUInteger buttonIndex))completion {
+- (void)showCancelAlertWithTitle:(NSString *)title message:(NSString *)message completion:(alert_completion_block_t)completion {
 	[self showAlertWithTitle:title message:message buttonTitles:nil completion:completion];
 }
 
@@ -87,7 +91,7 @@ const NSUInteger kOKButtonIndex = 1;
 	[self showCancelAlertWithTitle:title message:message completion:nil];
 }
 
-- (void)showConfirmAlertWithTitle:(NSString *)title message:(NSString *)message completion:(void (^)(NSUInteger buttonIndex))completion {
+- (void)showConfirmAlertWithTitle:(NSString *)title message:(NSString *)message completion:(alert_completion_block_t)completion {
 	[self showAlertWithTitle:title message:message buttonTitles:@[IString(@"Cancel"), IString(@"OK")] completion:completion];
 }
 
@@ -98,20 +102,20 @@ const NSUInteger kOKButtonIndex = 1;
 #pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSUInteger)buttonIndex {
-	void(^completion)(NSUInteger) = NULL;
+	alert_completion_block_t completion =
+    [self.serializer performWithResult:
+     ^{
+         void(^result)(NSUInteger) = NULL;
+         NSUInteger index = [self.alerts indexOfObject:alertView];
+         if(index != NSNotFound) {
+             result = (self.completionBlocks)[index];
+             [self.alerts removeObjectAtIndex:index];
+             [self.completionBlocks removeObjectAtIndex:index];
+         }
+         return result;
+     }];
 	
-	@synchronized(self) {
-		NSUInteger index = [self.alerts indexOfObject:alertView];
-		if(index != NSNotFound) {
-			completion = (self.completionBlocks)[index];
-			if(completion != nil) {
-				[self.alerts removeObjectAtIndex:index];
-				[self.completionBlocks removeObjectAtIndex:index];
-			}
-		}
-	}
-	
-	if(completion != nil) completion(buttonIndex);
+	if(completion != NULL) completion(buttonIndex);
 }
 
 @end

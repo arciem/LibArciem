@@ -107,60 +107,58 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 
 - (void)syncToWorker
 {
-	@synchronized(self.worker) {
-		self.label.text = self.worker.title;
-		NSString* status = @"UNKNOWN";
-		UIColor* backgroundColor = [UIColor grayColor];
-		UIColor* textColor = [UIColor whiteColor];
-		
-		if(self.worker.finished) {
-			status = @"FINISHED";
-			if(self.worker.error == nil) {
-				backgroundColor = [[UIColor greenColor] newColorByDarkeningFraction:0.7];
-			} else {
-				backgroundColor = [[UIColor redColor] newColorByDarkeningFraction:0.5];
-			}
-			textColor = [UIColor whiteColor];
-			if(self.worker.cancelled) {
-				status = @"CANCELLED";
-				backgroundColor = [UIColor blackColor];
-				textColor = [UIColor whiteColor];
-			}
-		} else if(self.worker.executing) {
-			status = @"EXECUTING";
-			backgroundColor = [[UIColor blueColor] newColorByLighteningFraction:0.5];
-			textColor = [UIColor blackColor];
-			if(self.worker.active) {
-				status = @"ACTIVE";
-				backgroundColor = [UIColor yellowColor];
-				textColor = [UIColor blackColor];
-			} else if(self.worker.ready) {
-				status = @"READY";
-				backgroundColor = [UIColor orangeColor];
-				textColor = [UIColor blackColor];
-			}
-		}
-        
-        NSDictionary *userInfo = self.worker.userInfo;
-        if(userInfo != nil) {
-            UIColor *color = userInfo[@"backgroundColor"];
-            if(color != nil) {
-                backgroundColor = color;
-            }
-            color = userInfo[@"textColor"];
-            if(color != nil) {
-                textColor = color;
-            }
+    self.label.text = self.worker.title;
+    NSString* status = @"UNKNOWN";
+    UIColor* backgroundColor = [UIColor grayColor];
+    UIColor* textColor = [UIColor whiteColor];
+    
+    if(self.worker.finished) {
+        status = @"FINISHED";
+        if(self.worker.error == nil) {
+            backgroundColor = [[UIColor greenColor] newColorByDarkeningFraction:0.7];
+        } else {
+            backgroundColor = [[UIColor redColor] newColorByDarkeningFraction:0.5];
         }
-		
-		self.label.textColor = textColor;
-		self.layer.backgroundColor = backgroundColor.CGColor;
-		self.layer.borderColor = [backgroundColor newColorByDarkeningFraction:0.5].CGColor;
-	
-		CLogTrace(@"C_WORKER_DEBUG_VIEW", @"worker: %@ %@ active:%d", self.worker, status, self.worker.active);
-        
-        [self setNeedsUpdateConstraints];
-	}
+        textColor = [UIColor whiteColor];
+        if(self.worker.cancelled) {
+            status = @"CANCELLED";
+            backgroundColor = [UIColor blackColor];
+            textColor = [UIColor whiteColor];
+        }
+    } else if(self.worker.executing) {
+        status = @"EXECUTING";
+        backgroundColor = [[UIColor blueColor] newColorByLighteningFraction:0.5];
+        textColor = [UIColor blackColor];
+        if(self.worker.active) {
+            status = @"ACTIVE";
+            backgroundColor = [UIColor yellowColor];
+            textColor = [UIColor blackColor];
+        } else if(self.worker.ready) {
+            status = @"READY";
+            backgroundColor = [UIColor orangeColor];
+            textColor = [UIColor blackColor];
+        }
+    }
+    
+    NSDictionary *userInfo = self.worker.userInfo;
+    if(userInfo != nil) {
+        UIColor *color = userInfo[@"backgroundColor"];
+        if(color != nil) {
+            backgroundColor = color;
+        }
+        color = userInfo[@"textColor"];
+        if(color != nil) {
+            textColor = color;
+        }
+    }
+    
+    self.label.textColor = textColor;
+    self.layer.backgroundColor = backgroundColor.CGColor;
+    self.layer.borderColor = [backgroundColor newColorByDarkeningFraction:0.5].CGColor;
+    
+    CLogTrace(@"C_WORKER_DEBUG_VIEW", @"worker: %@ %@ active:%d", self.worker, status, self.worker.active);
+    
+    [self setNeedsUpdateConstraints];
 }
 
 - (void)beginObserving

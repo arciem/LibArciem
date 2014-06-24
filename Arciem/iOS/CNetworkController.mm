@@ -92,7 +92,7 @@
 	NetworkStatus networkReachability = self.networkReachability.currentReachabilityStatus;
 	NetworkStatus hostReachability = self.hostReachability.currentReachabilityStatus;
 	
-	self.isReachable = networkReachability != NotReachable && hostReachability != NotReachable && !self.isOffline;
+	self.isReachable = networkReachability != NetworkStatusNotReachable && hostReachability != NetworkStatusNotReachable && !self.isOffline;
 	
 	if(self.isReachable) {
 		// all clear
@@ -111,14 +111,14 @@
 			[self.notifier removeItem:self.offlineNotifierItem];
 		}
 
-		if(networkReachability == NotReachable) {
+		if(networkReachability == NetworkStatusNotReachable) {
 			[self.notifier addItem:self.networkReachabilityNotifierItem];
 			needReportReachable = YES;
 		} else {
 			[self.notifier removeItem:self.networkReachabilityNotifierItem];
 		}
 		
-		if(hostReachability == NotReachable) {
+		if(hostReachability == NetworkStatusNotReachable) {
 			[self.notifier addItem:self.hostReachabilityNotifierItem];
 			needReportReachable = YES;
 		} else {

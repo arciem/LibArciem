@@ -18,6 +18,7 @@
 
 #import "CNotifierItem.h"
 #import "ObjectUtils.h"
+#import "CSerializer.h"
 
 @interface CNotifierItem ()
 
@@ -25,6 +26,7 @@
 @property (readwrite, nonatomic) NSInteger priority;
 @property (strong, readwrite, nonatomic) NSDate* date;
 @property (nonatomic) NSInteger visibleCount;
+@property (nonatomic) CSerializer *serializer;
 
 @end
 
@@ -38,6 +40,7 @@
 - (instancetype)initWithMessage:(NSString*)message priority:(NSInteger)priority tapHandler:(dispatch_block_t)tapHandler
 {
 	if(self = [super init]) {
+        self.serializer = [CSerializer newSerializerWithName:@"CNotifierItem Serializer"];
 		self.message = message;
 		self.priority = priority;
 		self.date = [NSDate date];
@@ -78,13 +81,13 @@
 }
 
 - (BOOL)visible {
-    @synchronized(self) {
-        return self.visibleCount > 0;
-    }
+    return [[self.serializer performWithResult:^{
+        return @(self.visibleCount > 0);
+    }] boolValue];
 }
 
 - (void)incrementVisible {
-    @synchronized(self) {
+    [self.serializer perform:^{
         if(self.visibleCount == 0) {
             [self willChangeValueForKey:@"visible"];
         }
@@ -92,11 +95,11 @@
         if(self.visibleCount == 1) {
             [self didChangeValueForKey:@"visible"];
         }
-    }
+    }];
 }
 
 - (void)decrementVisible {
-    @synchronized(self) {
+    [self.serializer perform:^{
         NSAssert1(self.visibleCount > 0, @"Attempt to decrementVisible below zero for %@", self);
         if(self.visibleCount == 1) {
             [self willChangeValueForKey:@"visible"];
@@ -105,7 +108,7 @@
         if(self.visibleCount == 0) {
             [self didChangeValueForKey:@"visible"];
         }
-    }
+    }];
 }
 
 @end

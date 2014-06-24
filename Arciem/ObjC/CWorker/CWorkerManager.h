@@ -27,6 +27,7 @@
 
 @property (readonly, nonatomic) NSOperationQueue* queue;
 @property (readonly, nonatomic) NSMutableSet* workers;
+@property (readonly, nonatomic) CSerializer *serializer;
 
 - (NSMutableSet*)workers;
 

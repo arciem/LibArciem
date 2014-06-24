@@ -21,11 +21,13 @@
 #import "UIColorUtils.h"
 #include "random.hpp"
 #import "ObjectUtils.h"
+#import "CSerializer.h"
 
 @interface CNotifier ()
 
 @property (nonatomic) NSMutableSet* subscriptions;
 @property (nonatomic) NSMutableSet* internalItems;
+@property (nonatomic) CSerializer *serializer;
 
 @end
 
@@ -46,6 +48,7 @@
 	if(self = [super init]) {
 		self.subscriptions = [NSMutableSet set];
 		self.internalItems = [NSMutableSet set];
+        self.serializer = [CSerializer newSerializerWithName:@"CNotifier Serializer"];
 	}
 	
 	return self;
@@ -53,46 +56,46 @@
 
 - (void)dealloc
 {
-	@synchronized(self) {
+	[self.serializer perform:^{
 		CLogTrace(@"C_NOTIFIER", @"%@ dealloc", self);
 		for(CNotifier* notifier in [self.subscriptions copy]) {
 			[self unsubscribeFromNotifier:notifier];
 		}
-	}
+	}];
 }
 
 - (NSString*)description
 {
-	@synchronized(self) {
+	return [self.serializer performWithResult:^{
 		return [self formatObjectWithValues:@[[self formatValueForKey:@"name" compact:NO]]];
-	}
+	}];
 }
 
 - (void)subscribeToNotifier:(CNotifier*)notifier
 {
-	@synchronized(self) {
+	[self.serializer perform:^{
 		CLogTrace(@"C_NOTIFIER", @"%@ subscribeToNotifier:%@", self, notifier);
 		if(![self.subscriptions containsObject:notifier]) {
 			[self.subscriptions addObject:notifier];
 			[notifier addObserver:self forKeyPath:@"items" options:(NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:NULL];
 		}
-	}
+	}];
 }
 
 - (void)unsubscribeFromNotifier:(CNotifier*)notifier
 {
-	@synchronized(self) {
+	[self.serializer perform:^{
 		CLogTrace(@"C_NOTIFIER", @"%@ unsubscribeFromNotifier:%@", self, notifier);
 		if([self.subscriptions containsObject:notifier]) {
 			[self.subscriptions removeObject:notifier];
 			[notifier removeObserver:self forKeyPath:@"items"];
 		}
-	}
+	}];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	@synchronized(self) {
+	[self.serializer perform:^{
 		if([self.subscriptions containsObject:object]) {
 			if([keyPath isEqualToString:@"items"]) {
 				NSUInteger changeKind = [change[NSKeyValueChangeKindKey] unsignedIntegerValue];
@@ -115,7 +118,7 @@
 				}
 			}
 		}
-	}
+	}];
 }
 
 + (BOOL)automaticallyNotifiesObserversOfItems
@@ -125,7 +128,7 @@
 
 - (void)addItems:(NSSet*)items withExpiry:(BOOL)expire
 {
-	@synchronized(self) {
+	[self.serializer perform:^{
 		NSSet* newItems = [items objectsPassingTest:^BOOL(CNotifierItem *item, BOOL *stop) {
 			return ![self.items containsObject:item];
 		}];
@@ -141,7 +144,7 @@
                 }
             }];
 		}
-	}
+	}];
 }
 
 - (void)addItems:(NSSet*)items
@@ -158,7 +161,7 @@
 
 - (void)removeItems:(NSSet*)items
 {
-	@synchronized(self) {
+	[self.serializer perform:^{
 		NSSet* oldItems = [items objectsPassingTest:^BOOL(CNotifierItem *item, BOOL *stop) {
 			return [self.items containsObject:item];
 		}];
@@ -174,7 +177,7 @@
 			[self.internalItems minusSet:oldItems];
 			[self didChangeValueForKey:@"items" withSetMutation:NSKeyValueMinusSetMutation usingObjects:oldItems];
 		}
-	}
+	}];
 }
 
 - (void)removeItem:(CNotifierItem*)item
@@ -187,18 +190,18 @@
 - (BOOL)hasItem:(CNotifierItem*)item
 {
 	BOOL has = NO;
-	@synchronized(self) {
-		has = [self.internalItems containsObject:item];
-	}
+	has = [[self.serializer performWithResult:^{
+		return @([self.internalItems containsObject:item]);
+	}] boolValue];
 	return has;
 }
 
 - (NSSet*)items
 {
 	NSSet* result = nil;
-	@synchronized(self) {
-		result = [self.internalItems copy];
-	}
+	result = [self.serializer performWithResult:^{
+		return [self.internalItems copy];
+	}];
 	return result;
 }
 

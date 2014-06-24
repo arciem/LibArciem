@@ -76,6 +76,7 @@
 #import "StringUtils.h"
 #import "ThreadUtils.h"
 #import "CUseCounter.h"
+#import "CSerializer.h"
 
 // CItem/CForm
 #import "CForm.h"

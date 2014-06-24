@@ -8,11 +8,13 @@
 
 #import "CStatusBar.h"
 #import "ThreadUtils.h"
+#import "CSerializer.h"
 
 @interface CStatusBar ()
 
 @property (nonatomic) NSPointerArray *proxiesStack;
 @property (readonly, nonatomic) CStatusBarProxy *activeProxy;
+@property (nonatomic) CSerializer *serializer;
 
 @end
 
@@ -27,6 +29,7 @@
 
 - (instancetype)init {
     if(self = [super init]) {
+        self.serializer = [CSerializer newSerializerWithName:@"CStatusBar Serializer"];
         self.proxiesStack = [NSPointerArray weakObjectsPointerArray];
     }
     return self;
@@ -42,28 +45,28 @@
 }
 
 - (CStatusBarProxy *)activeProxy {
-    @synchronized(self) {
+    return [self.serializer performWithResult:^{
         [self.proxiesStack compact];
         NSArray *proxies = [self.proxiesStack allObjects];
         return proxies.lastObject;
-    }
+    }];
 }
 
 - (void)addProxy:(CStatusBarProxy *)proxy {
-    @synchronized(self) {
+    [self.serializer perform:^{
         [self.proxiesStack addPointer:(void *)proxy];
         [self update];
-    }
+    }];
 }
 
 - (void)removeProxy:(CStatusBarProxy *)proxy {
-    @synchronized(self) {
+    [self.serializer perform:^{
         NSUInteger proxyIndex = [[self.proxiesStack allObjects] indexOfObject:proxy];
         if(proxyIndex != NSNotFound) {
             [self.proxiesStack removePointerAtIndex:proxyIndex];
             [self update];
         }
-    }
+    }];
 }
 
 - (void)update {
