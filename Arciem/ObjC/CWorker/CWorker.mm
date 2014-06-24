@@ -32,7 +32,6 @@ static NSUInteger sNextSequenceNumber = 0;
 @property (nonatomic) NSMutableSet* mutableDependencies;
 @property (nonatomic) NSMutableArray* _titleItems;
 @property (strong, readwrite, nonatomic) NSString* title;
-@property (readonly, nonatomic) NSSet *_dependencies;
 @property (readwrite, nonatomic) CSerializer *serializer;
 
 @end
@@ -42,7 +41,6 @@ static NSUInteger sNextSequenceNumber = 0;
 @synthesize title = _title;
 @synthesize _titleItems = __titleItems;
 @dynamic dependencies;
-@dynamic _dependencies;
 
 - (instancetype)init
 {
@@ -144,13 +142,8 @@ static NSUInteger sNextSequenceNumber = 0;
 - (NSSet*)dependencies
 {
 	return [self.serializer performWithResult:^{
-		return [self _dependencies];
+        return [self.mutableDependencies copy];
 	}];
-}
-
-- (NSSet*)_dependencies
-{
-    return [self.mutableDependencies copy];
 }
 
 - (BOOL)addDependency:(CWorker*)worker
