@@ -22,6 +22,7 @@
 #include "random.hpp"
 #import "ObjectUtils.h"
 #import "CSerializer.h"
+#import "DispatchUtils.h"
 
 @interface CNotifier ()
 
@@ -56,7 +57,7 @@
 
 - (void)dealloc
 {
-	[self.serializer perform:^{
+	[self.serializer dispatch:^{
 		CLogTrace(@"C_NOTIFIER", @"%@ dealloc", self);
 		for(CNotifier* notifier in [self.subscriptions copy]) {
 			[self unsubscribeFromNotifier:notifier];
@@ -66,14 +67,14 @@
 
 - (NSString*)description
 {
-	return [self.serializer performWithResult:^{
+	return [self.serializer dispatchWithResult:^{
 		return [self formatObjectWithValues:@[[self formatValueForKey:@"name" compact:NO]]];
 	}];
 }
 
 - (void)subscribeToNotifier:(CNotifier*)notifier
 {
-	[self.serializer perform:^{
+	[self.serializer dispatch:^{
 		CLogTrace(@"C_NOTIFIER", @"%@ subscribeToNotifier:%@", self, notifier);
 		if(![self.subscriptions containsObject:notifier]) {
 			[self.subscriptions addObject:notifier];
@@ -84,7 +85,7 @@
 
 - (void)unsubscribeFromNotifier:(CNotifier*)notifier
 {
-	[self.serializer perform:^{
+	[self.serializer dispatch:^{
 		CLogTrace(@"C_NOTIFIER", @"%@ unsubscribeFromNotifier:%@", self, notifier);
 		if([self.subscriptions containsObject:notifier]) {
 			[self.subscriptions removeObject:notifier];
@@ -95,7 +96,7 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	[self.serializer perform:^{
+	[self.serializer dispatch:^{
 		if([self.subscriptions containsObject:object]) {
 			if([keyPath isEqualToString:@"items"]) {
 				NSUInteger changeKind = [change[NSKeyValueChangeKindKey] unsignedIntegerValue];
@@ -128,7 +129,7 @@
 
 - (void)addItems:(NSSet*)items withExpiry:(BOOL)expire
 {
-	[self.serializer perform:^{
+	[self.serializer dispatch:^{
 		NSSet* newItems = [items objectsPassingTest:^BOOL(CNotifierItem *item, BOOL *stop) {
 			return ![self.items containsObject:item];
 		}];
@@ -161,7 +162,7 @@
 
 - (void)removeItems:(NSSet*)items
 {
-	[self.serializer perform:^{
+	[self.serializer dispatch:^{
 		NSSet* oldItems = [items objectsPassingTest:^BOOL(CNotifierItem *item, BOOL *stop) {
 			return [self.items containsObject:item];
 		}];
@@ -190,7 +191,7 @@
 - (BOOL)hasItem:(CNotifierItem*)item
 {
 	BOOL has = NO;
-	has = [[self.serializer performWithResult:^{
+	has = [[self.serializer dispatchWithResult:^{
 		return @([self.internalItems containsObject:item]);
 	}] boolValue];
 	return has;
@@ -199,7 +200,7 @@
 - (NSSet*)items
 {
 	NSSet* result = nil;
-	result = [self.serializer performWithResult:^{
+	result = [self.serializer dispatchWithResult:^{
 		return [self.internalItems copy];
 	}];
 	return result;
@@ -207,7 +208,7 @@
 
 + (void)testWithNotifier:(CNotifier*)notifier
 {
-	[NSThread performBlockInBackground:^{
+	dispatchOnBackground(^{
 		[NSThread sleepForTimeInterval:3.0];
 		NSMutableArray* items = [NSMutableArray array];
 		NSInteger nextItem = 1;
@@ -250,7 +251,7 @@
 			[notifier removeItem:item];
 			[NSThread sleepForTimeInterval:1.0];
 		}
-	}];
+	});
 }
 
 @end

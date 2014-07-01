@@ -139,6 +139,7 @@
 #import "CTextFieldTableViewCell2.h"
 #import "CButton.h"
 #import "CSwitchTableViewCell.h"
+#import "DispatchUtils.h"
 
 // CTable
 #import "CTableManager.h"

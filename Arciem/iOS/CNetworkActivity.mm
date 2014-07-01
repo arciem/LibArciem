@@ -20,6 +20,7 @@
 #import "CLog.h"
 #import "ObjectUtils.h"
 #import "ThreadUtils.h"
+#import "CSerializer.h"
 
 @class CNetworkActivityIndicator;
 
@@ -40,7 +41,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 
 @property (nonatomic) NSTimer* timer;
 @property (nonatomic) NSInteger activationsCount;
-@property(readonly, nonatomic) NSOperationQueue *queue;
+@property (readonly, nonatomic) CSerializer *serializer;
 
 + (CNetworkActivityIndicator*)sharedIndicator;
 - (void)addActivity;
@@ -105,17 +106,15 @@ static NSTimeInterval sLastRemoveTime = 0;
 
 @implementation CNetworkActivityIndicator
 
-@synthesize timer = timer_;
-@synthesize activationsCount = activationsCount_;
+@dynamic serializer;
 
-- (NSOperationQueue *)queue {
-    static NSOperationQueue *q;
+- (CSerializer *)serializer {
+    static CSerializer *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        q = [NSOperationQueue new];
+        instance = [CSerializer newSerializerWithName:@"CNetworkActivityIndicator Serializer"];
     });
-    
-    return q;
+    return instance;
 }
 
 - (instancetype)init
@@ -144,7 +143,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 #ifdef LOGGING_ENABLED
     BSELF;
 #endif
-    [self.queue performSynchronousOperationWithBlock:^{
+    [self.serializer dispatch:^{
         UIApplication *app = [UIApplication sharedApplication];
         if(!app.networkActivityIndicatorVisible) {
             CLogDebug(@"NETWORK_ACTIVITY", @"%@ turnOnIndicator", bself);
@@ -158,7 +157,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 #ifdef LOGGING_ENABLED
     BSELF;
 #endif
-    [self.queue performSynchronousOperationWithBlock:^{
+    [self.serializer dispatch:^{
         UIApplication *app = [UIApplication sharedApplication];
         if(app.networkActivityIndicatorVisible) {
             CLogDebug(@"NETWORK_ACTIVITY", @"%@ turnOffIndicator", bself);
@@ -170,7 +169,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 - (void)timerFired:(NSTimer*)timer
 {
     BSELF;
-    [self.queue performSynchronousOperationWithBlock:^{
+    [self.serializer dispatch:^{
 //		CLogDebug(@"NETWORK_ACTIVITY", @"%@ timerFired activationsCount:%d", bself, bself.activationsCount);
 		if(bself.activationsCount == 0) {
 			if([NSDate timeIntervalSinceReferenceDate] - sLastRemoveTime > kIndicatorHysteresisInterval) {
@@ -183,7 +182,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 - (void)addActivity
 {
     BSELF;
-    [self.queue performSynchronousOperationWithBlock:^{
+    [self.serializer dispatch:^{
 		bself.activationsCount++;
         if(bself.activationsCount == 1) {
             [bself turnOnIndicator];
@@ -195,7 +194,7 @@ static NSTimeInterval sLastRemoveTime = 0;
 - (void)removeActivity
 {
     BSELF;
-    [self.queue performSynchronousOperationWithBlock:^{
+    [self.serializer dispatch:^{
 		bself.activationsCount--;
 		CLogDebug(@"NETWORK_ACTIVITY", @"%@ removeActivity activationsCount:%d", bself, bself.activationsCount);
 	}];

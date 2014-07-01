@@ -45,8 +45,8 @@ typedef NS_ENUM(NSInteger, CRestError) {
 
 @interface CRestWorker : CWorker <NSURLConnectionDelegate>
 
-- (instancetype)initWithRequest:(NSURLRequest*)request;
-+ (CRestWorker*)workerWithRequest:(NSURLRequest*)request;
+- (instancetype)initWithRequest:(NSURLRequest*)request callbackQueue:(DispatchQueue)callbackQueue;
++ (CRestWorker*)workerWithRequest:(NSURLRequest*)request callbackQueue:(DispatchQueue)callbackQueue;
 
 // Inputs - may change between retries
 @property (nonatomic) NSURLRequest *request;

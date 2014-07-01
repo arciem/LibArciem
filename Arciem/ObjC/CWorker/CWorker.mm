@@ -28,7 +28,7 @@ static NSUInteger sNextSequenceNumber = 0;
 @property (strong, readwrite, nonatomic) NSError* error;
 @property (readwrite, nonatomic) NSUInteger sequenceNumber;
 @property (readwrite, nonatomic) NSUInteger tryCount;
-@property (weak, nonatomic) NSOperation* operation; // zeroing weak reference, operation is owned by the NSOperationQueue
+@property (weak, nonatomic) NSOperation* operation; // weak reference, operation is owned by the NSOperationQueue
 @property (nonatomic) NSMutableSet* mutableDependencies;
 @property (nonatomic) NSMutableArray* _titleItems;
 @property (strong, readwrite, nonatomic) NSString* title;
@@ -42,16 +42,19 @@ static NSUInteger sNextSequenceNumber = 0;
 @synthesize _titleItems = __titleItems;
 @dynamic dependencies;
 
-- (instancetype)init
-{
+- (instancetype)init {
+    return [self initWithCallbackQueue:nil];
+}
+
+- (instancetype)initWithCallbackQueue:(DispatchQueue)callbackQueue {
 	if(self = [super init]) {
 		self.sequenceNumber = sNextSequenceNumber++;
-        self.serializer = [CSerializer newSerializerWithName:[NSString stringWithFormat:@"Worker %d Serializer", self.sequenceNumber]];
+        self.serializer = [CSerializer newSerializerWithName:[NSString stringWithFormat:@"Worker %lu Serializer", (unsigned long)self.sequenceNumber]];
 		self.tryCount = 0;
 		self.tryLimit = 3;
 		self.retryDelayInterval = 1.0;
 		self.mutableDependencies = [NSMutableSet set];
-		self.callbackThread = [NSThread currentThread];
+		self.callbackQueue = callbackQueue != nil ? callbackQueue : mainQueue();
 		
 		[self addObserver:self forKeyPath:@"titleItems" options:0 context:NULL];
 		self.titleItems = [NSMutableArray arrayWithObject:@(self.sequenceNumber)];
@@ -132,7 +135,7 @@ static NSUInteger sNextSequenceNumber = 0;
 
 - (NSString*)description
 {
-    return [self.serializer performWithResult:^{
+    return [self.serializer dispatchWithResult:^{
 		return [self formatObjectWithValues:@[[self formatValueForKey:@"title" compact:NO],
                                               [self formatValueForKey:@"sequenceNumber" compact:NO],
                                               [self formatValueForKey:@"tryCount" compact:NO]]];
@@ -141,14 +144,14 @@ static NSUInteger sNextSequenceNumber = 0;
 
 - (NSSet*)dependencies
 {
-	return [self.serializer performWithResult:^{
+	return [self.serializer dispatchWithResult:^{
         return [self.mutableDependencies copy];
 	}];
 }
 
 - (BOOL)addDependency:(CWorker*)worker
 {
-	return [[self.serializer performWithResult:^{
+	return [[self.serializer dispatchWithResult:^{
 		BOOL added = NO;
 		
 		NSAssert1(!self.executing, @"may not add dependencies to executing worker: %@", self);
@@ -165,7 +168,7 @@ static NSUInteger sNextSequenceNumber = 0;
 
 - (BOOL)removeDependency:(CWorker*)worker
 {
-	return [[self.serializer performWithResult:^{
+	return [[self.serializer dispatchWithResult:^{
 		BOOL removed = NO;
 		NSAssert1(!self.executing, @"may not remove dependencies from executing worker: %@", self);
 		NSAssert1(!self.finished, @"may not remove dependencies from finished worker: %@", self);
@@ -237,15 +240,15 @@ static NSUInteger sNextSequenceNumber = 0;
 
 - (void)cancel
 {
-	[self.serializer perform:^{
+	[self.serializer dispatch:^{
 		CLogTrace(@"C_WORKER", @"%@ cancel", self);
 		if(!self.finished && !self.cancelled) {
 			self.cancelled = YES;
 			[self didCancel];
 			[self.operation cancel];
-			[self.callbackThread performBlock:^{
+            dispatchOnQueue(self.callbackQueue, ^{
 				self.finally(self);
-			}];
+			});
 		}
 	}];
 }
@@ -281,7 +284,7 @@ static NSUInteger sNextSequenceNumber = 0;
 - (void)operationFailedWithError:(NSError*)error
 {
     BSELF;
-	[self.serializer perform:^{
+	[self.serializer dispatch:^{
 		CLogTrace(@"C_WORKER", @"%@ operationFailedWithError:%@", bself, error);
 		bself.operation = nil;
 		
@@ -289,12 +292,12 @@ static NSUInteger sNextSequenceNumber = 0;
             bself.error = error;
             [bself updateTitleForError];
             
-            [bself.callbackThread performBlock:^{
+            dispatchOnQueue(self.callbackQueue, ^{
                 if(!bself.cancelled) {
                     bself.failure(bself, error);
                 }
                 bself.finally(bself);
-            }];
+            });
         }
 	}];
 }
@@ -302,7 +305,7 @@ static NSUInteger sNextSequenceNumber = 0;
 - (void)operationSucceeded
 {
     BSELF;
-	[self.serializer perform:^{
+	[self.serializer dispatch:^{
 		CLogTrace(@"C_WORKER", @"%@ operationSucceeded", bself);
 		bself.operation = nil;
 		
@@ -310,12 +313,12 @@ static NSUInteger sNextSequenceNumber = 0;
             bself.error = nil;
             [bself updateTitleForError];
             
-            [bself.callbackThread performBlock:^{
+            dispatchOnQueue(self.callbackQueue, ^{
                 if(!bself.cancelled) {
                     bself.success(bself);
                 }
                 bself.finally(bself);
-            }];
+            });
         }
 	}];
 }
@@ -332,7 +335,7 @@ static NSUInteger sNextSequenceNumber = 0;
 
 - (NSString*)formattedDependencies
 {
-	return [self.serializer performWithResult:^{
+	return [self.serializer dispatchWithResult:^{
 		NSMutableArray* dependentSeqNums = [NSMutableArray array];
 		for(CWorker* predecessorWorker in self.mutableDependencies) {
 			[dependentSeqNums addObject:@(predecessorWorker.sequenceNumber)];

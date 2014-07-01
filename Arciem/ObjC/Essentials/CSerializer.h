@@ -16,18 +16,18 @@
  
  *******************************************************************************/
 
-#import <Foundation/Foundation.h>
+#import "DispatchUtils.h"
 
-typedef id (^serializer_block_t)(void);
+typedef id (^SerializerBlock)(void);
 
 @interface CSerializer : NSObject
 
 + (instancetype)newSerializerWithName:(NSString *)name;
 
 - (instancetype)initWithName:(NSString *)name;
-- (void)perform:(dispatch_block_t)f;
-- (id)performWithResult:(serializer_block_t)f;
-- (void)performOnMainThread:(dispatch_block_t)f;
-- (id)performOnMainThreadWithResult:(serializer_block_t)f;
+- (void)dispatch:(DispatchBlock)f;
+- (id)dispatchWithResult:(SerializerBlock)f;
+- (void)dispatchOnMainThread:(DispatchBlock)f;
+- (id)dispatchOnMainThreadWithResult:(SerializerBlock)f;
 
 @end

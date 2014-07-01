@@ -27,6 +27,7 @@
 #import "CView.h"
 #import "ThreadUtils.h"
 #import "UIImageUtils.h"
+#import "DispatchUtils.h"
 
 NSString* const sTapInBackgroundNotification = @"TapInBackground";
 static const NSTimeInterval kAnimationDuration = 0.4;
@@ -100,17 +101,17 @@ static const NSTimeInterval kAnimationDuration = 0.4;
 
 - (void)animateAmbiguityInViewHierarchy {
     BSELF;
-    [NSThread performBlockOnMainThread:^(BOOL *stop) {
+    dispatchRepeatedOnMain(1.0, ^(Canceler *canceler) {
         [UIView animateWithDuration:0.2 animations:^{
             if(bself == nil) {
-                *stop = YES;
+                [canceler cancel];
 //                CLogDebug(nil, @"STOPPED");
             } else {
 //                CLogDebug(nil, @"RUNNING");
                 [bself exerciseAmbiguityInViewHierarchy];
             }
         }];
-    } repeatInterval:1.0];
+    });
 }
 
 - (void)walkViewHierarchyWithLevel:(NSUInteger)level block:(void (^)(UIView *view, NSUInteger level, NSUInteger idx, BOOL *stop))block {

@@ -23,6 +23,7 @@
 #import "ThreadUtils.h"
 #import "Geom.h"
 #import "ObjectUtils.h"
+#import "DispatchUtils.h"
 
 static const CGFloat kCWorkerDebugViewHeight = 20;
 static const CGFloat kRowLeading = 4;
@@ -374,13 +375,13 @@ static const NSTimeInterval kRemovalFadeAnimationDuration = 0.4;
 
 - (void)syncToWorkers
 {
-	[NSThread performBlockOnMainThread:^{
+	dispatchOnMain(^{
 		[self addWorkers:self.workersToAdd];
 		[self removeWorkers:self.workersToRemove];
 		[self.workersToAdd removeAllObjects];
 		[self.workersToRemove removeAllObjects];
         [self setNeedsUpdateConstraints];
-	}];
+	});
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

@@ -69,21 +69,21 @@ static NSString* const kClassLogTag = @"SHIELD_VIEW";
 }
 
 - (void)addToParentDelayed {
-    [self.serializer performOnMainThread:^{
+    [self.serializer dispatchOnMainThread:^{
         CLogTrace(kClassLogTag, @"%@ addToParentDelayed", self);
         [self performSelector:@selector(addToParent) withObject:nil afterDelay:0.5];
     }];
 }
 
 - (void)addToParent {
-    [self.serializer performOnMainThread:^{
+    [self.serializer dispatchOnMainThread:^{
         CLogTrace(kClassLogTag, @"%@ addToParent", self);
         [self.parentView addSubview:self animated:YES];
     }];
 }
 
 - (void)removeFromParent {
-    [self.serializer performOnMainThread:^{
+    [self.serializer dispatchOnMainThread:^{
         CLogTrace(kClassLogTag, @"%@ removeFromParent", self);
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(addToParent) object:nil];
         [self removeFromSuperviewAnimated:YES];

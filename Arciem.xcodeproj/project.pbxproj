@@ -715,6 +715,10 @@
 		03AC9091174EC5B800781374 /* CUserTrackingBarButtonItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */; };
 		03AC9092174EC5B800781374 /* MapKitUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AC908A174EC5B800781374 /* MapKitUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03AC9093174EC5B800781374 /* MapKitUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AC908B174EC5B800781374 /* MapKitUtils.mm */; };
+		03AFF646195A35D10095F2B6 /* DispatchUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AFF644195A35D10095F2B6 /* DispatchUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03AFF647195A35D10095F2B6 /* DispatchUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AFF644195A35D10095F2B6 /* DispatchUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		03AFF648195A35D10095F2B6 /* DispatchUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF645195A35D10095F2B6 /* DispatchUtils.mm */; };
+		03AFF649195A35D10095F2B6 /* DispatchUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03AFF645195A35D10095F2B6 /* DispatchUtils.mm */; };
 		03C8C9A8181ACEEC0019D97E /* CStatusBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 03C8C9A6181ACEEC0019D97E /* CStatusBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		03C8C9A9181ACEEC0019D97E /* CStatusBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03C8C9A7181ACEEC0019D97E /* CStatusBar.mm */; };
 		03CF6070180E22A500B123F4 /* CDebugMenuView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 036DE9391755E31200B6B345 /* CDebugMenuView.mm */; };
@@ -1111,6 +1115,8 @@
 		03AC9089174EC5B800781374 /* CUserTrackingBarButtonItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CUserTrackingBarButtonItem.mm; sourceTree = "<group>"; };
 		03AC908A174EC5B800781374 /* MapKitUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapKitUtils.h; sourceTree = "<group>"; };
 		03AC908B174EC5B800781374 /* MapKitUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MapKitUtils.mm; sourceTree = "<group>"; };
+		03AFF644195A35D10095F2B6 /* DispatchUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DispatchUtils.h; sourceTree = "<group>"; };
+		03AFF645195A35D10095F2B6 /* DispatchUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DispatchUtils.mm; sourceTree = "<group>"; };
 		03C8C9A6181ACEEC0019D97E /* CStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CStatusBar.h; sourceTree = "<group>"; };
 		03C8C9A7181ACEEC0019D97E /* CStatusBar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CStatusBar.mm; sourceTree = "<group>"; };
 		03D2A4B817FB87540098939E /* CDebugMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDebugMenuView.h; path = "../../../../../../../Library/Developer/Xcode/DerivedData/QP-dmhjmwesuqqztzhjqfjsifbirwsj/Build/Products/Debug-iphoneos/Headers/Arciem/CDebugMenuView.h"; sourceTree = "<group>"; };
@@ -1235,6 +1241,8 @@
 				039DC13B16CB398A00B52A7F /* StringUtils.mm */,
 				039DC13C16CB398A00B52A7F /* ThreadUtils.h */,
 				039DC13D16CB398A00B52A7F /* ThreadUtils.mm */,
+				03AFF644195A35D10095F2B6 /* DispatchUtils.h */,
+				03AFF645195A35D10095F2B6 /* DispatchUtils.mm */,
 				03D6585717601085002B9023 /* URLRequestUtils.h */,
 				03D6585817601085002B9023 /* URLRequestUtils.mm */,
 				0356A31E1905B49E002397ED /* CUseCounter.h */,
@@ -1948,6 +1956,7 @@
 				0330ECE2191802F300A3DEF7 /* AppUtils.h in Headers */,
 				0330ECE3191802F300A3DEF7 /* CKeychainUtils.h in Headers */,
 				0330ECE4191802F300A3DEF7 /* CSidebarContainerViewController.h in Headers */,
+				03AFF647195A35D10095F2B6 /* DispatchUtils.h in Headers */,
 				0330ECE5191802F300A3DEF7 /* CNotifierViewController.h in Headers */,
 				0330ECE6191802F300A3DEF7 /* CShadowView.h in Headers */,
 				0330ECE7191802F300A3DEF7 /* CTable.h in Headers */,
@@ -2137,6 +2146,7 @@
 				033A75F417274B8F0045933D /* AppUtils.h in Headers */,
 				033A75FE172754ED0045933D /* CKeychainUtils.h in Headers */,
 				03F263231734D99D0078F41D /* CSidebarContainerViewController.h in Headers */,
+				03AFF646195A35D10095F2B6 /* DispatchUtils.h in Headers */,
 				0370D7AF173761E0005165CA /* CNotifierViewController.h in Headers */,
 				0370D7B917381A5A005165CA /* CShadowView.h in Headers */,
 				0374651C17421EB60007F56D /* CTable.h in Headers */,
@@ -2380,6 +2390,7 @@
 				0330EBE1191802F300A3DEF7 /* CImageView.mm in Sources */,
 				0330EBE2191802F300A3DEF7 /* CTextFieldTableViewCell1.mm in Sources */,
 				0330EBE3191802F300A3DEF7 /* CTextFieldTableViewCell2.mm in Sources */,
+				03AFF649195A35D10095F2B6 /* DispatchUtils.mm in Sources */,
 				0330EBE4191802F300A3DEF7 /* CButton.mm in Sources */,
 				0330EBE5191802F300A3DEF7 /* CNavigationBar.mm in Sources */,
 				0330EBE6191802F300A3DEF7 /* CNavigationController.mm in Sources */,
@@ -2562,6 +2573,7 @@
 				039DC29816CB662100B52A7F /* CImageView.mm in Sources */,
 				032867AE18CEFD7F00974918 /* CTextFieldTableViewCell1.mm in Sources */,
 				032867B518CF0FC600974918 /* CTextFieldTableViewCell2.mm in Sources */,
+				03AFF648195A35D10095F2B6 /* DispatchUtils.mm in Sources */,
 				0383E97418A19CF4003A6BF5 /* CButton.mm in Sources */,
 				039DC29A16CB662100B52A7F /* CNavigationBar.mm in Sources */,
 				039DC29C16CB662100B52A7F /* CNavigationController.mm in Sources */,

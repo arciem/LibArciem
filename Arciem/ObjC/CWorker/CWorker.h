@@ -21,6 +21,7 @@
 @interface CWorker : NSObject
 
 // designated initializer, sets sequenceNumber to next increment
+- (instancetype)initWithCallbackQueue:(DispatchQueue)callbackQueue; // designated initializer
 - (instancetype)init;
 
 - (void)cancel;
@@ -40,7 +41,7 @@
 @property (nonatomic) NSUInteger tryLimit; // 0 -> no limit, default 3
 @property (nonatomic) NSTimeInterval retryDelayInterval; // default 1 second
 @property (nonatomic) NSOperationQueuePriority queuePriority; // default NSOperationQueuePriorityNormal
-@property (weak, nonatomic) NSThread* callbackThread; // zeroing weak reference, we don't own our caller
+@property (weak, nonatomic) DispatchQueue callbackQueue; // weak reference, we don't own our caller
 
 // This worker will not execute until all workers it is dependent on have finished.
 // Dependencies should not be added or removed once the worker has been added to the CRestManager.

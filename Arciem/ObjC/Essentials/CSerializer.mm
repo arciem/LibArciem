@@ -19,12 +19,12 @@
 #import "CSerializer.h"
 
 static NSString *const serializerKey = @"serializerKey";
-static NSUInteger nextQueueContext = 1;
+static NSInteger nextQueueContext = 1;
 
 @interface CSerializer ()
 
 @property (nonatomic) dispatch_queue_t queue;
-@property (nonatomic) NSUInteger queueContext;
+@property (nonatomic) NSInteger queueContext;
 @property (readonly, nonatomic) BOOL isExecutingOnMyQueue;
 
 @end
@@ -41,7 +41,7 @@ static NSUInteger nextQueueContext = 1;
 }
 
 - (BOOL)isExecutingOnMyQueue {
-    NSUInteger context = (NSUInteger)dispatch_get_specific((__bridge const void *)serializerKey);
+    NSInteger context = (NSInteger)dispatch_get_specific((__bridge const void *)serializerKey);
     return context == self.queueContext;
 }
 
@@ -49,21 +49,21 @@ static NSUInteger nextQueueContext = 1;
     return [[self alloc] initWithName:name];
 }
 
-- (void)perform:(dispatch_block_t)f {
+- (void)dispatch:(DispatchBlock)f {
     if(self.isExecutingOnMyQueue) {
         f();
     } else {
-        dispatch_sync(self.queue, f);
+        dispatchSyncOnQueue(self.queue, f);
     }
 }
 
-- (id)performWithResult:(serializer_block_t)f {
+- (id)dispatchWithResult:(SerializerBlock)f {
     __block id result;
     
     if(self.isExecutingOnMyQueue) {
         result = f();
     } else {
-        dispatch_sync(self.queue, ^{
+        dispatchSyncOnQueue(self.queue, ^{
             result = f();
         });
     }
@@ -71,41 +71,41 @@ static NSUInteger nextQueueContext = 1;
     return result;
 }
 
-- (void)performOnMainThread:(dispatch_block_t)f {
+- (void)dispatchOnMainThread:(DispatchBlock)f {
     if(self.isExecutingOnMyQueue) {
         if([NSThread isMainThread]) {
             f();
         } else {
-            dispatch_sync(dispatch_get_main_queue(), f);
+            dispatchSyncOnMain(f);
         }
     } else {
-        dispatch_sync(self.queue, ^{
+        dispatchSyncOnQueue(self.queue, ^{
             if([NSThread isMainThread]) {
                 f();
             } else {
-                dispatch_sync(dispatch_get_main_queue(), f);
+                dispatchSyncOnMain(f);
             }
         });
     }
 }
 
-- (id)performOnMainThreadWithResult:(serializer_block_t)f {
+- (id)dispatchOnMainThreadWithResult:(SerializerBlock)f {
     __block id result;
     
     if(self.isExecutingOnMyQueue) {
         if([NSThread isMainThread]) {
             result = f();
         } else {
-            dispatch_sync(dispatch_get_main_queue(), ^{
+            dispatchSyncOnMain(^{
                 result = f();
             });
         }
     } else {
-        dispatch_sync(self.queue, ^{
+        dispatchSyncOnQueue(self.queue, ^{
             if([NSThread isMainThread]) {
                 result = f();
             } else {
-                dispatch_sync(dispatch_get_main_queue(), ^{
+                dispatchSyncOnMain(^{
                     result = f();
                 });
             }

@@ -23,6 +23,7 @@
 #import "CObserver.h"
 #import "ObjectUtils.h"
 #import "UIViewUtils.h"
+#import "DispatchUtils.h"
 
 static UIImage* sValidImage = nil;
 static UIImage* sInvalidImage = nil;
@@ -216,10 +217,10 @@ static UIImage* sInvalidImage = nil;
 - (void)syncToState
 {
     BSELF;
-    [NSThread performBlockOnMainThread:^{
+    dispatchOnMain(^{
         [NSObject cancelPreviousPerformRequestsWithTarget:bself selector:@selector(syncToState) object:nil];
         bself.contentView = [bself contentViewForState:self.item.state];
-    }];
+    });
 }
 
 - (void)armSyncToStateWithOldState:(CItemState)oldState oldEditing:(BOOL)oldEditing
@@ -231,7 +232,7 @@ static UIImage* sInvalidImage = nil;
             self.contentView = self.newView;
         }
         BSELF;
-        [NSThread performBlockOnMainThread:^{
+        dispatchOnMain(^{
             [NSObject cancelPreviousPerformRequestsWithTarget:bself selector:@selector(syncToState) object:nil];
             NSTimeInterval duration;
             if(newState == CItemStateValid) {
@@ -241,7 +242,7 @@ static UIImage* sInvalidImage = nil;
             }
             //CLogDebug(nil, @"%@ oldState:%d newState:%d duration:%f", bself, oldState, newState, duration);
             [bself performSelector:@selector(syncToState) withObject:nil afterDelay:duration];
-        }];
+        });
     }
 }
 

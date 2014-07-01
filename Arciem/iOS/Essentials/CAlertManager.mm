@@ -57,7 +57,7 @@ const NSUInteger kOKButtonIndex = 1;
 }
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles completion:(alert_completion_block_t)completion {
-    [self.serializer perform:
+    [self.serializer dispatch:
 	^{
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:nil];
 		if(buttonTitles == nil) {
@@ -103,7 +103,7 @@ const NSUInteger kOKButtonIndex = 1;
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSUInteger)buttonIndex {
 	alert_completion_block_t completion =
-    [self.serializer performWithResult:
+    [self.serializer dispatchWithResult:
      ^{
          void(^result)(NSUInteger) = NULL;
          NSUInteger index = [self.alerts indexOfObject:alertView];

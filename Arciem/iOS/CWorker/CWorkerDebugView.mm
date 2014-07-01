@@ -21,6 +21,7 @@
 #import "UIViewUtils.h"
 #import "ThreadUtils.h"
 #import "UIColorUtils.h"
+#import "DispatchUtils.h"
 
 const CGFloat kCWorkerDebugViewFontSize = 14;
 const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
@@ -188,10 +189,10 @@ const CGFloat kCWorkerDebugViewMinimumScaleFactor = 0.4;
 
 	if(object == self.worker) {
 		CLogTrace(@"C_WORKER_DEBUG_VIEW", @"%@ observeValueForKeyPath:%@", self.worker, keyPath);
-		[NSThread performBlockOnMainThread:^ {
+		dispatchOnMain(^{
 			NSNotification* notification = [NSNotification notificationWithName:@"workerViewNeedsSync" object:self];
 			[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
-		}];
+		});
 	}
 }
 

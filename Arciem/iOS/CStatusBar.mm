@@ -45,7 +45,7 @@
 }
 
 - (CStatusBarProxy *)activeProxy {
-    return [self.serializer performWithResult:^{
+    return [self.serializer dispatchWithResult:^{
         [self.proxiesStack compact];
         NSArray *proxies = [self.proxiesStack allObjects];
         return proxies.lastObject;
@@ -53,14 +53,14 @@
 }
 
 - (void)addProxy:(CStatusBarProxy *)proxy {
-    [self.serializer perform:^{
+    [self.serializer dispatch:^{
         [self.proxiesStack addPointer:(void *)proxy];
         [self update];
     }];
 }
 
 - (void)removeProxy:(CStatusBarProxy *)proxy {
-    [self.serializer perform:^{
+    [self.serializer dispatch:^{
         NSUInteger proxyIndex = [[self.proxiesStack allObjects] indexOfObject:proxy];
         if(proxyIndex != NSNotFound) {
             [self.proxiesStack removePointerAtIndex:proxyIndex];
@@ -108,9 +108,9 @@
 
 - (void)syncStatusBarAnimated:(BOOL)animated {
     if([UIApplication sharedApplication].statusBarStyle != self.statusBarStyle) {
-        [NSThread performBlockOnMainThread:^{
+        dispatchOnMainAfter(0.01, ^{
             [[UIApplication sharedApplication] setStatusBarStyle:self.statusBarStyle animated:animated];
-        } afterDelay:0.01];
+        });
     }
 }
 

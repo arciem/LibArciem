@@ -81,13 +81,13 @@
 }
 
 - (BOOL)visible {
-    return [[self.serializer performWithResult:^{
+    return [[self.serializer dispatchWithResult:^{
         return @(self.visibleCount > 0);
     }] boolValue];
 }
 
 - (void)incrementVisible {
-    [self.serializer perform:^{
+    [self.serializer dispatch:^{
         if(self.visibleCount == 0) {
             [self willChangeValueForKey:@"visible"];
         }
@@ -99,7 +99,7 @@
 }
 
 - (void)decrementVisible {
-    [self.serializer perform:^{
+    [self.serializer dispatch:^{
         NSAssert1(self.visibleCount > 0, @"Attempt to decrementVisible below zero for %@", self);
         if(self.visibleCount == 1) {
             [self willChangeValueForKey:@"visible"];

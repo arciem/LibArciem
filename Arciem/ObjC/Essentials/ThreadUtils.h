@@ -18,24 +18,24 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^error_block_t)(NSError *);
+// These methods have been deprecated. Use the newer alternatives in DispatchUtils.h.
 
 @interface NSThread (BlocksAdditions)
 
-- (void)performBlock:(dispatch_block_t)block;
-- (void)performBlock:(dispatch_block_t)block waitUntilDone:(BOOL)wait;
-- (void)performBlock:(void (^)(BOOL* stop))block queue:(dispatch_queue_t)queue repeatInterval:(NSTimeInterval)repeatInterval;
-+ (void)performBlockInBackground:(dispatch_block_t)block;
-+ (void)performBlockOnMainThread:(dispatch_block_t)block;
-+ (void)performBlockOnMainThread:(dispatch_block_t)block waitUntilDone:(BOOL)wait;
-+ (void)performBlockOnMainThread:(dispatch_block_t)block afterDelay:(NSTimeInterval)delay;
-+ (void)performBlockOnMainThread:(void (^)(BOOL* stop))block repeatInterval:(NSTimeInterval)repeatInterval;
-+ (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2;
+- (void)performBlock:(dispatch_block_t)block __attribute__((deprecated));
+- (void)performBlock:(dispatch_block_t)block waitUntilDone:(BOOL)wait __attribute__((deprecated));
+- (void)performBlock:(void (^)(BOOL* stop))block queue:(dispatch_queue_t)queue repeatInterval:(NSTimeInterval)repeatInterval __attribute__((deprecated));
++ (void)performBlockInBackground:(dispatch_block_t)block __attribute__((deprecated));
++ (void)performBlockOnMainThread:(dispatch_block_t)block __attribute__((deprecated));
++ (void)performBlockOnMainThread:(dispatch_block_t)block waitUntilDone:(BOOL)wait __attribute__((deprecated));
++ (void)performBlockOnMainThread:(dispatch_block_t)block afterDelay:(NSTimeInterval)delay __attribute__((deprecated));
++ (void)performBlockOnMainThread:(void (^)(BOOL* stop))block repeatInterval:(NSTimeInterval)repeatInterval __attribute__((deprecated));
++ (void)chainBlock:(void(^)(NSCondition*))block1 toBlock:(void(^)(void))block2 __attribute__((deprecated));
 
 @end
 
 @interface NSOperationQueue (BlocksAdditions)
 
-- (void)performSynchronousOperationWithBlock:(dispatch_block_t)block;
+- (void)performSynchronousOperationWithBlock:(dispatch_block_t)block __attribute__((deprecated));
 
 @end

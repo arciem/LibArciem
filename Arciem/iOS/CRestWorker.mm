@@ -54,9 +54,9 @@ NSString *const CRestJSONMIMEType = @"application/json";
 //	CLogSetTagActive(@"C_REST_WORKER", YES);
 }
 
-- (instancetype)initWithRequest:(NSURLRequest*)request
+- (instancetype)initWithRequest:(NSURLRequest*)request callbackQueue:(DispatchQueue)callbackQueue
 {
-	if(self = [super init]) {
+	if(self = [super initWithCallbackQueue:callbackQueue]) {
 		self.request = request;
 		self.mutableData = [NSMutableData data];
 		self.successStatusCodes = [NSIndexSet indexSetWithIndex:200];
@@ -66,9 +66,9 @@ NSString *const CRestJSONMIMEType = @"application/json";
 	return self;
 }
 
-+ (CRestWorker*)workerWithRequest:(NSURLRequest*)request
++ (CRestWorker*)workerWithRequest:(NSURLRequest*)request callbackQueue:(DispatchQueue)callbackQueue
 {
-	return [[self alloc] initWithRequest:request];
+	return [[self alloc] initWithRequest:request callbackQueue:callbackQueue];
 }
 
 - (NSData*)data
@@ -166,7 +166,7 @@ NSString *const CRestJSONMIMEType = @"application/json";
     [self.mutableData setLength:0];
     BSELF;
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:self.request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        [bself.serializer perform: ^{
+        [bself.serializer dispatch: ^{
             if(!bself.cancelled) {
                 if(data != nil) {
                     [bself.mutableData appendData:data];

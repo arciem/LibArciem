@@ -23,6 +23,7 @@
 #import "ObjectUtils.h"
 #import "CLog.h"
 #import "DeviceUtils.h"
+#import "DispatchUtils.h"
 
 NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification";
 
@@ -261,11 +262,11 @@ NSString* const kNeedsUpdateItemsNotification = @"kNeedsUpdateItemsNotification"
 	} if(object == self.notifier) {
 		if([keyPath isEqualToString:@"items"]) {
 			CLogTrace(@"C_NOTIFIER_BAR", @"%@ itemsChanged", self);
-			[NSThread performBlockOnMainThread:^ {
+            dispatchOnMain(^{
 				NSNotification* notification = [NSNotification notificationWithName:kNeedsUpdateItemsNotification object:self];
 				[[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle coalesceMask:(NSNotificationCoalescingOnName | NSNotificationCoalescingOnSender) forModes:@[NSRunLoopCommonModes]];
 				CLogTrace(@"C_NOTIFIER_BAR", @"%@ posted notification:%@ runloopmode:%@", self, notification, [[NSRunLoop currentRunLoop] currentMode]);
-			}];
+			});
 		}
 	}
 }

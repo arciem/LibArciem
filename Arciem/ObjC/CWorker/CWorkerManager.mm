@@ -155,7 +155,7 @@
 
 - (void)addWorker:(CWorker*)worker success:(void (^)(CWorker*))success shouldRetry:(BOOL (^)(CWorker*, NSError*))shouldRetry failure:(void (^)(CWorker*, NSError*))failure finally:(void (^)(CWorker*))finally
 {
-    [self.serializer perform:^{
+    [self.serializer dispatch:^{
 		NSAssert1(!worker.isExecuting, @"worker already executing: %@", worker);
 		NSAssert1(!worker.finished, @"worker already finished: %@", worker);
 		
@@ -193,7 +193,7 @@
                     finally(worker);
                 }
             }
-            [bself.serializer perform:^{
+            [bself.serializer dispatch:^{
                 [bself.workers removeObject:worker];
                 worker.executing = NO;
                 [bself startReadyWorkers];

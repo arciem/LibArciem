@@ -21,6 +21,7 @@
 #import "random.hpp"
 #import "StringUtils.h"
 #import "CLog.h"
+#import "DispatchUtils.h"
 
 @interface CDummyWorker ()
 
@@ -64,7 +65,7 @@
 
 + (CWorker*)randomWorkerForWorkerManager:(CWorkerManager*)workerManager
 {
-	return [workerManager.serializer performWithResult:^{
+	return [workerManager.serializer dispatchWithResult:^{
         CWorker* worker = nil;
 		NSArray* workers = [workerManager.workers allObjects];
 		if(workers.count > 0) {
@@ -79,9 +80,9 @@
 {
 	workerManager.queue.maxConcurrentOperationCount = 4;
 
-	[NSThread performBlockInBackground:^ {
+	dispatchOnBackground(^{
 		for(NSUInteger i = 0; i < 20; i++) {
-			[NSThread performBlockOnMainThread:^ {
+			dispatchOnMain(^{
 				for(NSUInteger j = 0; j < 1; j++) {
 					NSTimeInterval workTimeInterval = arciem::random_range(0.2, 3.0);
 //					NSTimeInterval workTimeInterval = arciem::random_range(4, 6);
@@ -131,26 +132,26 @@
 					} finally:^(CWorker *) {
 					}];
 				}
-			}];
+			});
 			[NSThread sleepForTimeInterval:arciem::random_range(0.0, 2.0)];
 		}
-	}];
+	});
 
 #if 1
 	static BOOL hasReaper = NO;
 	
-	[workerManager.serializer perform:^{
+	[workerManager.serializer dispatch:^{
 		if(!hasReaper) {
 			hasReaper = YES;
-			[NSThread performBlockInBackground:^ __attribute__((noreturn)) {
+			dispatchOnBackground(^ __attribute__((noreturn)) {
 				while(YES) {
 					[NSThread sleepForTimeInterval:10.0];
-					[workerManager.serializer perform:^{
+					[workerManager.serializer dispatch:^{
 						CWorker* workerToCancel = [self randomWorkerForWorkerManager:workerManager];
 						[workerToCancel cancel];
 					}];
 				}
-			}];
+			});
 		}
 	}];
 #endif
