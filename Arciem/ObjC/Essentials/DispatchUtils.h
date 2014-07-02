@@ -38,7 +38,7 @@ void dispatchSyncOnMain(DispatchBlock f);
 void dispatchOnQueue(DispatchQueue queue, DispatchBlock f);
 void dispatchOnMain(DispatchBlock f);
 void dispatchOnBackground(DispatchBlock f);
-Canceler* dispatchOnQueue(DispatchQueue queue, NSTimeInterval delayInSeconds, DispatchBlock f);
+Canceler* dispatchOnQueueAfter(DispatchQueue queue, NSTimeInterval delayInSeconds, DispatchBlock f);
 Canceler* dispatchOnMainAfter(NSTimeInterval delayInSeconds, DispatchBlock f);
 Canceler* dispatchOnBackgroundAfter(NSTimeInterval delayInSeconds, DispatchBlock f);
 Canceler* dispatchRepeatedOnQueue(DispatchQueue queue, NSTimeInterval interval, CancelableBlock f);

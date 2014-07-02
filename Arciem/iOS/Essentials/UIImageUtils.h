@@ -26,9 +26,9 @@
 
 + (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor;
 //+ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor textColor:(UIColor *)textColor text:(NSString*)text;
-+ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius;
-+ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor;
-+ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier;
+//+ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius;
+//+ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor;
+//+ (UIImage *)newImageWithSize:(CGSize)size scale:(CGFloat)scale backgroundColor:(UIColor *)backgroundColor cornerRadius:(CGFloat)cornerRadius innerShadowColor:(UIColor *)innerShadowColor shadowVerticalMultiplier:(NSInteger)shadowVerticalMultiplier;
 + (UIImage *)newEmbossedImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor;
 + (UIImage *)newEmbossedImageWithShapeImage:(UIImage *)shapeImage backgroundImage:(UIImage *)backgroundImage;
 + (UIImage *)newEtchedImageWithShapeImage:(UIImage *)shapeImage tintColor:(UIColor *)tintColor glossAlpha:(CGFloat)glossAlpha;
@@ -42,7 +42,7 @@
 + (UIImage *)newToolbarImageWithBackgroundPatternImage:(UIImage *)patternImage toolbarPosition:(UIToolbarPosition)position glossAlpha:(CGFloat)glossAlpha;
 + (UIImage *)newToolbarImageWithBackgroundPatternImage:(UIImage *)patternImage toolbarPosition:(UIToolbarPosition)position;
 
-- (UIImage *)newReflectedImageWithHeight:(NSUInteger)height;
+//- (UIImage *)newReflectedImageWithHeight:(NSUInteger)height;
 - (UIImage *)newImageByColorizing:(UIColor *)theColor;
 - (UIImage *)newImageByDesaturating:(CGFloat)desaturation;
 - (UIImage *)newImageByMaskingWithImage:(UIImage *)shapeImage;

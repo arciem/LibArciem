@@ -18,11 +18,6 @@
 
 #import <Foundation/Foundation.h>
 
-#ifdef __cplusplus
-#define CLINKAGE "C"
-#include <string>
-#endif
-
 NSString* EnsureRealString(NSString* s);
 NSString* AllowStringToBeNil(NSString* s);
 BOOL IsEmptyString(NSString* s);
@@ -68,8 +63,8 @@ NSString* BulletStringForString(NSString* string);
 NSString* StringByNormalizingToSearchableCharacters(NSString *s);
 NSRegularExpression* RegularExpressionForMatchingAllTokens(NSString *s);
 
-NSString* StringFromBool(BOOL b, BOOL cStyle = NO);
-NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle = NO);
+NSString* StringFromBool(BOOL b, BOOL cStyle);
+NSString* StringFromObjectConvertingBool(id obj, BOOL cStyle);
 NSString* StringByUnescapingEntitiesInString(NSString* s);
 NSString* StringByUnescapingMinimalEntitiesInUncleanString(NSString* s);
 NSString* StringByJoiningNonemptyStringsWithString(NSArray* strings, NSString* separator);
@@ -135,9 +130,3 @@ NSDictionary* DictionaryFromStringWithKeyValuePairs(NSString* string, NSString* 
 + (NSRegularExpression*)newRegularExpressionWithPattern:(NSString *)pattern;
 
 @end
-
-#ifdef __cplusplus
-NSString* ToCocoa(std::string const& s);
-NSString* ToCocoa(std::string const* s, NSString* default_s);
-std::string ToStd(NSString* s);
-#endif

@@ -19,4 +19,4 @@
 #include <Foundation/Foundation.h>
 
 NSData* XMLDataFromPropertyList(id propertyList);
-id PropertyListFromXMLData(NSData* xmlData, NSString** errorString = nil);
+id PropertyListFromXMLData(NSData* xmlData, NSString** errorString);

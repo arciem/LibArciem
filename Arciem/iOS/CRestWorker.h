@@ -35,6 +35,7 @@ extern NSString *const CRestErrorDomain;
 
 extern NSString *const CRestErrorWorkerErrorKey;
 extern NSString *const CRestErrorFailingURLErrorKey;
+extern NSString *const CRestErrorOfflineErrorKey;
 
 extern NSString *const CRestJSONMIMEType;
 

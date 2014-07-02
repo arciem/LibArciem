@@ -17,7 +17,7 @@
  *******************************************************************************/
 
 #import <Foundation/Foundation.h>
-#include "time_utils.hpp"
+#include "time_utils.h"
 
 double TimeIntervalMinutes(NSTimeInterval t);
 double TimeIntervalHours(NSTimeInterval t);

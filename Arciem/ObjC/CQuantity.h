@@ -20,12 +20,14 @@
 
 
 // Dimension identifiers
+extern NSString* const kDimensionTime;
 extern NSString* const kDimensionMass;
 extern NSString* const kDimensionDistance;
 extern NSString* const kDimensionSpeed;
 extern NSString* const kDimensionFluidVolume;
 extern NSString* const kDimensionDryVolume;
 extern NSString* const kDimensionTemperature;
+extern NSString* const kDimensionPackaging;
 
 @class CDimension;
 @class CUnit;

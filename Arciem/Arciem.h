@@ -6,40 +6,18 @@
 //  Copyright (c) 2013 Arciem LLC. All rights reserved.
 //
 
-// CPP
-#include "gl_utils.hpp"
-#include "murmur_hash_3.hpp"
-#include "stringstreams.hpp"
+#import <UIKit/UIKit.h>
+
+// C
+//#include "murmur_hash_3.h"
 
 // essentials
-#include "config.hpp"
-#include "random.hpp"
-#include "time_utils.hpp"
-#include "xtime.hpp"
-
-// geometry
-#include "align.hpp"
-#include "arc2.hpp"
-#include "area.hpp"
-#include "areai.hpp"
-#include "bezier2_list.hpp"
-#include "bezier2.hpp"
-#include "delta2.hpp"
-#include "delta2i.hpp"
-#include "delta3.hpp"
-#include "geometry.hpp"
-#include "line2.hpp"
-#include "orientation.hpp"
-#include "point2_list.hpp"
-#include "point2.hpp"
-#include "point2i.hpp"
-#include "point3.hpp"
-#include "volume.hpp"
-#include "wedge2.hpp"
-
-#ifdef __OBJC__
-
-#import <UIKit/UIKit.h>
+#include "config.h"
+#include "random.h"
+#include "time_utils.h"
+#include "xtime.h"
+#include "math_utils.h"
+#include "geometry.h"
 
 @interface Arciem : NSObject
 
@@ -106,6 +84,7 @@
 #import "CDisclosureIndicator.h"
 #import "CBadgeView.h"
 #import "CTextureAtlas.h"
+#import "CColorHSB.h"
 
 // MapKit
 #import "CDebugAnnotation.h"
@@ -156,5 +135,3 @@
 
     // CSetup
 #import "CSetup.h"
-
-#endif // __OBJC__

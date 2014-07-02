@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <SystemConfiguration/SystemConfiguration.h>
+#import <netinet/in.h>
 
 typedef NS_ENUM(NSInteger, NetworkStatus) {
 	NetworkStatusNotReachable = 0,
