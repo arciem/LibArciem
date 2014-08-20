@@ -21,7 +21,7 @@
 #import "geometry.h"
 #import "math_utils.h"
 #import "Geom.h"
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "CColorHSB.h"
 
 static CGColorSpaceRef _sharedColorSpaceDeviceRGB = NULL;

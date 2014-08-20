@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 BOOL IsPhone();
 BOOL IsPad();

@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <MapKit/MapKit.h>
+@import MapKit;
 
 @interface CUserTrackingBarButtonItem : UIBarButtonItem
 

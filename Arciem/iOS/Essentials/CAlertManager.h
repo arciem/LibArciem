@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 typedef void (^alert_completion_block_t)(NSUInteger buttonIndex);
 

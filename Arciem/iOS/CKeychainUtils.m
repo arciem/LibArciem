@@ -33,7 +33,7 @@
 //
 
 #import "CKeychainUtils.h"
-#import <Security/Security.h>
+@import Security;
 
 static NSString* const CKeychainUtilsErrorDomain = @"CKeychainUtilsErrorDomain";
 

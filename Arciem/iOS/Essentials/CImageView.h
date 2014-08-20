@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "CView.h"
 
 @interface CImageView : UIImageView

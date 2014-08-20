@@ -24,7 +24,7 @@
 #import "ObjectUtils.h"
 #import "UIImageUtils.h"
 #import "CPaymentMethodTypeImageView.h"
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 
 @interface CCardNumberItemTableViewCell ()
 

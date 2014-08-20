@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 typedef enum {
 	kLogOff = 2147483647,	// The OFF has the highest possible rank and is intended to turn off logging.

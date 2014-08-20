@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "CGUtils.h"
 
 @interface UIColor(UIColorUtils)

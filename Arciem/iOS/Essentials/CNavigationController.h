@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 extern NSString *const CNavigationControllerWillShowViewControllerNotification;
 extern NSString *const CNavigationControllerDidShowViewControllerNotification;

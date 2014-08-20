@@ -7,7 +7,7 @@
 //
 
 //#include "line2.hpp"
-//#import <CoreGraphics/CoreGraphics.h>
+//@import CoreGraphics;
 
 //inline point2 to_arciem(CGPoint p) { return point2(p.x, p.y); }
 //inline line2 to_arciem(CGPoint p1, CGPoint p2) { return line2(to_arciem(p1), to_arciem(p2)); }

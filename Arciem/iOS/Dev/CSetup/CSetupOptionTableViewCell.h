@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "CItem.h"
 
 @interface CSetupOptionTableViewCell : UITableViewCell

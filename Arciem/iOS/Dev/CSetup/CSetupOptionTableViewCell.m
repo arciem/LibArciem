@@ -20,7 +20,7 @@
 
 @implementation CSetupOptionTableViewCell
 
-@synthesize option = option_;
+@synthesize option = _option;
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -41,12 +41,12 @@
 
 - (CItem*)option
 {
-	return option_;
+	return _option;
 }
 
 - (void)setOption:(CItem *)option
 {
-	option_ = option;
+	_option = option;
 	self.textLabel.text = option.title;
 	[self syncToOption];
 }

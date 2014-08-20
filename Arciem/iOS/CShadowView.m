@@ -20,7 +20,7 @@
 #import "CGUtils.h"
 #import "CObserver.h"
 
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 
 @interface CShadowView ()
 

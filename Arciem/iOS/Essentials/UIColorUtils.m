@@ -18,7 +18,7 @@
 
 #import "UIColorUtils.h"
 #import "math_utils.h"
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 #import "Geom.h"
 #import "StringUtils.h"
 #import "UIImageUtils.h"

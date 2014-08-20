@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <MapKit/Mapkit.h>
+@import MapKit;
 
 @interface CDebugAnnotation : NSObject<MKAnnotation>
 

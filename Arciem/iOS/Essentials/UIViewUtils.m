@@ -17,7 +17,7 @@
  *******************************************************************************/
 
 #import "UIViewUtils.h"
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 #import "CGUtils.h"
 #import "UIColorUtils.h"
 #import "DeviceUtils.h"

@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @protocol CTextFieldTableViewCell2Delegate;
 

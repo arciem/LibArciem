@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 #import "CWorkerDebugView.h"
 #import "UIViewUtils.h"
 #import "ThreadUtils.h"

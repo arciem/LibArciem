@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "CImageView.h"
 
 typedef NS_ENUM(NSInteger, CViewControllerState) {

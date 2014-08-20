@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 #import "CTextureAtlasSubimage.h"
 #import "CTextureAtlasImage.h"
 #import "UIImageUtils.h"

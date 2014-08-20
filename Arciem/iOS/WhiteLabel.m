@@ -19,7 +19,7 @@
 #import "WhiteLabel.h"
 #import "StringUtils.h"
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface WhiteLabel ()
 

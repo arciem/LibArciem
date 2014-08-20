@@ -17,7 +17,7 @@
  *******************************************************************************/
 
 #import "CBeveledBackgroundView.h"
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 
 @interface CBeveledBackgroundView ()
 

@@ -22,8 +22,8 @@
 #import "DeviceUtils.h"
 #import "CGUtils.h"
 
-#import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
+@import UIKit;
+@import QuartzCore;
 
 static const CGFloat kBadgeSize = 20.0;
 static const CGFloat kFontSize = 14.0;

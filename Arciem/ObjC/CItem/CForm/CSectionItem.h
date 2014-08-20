@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Arciem LLC. All rights reserved.
 //
 
-#import <Arciem/Arciem.h>
+#import "CItem.h"
 
 @interface CSectionItem : CItem
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Arciem LLC. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 // C
 //#include "murmur_hash_3.h"

@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 NSString* EnsureRealString(NSString* s);
 NSString* AllowStringToBeNil(NSString* s);

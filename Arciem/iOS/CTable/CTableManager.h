@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "CTableItem.h"
 #import "CTableRowItem.h"
 #import "CTableSectionItem.h"

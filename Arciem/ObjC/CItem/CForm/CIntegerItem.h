@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2012 Arciem LLC
+ Copyright 2014 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,12 +16,22 @@
  
  *******************************************************************************/
 
-@import Foundation;
+#import <Arciem/Arciem.h>
 
-@interface WhiteLabel : NSObject
+extern NSString* const CIntegerItemErrorDomain;
 
-+ (WhiteLabel*)sharedWhiteLabel;
-+ (NSString*)replaceTemplates:(NSString*)str;
-+ (id)resourceForKey:(NSString*)key;
+enum {
+	CIntegerItemErrorInvalidValue = 1000
+};
+
+@interface CIntegerItem : CItem
+
++ (CIntegerItem*)newIntegerItem;
++ (CIntegerItem*)newIntegerItemWithDictionary:(NSDictionary*)dict;
++ (CIntegerItem*)newIntegerItemWithTitle:(NSString*)title key:(NSString*)key integerValue:(NSInteger)integerValue;
+
+@property (nonatomic) NSInteger integerValue;
+@property (nonatomic) NSNumber *minValidValue;
+@property (nonatomic) NSNumber *maxValidValue;
 
 @end

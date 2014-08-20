@@ -17,7 +17,7 @@
  *******************************************************************************/
 
 #import "CView.h"
-#import <QuartzCore/QuartzCore.h>
+@import QuartzCore;
 
 @interface CGradientView : CView
 

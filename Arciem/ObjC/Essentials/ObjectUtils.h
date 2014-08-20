@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #define BOBJ(_a, _b) __weak __typeof(_a) _b = _a
 #define BSELF BOBJ(self, bself)

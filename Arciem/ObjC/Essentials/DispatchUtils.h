@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface Canceler : NSObject
 @property (readonly, nonatomic) BOOL canceled;

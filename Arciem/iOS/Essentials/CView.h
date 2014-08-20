@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 typedef NS_ENUM(NSInteger, CViewKeyboardAdjustmentType) {
 	CViewKeyboardAdjustmentTypeNone,

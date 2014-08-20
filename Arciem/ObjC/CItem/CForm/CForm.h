@@ -33,6 +33,7 @@
 #import "CSpacerItem.h"
 #import "CStringItem.h"
 #import "CSubmitItem.h"
+#import "CIntegerItem.h"
 
 @interface CForm : NSObject
 

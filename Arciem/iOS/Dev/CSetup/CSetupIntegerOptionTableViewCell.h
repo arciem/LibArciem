@@ -1,6 +1,6 @@
 /*******************************************************************************
  
- Copyright 2012 Arciem LLC
+ Copyright 2014 Arciem LLC
  
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -16,12 +16,10 @@
  
  *******************************************************************************/
 
-@import Foundation;
+#import "CSetupOptionTableViewCell.h"
 
-@interface WhiteLabel : NSObject
+@interface CSetupIntegerOptionTableViewCell : CSetupOptionTableViewCell
 
-+ (WhiteLabel*)sharedWhiteLabel;
-+ (NSString*)replaceTemplates:(NSString*)str;
-+ (id)resourceForKey:(NSString*)key;
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 
 @end

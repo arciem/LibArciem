@@ -16,6 +16,6 @@
  
  *******************************************************************************/
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 NSString* IString(NSString* s);

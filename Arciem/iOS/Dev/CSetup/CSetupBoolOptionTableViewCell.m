@@ -28,7 +28,6 @@
 
 @implementation CSetupBoolOptionTableViewCell
 
-@synthesize switchView = switchView_;
 @dynamic boolOption;
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier

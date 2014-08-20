@@ -8,6 +8,7 @@
 
 #import "CSectionItem.h"
 #import "CTableSectionItem.h"
+#import "StringUtils.h"
 
 @implementation CSectionItem
 

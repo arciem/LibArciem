@@ -17,7 +17,7 @@
  *******************************************************************************/
 
 #import "CSystemSound.h"
-#import <AudioToolbox/AudioToolbox.h>
+@import AudioToolbox;
 
 @interface CSystemSound () {
     SystemSoundID soundID;

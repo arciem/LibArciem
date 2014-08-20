@@ -364,6 +364,14 @@
 		0349E1A0180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0349E19E180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.m */; };
 		0349E1A3180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 0349E1A1180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0349E1A4180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0349E1A2180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.m */; };
+		034E670F19A4C2AC009931E0 /* CIntegerItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 034E670D19A4C2AC009931E0 /* CIntegerItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		034E671019A4C2AC009931E0 /* CIntegerItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 034E670D19A4C2AC009931E0 /* CIntegerItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		034E671119A4C2AC009931E0 /* CIntegerItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 034E670E19A4C2AC009931E0 /* CIntegerItem.m */; };
+		034E671219A4C2AC009931E0 /* CIntegerItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 034E670E19A4C2AC009931E0 /* CIntegerItem.m */; };
+		034E671519A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 034E671319A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		034E671619A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 034E671319A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		034E671719A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 034E671419A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.m */; };
+		034E671819A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 034E671419A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.m */; };
 		0356A3201905B49E002397ED /* CUseCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = 0356A31E1905B49E002397ED /* CUseCounter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0356A3211905B49E002397ED /* CUseCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0356A31F1905B49E002397ED /* CUseCounter.m */; };
 		0362A8F5174FF48C005AA5ED /* CWorkerDebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0362A8F1174FF48C005AA5ED /* CWorkerDebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -729,6 +737,10 @@
 		0349E19E180E16ED00F74905 /* CPaymentMethodSummaryTableRowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CPaymentMethodSummaryTableRowItem.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0349E1A1180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPaymentMethodSummaryItemTableViewCell.h; sourceTree = "<group>"; };
 		0349E1A2180E1BBC00F74905 /* CPaymentMethodSummaryItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPaymentMethodSummaryItemTableViewCell.m; sourceTree = "<group>"; };
+		034E670D19A4C2AC009931E0 /* CIntegerItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIntegerItem.h; sourceTree = "<group>"; };
+		034E670E19A4C2AC009931E0 /* CIntegerItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIntegerItem.m; sourceTree = "<group>"; };
+		034E671319A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSetupIntegerOptionTableViewCell.h; sourceTree = "<group>"; };
+		034E671419A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSetupIntegerOptionTableViewCell.m; sourceTree = "<group>"; };
 		0356A31E1905B49E002397ED /* CUseCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUseCounter.h; sourceTree = "<group>"; };
 		0356A31F1905B49E002397ED /* CUseCounter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUseCounter.m; sourceTree = "<group>"; };
 		0362A8F1174FF48C005AA5ED /* CWorkerDebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CWorkerDebugView.h; path = CWorker/CWorkerDebugView.h; sourceTree = "<group>"; };
@@ -1252,6 +1264,8 @@
 				039DC1EB16CB4C4400B52A7F /* CSpacerItem.m */,
 				039DC1EC16CB4C4400B52A7F /* CStringItem.h */,
 				039DC1ED16CB4C4400B52A7F /* CStringItem.m */,
+				034E670D19A4C2AC009931E0 /* CIntegerItem.h */,
+				034E670E19A4C2AC009931E0 /* CIntegerItem.m */,
 				039DC1EE16CB4C4400B52A7F /* CSubmitItem.h */,
 				039DC1EF16CB4C4400B52A7F /* CSubmitItem.m */,
 			);
@@ -1542,6 +1556,8 @@
 				039DC30A16CB693700B52A7F /* CSetup.m */,
 				039DC30B16CB693700B52A7F /* CSetupBoolOptionTableViewCell.h */,
 				039DC30C16CB693700B52A7F /* CSetupBoolOptionTableViewCell.m */,
+				034E671319A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.h */,
+				034E671419A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.m */,
 				039DC30D16CB693700B52A7F /* CSetupEditServerViewController.h */,
 				039DC30E16CB693700B52A7F /* CSetupEditServerViewController.m */,
 				039DC30F16CB693700B52A7F /* CSetupMainViewController.h */,
@@ -1699,6 +1715,7 @@
 				0330EC8E191802F300A3DEF7 /* CCardNumberTableRowItem.h in Headers */,
 				0330EC8F191802F300A3DEF7 /* CMultiChoiceSummaryTableRowItem.h in Headers */,
 				0330EC90191802F300A3DEF7 /* CNoteTableRowItem.h in Headers */,
+				034E671019A4C2AC009931E0 /* CIntegerItem.h in Headers */,
 				0330EC91191802F300A3DEF7 /* CTableRowItem.h in Headers */,
 				0330EC92191802F300A3DEF7 /* CSpacerTableRowItem.h in Headers */,
 				0330EC93191802F300A3DEF7 /* CSummaryTableRowItem.h in Headers */,
@@ -1775,6 +1792,7 @@
 				0330ECD8191802F300A3DEF7 /* WhiteLabel.h in Headers */,
 				0330ECD9191802F300A3DEF7 /* CSystemSound.h in Headers */,
 				0330ECDA191802F300A3DEF7 /* CMiniPickerBackgroundView.h in Headers */,
+				034E671619A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.h in Headers */,
 				0330ECDB191802F300A3DEF7 /* CMiniPickerFrameView.h in Headers */,
 				0330ECDC191802F300A3DEF7 /* CMiniPickerOverlayView.h in Headers */,
 				0330ECDD191802F300A3DEF7 /* CMiniPickerView.h in Headers */,
@@ -1870,6 +1888,7 @@
 				039DC23816CB4C4400B52A7F /* CCardNumberTableRowItem.h in Headers */,
 				039DC23A16CB4C4400B52A7F /* CMultiChoiceSummaryTableRowItem.h in Headers */,
 				039DC23C16CB4C4400B52A7F /* CNoteTableRowItem.h in Headers */,
+				034E670F19A4C2AC009931E0 /* CIntegerItem.h in Headers */,
 				039DC23E16CB4C4400B52A7F /* CTableRowItem.h in Headers */,
 				039DC24016CB4C4400B52A7F /* CSpacerTableRowItem.h in Headers */,
 				039DC24216CB4C4400B52A7F /* CSummaryTableRowItem.h in Headers */,
@@ -1946,6 +1965,7 @@
 				039DC39716CCA44000B52A7F /* WhiteLabel.h in Headers */,
 				032AEEF016DE66DA0024D14E /* CSystemSound.h in Headers */,
 				03F9446216E9735D00F9FEF3 /* CMiniPickerBackgroundView.h in Headers */,
+				034E671519A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.h in Headers */,
 				03F9446416E9735D00F9FEF3 /* CMiniPickerFrameView.h in Headers */,
 				03F9446616E9735D00F9FEF3 /* CMiniPickerOverlayView.h in Headers */,
 				03F9446816E9735D00F9FEF3 /* CMiniPickerView.h in Headers */,
@@ -2150,6 +2170,7 @@
 				0330EBC0191802F300A3DEF7 /* CRepeatingItem.m in Sources */,
 				0330EBC1191802F300A3DEF7 /* CSpacerItem.m in Sources */,
 				0330EBC2191802F300A3DEF7 /* CStringItem.m in Sources */,
+				034E671819A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.m in Sources */,
 				0330EBC3191802F300A3DEF7 /* CSubmitItem.m in Sources */,
 				0330EBC4191802F300A3DEF7 /* CItem.m in Sources */,
 				0330EBC5191802F300A3DEF7 /* CTableItem.m in Sources */,
@@ -2164,6 +2185,7 @@
 				0330EBCE191802F300A3DEF7 /* CStatusBar.m in Sources */,
 				0330EBCF191802F300A3DEF7 /* CPaymentMethodSummaryItem.m in Sources */,
 				0330EBD0191802F300A3DEF7 /* CSpacerTableRowItem.m in Sources */,
+				034E671219A4C2AC009931E0 /* CIntegerItem.m in Sources */,
 				0330EBD1191802F300A3DEF7 /* CSummaryTableRowItem.m in Sources */,
 				0330EBD2191802F300A3DEF7 /* CTextFieldTableRowItem.m in Sources */,
 				0330EBD3191802F300A3DEF7 /* CTableSectionItem.m in Sources */,
@@ -2318,6 +2340,7 @@
 				039DC22516CB4C4400B52A7F /* CRepeatingItem.m in Sources */,
 				039DC22716CB4C4400B52A7F /* CSpacerItem.m in Sources */,
 				039DC22916CB4C4400B52A7F /* CStringItem.m in Sources */,
+				034E671719A4C86B009931E0 /* CSetupIntegerOptionTableViewCell.m in Sources */,
 				039DC22B16CB4C4400B52A7F /* CSubmitItem.m in Sources */,
 				039DC22D16CB4C4400B52A7F /* CItem.m in Sources */,
 				039DC22F16CB4C4400B52A7F /* CTableItem.m in Sources */,
@@ -2332,6 +2355,7 @@
 				03C8C9A9181ACEEC0019D97E /* CStatusBar.m in Sources */,
 				0349E19C180E15BC00F74905 /* CPaymentMethodSummaryItem.m in Sources */,
 				039DC24116CB4C4400B52A7F /* CSpacerTableRowItem.m in Sources */,
+				034E671119A4C2AC009931E0 /* CIntegerItem.m in Sources */,
 				039DC24316CB4C4400B52A7F /* CSummaryTableRowItem.m in Sources */,
 				039DC24516CB4C4400B52A7F /* CTextFieldTableRowItem.m in Sources */,
 				039DC24716CB4C4400B52A7F /* CTableSectionItem.m in Sources */,

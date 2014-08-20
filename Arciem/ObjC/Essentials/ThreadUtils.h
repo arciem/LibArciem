@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 // These methods have been deprecated. Use the newer alternatives in DispatchUtils.h.
 

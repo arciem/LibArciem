@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 #import "NSIndexPathUtils.h"
 
 @interface CMatrix : NSObject

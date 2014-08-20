@@ -16,7 +16,7 @@
  
  *******************************************************************************/
 
-#import <CoreGraphics/CoreGraphics.h>
+@import CoreGraphics;
 
 @interface Geom : NSObject
 
